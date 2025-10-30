@@ -1,4 +1,6 @@
 #include "Mesh.h"
+
+// Constructor
 Mesh::Mesh()
 {
 	VAO = 0;
@@ -7,6 +9,8 @@ Mesh::Mesh()
 	indexCount = 0;
 }
 
+
+// Method used by desctructor
 void Mesh::ClearMesh()
 {
 	if (EBO != 0) {
@@ -24,37 +28,53 @@ void Mesh::ClearMesh()
 	indexCount = 0;
 }
 
+// Destructor
 Mesh::~Mesh()
 {
 	ClearMesh();
 }
 
+
+// Method used to create mesh
 void Mesh::CreateMesh(GLfloat* vertices, unsigned int* indices, unsigned int numOfVertices, unsigned int numOfIndices){
 
+	// Store index count
 	indexCount = numOfIndices;
 
+	// Generate and bind VAO
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 
+	// Generate and bind VBO
 	glGenBuffers(1, &VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices[0]) * numOfVertices, vertices, GL_STATIC_DRAW);
 
+	// Generate and bind EBO
 	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices[0]) * numOfIndices, indices, GL_STATIC_DRAW);
 
+	// Set vertex attribute pointers
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
 
+	// Unbind VAO
 	glBindVertexArray(0);
 
 }
 
+// Method used to render mesh
 void Mesh::RenderMesh() {
+
+	// Bind VAO and EBO
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+
+	// Draw elements
 	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
+
+	// Unbind VAO and EBO
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 }

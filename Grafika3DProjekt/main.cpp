@@ -9,10 +9,15 @@
 // Window dimensions
 const GLint WIDTH = 1280, HEIGHT = 720;
 
+
+// Create Window object
 Window mainWindow;
+
+// Create lists for meshes and shaders
 std::vector<Mesh*> meshList;
 std::vector<Shader*> shaderList;
 
+// Link shader paths
 static const char* vertexShader = "Shaders/shader.vert";
 static const char* fragmentShader = "Shaders/shader.frag";
 
@@ -59,13 +64,14 @@ int main()
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		// Render objects
 		shaderList[0]->UseShader();
-
 		meshList[0]->RenderMesh();
 
 		// Testing glm
 		glm::vec3 vec(1.0f, 0.0f, 0.0f);
 
+		// Swap buffers
 		mainWindow.swapBuffers();
 	}
 
