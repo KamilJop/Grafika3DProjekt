@@ -67,15 +67,13 @@ void Mesh::CreateMesh(GLfloat* vertices, unsigned int* indices, unsigned int num
 // Method used to render mesh
 void Mesh::RenderMesh() {
 
-	// Bind VAO and EBO
+	// Bind VAO
 	glBindVertexArray(VAO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 
 	// Draw elements
 	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
 
-	// Unbind VAO and EBO
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	// Unbind VAO 
 	glBindVertexArray(0);
 }
 

@@ -42,13 +42,19 @@ void Shader::AddShader(GLuint theProgram, const char* shaderCode, GLenum shaderT
 	// Create shader object
 	GLuint theShader = glCreateShader(shaderType);
 
-	// Check for errors
+	// Send GLSL code to shader object
 	const GLchar* theCode[1];
 	theCode[0] = shaderCode;
+
 	GLint codeLength[1];
 	codeLength[0] = strlen(shaderCode);
+
 	glShaderSource(theShader, 1, theCode, codeLength);
+
+	// Compile shader
 	glCompileShader(theShader);
+
+	// Check for errors
 	GLint result = 0;
 	GLchar eLog[1024] = { 0 };
 	glGetShaderiv(theShader, GL_COMPILE_STATUS, &result);
