@@ -2,6 +2,8 @@
 Shader::Shader()
 {
 	shaderId = 0;
+	uniformProjection = 0;
+	uniformModel = 0;
 }
 
 std::string Shader::ReadFile(const char* filePath) {
@@ -78,6 +80,10 @@ void Shader::CompileShader(const char* vertexCode, const char* fragmentCode) {
 		std::cout << "Error validating program: " << eLog << std::endl;
 		return;
 	}
+
+	// Get uniform locations
+	uniformProjection = glGetUniformLocation(shaderId, "projection");
+	uniformModel = glGetUniformLocation(shaderId, "model");
 }
 
 void Shader::UseShader() {
@@ -89,6 +95,13 @@ void Shader::ClearShader() {
 		glDeleteProgram(shaderId);
 		shaderId = 0;
 	}
+}
+
+GLuint Shader::getProjectionUniformLocation() {
+	return uniformProjection;
+}
+GLuint Shader::getModelUniformLocation() {
+	return uniformModel;
 }
 
 Shader::~Shader()
