@@ -40,18 +40,17 @@ int Window::Initialise() {
 
 	glfwMakeContextCurrent(mainWindow);
 
-	glewExperimental = GL_TRUE;
-
-	GLenum error = glewInit();
-	if (error != GLEW_OK)
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
-		printf("GLEW initialisation failed! %s", glewGetErrorString(error));
+		printf("GLAD initialisation failed!");
 		glfwDestroyWindow(mainWindow);
 		glfwTerminate();
 		return 1;
 	}
 
 	glViewport(0, 0, bufferWidth, bufferHeight);
+
+	return 0;
 
 }
 

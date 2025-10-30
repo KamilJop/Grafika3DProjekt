@@ -3,7 +3,7 @@
 #include "stdio.h"
 
 // GL includes
-#include <GL\glew.h>
+#include <glad\glad.h>
 #include <GLFW\glfw3.h>
 
 
@@ -22,6 +22,7 @@ public:
 	bool getShouldClose() { return glfwWindowShouldClose(mainWindow); }
 
 	void swapBuffers() { glfwSwapBuffers(mainWindow); }
+
 
 	~Window();
 
