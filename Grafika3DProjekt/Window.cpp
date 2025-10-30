@@ -47,6 +47,8 @@ int Window::Initialise() {
 		return 1;
 	}
 
+	glEnable(GL_DEPTH_TEST);
+
 	glViewport(0, 0, bufferWidth, bufferHeight);
 
 	return 0;
