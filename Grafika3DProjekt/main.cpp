@@ -9,7 +9,7 @@
 #include "Shader.h"
 #include <vector>
 #include "Camera.h"
-
+#include "Entity.h"
 // Window dimensions
 const GLint WIDTH = 1280, HEIGHT = 720;
 
@@ -24,13 +24,15 @@ std::vector<Shader*> shaderList;
 static const char* vertexShader = "Shaders/shader.vert";
 static const char* fragmentShader = "Shaders/shader.frag";
 
-
 // Delta time
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
 // Camera
 Camera camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 5.0f, 0.1f);
+
+// Enttity
+Entity* triangleEntity;
 
 
 int main()
@@ -39,7 +41,6 @@ int main()
 	mainWindow = Window(WIDTH, HEIGHT);
 	mainWindow.Initialise();
 	
-
 	// Create Shaders
 	Shader* shader1 = new Shader();
 	shader1->CreateShader(vertexShader, fragmentShader);
@@ -55,7 +56,7 @@ int main()
 
 	GLfloat vertices[] = {
 		-1.0f, -1.0f, 0.0f,
-		0.0f, -1.0f, 1.0f,
+		0.00f, -1.0f, 1.0f,
 		1.0f, -1.0f, 0.0f,
 		0.0f, 1.0f, 0.0f
 	};
@@ -64,14 +65,12 @@ int main()
 	mesh1->CreateMesh(vertices, indices, 12, 12);
 	meshList.push_back(mesh1);
 
+	// Create Entity loading the first mesh and shader
+	triangleEntity = new Entity(meshList[0], shaderList[0], glm::vec3(0.0f, 0.0f, -6.5f), glm::vec3(0.0f), glm::vec3(1.0f));
+
 	// Set perspective 
 	glm::mat4 projection;
 	projection = glm::perspective(glm::radians(60.0f), (GLfloat)mainWindow.getBufferWidth() / (GLfloat)mainWindow.getBufferHeight(), 0.1f, 100.0f);
-
-	// Model matrix
-	glm::mat4 model;
-	model = glm::mat4(1.0f);
-	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -6.5f));
 
 	// Loop until window closed
 	while (!mainWindow.getShouldClose())
@@ -95,16 +94,13 @@ int main()
 		camera.ProcessKeyboard(mainWindow.getKeys(), deltaTime);
 		camera.ProcessMouseMovement(mainWindow.getXChange(), mainWindow.getYChange());
 
-		
-
 		// Set uniform values
-		shaderList[0]->setMat4("model", model);
 		shaderList[0]->setMat4("projection", projection);
 		shaderList[0]->setMat4("view", camera.getViewMatrix());
-		
-		// Render mesh
-		meshList[0]->RenderMesh();
 
+		// Draw the triangle entity
+		triangleEntity->DrawEntity();
+		
 		// Swap buffers
 		mainWindow.swapBuffers();
 	}
