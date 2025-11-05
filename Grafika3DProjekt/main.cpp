@@ -24,10 +24,6 @@ std::vector<Shader*> shaderList;
 static const char* vertexShader = "Shaders/shader.vert";
 static const char* fragmentShader = "Shaders/shader.frag";
 
-// Uniform locations
-GLuint uniformProjection;
-GLuint uniformModel;
-GLuint uniformViewMatrix;
 
 // Delta time
 float deltaTime = 0.0f;
@@ -101,17 +97,10 @@ int main()
 
 		
 
-		// Set uniform locations and values
-
-		uniformModel = shaderList[0]->getModelUniformLocation();
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-
-		uniformProjection = shaderList[0]->getProjectionUniformLocation();
-		glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
-
-		uniformViewMatrix = shaderList[0]->getViewMatrixUniformLocation();
-		glUniformMatrix4fv(uniformViewMatrix, 1, GL_FALSE, glm::value_ptr(camera.getViewMatrix()));
-
+		// Set uniform values
+		shaderList[0]->setMat4("model", model);
+		shaderList[0]->setMat4("projection", projection);
+		shaderList[0]->setMat4("view", camera.getViewMatrix());
 		
 		// Render mesh
 		meshList[0]->RenderMesh();
