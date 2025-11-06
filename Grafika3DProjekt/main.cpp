@@ -33,6 +33,7 @@ Camera camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 
 
 // Enttity
 Entity* triangleEntity;
+Entity* floorEntity;
 
 
 int main()
@@ -68,6 +69,26 @@ int main()
 	// Create Entity loading the first mesh and shader
 	triangleEntity = new Entity(meshList[0], shaderList[0], glm::vec3(0.0f, 0.0f, -6.5f), glm::vec3(0.0f), glm::vec3(1.0f));
 
+	// Floor
+	GLfloat floorVertices[] = {
+	-50.0f, -1.0f,  50.0f,  
+	 50.0f, -1.0f,  50.0f, 
+	 50.0f, -1.0f, -50.0f, 
+	-50.0f, -1.0f, -50.0f   
+	};
+
+	unsigned int floorIndices[] = {
+		0, 1, 2,
+		2, 3, 0
+	};
+	Mesh* floorMesh = new Mesh();
+	floorMesh->CreateMesh(floorVertices, floorIndices, 12, 6);
+	meshList.push_back(floorMesh);
+
+	floorEntity = new Entity(meshList[1], shaderList[0], glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f), glm::vec3(1.0f));
+
+
+
 	// Set perspective 
 	glm::mat4 projection;
 	projection = glm::perspective(glm::radians(60.0f), (GLfloat)mainWindow.getBufferWidth() / (GLfloat)mainWindow.getBufferHeight(), 0.1f, 100.0f);
@@ -98,8 +119,10 @@ int main()
 		shaderList[0]->setMat4("projection", projection);
 		shaderList[0]->setMat4("view", camera.getViewMatrix());
 
-		// Draw the triangle entity
+		// Draw entities
 		triangleEntity->DrawEntity();
+		floorEntity->DrawEntity();
+
 		
 		// Swap buffers
 		mainWindow.swapBuffers();
