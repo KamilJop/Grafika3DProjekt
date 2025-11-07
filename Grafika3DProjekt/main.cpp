@@ -109,7 +109,7 @@ int main()
 
 
 	// Light
-	mainLight = new Light(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(2.0f, -1.0f, -4.0f), 0.35f, 0.7f);
+	mainLight = new Light(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(2.0f, -1.0f, -4.0f), 0.15f, 0.8f);
 	
 
 	// Loop until window closed
