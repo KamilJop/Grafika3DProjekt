@@ -11,6 +11,7 @@
 #include "Camera.h"
 #include "Entity.h"
 #include "Light.h"
+#include "Material.h"
 // Window dimensions
 const GLint WIDTH = 1280, HEIGHT = 720;
 
@@ -38,6 +39,10 @@ Entity* floorEntity;
 
 // Light source
 Light* mainLight;
+
+// Materials
+Material* shinyMaterial;
+Material* lessShinyMaterial;
 
 int main()
 {
@@ -69,8 +74,12 @@ int main()
 	mesh1->CreateMesh(vertices, indices, 12, 12, 6);
 	meshList.push_back(mesh1);
 
+	// Create Materials
+	shinyMaterial = new Material(1.0f, 64.0f);
+	lessShinyMaterial = new Material(0.5f, 128.0f);
+
 	// Create Entity loading the first mesh and shader
-	triangleEntity = new Entity(meshList[0], shaderList[0], glm::vec3(0.0f, 0.0f, -6.5f), glm::vec3(0.0f), glm::vec3(1.0f));
+	triangleEntity = new Entity(meshList[0], shaderList[0], glm::vec3(0.0f, 0.0f, -6.5f), glm::vec3(0.0f), glm::vec3(1.0f), shinyMaterial);
 
 	// Floor
 	GLfloat floorVertices[] = {
@@ -89,7 +98,8 @@ int main()
 	floorMesh->CreateMesh(floorVertices, floorIndices, 12, 6, 6);
 	meshList.push_back(floorMesh);
 
-	floorEntity = new Entity(meshList[1], shaderList[0], glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f), glm::vec3(1.0f));
+
+	floorEntity = new Entity(meshList[1], shaderList[0], glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f), glm::vec3(1.0f), lessShinyMaterial);
 
 
 
@@ -127,6 +137,7 @@ int main()
 		// Set uniform values
 		shaderList[0]->setMat4("projection", projection);
 		shaderList[0]->setMat4("view", camera.getViewMatrix());
+		shaderList[0]->setVec3("cameraPosition", camera.getCameraPosition());
 
 		// Set light uniforms
 		mainLight->useLight(shaderList[0]);

@@ -37,7 +37,6 @@ Mesh::~Mesh()
 
 // Method used to create mesh
 void Mesh::CreateMesh(GLfloat* vertices, unsigned int* indices, unsigned int numOfVertices, unsigned int numOfIndices, unsigned int floatsPerVertex = 6){
-
 	// Store index count
 	indexCount = numOfIndices;
 
@@ -80,5 +79,6 @@ void Mesh::RenderMesh() {
 
 	// Unbind VAO 
 	glBindVertexArray(0);
+
 }
 
