@@ -10,8 +10,9 @@
 #include <vector>
 #include "Camera.h"
 #include "Entity.h"
-#include "Light.h"
+#include "DirectionalLight.h"
 #include "Material.h"
+
 // Window dimensions
 const GLint WIDTH = 1280, HEIGHT = 720;
 
@@ -38,7 +39,7 @@ Entity* triangleEntity;
 Entity* floorEntity;
 
 // Light source
-Light* mainLight;
+DirectionalLight* mainLight;
 
 // Materials
 Material* shinyMaterial;
@@ -109,7 +110,7 @@ int main()
 
 
 	// Light
-	mainLight = new Light(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(2.0f, -1.0f, -4.0f), 0.15f, 0.8f);
+	mainLight = new DirectionalLight(glm::vec3(0.0f, 0.5f, 1.0f), glm::vec3(2.0f, -1.0f, -4.0f), 0.15f, 0.8f);
 	
 
 	// Loop until window closed
