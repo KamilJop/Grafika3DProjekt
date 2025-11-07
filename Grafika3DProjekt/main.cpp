@@ -49,21 +49,37 @@ int main()
 
 	// Create Meshes
 	unsigned int indices[] = {
-		0, 3, 1,
-		1, 3, 2,
-		2, 3, 0,
-		0, 1, 2
+		0, 1, 2,
+		3, 4, 5,
+		6, 7, 8,
+		9, 10, 11
 	};
 
 	GLfloat vertices[] = {
-		-1.0f, -1.0f, 0.0f,
-		0.00f, -1.0f, 1.0f,
-		1.0f, -1.0f, 0.0f,
-		0.0f, 1.0f, 0.0f
+		// positions           // normals
+		// Strona 1 (0,3,1)
+		-1.0f, -1.0f, 0.0f,     -0.5f, 0.5f, 0.5f,
+		 0.0f,  1.0f, 0.0f,     -0.5f, 0.5f, 0.5f,
+		 0.0f, -1.0f, 1.0f,     -0.5f, 0.5f, 0.5f,
+
+		 // Strona 2 (1,3,2)
+		  0.0f, -1.0f, 1.0f,      0.5f, 0.5f, 0.5f,
+		  0.0f,  1.0f, 0.0f,      0.5f, 0.5f, 0.5f,
+		  1.0f, -1.0f, 0.0f,      0.5f, 0.5f, 0.5f,
+
+		  // Strona 3 (2,3,0)
+		   1.0f, -1.0f, 0.0f,      0.0f, 0.5f, -0.7f,
+		   0.0f,  1.0f, 0.0f,      0.0f, 0.5f, -0.7f,
+		  -1.0f, -1.0f, 0.0f,      0.0f, 0.5f, -0.7f,
+
+		  // Podstawa (0,1,2)
+		  -1.0f, -1.0f, 0.0f,      0.0f, -1.0f, 0.0f,
+		   0.0f, -1.0f, 1.0f,      0.0f, -1.0f, 0.0f,
+		   1.0f, -1.0f, 0.0f,      0.0f, -1.0f, 0.0f,
 	};
 
 	Mesh* mesh1 = new Mesh();
-	mesh1->CreateMesh(vertices, indices, 12, 12);
+	mesh1->CreateMesh(vertices, indices, 12, 12, 6);
 	meshList.push_back(mesh1);
 
 	// Create Entity loading the first mesh and shader
@@ -71,18 +87,19 @@ int main()
 
 	// Floor
 	GLfloat floorVertices[] = {
-	-50.0f, -1.0f,  50.0f,  
-	 50.0f, -1.0f,  50.0f, 
-	 50.0f, -1.0f, -50.0f, 
-	-50.0f, -1.0f, -50.0f   
-	};
+    // positions             // normals
+    -50.0f, -1.0f,  50.0f,    0.0f, 1.0f, 0.0f,
+     50.0f, -1.0f,  50.0f,    0.0f, 1.0f, 0.0f,
+     50.0f, -1.0f, -50.0f,    0.0f, 1.0f, 0.0f,
+    -50.0f, -1.0f, -50.0f,    0.0f, 1.0f, 0.0f
+};
 
 	unsigned int floorIndices[] = {
 		0, 1, 2,
 		2, 3, 0
 	};
 	Mesh* floorMesh = new Mesh();
-	floorMesh->CreateMesh(floorVertices, floorIndices, 12, 6);
+	floorMesh->CreateMesh(floorVertices, floorIndices, 12, 6, 6);
 	meshList.push_back(floorMesh);
 
 	floorEntity = new Entity(meshList[1], shaderList[0], glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f), glm::vec3(1.0f));
