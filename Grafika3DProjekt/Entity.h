@@ -4,6 +4,7 @@
 
 #include "Mesh.h"
 #include "Shader.h"
+#include "Material.h"
 
 
 class Entity
@@ -15,8 +16,9 @@ public:
 	glm::vec3 position;
 	glm::vec3 rotation;
 	glm::vec3 scale;
+	Material* entityMaterial;
 
-	Entity(Mesh* mesh, Shader* shader, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal);
+	Entity(Mesh* mesh, Shader* shader, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, Material* material);
 
 	~Entity();
 

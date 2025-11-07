@@ -26,6 +26,8 @@ public:
 
 	glm::mat4 getViewMatrix();
 
+	glm::vec3 getCameraPosition() { return Position; }
+
 	void ProcessKeyboard(bool * keys, float deltaTime);
 	void ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true);
 
