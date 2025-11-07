@@ -53,7 +53,7 @@ void Mesh::CreateMesh(GLfloat* vertices, unsigned int* indices, unsigned int num
 	// Generate and bind EBO
 	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices[0]) * numOfIndices * floatsPerVertex, indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices[0]) * numOfIndices, indices, GL_STATIC_DRAW);
 
 	// Set vertex attribute pointers
 	// Position

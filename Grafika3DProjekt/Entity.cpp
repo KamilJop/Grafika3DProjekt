@@ -92,8 +92,6 @@ void Entity::DrawEntity()
 	// Send the model matrix to the shader
 	entityShader->setMat4("model", modelMatrix);
 
-	// Use the shader 
-	entityShader->UseShader();
 
 	// Render the mesh
 	entityMesh->RenderMesh();

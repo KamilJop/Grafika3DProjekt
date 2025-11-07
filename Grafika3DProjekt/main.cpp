@@ -51,34 +51,18 @@ int main()
 	shaderList.push_back(shader1);
 
 	// Create Meshes
-	unsigned int indices[] = {
-		0, 1, 2,
-		3, 4, 5,
-		6, 7, 8,
-		9, 10, 11
+	GLfloat vertices[] = {
+		 0.0f,  1.0f,  0.0f,       0.0f,    0.980f,  0.196f,  
+		-1.0f, -1.0f,  0.0f,      -0.928f, 0.0f,   -0.371f, 
+		 0.0f, -1.0f,  1.0f,       0.0f,    0.0f,    1.0f,    
+		 1.0f, -1.0f,  0.0f,       0.928f,  0.0f,   -0.371f   
 	};
 
-	GLfloat vertices[] = {
-		// positions           // normals
-		// Strona 1 (0,3,1)
-		-1.0f, -1.0f, 0.0f,     -0.5f, 0.5f, 0.5f,
-		 0.0f,  1.0f, 0.0f,     -0.5f, 0.5f, 0.5f,
-		 0.0f, -1.0f, 1.0f,     -0.5f, 0.5f, 0.5f,
-
-		 // Strona 2 (1,3,2)
-		  0.0f, -1.0f, 1.0f,      0.5f, 0.5f, 0.5f,
-		  0.0f,  1.0f, 0.0f,      0.5f, 0.5f, 0.5f,
-		  1.0f, -1.0f, 0.0f,      0.5f, 0.5f, 0.5f,
-
-		  // Strona 3 (2,3,0)
-		   1.0f, -1.0f, 0.0f,      0.0f, 0.5f, -0.7f,
-		   0.0f,  1.0f, 0.0f,      0.0f, 0.5f, -0.7f,
-		  -1.0f, -1.0f, 0.0f,      0.0f, 0.5f, -0.7f,
-
-		  // Podstawa (0,1,2)
-		  -1.0f, -1.0f, 0.0f,      0.0f, -1.0f, 0.0f,
-		   0.0f, -1.0f, 1.0f,      0.0f, -1.0f, 0.0f,
-		   1.0f, -1.0f, 0.0f,      0.0f, -1.0f, 0.0f,
+	unsigned int indices[] = {
+		0, 1, 2,
+		0, 2, 3,
+		0, 3, 1,
+		1, 2, 3
 	};
 
 	Mesh* mesh1 = new Mesh();
@@ -115,7 +99,7 @@ int main()
 
 
 	// Light
-	mainLight = new Light(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 5.0f, 0.0f), 0.9f);
+	mainLight = new Light(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(2.0f, -1.0f, -4.0f), 0.35f, 0.7f);
 	
 
 	// Loop until window closed
@@ -144,12 +128,14 @@ int main()
 		shaderList[0]->setMat4("projection", projection);
 		shaderList[0]->setMat4("view", camera.getViewMatrix());
 
+		// Set light uniforms
+		mainLight->useLight(shaderList[0]);
+
 		// Draw entities
 		triangleEntity->DrawEntity();
 		floorEntity->DrawEntity();
 
-		// Set light uniforms
-		mainLight->useLight(shaderList[0]);
+
 
 		// Swap buffers
 		mainWindow.swapBuffers();

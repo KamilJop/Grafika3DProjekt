@@ -5,13 +5,14 @@
 class Light
 {
 public:
-	Light(glm::vec3 colors, glm::vec3 pos, GLfloat ambientIntensity);
+	Light(glm::vec3 colors, glm::vec3 dir, GLfloat ambientIntensity, GLfloat diffuseIntensity);
 	~Light();
 	void useLight(Shader* lightShader);
 
 private:
 	glm::vec3 lightColor;
-	glm::vec3 lightPos;
+	glm::vec3 lightDirection;
 	GLfloat lightAmbientIntensity;
+	GLfloat lightDiffuseIntensity;
 };
 
