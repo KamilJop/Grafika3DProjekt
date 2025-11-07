@@ -10,6 +10,7 @@
 #include <vector>
 #include "Camera.h"
 #include "Entity.h"
+#include "Light.h"
 // Window dimensions
 const GLint WIDTH = 1280, HEIGHT = 720;
 
@@ -31,10 +32,12 @@ float lastFrame = 0.0f;
 // Camera
 Camera camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 5.0f, 0.1f);
 
-// Enttity
+// Entity
 Entity* triangleEntity;
 Entity* floorEntity;
 
+// Light source
+Light* mainLight;
 
 int main()
 {
@@ -110,6 +113,11 @@ int main()
 	glm::mat4 projection;
 	projection = glm::perspective(glm::radians(60.0f), (GLfloat)mainWindow.getBufferWidth() / (GLfloat)mainWindow.getBufferHeight(), 0.1f, 100.0f);
 
+
+	// Light
+	mainLight = new Light(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 5.0f, 0.0f), 0.9f);
+	
+
 	// Loop until window closed
 	while (!mainWindow.getShouldClose())
 	{
@@ -140,7 +148,9 @@ int main()
 		triangleEntity->DrawEntity();
 		floorEntity->DrawEntity();
 
-		
+		// Set light uniforms
+		mainLight->useLight(shaderList[0]);
+
 		// Swap buffers
 		mainWindow.swapBuffers();
 	}
