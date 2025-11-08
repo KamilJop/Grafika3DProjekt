@@ -43,6 +43,12 @@ void Camera::ProcessKeyboard(bool* keys, float deltaTime)
 		Position -= Right * velocity;
 	if (keys[GLFW_KEY_D] == GLFW_PRESS)
 		Position += Right * velocity;
+	if (keys[GLFW_KEY_F] == GLFW_PRESS)
+	{
+		isFlashlightOn = !isFlashlightOn;
+		keys[GLFW_KEY_F] = GLFW_RELEASE; 
+	}
+		
 	if (Position.y < 0.0f) Position.y = 0.0f;
 	if (Position.y > 2.0f) Position.y = 2.0f;
 	
