@@ -55,28 +55,20 @@ uniform Material material;
 uniform vec3 cameraPosition;
 
 
-
-void main()
+vec4 CalculateDirectionalLight()
 {
-
-	// Ambient light in DirectionalLight
-	
+	// Ambient calculations
 	vec4 lightAmbientColor = vec4(directionalLight.lightColor, 1.0f) * directionalLight.lightAmbientIntensity;
 	
-	// Diffuse light in DirectionalLight
-	
+	// Diffuse calculations 
 	// Calculate angle between the Normal and light direction
 	float diffuseFactor = max(dot(normalize(Normal), normalize(-directionalLight.lightDirection)), 0.0f);
-	
-	// Calculate diffuse color based on previous angle
+	// Calculate diffuse color based on diffuse factor
 	vec4 lightDiffuseColor = vec4(directionalLight.lightColor, 1.0f) * directionalLight.lightDiffuseIntensity * diffuseFactor;
 	
-	// Specular light in DirectionalLight
+	// Specular calculations
 	
-	// Initialize empty vec4 for specular light
 	vec4 lightSpecularColor = vec4(0.0f);
-	
-	// Check if specular light is needed on surface
 	if(diffuseFactor > 0.0f)
 	{
 		// Calculate direction we're looking at fragment with
@@ -96,51 +88,11 @@ void main()
 			lightSpecularColor = vec4(directionalLight.lightColor * material.specularIntensity * specularFactor, 1.0f);
 		}
 	}
-	
-	// Calculate vector between point light source and current fragment
-	vec3 pointLightDistanceVector = pointLight.lightPosition - FragPos;
-	
-	// Calculate distance between point light source and current fragment
-	float distance = length(pointLightDistanceVector);
-	
-	// Calculate direction vector between point light source and current fragment
-	vec3 pointLightDirection = normalize(pointLightDistanceVector);
-	
-	// Calculate attenuation using formula
-	float attenuation = 1.0 / (pointLight.constant + pointLight.linear * distance + pointLight.quadratic * distance * distance);
-	
-	// Calculate ambient color and multiply by attenuation
-	vec4 pointLightAmbientColor = vec4(pointLight.lightColor, 1.0f) * pointLight.lightAmbientIntensity * attenuation;
-	
-	// Calculate diffuse color and multiply by attenuation
-	float pointDiffuseFactor = max(dot(Normal, pointLightDirection), 0.0f);
-	vec4 pointLightDiffuseColor = vec4(pointLight.lightColor, 1.0f) * pointLight.lightDiffuseIntensity * pointDiffuseFactor * attenuation;
-	
-	// Initialize empty vec4 for specular lightning
-	vec4 pointLightSpecularColor = vec4(0.0f);
-	
-	// Check if specular light is neccesery 
-	if (pointDiffuseFactor > 0.0f){
-		// Calculate direction we're looking at fragment with
-		vec3 fragToCam = normalize(cameraPosition - FragPos);
-		
-		// Calculate the vector of reflected light
-		vec3 reflectedVertex = normalize(reflect(-pointLightDirection, Normal));
-		
-		// Calculate angle between our eye and reflected light 
-		float pointSpecularFactor = dot(fragToCam, reflectedVertex);
-		if(pointSpecularFactor > 0.0f)
-		{
-			// Multiply the factor by material properties
-			pointSpecularFactor = pow(pointSpecularFactor, material.shininess);
-			
-			// Calculate specular color and multiply it by attenuation
-			pointLightSpecularColor = vec4(pointLight.lightColor * material.specularIntensity * pointSpecularFactor, 1.0f) * attenuation;
-		}
-	}
-	
-	// Calculate flashLight
-	
+	return (lightAmbientColor + lightDiffuseColor + lightSpecularColor);
+}
+
+
+vec4 CalculateFlashLight(){
 	//Initialize black if we're outside the cone
 	vec4 flashLightColor = vec4(0.0f);
 	
@@ -186,12 +138,63 @@ void main()
 		}
 		flashLightColor = vec4(ambient + diffuse + specular, 1.0f) * flashAttenuation * spotIntensity;
 	}
-	
+	return flashLightColor;
+}
 
+
+
+void main()
+{
+
+	vec4 directionalLightFinalColor = CalculateDirectionalLight();
+	vec4 flashLightFinalColor = CalculateFlashLight();
 	
+	// Point Light
+	
+	// Calculate vector between point light source and current fragment
+	vec3 pointLightDistanceVector = pointLight.lightPosition - FragPos;
+	
+	// Calculate distance between point light source and current fragment
+	float distance = length(pointLightDistanceVector);
+	
+	// Calculate direction vector between point light source and current fragment
+	vec3 pointLightDirection = normalize(pointLightDistanceVector);
+	
+	// Calculate attenuation using formula
+	float attenuation = 1.0 / (pointLight.constant + pointLight.linear * distance + pointLight.quadratic * distance * distance);
+	
+	// Calculate ambient color and multiply by attenuation
+	vec4 pointLightAmbientColor = vec4(pointLight.lightColor, 1.0f) * pointLight.lightAmbientIntensity * attenuation;
+	
+	// Calculate diffuse color and multiply by attenuation
+	float pointDiffuseFactor = max(dot(Normal, pointLightDirection), 0.0f);
+	vec4 pointLightDiffuseColor = vec4(pointLight.lightColor, 1.0f) * pointLight.lightDiffuseIntensity * pointDiffuseFactor * attenuation;
+	
+	// Initialize empty vec4 for specular lightning
+	vec4 pointLightSpecularColor = vec4(0.0f);
+	
+	// Check if specular light is neccesery 
+	if (pointDiffuseFactor > 0.0f){
+		// Calculate direction we're looking at fragment with
+		vec3 fragToCam = normalize(cameraPosition - FragPos);
+		
+		// Calculate the vector of reflected light
+		vec3 reflectedVertex = normalize(reflect(-pointLightDirection, Normal));
+		
+		// Calculate angle between our eye and reflected light 
+		float pointSpecularFactor = dot(fragToCam, reflectedVertex);
+		if(pointSpecularFactor > 0.0f)
+		{
+			// Multiply the factor by material properties
+			pointSpecularFactor = pow(pointSpecularFactor, material.shininess);
+			
+			// Calculate specular color and multiply it by attenuation
+			pointLightSpecularColor = vec4(pointLight.lightColor * material.specularIntensity * pointSpecularFactor, 1.0f) * attenuation;
+		}
+	}
 	
 	// Summmarize all light colors together
-	vec4 finalLightColor = (lightAmbientColor + lightDiffuseColor + lightSpecularColor) + (pointLightAmbientColor + pointLightDiffuseColor + pointLightSpecularColor) + flashLightColor;
+	vec4 finalLightColor = directionalLightFinalColor + (pointLightAmbientColor + pointLightDiffuseColor + pointLightSpecularColor) + flashLightFinalColor;
 	
 	// Multiply the color by light 
 	colour = finalLightColor * vCol;
