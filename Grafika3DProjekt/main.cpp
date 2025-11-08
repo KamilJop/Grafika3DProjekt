@@ -27,6 +27,8 @@ std::vector<Shader*> shaderList;
 // Shader file paths
 static const char* vertexShader = "Shaders/shader.vert";
 static const char* fragmentShader = "Shaders/shader.frag";
+static const char* lightVertexShader = "Shaders/light_source.vert";   
+static const char* lightFragmentShader = "Shaders/light_source.frag";
 
 // Delta time
 float deltaTime = 0.0f;
@@ -38,6 +40,7 @@ Camera camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 
 // Entity
 Entity* triangleEntity;
 Entity* floorEntity;
+Entity* lightBulbEntity;
 
 // Light source
 DirectionalLight* mainLight;
@@ -57,6 +60,10 @@ int main()
 	Shader* shader1 = new Shader();
 	shader1->CreateShader(vertexShader, fragmentShader);
 	shaderList.push_back(shader1);
+
+	Shader* lightShader = new Shader();
+	lightShader->CreateShader(lightVertexShader, lightFragmentShader); 
+	shaderList.push_back(lightShader);
 
 	// Create Meshes
 	GLfloat vertices[] = {
@@ -105,6 +112,30 @@ int main()
 	floorEntity = new Entity(meshList[1], shaderList[0], glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f), glm::vec3(1.0f), lessShinyMaterial);
 
 
+	GLfloat lightCubeVertices[] = {
+		-0.1f, -0.1f, -0.1f,  0.0f, 0.0f, 0.0f,
+		 0.1f, -0.1f, -0.1f,  0.0f, 0.0f, 0.0f,
+		 0.1f,  0.1f, -0.1f,  0.0f, 0.0f, 0.0f,
+		-0.1f,  0.1f, -0.1f,  0.0f, 0.0f, 0.0f,
+		-0.1f, -0.1f,  0.1f,  0.0f, 0.0f, 0.0f,
+		 0.1f, -0.1f,  0.1f,  0.0f, 0.0f, 0.0f,
+		 0.1f,  0.1f,  0.1f,  0.0f, 0.0f, 0.0f,
+		-0.1f,  0.1f,  0.1f,  0.0f, 0.0f, 0.0f
+	};
+
+	unsigned int lightCubeIndices[] = {
+		0, 1, 2, 2, 3, 0, 
+		4, 5, 6, 6, 7, 4, 
+		0, 4, 7, 7, 3, 0, 
+		1, 5, 6, 6, 2, 1, 
+		3, 2, 6, 6, 7, 3, 
+		0, 1, 5, 5, 4, 0 
+	};
+
+	Mesh* lightMesh = new Mesh();
+	lightMesh->CreateMesh(lightCubeVertices, lightCubeIndices, 48, 36, 6);
+	meshList.push_back(lightMesh);
+
 
 	// Set perspective 
 	glm::mat4 projection;
@@ -113,7 +144,9 @@ int main()
 
 	// Light
 	mainLight = new DirectionalLight(glm::vec3(0.0f, 0.5f, 1.0f), glm::vec3(2.0f, -1.0f, -4.0f), 0.15f, 0.8f);
-	pointLight = new PointLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.5f, 0.9f, glm::vec3(0.0f, 2.0f, 0.0f), 1.0f, 0.12f, 0.062f);
+	pointLight = new PointLight(glm::vec3(1.0f, 0.0f, 0.0f), 0.5f, 0.9f, glm::vec3(0.0f, 1.0f, -3.0f), 1.0f, 0.12f, 0.062f);
+
+	lightBulbEntity = new Entity(meshList[2], shaderList[1], pointLight->getPosition(), glm::vec3(0.0f), glm::vec3(1.0f), lessShinyMaterial);
 
 	// Loop until window closed
 	while (!mainWindow.getShouldClose())
@@ -132,7 +165,7 @@ int main()
 
 		// Use shader program
 		shaderList[0]->UseShader();
-
+		
 		// Camera movement
 		camera.ProcessKeyboard(mainWindow.getKeys(), deltaTime);
 		camera.ProcessMouseMovement(mainWindow.getXChange(), mainWindow.getYChange());
@@ -142,12 +175,23 @@ int main()
 		shaderList[0]->setMat4("view", camera.getViewMatrix());
 		shaderList[0]->setVec3("cameraPosition", camera.getCameraPosition());
 
+		
+
 		// Set light uniforms
 		mainLight->useLight(shaderList[0]);
 		pointLight->useLight(shaderList[0]);
 		// Draw entities
 		triangleEntity->DrawEntity();
 		floorEntity->DrawEntity();
+
+		// Draw light source
+		shaderList[1]->UseShader();
+		shaderList[1]->setMat4("projection", projection);
+		shaderList[1]->setMat4("view", camera.getViewMatrix());
+		shaderList[1]->setVec3("bulbColor", pointLight->getColor());
+
+		lightBulbEntity->setPosition(pointLight->getPosition());
+		lightBulbEntity->DrawEntity();
 
 
 
