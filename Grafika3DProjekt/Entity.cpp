@@ -90,6 +90,8 @@ glm::mat4 Entity::CalculateModelMatrix()
 // Draw the entity
 void Entity::DrawEntity()
 {
+	modelMatrix = CalculateModelMatrix();
+
 	// Send the model matrix to the shader
 	entityShader->setMat4("model", modelMatrix);
 

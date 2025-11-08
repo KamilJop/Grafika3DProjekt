@@ -97,6 +97,8 @@ int main()
 	// Create Entity loading the first mesh and shader
 	triangleEntity = new Entity(meshList[0], shaderList[0], glm::vec3(0.0f, 0.0f, -6.5f), glm::vec3(0.0f), glm::vec3(1.0f), shinyMaterial);
 
+	glm::vec3 rotation = glm::vec3(0.0f);
+
 	// Floor
 	GLfloat floorVertices[] = {
     // positions             // normals
@@ -150,7 +152,7 @@ int main()
 
 	// Light
 	mainLight = new DirectionalLight(glm::vec3(0.0f, 0.5f, 1.0f), glm::vec3(2.0f, -1.0f, -4.0f), 0.15f, 0.8f);
-	pointLight = new PointLight(glm::vec3(1.0f, 0.0f, 0.0f), 0.5f, 0.9f, glm::vec3(0.0f, 1.0f, -3.5f), 1.0f, 0.12f, 0.062f,0);
+	pointLight = new PointLight(glm::vec3(1.0f, 0.0f, 0.0f), 0.5f, 0.9f, glm::vec3(0.0f, 1.0f, -3.5f), 1.0f, 0.09f, 0.032f,0);
 	pointLight2 = new PointLight(glm::vec3(0.0f, 0.0f, 1.0f), 0.5f, 0.9f, glm::vec3(-3.5f, 0.5f, -4.0f), 1.0f, 0.12f, 0.062f, 1);
 	pointLight3 = new PointLight(glm::vec3(0.0f, 1.0f, 0.0f), 0.5f, 0.9f, glm::vec3(3.5f, 0.5f, -4.0f), 1.0f, 0.12f, 0.062f, 2);
 	flashlight = new Flashlight(glm::vec3(1.0f, 1.0f, 0.85f), 0.02f, 1.2f, camera.getCameraPosition(), 1.0f, 0.07f, 0.017f, camera.getCameraFront(), 14.0f, 15.5f);
@@ -207,6 +209,10 @@ int main()
 			shaderList[0]->setFloat("flashLight.ambientIntensity", 0.0f);
 			shaderList[0]->setFloat("flashLight.diffuseIntensity", 0.0f);
 		}
+
+		rotation += glm::vec3(0.0f, 35.0f * deltaTime, 0.0f);
+		triangleEntity->setRotation(rotation);
+
 
 		// Draw entities
 		triangleEntity->DrawEntity();
