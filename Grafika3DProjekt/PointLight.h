@@ -3,7 +3,7 @@
 class PointLight : protected Light
 {
 public:
-    PointLight(glm::vec3 colors, GLfloat ambientIntensity, GLfloat diffuseIntensit,glm::vec3 lightPos, GLfloat con, GLfloat lin, GLfloat quad);
+    PointLight(glm::vec3 colors, GLfloat ambientIntensity, GLfloat diffuseIntensit,glm::vec3 lightPos, GLfloat con, GLfloat lin, GLfloat quad, int index = 0);
 	~PointLight();
 	void useLight(Shader* lightShader);
 	glm::vec3 getColor() { return lightColor; }
@@ -13,5 +13,6 @@ protected:
     GLfloat constant;
     GLfloat linear;
     GLfloat quadratic;
+	int lightIndex;
 };
 

@@ -1,5 +1,5 @@
 #version 330
-
+#define NR_POINT_LIGHTS 3
 in vec4 vCol;
 in vec3 Normal;
 in vec3 FragPos;
@@ -39,6 +39,8 @@ struct FlashLight
 	float quadratic;
 };
 
+
+
 struct Material
 {
 	float specularIntensity;
@@ -47,7 +49,7 @@ struct Material
 
 
 uniform DirectionalLight directionalLight;
-uniform PointLight pointLight;
+uniform PointLight pointLights[NR_POINT_LIGHTS];
 uniform FlashLight flashLight;
 uniform Material material;
 
@@ -136,21 +138,13 @@ vec4 CalculateFlashLight(){
 			float flashLightSpecularFactor = pow(max(dot(fragToCam, reflectedVertex), 0.0f), material.shininess);
 			specular = flashLight.lightColor * flashLight.diffuseIntensity * material.specularIntensity * flashLightSpecularFactor;
 		}
-		flashLightColor = vec4(ambient + diffuse + specular, 1.0f) * flashAttenuation * spotIntensity;
+		flashLightColor = vec4(ambient * spotIntensity + (diffuse + specular) * flashAttenuation * spotIntensity, 1.0f);
 	}
 	return flashLightColor;
 }
 
 
-
-void main()
-{
-
-	vec4 directionalLightFinalColor = CalculateDirectionalLight();
-	vec4 flashLightFinalColor = CalculateFlashLight();
-	
-	// Point Light
-	
+vec4 CalculatePointLight(PointLight pointLight){
 	// Calculate vector between point light source and current fragment
 	vec3 pointLightDistanceVector = pointLight.lightPosition - FragPos;
 	
@@ -164,11 +158,11 @@ void main()
 	float attenuation = 1.0 / (pointLight.constant + pointLight.linear * distance + pointLight.quadratic * distance * distance);
 	
 	// Calculate ambient color and multiply by attenuation
-	vec4 pointLightAmbientColor = vec4(pointLight.lightColor, 1.0f) * pointLight.lightAmbientIntensity * attenuation;
+	vec4 pointLightAmbientColor = vec4(pointLight.lightColor, 1.0f) * pointLight.lightAmbientIntensity;
 	
 	// Calculate diffuse color and multiply by attenuation
 	float pointDiffuseFactor = max(dot(Normal, pointLightDirection), 0.0f);
-	vec4 pointLightDiffuseColor = vec4(pointLight.lightColor, 1.0f) * pointLight.lightDiffuseIntensity * pointDiffuseFactor * attenuation;
+	vec4 pointLightDiffuseColor = vec4(pointLight.lightColor, 1.0f) * pointLight.lightDiffuseIntensity * pointDiffuseFactor;
 	
 	// Initialize empty vec4 for specular lightning
 	vec4 pointLightSpecularColor = vec4(0.0f);
@@ -189,12 +183,26 @@ void main()
 			pointSpecularFactor = pow(pointSpecularFactor, material.shininess);
 			
 			// Calculate specular color and multiply it by attenuation
-			pointLightSpecularColor = vec4(pointLight.lightColor * material.specularIntensity * pointSpecularFactor, 1.0f) * attenuation;
+			pointLightSpecularColor = vec4(pointLight.lightColor * material.specularIntensity * pointSpecularFactor, 1.0f);
 		}
 	}
+	return(pointLightAmbientColor + pointLightDiffuseColor + pointLightSpecularColor) * attenuation;
+}
+
+
+
+void main()
+{
+
+	vec4 directionalLightFinalColor = CalculateDirectionalLight();
+	vec4 flashLightFinalColor = CalculateFlashLight();
+	vec4 pointLightFinalColor = vec4(0.0f);
 	
+	for(int i = 0; i < NR_POINT_LIGHTS; i++)
+        pointLightFinalColor += CalculatePointLight(pointLights[i]);    
+
 	// Summmarize all light colors together
-	vec4 finalLightColor = directionalLightFinalColor + (pointLightAmbientColor + pointLightDiffuseColor + pointLightSpecularColor) + flashLightFinalColor;
+	vec4 finalLightColor = directionalLightFinalColor + pointLightFinalColor + flashLightFinalColor;
 	
 	// Multiply the color by light 
 	colour = finalLightColor * vCol;

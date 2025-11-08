@@ -42,10 +42,14 @@ Camera camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 
 Entity* triangleEntity;
 Entity* floorEntity;
 Entity* lightBulbEntity;
+Entity* lightBulbEntity2;
+Entity* lightBulbEntity3;
 
 // Light source
 DirectionalLight* mainLight;
 PointLight* pointLight;
+PointLight* pointLight2;
+PointLight* pointLight3;
 Flashlight* flashlight;
 
 // Materials
@@ -146,11 +150,16 @@ int main()
 
 	// Light
 	mainLight = new DirectionalLight(glm::vec3(0.0f, 0.5f, 1.0f), glm::vec3(2.0f, -1.0f, -4.0f), 0.15f, 0.8f);
-	pointLight = new PointLight(glm::vec3(1.0f, 0.0f, 0.0f), 0.5f, 0.9f, glm::vec3(0.0f, 1.0f, -3.0f), 1.0f, 0.12f, 0.062f);
+	pointLight = new PointLight(glm::vec3(1.0f, 0.0f, 0.0f), 0.5f, 0.9f, glm::vec3(0.0f, 1.0f, -3.5f), 1.0f, 0.12f, 0.062f,0);
+	pointLight2 = new PointLight(glm::vec3(0.0f, 0.0f, 1.0f), 0.5f, 0.9f, glm::vec3(-3.5f, 0.5f, -4.0f), 1.0f, 0.12f, 0.062f, 1);
+	pointLight3 = new PointLight(glm::vec3(0.0f, 1.0f, 0.0f), 0.5f, 0.9f, glm::vec3(3.5f, 0.5f, -4.0f), 1.0f, 0.12f, 0.062f, 2);
 	flashlight = new Flashlight(glm::vec3(1.0f, 1.0f, 0.85f), 0.02f, 1.2f, camera.getCameraPosition(), 1.0f, 0.07f, 0.017f, camera.getCameraFront(), 14.0f, 15.5f);
 
 
 	lightBulbEntity = new Entity(meshList[2], shaderList[1], pointLight->getPosition(), glm::vec3(0.0f), glm::vec3(1.0f), lessShinyMaterial);
+	lightBulbEntity2 = new Entity(meshList[2], shaderList[1], pointLight2->getPosition(), glm::vec3(0.0f), glm::vec3(1.0f), lessShinyMaterial);
+	lightBulbEntity3 = new Entity(meshList[2], shaderList[1], pointLight3->getPosition(), glm::vec3(0.0f), glm::vec3(1.0f), lessShinyMaterial);
+
 
 	// Loop until window closed
 	while (!mainWindow.getShouldClose())
@@ -184,6 +193,8 @@ int main()
 		// Set light uniforms
 		mainLight->useLight(shaderList[0]);
 		pointLight->useLight(shaderList[0]);
+		pointLight2->useLight(shaderList[0]);
+		pointLight3->useLight(shaderList[0]);
 
 		// Turn on flashlight if enabled
 		if (camera.getFlashlightState()) {
@@ -209,6 +220,15 @@ int main()
 
 		lightBulbEntity->setPosition(pointLight->getPosition());
 		lightBulbEntity->DrawEntity();
+
+		shaderList[1]->setVec3("bulbColor", pointLight2->getColor());
+
+		lightBulbEntity2->setPosition(pointLight2->getPosition());
+		lightBulbEntity2->DrawEntity();
+
+		shaderList[1]->setVec3("bulbColor", pointLight3->getColor());
+		lightBulbEntity3->setPosition(pointLight3->getPosition());
+		lightBulbEntity3->DrawEntity();
 
 
 
