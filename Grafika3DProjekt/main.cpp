@@ -12,6 +12,7 @@
 #include "Entity.h"
 #include "DirectionalLight.h"
 #include "Material.h"
+#include "PointLight.h"
 
 // Window dimensions
 const GLint WIDTH = 1280, HEIGHT = 720;
@@ -40,6 +41,7 @@ Entity* floorEntity;
 
 // Light source
 DirectionalLight* mainLight;
+PointLight* pointLight;
 
 // Materials
 Material* shinyMaterial;
@@ -111,7 +113,7 @@ int main()
 
 	// Light
 	mainLight = new DirectionalLight(glm::vec3(0.0f, 0.5f, 1.0f), glm::vec3(2.0f, -1.0f, -4.0f), 0.15f, 0.8f);
-	
+	pointLight = new PointLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.5f, 0.9f, glm::vec3(0.0f, 2.0f, 0.0f), 1.0f, 0.12f, 0.062f);
 
 	// Loop until window closed
 	while (!mainWindow.getShouldClose())
@@ -142,7 +144,7 @@ int main()
 
 		// Set light uniforms
 		mainLight->useLight(shaderList[0]);
-
+		pointLight->useLight(shaderList[0]);
 		// Draw entities
 		triangleEntity->DrawEntity();
 		floorEntity->DrawEntity();

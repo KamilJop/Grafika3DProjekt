@@ -14,5 +14,6 @@ Light::~Light()
 {
 	lightColor = glm::vec3(0.0f);
 	lightAmbientIntensity = 0.0f;
+	lightDiffuseIntensity = 0.0f;
 }
 
