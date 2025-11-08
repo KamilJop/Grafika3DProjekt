@@ -25,6 +25,20 @@ struct PointLight
 	float quadratic;
 };
 
+struct FlashLight
+{
+	vec3 lightColor;
+	vec3 lightPosition;
+	vec3 lightDirection;
+	float ambientIntensity;
+	float diffuseIntensity;
+	float cutOff;
+	float outerCutOff;
+	float constant;
+	float linear;
+	float quadratic;
+};
+
 struct Material
 {
 	float specularIntensity;
@@ -34,7 +48,9 @@ struct Material
 
 uniform DirectionalLight directionalLight;
 uniform PointLight pointLight;
+uniform FlashLight flashLight;
 uniform Material material;
+
 
 uniform vec3 cameraPosition;
 
@@ -123,8 +139,59 @@ void main()
 		}
 	}
 	
+	// Calculate flashLight
+	
+	//Initialize black if we're outside the cone
+	vec4 flashLightColor = vec4(0.0f);
+	
+	// Calculate vector between flashlight and fragment
+	vec3 flashLightToFragment = flashLight.lightPosition - FragPos;
+	
+	// Distance from fragment to light
+	float flashLightDistance = length(flashLightToFragment);
+	
+	// Direction from fragment to flashlight
+	vec3 flashLightDirection = normalize(flashLightToFragment);
+	
+	// Count the angle between direction of flashlight and vector calculated line before
+	float theta = dot(flashLightDirection, normalize(-flashLight.lightDirection));
+	
+	// Check if object is inside spotlight cone
+	if(theta > flashLight.outerCutOff)
+	{
+		
+		// Calculate attenuation
+		float flashAttenuation = 1.0 / (flashLight.constant + flashLight.linear * flashLightDistance + flashLight.quadratic * flashLightDistance * flashLightDistance);
+		
+		// Calkculate intensity of light in the flashlight
+		float epsilon = flashLight.cutOff - flashLight.outerCutOff;
+		float spotIntensity = clamp((theta - flashLight.outerCutOff) / epsilon, 0.0, 1.0);
+	
+		// Calculate ambient lightning for flashLight
+		vec3 ambient = flashLight.lightColor * flashLight.ambientIntensity;
+		
+		// Calculate diffuse lightning for flashlight
+		vec3 norm = normalize(Normal);
+		float diff = max(dot(norm, flashLightDirection), 0.0f);
+		vec3 diffuse = flashLight.lightColor * flashLight.diffuseIntensity * diff;
+		
+		// Calculate specular lightning for flaslight
+		vec3 specular = vec3(0.0f);
+		if(diff > 0.0f) 
+		{
+			vec3 fragToCam = normalize(cameraPosition - FragPos);
+			vec3 reflectedVertex = normalize(reflect(-flashLightDirection, norm));
+			float flashLightSpecularFactor = pow(max(dot(fragToCam, reflectedVertex), 0.0f), material.shininess);
+			specular = flashLight.lightColor * flashLight.diffuseIntensity * material.specularIntensity * flashLightSpecularFactor;
+		}
+		flashLightColor = vec4(ambient + diffuse + specular, 1.0f) * flashAttenuation * spotIntensity;
+	}
+	
+
+	
+	
 	// Summmarize all light colors together
-	vec4 finalLightColor = (lightAmbientColor + lightDiffuseColor + lightSpecularColor) + (pointLightAmbientColor + pointLightDiffuseColor + pointLightSpecularColor);
+	vec4 finalLightColor = (lightAmbientColor + lightDiffuseColor + lightSpecularColor) + (pointLightAmbientColor + pointLightDiffuseColor + pointLightSpecularColor) + flashLightColor;
 	
 	// Multiply the color by light 
 	colour = finalLightColor * vCol;

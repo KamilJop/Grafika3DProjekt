@@ -13,6 +13,7 @@
 #include "DirectionalLight.h"
 #include "Material.h"
 #include "PointLight.h"
+#include "Flashlight.h"
 
 // Window dimensions
 const GLint WIDTH = 1280, HEIGHT = 720;
@@ -45,6 +46,7 @@ Entity* lightBulbEntity;
 // Light source
 DirectionalLight* mainLight;
 PointLight* pointLight;
+Flashlight* flashlight;
 
 // Materials
 Material* shinyMaterial;
@@ -145,6 +147,8 @@ int main()
 	// Light
 	mainLight = new DirectionalLight(glm::vec3(0.0f, 0.5f, 1.0f), glm::vec3(2.0f, -1.0f, -4.0f), 0.15f, 0.8f);
 	pointLight = new PointLight(glm::vec3(1.0f, 0.0f, 0.0f), 0.5f, 0.9f, glm::vec3(0.0f, 1.0f, -3.0f), 1.0f, 0.12f, 0.062f);
+	flashlight = new Flashlight(glm::vec3(1.0f, 1.0f, 0.85f), 0.02f, 1.2f, camera.getCameraPosition(), 1.0f, 0.07f, 0.017f, camera.getCameraFront(), 14.0f, 15.5f);
+
 
 	lightBulbEntity = new Entity(meshList[2], shaderList[1], pointLight->getPosition(), glm::vec3(0.0f), glm::vec3(1.0f), lessShinyMaterial);
 
@@ -180,6 +184,19 @@ int main()
 		// Set light uniforms
 		mainLight->useLight(shaderList[0]);
 		pointLight->useLight(shaderList[0]);
+
+		// Turn on flashlight if enabled
+		if (camera.getFlashlightState()) {
+			flashlight->setLightPosition(camera.getCameraPosition());
+			flashlight->setLightDirection(camera.getCameraFront());
+			flashlight->useLight(shaderList[0]);
+		}
+		else
+		{
+			shaderList[0]->setFloat("flashLight.ambientIntensity", 0.0f);
+			shaderList[0]->setFloat("flashLight.diffuseIntensity", 0.0f);
+		}
+
 		// Draw entities
 		triangleEntity->DrawEntity();
 		floorEntity->DrawEntity();
