@@ -6,7 +6,7 @@
 class Texture
 {
 public: 
-	Texture(char* fileLoc);
+	Texture(const char* fileLoc);
 	~Texture();
 
 	bool LoadTexture();
@@ -19,7 +19,7 @@ private:
 	int width;
 	int height;
 	int bitDepth;;
-	char* fileLocation;
+	const char* fileLocation;
 
 };
 

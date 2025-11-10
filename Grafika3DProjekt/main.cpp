@@ -18,6 +18,8 @@
 #include "Flashlight.h"
 #include "Texture.h"
 #include <assimp/Importer.hpp>
+#include "Model.h"
+
 
 // Window dimensions
 const GLint WIDTH = 1280, HEIGHT = 720;
@@ -68,12 +70,16 @@ Material* lessShinyMaterial;
 Texture* brickTex;
 Texture* stoneTex;
 
+// Create models
+Model door;
+
 int main()
 {
 	// Create Window
 	mainWindow = Window(WIDTH, HEIGHT);
 	mainWindow.Initialise();
 	
+
 	// Create Shaders
 	Shader* shader1 = new Shader();
 	shader1->CreateShader(vertexShader, fragmentShader);
@@ -88,6 +94,11 @@ int main()
 	brickTex->LoadTextureAlpha();
 	stoneTex = new Texture((char*)stoneTexture);
 	stoneTex->LoadTextureAlpha();
+
+	// Load Models
+	door = Model();
+	door.LoadModel("Models/door.obj");
+
 
 	// Create Meshes
 	GLfloat vertices[] = {
@@ -241,6 +252,13 @@ int main()
 		// Draw entities
 		triangleEntity->DrawEntity();
 		floorEntity->DrawEntity();
+
+		// Draw cottage model
+		glm::mat4 model(1.0f);
+		model = glm::translate(model, glm::vec3(0.0f, -1.0f, -10.0f));
+		shaderList[0]->setMat4("model", model);
+		door.RenderModel();
+
 
 		// Draw light source
 		shaderList[1]->UseShader();

@@ -36,7 +36,7 @@ Mesh::~Mesh()
 
 
 // Method used to create mesh
-void Mesh::CreateMesh(GLfloat* vertices, unsigned int* indices, unsigned int numOfVertices, unsigned int numOfIndices, unsigned int floatsPerVertex = 6){
+void Mesh::CreateMesh(GLfloat* vertices, unsigned int* indices, unsigned int numOfVertices, unsigned int numOfIndices, unsigned int floatsPerVertex = 8){
 	// Store index count
 	indexCount = numOfIndices;
 
