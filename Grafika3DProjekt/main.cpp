@@ -17,6 +17,7 @@
 #include "PointLight.h"
 #include "Flashlight.h"
 #include "Texture.h"
+#include <assimp/Importer.hpp>
 
 // Window dimensions
 const GLint WIDTH = 1280, HEIGHT = 720;
@@ -84,9 +85,9 @@ int main()
 
 	// Load Textures
 	brickTex = new Texture((char*)brickTexture);
-	brickTex->LoadTexture();
+	brickTex->LoadTextureAlpha();
 	stoneTex = new Texture((char*)stoneTexture);
-	stoneTex->LoadTexture();
+	stoneTex->LoadTextureAlpha();
 
 	// Create Meshes
 	GLfloat vertices[] = {

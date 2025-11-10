@@ -9,7 +9,7 @@ public:
 	Texture(char* fileLoc);
 	~Texture();
 
-	void LoadTexture();
+	bool LoadTexture();
 	bool LoadTextureAlpha();
 	void UseTexture();
 	void ClearTexture();
