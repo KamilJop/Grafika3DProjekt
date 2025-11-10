@@ -10,6 +10,7 @@ public:
 	~Texture();
 
 	void LoadTexture();
+	bool LoadTextureAlpha();
 	void UseTexture();
 	void ClearTexture();
 
