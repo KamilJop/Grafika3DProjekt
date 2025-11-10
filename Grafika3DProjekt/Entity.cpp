@@ -2,7 +2,7 @@
 
 
 // Constructor
-Entity::Entity(Mesh* mesh, Shader* shader, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, Material* material)
+Entity::Entity(Mesh* mesh, Shader* shader, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, Material* material, Texture* texture)
 {
 	entityMesh = mesh;
 	entityShader = shader;
@@ -10,6 +10,7 @@ Entity::Entity(Mesh* mesh, Shader* shader, glm::vec3 pos, glm::vec3 rot, glm::ve
 	rotation = rot;
 	scale = scal;
 	entityMaterial = material;
+	entityTexture = texture;
 	modelMatrix = CalculateModelMatrix();
 }
 
@@ -97,6 +98,9 @@ void Entity::DrawEntity()
 
 	// Use the material
 	entityMaterial->useMaterial(entityShader);
+
+	// Use the texture
+	entityTexture->UseTexture();
 
 	// Render the mesh
 	entityMesh->RenderMesh();

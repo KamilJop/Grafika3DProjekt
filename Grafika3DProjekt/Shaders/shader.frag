@@ -3,6 +3,7 @@
 in vec4 vCol;
 in vec3 Normal;
 in vec3 FragPos;
+in vec2 TextureCoordinates;
 
 out vec4 colour;
 
@@ -52,7 +53,7 @@ uniform DirectionalLight directionalLight;
 uniform PointLight pointLights[NR_POINT_LIGHTS];
 uniform FlashLight flashLight;
 uniform Material material;
-
+uniform sampler2D u_Texture;
 
 uniform vec3 cameraPosition;
 
@@ -193,7 +194,7 @@ vec4 CalculatePointLight(PointLight pointLight){
 
 void main()
 {
-
+	vec4 textureColor = texture(u_Texture, TextureCoordinates);
 	vec4 directionalLightFinalColor = CalculateDirectionalLight();
 	vec4 flashLightFinalColor = CalculateFlashLight();
 	vec4 pointLightFinalColor = vec4(0.0f);
@@ -205,5 +206,5 @@ void main()
 	vec4 finalLightColor = directionalLightFinalColor + pointLightFinalColor + flashLightFinalColor;
 	
 	// Multiply the color by light 
-	colour = finalLightColor * vCol;
+	colour = finalLightColor * textureColor;
 }

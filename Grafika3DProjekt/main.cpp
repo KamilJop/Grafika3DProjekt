@@ -1,3 +1,5 @@
+#define STB_IMAGE_IMPLEMENTATION
+
 #include <stdio.h>
 #include <glad\glad.h>
 #include <GLFW\glfw3.h>
@@ -14,6 +16,7 @@
 #include "Material.h"
 #include "PointLight.h"
 #include "Flashlight.h"
+#include "Texture.h"
 
 // Window dimensions
 const GLint WIDTH = 1280, HEIGHT = 720;
@@ -30,6 +33,10 @@ static const char* vertexShader = "Shaders/shader.vert";
 static const char* fragmentShader = "Shaders/shader.frag";
 static const char* lightVertexShader = "Shaders/light_source.vert";   
 static const char* lightFragmentShader = "Shaders/light_source.frag";
+
+// Texture file paths
+static const char* brickTexture = "Textures/brick.png";
+static const char* stoneTexture = "Textures/stone.png";
 
 // Delta time
 float deltaTime = 0.0f;
@@ -56,6 +63,10 @@ Flashlight* flashlight;
 Material* shinyMaterial;
 Material* lessShinyMaterial;
 
+// Textures
+Texture* brickTex;
+Texture* stoneTex;
+
 int main()
 {
 	// Create Window
@@ -71,12 +82,19 @@ int main()
 	lightShader->CreateShader(lightVertexShader, lightFragmentShader); 
 	shaderList.push_back(lightShader);
 
+	// Load Textures
+	brickTex = new Texture((char*)brickTexture);
+	brickTex->LoadTexture();
+	stoneTex = new Texture((char*)stoneTexture);
+	stoneTex->LoadTexture();
+
 	// Create Meshes
 	GLfloat vertices[] = {
-		 0.0f,  1.0f,  0.0f,       0.0f,    0.980f,  0.196f,  
-		-1.0f, -1.0f,  0.0f,      -0.928f, 0.0f,   -0.371f, 
-		 0.0f, -1.0f,  1.0f,       0.0f,    0.0f,    1.0f,    
-		 1.0f, -1.0f,  0.0f,       0.928f,  0.0f,   -0.371f   
+		//  positions           // normals                 // texture coords
+			 0.0f,  1.0f,  0.0f,     0.0f,    0.980f,  0.196f,   0.5f, 1.0f,
+			-1.0f, -1.0f,  0.0f,    -0.928f,  0.0f,   -0.371f,   0.0f, 0.0f,
+			 0.0f, -1.0f,  1.0f,     0.0f,    0.0f,    1.0f,     0.5f, 0.0f,
+			 1.0f, -1.0f,  0.0f,     0.928f,  0.0f,   -0.371f,   1.0f, 0.0f
 	};
 
 	unsigned int indices[] = {
@@ -87,7 +105,7 @@ int main()
 	};
 
 	Mesh* mesh1 = new Mesh();
-	mesh1->CreateMesh(vertices, indices, 12, 12, 6);
+	mesh1->CreateMesh(vertices, indices, 32, 12, 8);
 	meshList.push_back(mesh1);
 
 	// Create Materials
@@ -95,40 +113,41 @@ int main()
 	lessShinyMaterial = new Material(0.5f, 128.0f);
 
 	// Create Entity loading the first mesh and shader
-	triangleEntity = new Entity(meshList[0], shaderList[0], glm::vec3(0.0f, 0.0f, -6.5f), glm::vec3(0.0f), glm::vec3(1.0f), shinyMaterial);
+	triangleEntity = new Entity(meshList[0], shaderList[0], glm::vec3(0.0f, 0.0f, -6.5f), glm::vec3(0.0f), glm::vec3(1.0f), shinyMaterial, brickTex);
 
 	glm::vec3 rotation = glm::vec3(0.0f);
 
 	// Floor
 	GLfloat floorVertices[] = {
-    // positions             // normals
-    -50.0f, -1.0f,  50.0f,    0.0f, 1.0f, 0.0f,
-     50.0f, -1.0f,  50.0f,    0.0f, 1.0f, 0.0f,
-     50.0f, -1.0f, -50.0f,    0.0f, 1.0f, 0.0f,
-    -50.0f, -1.0f, -50.0f,    0.0f, 1.0f, 0.0f
-};
+		//  positions           // normals                 // texture coords (scaled for 10x10 tiling)
+			-50.0f, -1.0f,  50.0f,    0.0f, 1.0f, 0.0f,   0.0f, 10.0f,
+			 50.0f, -1.0f,  50.0f,    0.0f, 1.0f, 0.0f,   10.0f, 10.0f,
+			 50.0f, -1.0f, -50.0f,    0.0f, 1.0f, 0.0f,   10.0f, 0.0f,
+			-50.0f, -1.0f, -50.0f,    0.0f, 1.0f, 0.0f,   0.0f, 0.0f
+	};
 
 	unsigned int floorIndices[] = {
 		0, 1, 2,
 		2, 3, 0
 	};
 	Mesh* floorMesh = new Mesh();
-	floorMesh->CreateMesh(floorVertices, floorIndices, 12, 6, 6);
+	floorMesh->CreateMesh(floorVertices, floorIndices, 32, 6, 8);
 	meshList.push_back(floorMesh);
 
 
-	floorEntity = new Entity(meshList[1], shaderList[0], glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f), glm::vec3(1.0f), lessShinyMaterial);
+	floorEntity = new Entity(meshList[1], shaderList[0], glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f), glm::vec3(1.0f), lessShinyMaterial, stoneTex);
 
 
 	GLfloat lightCubeVertices[] = {
-		-0.1f, -0.1f, -0.1f,  0.0f, 0.0f, 0.0f,
-		 0.1f, -0.1f, -0.1f,  0.0f, 0.0f, 0.0f,
-		 0.1f,  0.1f, -0.1f,  0.0f, 0.0f, 0.0f,
-		-0.1f,  0.1f, -0.1f,  0.0f, 0.0f, 0.0f,
-		-0.1f, -0.1f,  0.1f,  0.0f, 0.0f, 0.0f,
-		 0.1f, -0.1f,  0.1f,  0.0f, 0.0f, 0.0f,
-		 0.1f,  0.1f,  0.1f,  0.0f, 0.0f, 0.0f,
-		-0.1f,  0.1f,  0.1f,  0.0f, 0.0f, 0.0f
+		//  positions           // normals (all 0)    // texture coords (all 0)
+			-0.1f, -0.1f, -0.1f,  0.0f, 0.0f, 0.0f,   0.0f, 0.0f,
+			 0.1f, -0.1f, -0.1f,  0.0f, 0.0f, 0.0f,   0.0f, 0.0f,
+			 0.1f,  0.1f, -0.1f,  0.0f, 0.0f, 0.0f,   0.0f, 0.0f,
+			-0.1f,  0.1f, -0.1f,  0.0f, 0.0f, 0.0f,   0.0f, 0.0f,
+			-0.1f, -0.1f,  0.1f,  0.0f, 0.0f, 0.0f,   0.0f, 0.0f,
+			 0.1f, -0.1f,  0.1f,  0.0f, 0.0f, 0.0f,   0.0f, 0.0f,
+			 0.1f,  0.1f,  0.1f,  0.0f, 0.0f, 0.0f,   0.0f, 0.0f,
+			-0.1f,  0.1f,  0.1f,  0.0f, 0.0f, 0.0f,   0.0f, 0.0f
 	};
 
 	unsigned int lightCubeIndices[] = {
@@ -141,7 +160,7 @@ int main()
 	};
 
 	Mesh* lightMesh = new Mesh();
-	lightMesh->CreateMesh(lightCubeVertices, lightCubeIndices, 48, 36, 6);
+	lightMesh->CreateMesh(lightCubeVertices, lightCubeIndices, 64, 36, 8);
 	meshList.push_back(lightMesh);
 
 
@@ -158,9 +177,12 @@ int main()
 	flashlight = new Flashlight(glm::vec3(1.0f, 1.0f, 0.85f), 0.02f, 1.2f, camera.getCameraPosition(), 1.0f, 0.07f, 0.017f, camera.getCameraFront(), 14.0f, 15.5f);
 
 
-	lightBulbEntity = new Entity(meshList[2], shaderList[1], pointLight->getPosition(), glm::vec3(0.0f), glm::vec3(1.0f), lessShinyMaterial);
-	lightBulbEntity2 = new Entity(meshList[2], shaderList[1], pointLight2->getPosition(), glm::vec3(0.0f), glm::vec3(1.0f), lessShinyMaterial);
-	lightBulbEntity3 = new Entity(meshList[2], shaderList[1], pointLight3->getPosition(), glm::vec3(0.0f), glm::vec3(1.0f), lessShinyMaterial);
+	lightBulbEntity = new Entity(meshList[2], shaderList[1], pointLight->getPosition(), glm::vec3(0.0f), glm::vec3(1.0f), lessShinyMaterial, brickTex);
+	lightBulbEntity2 = new Entity(meshList[2], shaderList[1], pointLight2->getPosition(), glm::vec3(0.0f), glm::vec3(1.0f), lessShinyMaterial, brickTex);
+	lightBulbEntity3 = new Entity(meshList[2], shaderList[1], pointLight3->getPosition(), glm::vec3(0.0f), glm::vec3(1.0f), lessShinyMaterial, brickTex);
+
+	
+
 
 
 	// Loop until window closed
@@ -180,6 +202,7 @@ int main()
 
 		// Use shader program
 		shaderList[0]->UseShader();
+		shaderList[0]->setInt("u_Texture", 0);
 		
 		// Camera movement
 		camera.ProcessKeyboard(mainWindow.getKeys(), deltaTime);

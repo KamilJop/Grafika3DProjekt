@@ -5,6 +5,7 @@
 #include "Mesh.h"
 #include "Shader.h"
 #include "Material.h"
+#include "Texture.h"
 
 
 class Entity
@@ -16,9 +17,10 @@ public:
 	glm::vec3 position;
 	glm::vec3 rotation;
 	glm::vec3 scale;
+	Texture* entityTexture;
 	Material* entityMaterial;
 
-	Entity(Mesh* mesh, Shader* shader, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, Material* material);
+	Entity(Mesh* mesh, Shader* shader, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, Material* material, Texture* texture);
 
 	~Entity();
 
@@ -35,7 +37,6 @@ public:
 
 private:
 	glm::mat4 modelMatrix;
-
 	glm::mat4 CalculateModelMatrix();
 	
 
