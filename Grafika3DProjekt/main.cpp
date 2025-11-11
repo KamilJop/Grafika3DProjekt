@@ -22,7 +22,6 @@
 #include "Model.h"
 #include "Scene.h"
 
-
 // Window dimensions
 const GLint WIDTH = 1280, HEIGHT = 720;
 
@@ -36,8 +35,6 @@ std::vector<Shader*> shaderList;
 // Shader file paths
 static const char* vertexShader = "Shaders/shader.vert";
 static const char* fragmentShader = "Shaders/shader.frag";
-static const char* lightVertexShader = "Shaders/light_source.vert";   
-static const char* lightFragmentShader = "Shaders/light_source.frag";
 
 // Texture file paths
 static const char* brickTexture = "Textures/brick.png";
@@ -73,7 +70,9 @@ Model floorModel;
 Model xwing;
 
 // Create scene
-Scene* scene = new Scene(&camera);
+Scene* scene = nullptr;
+
+Scene* createMainScene(Camera* camera);
 
 int main()
 {
@@ -81,55 +80,17 @@ int main()
 	mainWindow = Window(WIDTH, HEIGHT);
 	mainWindow.Initialise();
 
-	
 	// Create Shaders
 	Shader* shader1 = new Shader();
 	shader1->CreateShader(vertexShader, fragmentShader);
 	shaderList.push_back(shader1);
 
-	Shader* lightShader = new Shader();
-	lightShader->CreateShader(lightVertexShader, lightFragmentShader); 
-	shaderList.push_back(lightShader);
-
-
-	// Load Models
-	door = Model();
-	door.LoadModel("Models/door.obj");
-	floorModel = Model();
-	floorModel.LoadModel("Models/Cranberry_Doormat.obj");
-
-
-	// Create Materials
-	shinyMaterial = new Material(1.0f, 64.0f);
-	lessShinyMaterial = new Material(0.5f, 128.0f);
-
-	// Create Entities
-	doorEntity = new SpinningEntity(&door, shinyMaterial, glm::vec3(0.0f, -1.0f, -2.0f), glm::vec3(0.0f), glm::vec3(0.8f));
-	floorEntity = new Entity(&floorModel, lessShinyMaterial, glm::vec3(0.0f, -1.5f, -3.0f), glm::vec3(0.0f), glm::vec3(0.5f));
-
-
-	glm::vec3 rotation = glm::vec3(0.0f);
-
 	// Set perspective 
 	glm::mat4 projection;
 	projection = glm::perspective(glm::radians(60.0f), (GLfloat)mainWindow.getBufferWidth() / (GLfloat)mainWindow.getBufferHeight(), 0.1f, 100.0f);
 
-
-	// Light
-	mainLight = new DirectionalLight(glm::vec3(0.0f, 0.5f, 1.0f), glm::vec3(2.0f, -1.0f, -4.0f), 0.15f, 0.8f);
-	pointLight = new PointLight(glm::vec3(1.0f, 0.0f, 0.0f), 0.5f, 0.9f, glm::vec3(0.0f, 1.0f, -3.5f), 1.0f, 0.09f, 0.032f,0);
-	pointLight2 = new PointLight(glm::vec3(0.0f, 0.0f, 1.0f), 0.5f, 0.9f, glm::vec3(-3.5f, 0.5f, -4.0f), 1.0f, 0.12f, 0.062f, 1);
-	pointLight3 = new PointLight(glm::vec3(0.0f, 1.0f, 0.0f), 0.5f, 0.9f, glm::vec3(3.5f, 0.5f, -4.0f), 1.0f, 0.12f, 0.062f, 2);
-	flashlight = new Flashlight(glm::vec3(1.0f, 1.0f, 0.85f), 0.02f, 1.2f, camera.getCameraPosition(), 1.0f, 0.07f, 0.017f, camera.getCameraFront(), 14.0f, 15.5f);
-
-	scene->AddEntity(doorEntity);
-	scene->AddEntity(floorEntity);
-	scene->AddPointLight(pointLight);
-	scene->AddPointLight(pointLight2);
-	scene->AddPointLight(pointLight3);
-	scene->SetDirectionalLight(mainLight);
-	scene->SetFlashlight(flashlight);
-
+	// Create main scene
+	scene = createMainScene(&camera);
 
 	// Loop until window closed
 	while (!mainWindow.getShouldClose())
@@ -159,4 +120,42 @@ int main()
 	}
 
 	return 0;
+}
+
+Scene* createMainScene(Camera * camera) {
+
+	// Create scene
+	scene = new Scene(camera);
+
+	// Load Models
+	door.LoadModel("Models/door.obj");
+	floorModel.LoadModel("Models/Cranberry_Doormat.obj");
+
+	// Create Materials
+	shinyMaterial = new Material(1.0f, 64.0f);
+	lessShinyMaterial = new Material(0.5f, 128.0f);
+
+	// Create Entities
+	doorEntity = new SpinningEntity(&door, shinyMaterial, glm::vec3(0.0f, -1.0f, -2.0f), glm::vec3(0.0f), glm::vec3(0.8f));
+	floorEntity = new Entity(&floorModel, lessShinyMaterial, glm::vec3(0.0f, -1.5f, -3.0f), glm::vec3(0.0f), glm::vec3(0.5f));
+	scene->AddEntity(doorEntity);
+	scene->AddEntity(floorEntity);
+
+	// Light
+	mainLight = new DirectionalLight(glm::vec3(0.0f, 0.5f, 1.0f), glm::vec3(2.0f, -1.0f, -4.0f), 0.15f, 0.8f);
+	pointLight = new PointLight(glm::vec3(1.0f, 0.0f, 0.0f), 0.5f, 0.9f, glm::vec3(0.0f, 1.0f, -3.5f), 1.0f, 0.09f, 0.032f, 0);
+	pointLight2 = new PointLight(glm::vec3(0.0f, 0.0f, 1.0f), 0.5f, 0.9f, glm::vec3(-3.5f, 0.5f, -4.0f), 1.0f, 0.12f, 0.062f, 1);
+	pointLight3 = new PointLight(glm::vec3(0.0f, 1.0f, 0.0f), 0.5f, 0.9f, glm::vec3(3.5f, 0.5f, -4.0f), 1.0f, 0.12f, 0.062f, 2);
+	flashlight = new Flashlight(glm::vec3(1.0f, 1.0f, 0.85f), 0.02f, 1.2f, camera->getCameraPosition(), 1.0f, 0.07f, 0.017f, camera->getCameraFront(), 14.0f, 15.5f);
+
+	// Add entities and lights to scene
+	scene->AddEntity(doorEntity);
+	scene->AddEntity(floorEntity);
+	scene->AddPointLight(pointLight);
+	scene->AddPointLight(pointLight2);
+	scene->AddPointLight(pointLight3);
+	scene->SetDirectionalLight(mainLight);
+	scene->SetFlashlight(flashlight);
+
+	return scene;
 }
