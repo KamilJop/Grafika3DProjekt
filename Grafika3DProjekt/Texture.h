@@ -1,6 +1,7 @@
 #pragma once
 #include <glad/glad.h>
 #include "stb_image.h"
+#include <string>
 
 
 class Texture
@@ -19,7 +20,7 @@ private:
 	int width;
 	int height;
 	int bitDepth;;
-	const char* fileLocation;
+	std::string fileLocation;
 
 };
 

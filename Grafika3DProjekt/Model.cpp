@@ -21,6 +21,7 @@ void Model::LoadModel(const std::string& path)
 	if (!scene)
 	{
 		printf("Model failed to load: %s\n", importer.GetErrorString());
+		fflush(stdout);
 		return;
 	}
 	// Load the root node
@@ -52,13 +53,13 @@ void Model::LoadMesh(aiMesh* mesh, const aiScene* scene)
 	// Process vertices
 	for (size_t i = 0; i < mesh->mNumVertices; i++) {
 		vertices.insert(vertices.end(), {mesh->mVertices[i].x,mesh->mVertices[i].y,mesh->mVertices[i].z});
+		vertices.insert(vertices.end(), { mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z });
 		if (mesh->mTextureCoords[0]) {
 			vertices.insert(vertices.end(), { mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y });
 		}
 		else {
 			vertices.insert(vertices.end(), { 0.0f, 0.0f });
 		}
-		vertices.insert(vertices.end(), { mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z });
 	}
 
 	// Process indices
@@ -71,7 +72,7 @@ void Model::LoadMesh(aiMesh* mesh, const aiScene* scene)
 
 	// Create mesh
 	Mesh* newMesh = new Mesh();
-	newMesh->CreateMesh(&vertices[0], &indices[0], vertices.size(), indices.size(), 8);
+	newMesh->CreateMesh(&vertices[0], &indices[0], (unsigned int)vertices.size(), (unsigned int)indices.size(), 8);
 	meshes.push_back(newMesh);
 	meshToTexture.push_back(mesh->mMaterialIndex);
 }
@@ -80,32 +81,51 @@ void Model::LoadMaterials(const aiScene* scene)
 {
 	textures.resize(scene->mNumMaterials);
 
-	for(size_t i = 0 ; i < scene->mNumMaterials; i++) {
+	for (size_t i = 0; i < scene->mNumMaterials; i++) {
 		aiMaterial* material = scene->mMaterials[i];
 		textures[i] = nullptr;
-		if(material->GetTextureCount(aiTextureType_DIFFUSE) > 0) {
-			aiString path;
-			if (material-> GetTexture(aiTextureType_DIFFUSE, 0, &path) == AI_SUCCESS) {
-				int idx = std::string(path.data).rfind("\\");
-				std::string filename = std::string(path.data).substr(idx + 1);
-				std::string fullpath = std::string("Textures/") + filename;
 
-				textures[i] = new Texture(fullpath.c_str());
+		aiString path;
+		bool textureFound = false;
 
-				if (textures[i]->LoadTexture()) {
-					printf("Loaded texture: %s\n", fullpath.c_str());
-					delete textures[i];
-					textures[i] = nullptr;
-				}
+		// 1. Spróbuj za³adowaæ standardow¹ teksturê DIFFUSE
+		if (material->GetTexture(aiTextureType_DIFFUSE, 0, &path) == AI_SUCCESS) {
+			textureFound = true;
+		}
+		// 2. Jeœli nie ma DIFFUSE, spróbuj za³adowaæ teksturê BASE_COLOR (dla modeli PBR)
+		else if (material->GetTexture(aiTextureType_BASE_COLOR, 0, &path) == AI_SUCCESS) {
+			textureFound = true;
+		}
+
+		if (textureFound) {
+			std::string fullpath_s = path.C_Str();
+			std::string filename;
+			size_t lastSlash = fullpath_s.find_last_of("/\\");
+
+			if (lastSlash == std::string::npos) {
+				filename = fullpath_s;
+			}
+			else {
+				filename = fullpath_s.substr(lastSlash + 1);
+			}
+			std::string fullpath = "Textures/" + filename;
+
+			textures[i] = new Texture(fullpath.c_str()); // Upewnij siê, ¿e Texture(const char*) robi kopiê!
+
+			if (!textures[i]->LoadTextureAlpha()) {
+				printf("Failed to load texture: %s\n", fullpath.c_str());
+				fflush(stdout);
+				delete textures[i];
+				textures[i] = nullptr;
 			}
 		}
+
 		if (!textures[i]) {
 			textures[i] = new Texture("Textures/stone.png");
 			textures[i]->LoadTextureAlpha();
 		}
 	}
 }
-
 void Model::ClearModel()
 {
 	for (size_t i = 0; i < meshes.size(); i++) {

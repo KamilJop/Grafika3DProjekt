@@ -126,7 +126,7 @@ vec4 CalculateFlashLight(){
 		vec3 ambient = flashLight.lightColor * flashLight.ambientIntensity;
 		
 		// Calculate diffuse lightning for flashlight
-		vec3 norm = normalize(Normal);
+		vec3 norm = normalize(Normal) ;
 		float diff = max(dot(norm, flashLightDirection), 0.0f);
 		vec3 diffuse = flashLight.lightColor * flashLight.diffuseIntensity * diff;
 		

@@ -49,11 +49,9 @@ float lastFrame = 0.0f;
 Camera camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 5.0f, 0.1f);
 
 // Entity
-Entity* triangleEntity;
+Entity* doorEntity;
 Entity* floorEntity;
-Entity* lightBulbEntity;
-Entity* lightBulbEntity2;
-Entity* lightBulbEntity3;
+Entity* xwingEntity;
 
 // Light source
 DirectionalLight* mainLight;
@@ -66,20 +64,19 @@ Flashlight* flashlight;
 Material* shinyMaterial;
 Material* lessShinyMaterial;
 
-// Textures
-Texture* brickTex;
-Texture* stoneTex;
 
 // Create models
 Model door;
+Model floorModel;
+Model xwing;
 
 int main()
 {
 	// Create Window
 	mainWindow = Window(WIDTH, HEIGHT);
 	mainWindow.Initialise();
-	
 
+	
 	// Create Shaders
 	Shader* shader1 = new Shader();
 	shader1->CreateShader(vertexShader, fragmentShader);
@@ -89,92 +86,24 @@ int main()
 	lightShader->CreateShader(lightVertexShader, lightFragmentShader); 
 	shaderList.push_back(lightShader);
 
-	// Load Textures
-	brickTex = new Texture((char*)brickTexture);
-	brickTex->LoadTextureAlpha();
-	stoneTex = new Texture((char*)stoneTexture);
-	stoneTex->LoadTextureAlpha();
 
 	// Load Models
 	door = Model();
 	door.LoadModel("Models/door.obj");
+	floorModel = Model();
+	floorModel.LoadModel("Models/Cranberry_Doormat.obj");
 
-
-	// Create Meshes
-	GLfloat vertices[] = {
-		//  positions           // normals                 // texture coords
-			 0.0f,  1.0f,  0.0f,     0.0f,    0.980f,  0.196f,   0.5f, 1.0f,
-			-1.0f, -1.0f,  0.0f,    -0.928f,  0.0f,   -0.371f,   0.0f, 0.0f,
-			 0.0f, -1.0f,  1.0f,     0.0f,    0.0f,    1.0f,     0.5f, 0.0f,
-			 1.0f, -1.0f,  0.0f,     0.928f,  0.0f,   -0.371f,   1.0f, 0.0f
-	};
-
-	unsigned int indices[] = {
-		0, 1, 2,
-		0, 2, 3,
-		0, 3, 1,
-		1, 2, 3
-	};
-
-	Mesh* mesh1 = new Mesh();
-	mesh1->CreateMesh(vertices, indices, 32, 12, 8);
-	meshList.push_back(mesh1);
 
 	// Create Materials
 	shinyMaterial = new Material(1.0f, 64.0f);
 	lessShinyMaterial = new Material(0.5f, 128.0f);
 
-	// Create Entity loading the first mesh and shader
-	triangleEntity = new Entity(meshList[0], shaderList[0], glm::vec3(0.0f, 0.0f, -6.5f), glm::vec3(0.0f), glm::vec3(1.0f), shinyMaterial, brickTex);
+	// Create Entities
+	doorEntity = new Entity(&door, shinyMaterial, glm::vec3(0.0f, -1.0f, -2.0f), glm::vec3(0.0f), glm::vec3(0.8f));
+	floorEntity = new Entity(&floorModel, lessShinyMaterial, glm::vec3(0.0f, -1.5f, -3.0f), glm::vec3(0.0f), glm::vec3(0.5f));
+
 
 	glm::vec3 rotation = glm::vec3(0.0f);
-
-	// Floor
-	GLfloat floorVertices[] = {
-		//  positions           // normals                 // texture coords (scaled for 10x10 tiling)
-			-50.0f, -1.0f,  50.0f,    0.0f, 1.0f, 0.0f,   0.0f, 10.0f,
-			 50.0f, -1.0f,  50.0f,    0.0f, 1.0f, 0.0f,   10.0f, 10.0f,
-			 50.0f, -1.0f, -50.0f,    0.0f, 1.0f, 0.0f,   10.0f, 0.0f,
-			-50.0f, -1.0f, -50.0f,    0.0f, 1.0f, 0.0f,   0.0f, 0.0f
-	};
-
-	unsigned int floorIndices[] = {
-		0, 1, 2,
-		2, 3, 0
-	};
-	Mesh* floorMesh = new Mesh();
-	floorMesh->CreateMesh(floorVertices, floorIndices, 32, 6, 8);
-	meshList.push_back(floorMesh);
-
-
-	floorEntity = new Entity(meshList[1], shaderList[0], glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f), glm::vec3(1.0f), lessShinyMaterial, stoneTex);
-
-
-	GLfloat lightCubeVertices[] = {
-		//  positions           // normals (all 0)    // texture coords (all 0)
-			-0.1f, -0.1f, -0.1f,  0.0f, 0.0f, 0.0f,   0.0f, 0.0f,
-			 0.1f, -0.1f, -0.1f,  0.0f, 0.0f, 0.0f,   0.0f, 0.0f,
-			 0.1f,  0.1f, -0.1f,  0.0f, 0.0f, 0.0f,   0.0f, 0.0f,
-			-0.1f,  0.1f, -0.1f,  0.0f, 0.0f, 0.0f,   0.0f, 0.0f,
-			-0.1f, -0.1f,  0.1f,  0.0f, 0.0f, 0.0f,   0.0f, 0.0f,
-			 0.1f, -0.1f,  0.1f,  0.0f, 0.0f, 0.0f,   0.0f, 0.0f,
-			 0.1f,  0.1f,  0.1f,  0.0f, 0.0f, 0.0f,   0.0f, 0.0f,
-			-0.1f,  0.1f,  0.1f,  0.0f, 0.0f, 0.0f,   0.0f, 0.0f
-	};
-
-	unsigned int lightCubeIndices[] = {
-		0, 1, 2, 2, 3, 0, 
-		4, 5, 6, 6, 7, 4, 
-		0, 4, 7, 7, 3, 0, 
-		1, 5, 6, 6, 2, 1, 
-		3, 2, 6, 6, 7, 3, 
-		0, 1, 5, 5, 4, 0 
-	};
-
-	Mesh* lightMesh = new Mesh();
-	lightMesh->CreateMesh(lightCubeVertices, lightCubeIndices, 64, 36, 8);
-	meshList.push_back(lightMesh);
-
 
 	// Set perspective 
 	glm::mat4 projection;
@@ -187,14 +116,6 @@ int main()
 	pointLight2 = new PointLight(glm::vec3(0.0f, 0.0f, 1.0f), 0.5f, 0.9f, glm::vec3(-3.5f, 0.5f, -4.0f), 1.0f, 0.12f, 0.062f, 1);
 	pointLight3 = new PointLight(glm::vec3(0.0f, 1.0f, 0.0f), 0.5f, 0.9f, glm::vec3(3.5f, 0.5f, -4.0f), 1.0f, 0.12f, 0.062f, 2);
 	flashlight = new Flashlight(glm::vec3(1.0f, 1.0f, 0.85f), 0.02f, 1.2f, camera.getCameraPosition(), 1.0f, 0.07f, 0.017f, camera.getCameraFront(), 14.0f, 15.5f);
-
-
-	lightBulbEntity = new Entity(meshList[2], shaderList[1], pointLight->getPosition(), glm::vec3(0.0f), glm::vec3(1.0f), lessShinyMaterial, brickTex);
-	lightBulbEntity2 = new Entity(meshList[2], shaderList[1], pointLight2->getPosition(), glm::vec3(0.0f), glm::vec3(1.0f), lessShinyMaterial, brickTex);
-	lightBulbEntity3 = new Entity(meshList[2], shaderList[1], pointLight3->getPosition(), glm::vec3(0.0f), glm::vec3(1.0f), lessShinyMaterial, brickTex);
-
-	
-
 
 
 	// Loop until window closed
@@ -246,38 +167,14 @@ int main()
 		}
 
 		rotation += glm::vec3(0.0f, 35.0f * deltaTime, 0.0f);
-		triangleEntity->setRotation(rotation);
+		
 
+		// Draw doors model
+		doorEntity->setRotation(rotation);
+		doorEntity->DrawEntity(shaderList[0]);
 
-		// Draw entities
-		triangleEntity->DrawEntity();
-		floorEntity->DrawEntity();
-
-		// Draw cottage model
-		glm::mat4 model(1.0f);
-		model = glm::translate(model, glm::vec3(0.0f, -1.0f, -10.0f));
-		shaderList[0]->setMat4("model", model);
-		door.RenderModel();
-
-
-		// Draw light source
-		shaderList[1]->UseShader();
-		shaderList[1]->setMat4("projection", projection);
-		shaderList[1]->setMat4("view", camera.getViewMatrix());
-		shaderList[1]->setVec3("bulbColor", pointLight->getColor());
-
-		lightBulbEntity->setPosition(pointLight->getPosition());
-		lightBulbEntity->DrawEntity();
-
-		shaderList[1]->setVec3("bulbColor", pointLight2->getColor());
-
-		lightBulbEntity2->setPosition(pointLight2->getPosition());
-		lightBulbEntity2->DrawEntity();
-
-		shaderList[1]->setVec3("bulbColor", pointLight3->getColor());
-		lightBulbEntity3->setPosition(pointLight3->getPosition());
-		lightBulbEntity3->DrawEntity();
-
+		// Draw floor model
+		floorEntity->DrawEntity(shaderList[0]);
 
 
 		// Swap buffers
