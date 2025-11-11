@@ -124,7 +124,7 @@ void Window::handleKeys(GLFWwindow* window, int key, int code, int action, int m
 		if (action == GLFW_PRESS)
 		{
 			theWindow->keys[key] = true;
-			printf("Pressed: %d\n", key);
+
 		}
 		else if (action == GLFW_RELEASE)
 		{
@@ -150,7 +150,6 @@ void Window::handleMouse(GLFWwindow* window, double xPos, double yPos)
 	theWindow->yChange = theWindow->lastY - yPos;
 	theWindow->lastX = xPos;
 	theWindow->lastY = yPos;
-	printf("X: %f Y: %f\n", theWindow->xChange, theWindow->yChange);
 }
 
 
