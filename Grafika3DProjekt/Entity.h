@@ -34,6 +34,7 @@ public:
 	glm::vec3 getRotation();
 	glm::vec3 getScale();
 	void DrawEntity(Shader* shader);
+	virtual void Update(float deltaTime) {};
 
 private:
 	glm::mat4 modelMatrix;
