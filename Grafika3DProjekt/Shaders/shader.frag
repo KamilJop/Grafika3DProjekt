@@ -77,20 +77,18 @@ vec4 CalculateDirectionalLight()
 		// Calculate direction we're looking at fragment with
 		vec3 fragToCam = normalize(cameraPosition - FragPos);
 		
-		// Calculate vector of reflected light
-		vec3 reflectedVertex = normalize(reflect(directionalLight.lightDirection, normalize(Normal)));
+		// Calculate halfwayDir for Blinn Phong model
+		vec3 halfwayDir = normalize(normalize(-directionalLight.lightDirection) + fragToCam);
 		
-		// Calculate angle between our eye and reflected light 
-		float specularFactor = dot(fragToCam, reflectedVertex);
+		// Calculate angle between normal and halfwayDir
+		float specularFactor = pow(max(dot(normalize(Normal), halfwayDir), 0.0), material.shininess);
 		
 		if(specularFactor > 0.0f)
 		{	
-			// Multiply the factor by material properties
-			specularFactor = pow(specularFactor, material.shininess);
-			// Calculate specular color 
 			lightSpecularColor = vec4(directionalLight.lightColor * material.specularIntensity * specularFactor, 1.0f);
 		}
 	}
+	
 	return (lightAmbientColor + lightDiffuseColor + lightSpecularColor);
 }
 
@@ -134,9 +132,14 @@ vec4 CalculateFlashLight(){
 		vec3 specular = vec3(0.0f);
 		if(diff > 0.0f) 
 		{
+			// Calculate vector between fragment and eye
 			vec3 fragToCam = normalize(cameraPosition - FragPos);
-			vec3 reflectedVertex = normalize(reflect(-flashLightDirection, norm));
-			float flashLightSpecularFactor = pow(max(dot(fragToCam, reflectedVertex), 0.0f), material.shininess);
+			// Calculate halfwayDir for Blinn Phong
+			vec3 halfwayDir = normalize(flashLightDirection + fragToCam);
+			
+			// Calculate angle between normal and halfwayDir
+			float flashLightSpecularFactor = pow(max(dot(norm, halfwayDir), 0.0), material.shininess);
+			
 			specular = flashLight.lightColor * flashLight.diffuseIntensity * material.specularIntensity * flashLightSpecularFactor;
 		}
 		flashLightColor = vec4(ambient * spotIntensity + (diffuse + specular) * flashAttenuation * spotIntensity, 1.0f);
@@ -173,16 +176,13 @@ vec4 CalculatePointLight(PointLight pointLight){
 		// Calculate direction we're looking at fragment with
 		vec3 fragToCam = normalize(cameraPosition - FragPos);
 		
-		// Calculate the vector of reflected light
-		vec3 reflectedVertex = normalize(reflect(-pointLightDirection, Normal));
+		// Calculate halfwayDir for Blinn Phong
+		vec3 halfwayDir = normalize(pointLightDirection + fragToCam);
 		
-		// Calculate angle between our eye and reflected light 
-		float pointSpecularFactor = dot(fragToCam, reflectedVertex);
+		// Calculate angle between normal and halfwayDir 
+		float pointSpecularFactor = pow(max(dot(normalize(Normal), halfwayDir), 0.0), material.shininess);
 		if(pointSpecularFactor > 0.0f)
 		{
-			// Multiply the factor by material properties
-			pointSpecularFactor = pow(pointSpecularFactor, material.shininess);
-			
 			// Calculate specular color and multiply it by attenuation
 			pointLightSpecularColor = vec4(pointLight.lightColor * material.specularIntensity * pointSpecularFactor, 1.0f);
 		}

@@ -110,7 +110,7 @@ int main()
 		// Camera movement
 		camera.ProcessKeyboard(mainWindow.getKeys(), deltaTime);
 		camera.ProcessMouseMovement(mainWindow.getXChange(), mainWindow.getYChange());
-	
+		
 		// Update scene
 		scene->Update(deltaTime);
 		scene->Render(shaderList[0], projection);
@@ -132,8 +132,8 @@ Scene* createMainScene(Camera * camera) {
 	floorModel.LoadModel("Models/Cranberry_Doormat.obj");
 
 	// Create Materials
-	shinyMaterial = new Material(1.0f, 64.0f);
-	lessShinyMaterial = new Material(0.5f, 128.0f);
+	shinyMaterial = new Material(0.7f, 64.0f);
+	lessShinyMaterial = new Material(0.5f, 256.0f);
 
 	// Create Entities
 	doorEntity = new SpinningEntity(&door, shinyMaterial, glm::vec3(0.0f, -1.0f, -2.0f), glm::vec3(0.0f), glm::vec3(0.8f));
@@ -142,7 +142,7 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(floorEntity);
 
 	// Light
-	mainLight = new DirectionalLight(glm::vec3(0.0f, 0.5f, 1.0f), glm::vec3(2.0f, -1.0f, -4.0f), 0.15f, 0.8f);
+	mainLight = new DirectionalLight(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(2.0f, -1.0f, -4.0f), 0.20f, 0.4f);
 	pointLight = new PointLight(glm::vec3(1.0f, 0.0f, 0.0f), 0.5f, 0.9f, glm::vec3(0.0f, 1.0f, -3.5f), 1.0f, 0.09f, 0.032f, 0);
 	pointLight2 = new PointLight(glm::vec3(0.0f, 0.0f, 1.0f), 0.5f, 0.9f, glm::vec3(-3.5f, 0.5f, -4.0f), 1.0f, 0.12f, 0.062f, 1);
 	pointLight3 = new PointLight(glm::vec3(0.0f, 1.0f, 0.0f), 0.5f, 0.9f, glm::vec3(3.5f, 0.5f, -4.0f), 1.0f, 0.12f, 0.062f, 2);
