@@ -78,6 +78,7 @@ Scene* scene = nullptr;
 
 Scene* createMainScene(Camera* camera);
 void DirectionalLightShadowMapPass();
+void RenderScenePass(glm::mat4 projection);
 
 int main()
 {
@@ -104,37 +105,23 @@ int main()
 	// Loop until window closed
 	while (!mainWindow.getShouldClose())
 	{
-		// Get + Handle user input events
-		glfwPollEvents();
-
-		DirectionalLightShadowMapPass();
-
-		glViewport(0, 0, mainWindow.getBufferWidth(), mainWindow.getBufferHeight());
-
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		shaderList[0]->UseShader();
-		shaderList[0]->setInt("directionalShadowMap", 1);
-		mainLight->getShadowMap()->Read(GL_TEXTURE1);
-
 		// Calculate delta time
 		float currentFrame = static_cast<float>(glfwGetTime());
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 
-		// Clear window
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 		// Camera movement
 		camera.ProcessKeyboard(mainWindow.getKeys(), deltaTime);
 		camera.ProcessMouseMovement(mainWindow.getXChange(), mainWindow.getYChange());
 
+		// Get + Handle user input events
+		glfwPollEvents();
 		
-		// Update scene
-		scene->Update(deltaTime);
-		scene->Render(shaderList[0], projection);
+		// Shadow map pass
+		DirectionalLightShadowMapPass();
+
+		// Render scene pass
+		RenderScenePass(projection);
 
 		// Swap buffers
 		mainWindow.swapBuffers();
@@ -199,4 +186,29 @@ void DirectionalLightShadowMapPass() {
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+}
+
+void RenderScenePass(glm::mat4 projectionMatrix)
+{
+	// Go back to the default framebuffer
+	glViewport(0, 0, mainWindow.getBufferWidth(), mainWindow.getBufferHeight());
+
+	// Clear buffers
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	// Use shader program
+	shaderList[0]->UseShader();
+
+	// Set the shadow map uniform to texture unit 1
+	shaderList[0]->setInt("directionalShadowMap", 1);
+
+	// Bind the shadow map to texture unit 1
+	mainLight->getShadowMap()->Read(GL_TEXTURE1);
+
+	// Update the scene
+	scene->Update(deltaTime);
+
+	// Render the scene
+	scene->Render(shaderList[0], projectionMatrix);
 }
