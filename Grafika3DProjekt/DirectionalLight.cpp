@@ -27,9 +27,6 @@ void DirectionalLight::useLight(Shader* lightShader)
 	lightShader->setFloat("directionalLight.lightAmbientIntensity", lightAmbientIntensity);
 	lightShader->setFloat("directionalLight.lightDiffuseIntensity", lightDiffuseIntensity);
 
-	// Shadow map
-	lightShader->setInt("directionalLight.shadowMap", 3);
-
 }
 
 glm::mat4 DirectionalLight::CalculateLightTransform()
