@@ -51,6 +51,7 @@ Camera camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 
 SpinningEntity* doorEntity;
 Entity* floorEntity;
 Entity* xwingEntity;
+Entity* chestEntity;
 
 // Light source
 DirectionalLight* mainLight;
@@ -68,6 +69,7 @@ Material* lessShinyMaterial;
 Model door;
 Model floorModel;
 Model xwing;
+Model chest;
 
 // Create scene
 Scene* scene = nullptr;
@@ -130,6 +132,7 @@ Scene* createMainScene(Camera * camera) {
 	// Load Models
 	door.LoadModel("Models/door.obj");
 	floorModel.LoadModel("Models/Cranberry_Doormat.obj");
+	chest.LoadModel("Models/Untitled.obj");
 
 	// Create Materials
 	shinyMaterial = new Material(0.7f, 64.0f);
@@ -138,8 +141,10 @@ Scene* createMainScene(Camera * camera) {
 	// Create Entities
 	doorEntity = new SpinningEntity(&door, shinyMaterial, glm::vec3(0.0f, -1.0f, -2.0f), glm::vec3(0.0f), glm::vec3(0.8f));
 	floorEntity = new Entity(&floorModel, lessShinyMaterial, glm::vec3(0.0f, -1.5f, -3.0f), glm::vec3(0.0f), glm::vec3(0.5f));
+	chestEntity = new Entity(&chest, shinyMaterial, glm::vec3(2.0f, -1.0f, -4.0f), glm::vec3(0.0f, -45.0f, 0.0f), glm::vec3(1.3f));
 	scene->AddEntity(doorEntity);
 	scene->AddEntity(floorEntity);
+	scene->AddEntity(chestEntity);
 
 	// Light
 	mainLight = new DirectionalLight(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(2.0f, -1.0f, -4.0f), 0.20f, 0.4f);
