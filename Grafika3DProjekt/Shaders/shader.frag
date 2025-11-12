@@ -4,6 +4,7 @@ in vec4 vCol;
 in vec3 Normal;
 in vec3 FragPos;
 in vec2 TextureCoordinates;
+in vec4 DirectionalLightSpacePosition;
 
 out vec4 colour;
 
@@ -54,12 +55,57 @@ uniform PointLight pointLights[NR_POINT_LIGHTS];
 uniform FlashLight flashLight;
 uniform Material material;
 uniform sampler2D u_Texture;
+uniform sampler2D directionalShadowMap;
 
 uniform vec3 cameraPosition;
+
+float CalculateDirectionalShadowFactor()
+{	
+
+	
+	// Get Projection coordinates
+	vec3 projCoords = DirectionalLightSpacePosition.xyz / DirectionalLightSpacePosition.w;
+	
+	// Change values to values between 0 and 1
+	projCoords = (projCoords * 0.5) + 0.5;
+	
+	// Calculating hwo far the fragment is from the light
+	float current = projCoords.z;
+	
+	// Avoiding shadow acne effect
+	float bias = 0.001;
+	
+	// Avoiding pixelating shadows
+	float shadow = 0.0;
+	vec2 texelSize = 1.0 / textureSize(directionalShadowMap,0);
+	
+	for( int x = -1 ; x <= 1; ++x)
+	{
+		for(int y = -1; y <= 1; ++y)
+		{
+			float pcfDepth = texture(directionalShadowMap, projCoords.xy + vec2(x,y) * texelSize).r;
+			shadow += current - bias > pcfDepth ? 1.0 : 0.0;
+		}
+	}
+	
+	shadow /= 9.0;
+	
+	
+	if(projCoords.z > 1.0)
+	{
+		shadow = 0.0;
+	}
+	
+	return shadow;
+}
+
 
 
 vec4 CalculateDirectionalLight()
 {
+	// Calculate shadow Factor
+	float shadowFactor = CalculateDirectionalShadowFactor();
+	
 	// Ambient calculations
 	vec4 lightAmbientColor = vec4(directionalLight.lightColor, 1.0f) * directionalLight.lightAmbientIntensity;
 	
@@ -89,7 +135,7 @@ vec4 CalculateDirectionalLight()
 		}
 	}
 	
-	return (lightAmbientColor + lightDiffuseColor + lightSpecularColor);
+	return (lightAmbientColor + (1.0 - shadowFactor) * (lightDiffuseColor + lightSpecularColor));
 }
 
 

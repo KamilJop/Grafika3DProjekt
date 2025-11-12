@@ -21,7 +21,7 @@ void Scene::Render(Shader* shader, glm::mat4 projection)
 	shader->setMat4("projection", projection);
 	shader->setMat4("view", camera->getViewMatrix());
 	shader->setVec3("cameraPosition", camera->getCameraPosition());
-
+	shader->setMat4("directionalLightSpaceTransform", dirLight->CalculateLightTransform());
 	for (auto& pLight : pointLights)
 	{
 		pLight->useLight(shader);
@@ -57,3 +57,13 @@ void Scene::Update(float deltaTime)
 		entity->Update(deltaTime);
 	}
 }	
+
+
+void Scene::RenderShadowMap(Shader* shadowShader)
+{
+	for (auto& entity : entities)
+	{
+		shadowShader->setMat4("model", entity->GetModelMatrix());
+		entity->DrawEntity(shadowShader);
+	}
+}

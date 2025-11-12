@@ -146,6 +146,7 @@
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="ShadowMap.cpp" />
     <ClCompile Include="SpinningEntity.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -162,6 +163,7 @@
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="ShadowMap.h" />
     <ClInclude Include="SpinningEntity.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="Texture.h" />

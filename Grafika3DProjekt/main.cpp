@@ -21,7 +21,7 @@
 #include <assimp/Importer.hpp>
 #include "Model.h"
 #include "Scene.h"
-
+#include "ShadowMap.h"
 // Window dimensions
 const GLint WIDTH = 1280, HEIGHT = 720;
 
@@ -35,6 +35,8 @@ std::vector<Shader*> shaderList;
 // Shader file paths
 static const char* vertexShader = "Shaders/shader.vert";
 static const char* fragmentShader = "Shaders/shader.frag";
+static const char* shadowVertexShader = "Shaders/directional_shadow_map.vert";
+static const char* shadowFragmentShader = "Shaders/directional_shadow_map.frag";
 
 // Texture file paths
 static const char* brickTexture = "Textures/brick.png";
@@ -75,6 +77,7 @@ Model chest;
 Scene* scene = nullptr;
 
 Scene* createMainScene(Camera* camera);
+void DirectionalLightShadowMapPass();
 
 int main()
 {
@@ -86,6 +89,10 @@ int main()
 	Shader* shader1 = new Shader();
 	shader1->CreateShader(vertexShader, fragmentShader);
 	shaderList.push_back(shader1);
+
+	Shader* shadowShader = new Shader();
+	shadowShader->CreateShader(shadowVertexShader, shadowFragmentShader);
+	shaderList.push_back(shadowShader);
 
 	// Set perspective 
 	glm::mat4 projection;
@@ -100,6 +107,17 @@ int main()
 		// Get + Handle user input events
 		glfwPollEvents();
 
+		DirectionalLightShadowMapPass();
+
+		glViewport(0, 0, mainWindow.getBufferWidth(), mainWindow.getBufferHeight());
+
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		shaderList[0]->UseShader();
+		shaderList[0]->setInt("directionalShadowMap", 1);
+		mainLight->getShadowMap()->Read(GL_TEXTURE1);
+
 		// Calculate delta time
 		float currentFrame = static_cast<float>(glfwGetTime());
 		deltaTime = currentFrame - lastFrame;
@@ -112,6 +130,7 @@ int main()
 		// Camera movement
 		camera.ProcessKeyboard(mainWindow.getKeys(), deltaTime);
 		camera.ProcessMouseMovement(mainWindow.getXChange(), mainWindow.getYChange());
+
 		
 		// Update scene
 		scene->Update(deltaTime);
@@ -147,7 +166,7 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(chestEntity);
 
 	// Light
-	mainLight = new DirectionalLight(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(2.0f, -1.0f, -4.0f), 0.20f, 0.4f);
+	mainLight = new DirectionalLight(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(2.0f, -5.0f, -3.0f), 0.1f, 0.4f, 2048.0f, 2048.0f);
 	pointLight = new PointLight(glm::vec3(1.0f, 0.0f, 0.0f), 0.5f, 0.9f, glm::vec3(0.0f, 1.0f, -3.5f), 1.0f, 0.09f, 0.032f, 0);
 	pointLight2 = new PointLight(glm::vec3(0.0f, 0.0f, 1.0f), 0.5f, 0.9f, glm::vec3(-3.5f, 0.5f, -4.0f), 1.0f, 0.12f, 0.062f, 1);
 	pointLight3 = new PointLight(glm::vec3(0.0f, 1.0f, 0.0f), 0.5f, 0.9f, glm::vec3(3.5f, 0.5f, -4.0f), 1.0f, 0.12f, 0.062f, 2);
@@ -163,4 +182,21 @@ Scene* createMainScene(Camera * camera) {
 	scene->SetFlashlight(flashlight);
 
 	return scene;
+}
+
+
+void DirectionalLightShadowMapPass() {
+	shaderList[1]->UseShader();
+	glViewport(0, 0, mainLight->getShadowMap()->getShadowWidth(), mainLight->getShadowMap()->getShadowHeight());
+
+	mainLight->getShadowMap()->Write();
+	glClear(GL_DEPTH_BUFFER_BIT);
+
+	glm::mat4 lightTransform = mainLight->CalculateLightTransform();
+	shaderList[1]->setMat4("directionalLightSpaceTransform", lightTransform);
+
+	scene->RenderShadowMap(shaderList[1]);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 }
