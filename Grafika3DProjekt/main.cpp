@@ -157,11 +157,11 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(chestEntity);
 
 	// Light
-	mainLight = new DirectionalLight(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(2.0f, -5.0f, -3.0f), 0.1f, 0.4f, 2048.0f, 2048.0f);
+	mainLight = new DirectionalLight(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(2.0f, -5.0f, -3.0f), 0.00001f, 0.0001f, 2048.0f, 2048.0f);
 	pointLight = new PointLight(glm::vec3(1.0f, 0.0f, 0.0f), 0.5f, 0.9f, glm::vec3(0.0f, 1.0f, -3.5f), 1.0f, 0.09f, 0.032f, 0);
 	pointLight2 = new PointLight(glm::vec3(0.0f, 0.0f, 1.0f), 0.5f, 0.9f, glm::vec3(-3.5f, 0.5f, -4.0f), 1.0f, 0.12f, 0.062f, 1);
 	pointLight3 = new PointLight(glm::vec3(0.0f, 1.0f, 0.0f), 0.5f, 0.9f, glm::vec3(3.5f, 0.5f, -4.0f), 1.0f, 0.12f, 0.062f, 2);
-	flashlight = new Flashlight(glm::vec3(1.0f, 1.0f, 0.85f), 0.001f, 4.2f, camera->getCameraPosition(), 1.0f, 0.07f, 0.017f, camera->getCameraFront(), 20.0f, 25.5f, 2048.0f,2048.0f);
+	flashlight = new Flashlight(glm::vec3(1.0f, 1.0f, 0.85f), 0.001f, 5.2f, camera->getCameraPosition(), 1.0f, 0.07f, 0.017f, camera->getCameraFront(), 25.0f, 32.5f, 2048.0f,2048.0f);
 
 	// Add entities and lights to scene
 	scene->AddEntity(doorEntity);
@@ -179,7 +179,7 @@ Scene* createMainScene(Camera * camera) {
 void DirectionalLightShadowMapPass() {
 	shaderList[1]->UseShader();
 	glViewport(0, 0, mainLight->getShadowMap()->getShadowWidth(), mainLight->getShadowMap()->getShadowHeight());
-
+	glCullFace(GL_FRONT);
 	mainLight->getShadowMap()->Write();
 	glClear(GL_DEPTH_BUFFER_BIT);
 
@@ -188,6 +188,7 @@ void DirectionalLightShadowMapPass() {
 
 	scene->RenderShadowMap(shaderList[1]);
 
+	glCullFace(GL_BACK);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 }
@@ -196,7 +197,7 @@ void FlashlightShadowMapPass() {
 
 	shaderList[1]->UseShader();
 	glViewport(0, 0, flashlight->getShadowMap()->getShadowWidth(), flashlight->getShadowMap()->getShadowHeight());
-
+	glCullFace(GL_FRONT);
 	flashlight->getShadowMap()->Write();
 	glClear(GL_DEPTH_BUFFER_BIT);
 
@@ -205,6 +206,7 @@ void FlashlightShadowMapPass() {
 	shaderList[1]->setMat4("lightSpaceTransform", lightTransform);
 
 	scene->RenderShadowMap(shaderList[1]);
+	glCullFace(GL_BACK);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }

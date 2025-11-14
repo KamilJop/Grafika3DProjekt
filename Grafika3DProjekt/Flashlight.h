@@ -19,6 +19,8 @@ private:
 	glm::vec3 lightDirection;
 	GLfloat lightCutOff;
 	GLfloat lightOuterCutOff;
+	GLfloat cutoffDegrees;
+	GLfloat outerCutoffDegrees;
 	ShadowMap* shadowMap;
 	glm::mat4 lightProjection;
 };

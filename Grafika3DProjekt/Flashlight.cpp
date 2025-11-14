@@ -5,14 +5,17 @@ Flashlight::Flashlight(glm::vec3 colors, GLfloat ambientIntensity, GLfloat diffu
 	: PointLight(colors, ambientIntensity, diffuseIntensity, lightPos, con, lin, quad)
 {
 	lightDirection = direction;
-	lightCutOff = cutOff;
-	// Potem do wyrzucenia :D
-	lightPos = lightPosition = glm::vec3(0.0f, 1.0f, 2.0f);
-	lightOuterCutOff = outerCutOff;
+	lightCutOff = glm::cos(glm::radians(cutOff));
+	lightOuterCutOff = glm::cos(glm::radians(outerCutOff));
+	cutoffDegrees = cutOff;
+	outerCutoffDegrees = outerCutOff;
+
+
 	shadowMap = new ShadowMap();
 	shadowMap->Init(shadowWidth, shadowHeight);
 	float aspect = shadowWidth / shadowHeight;
-	lightProjection = glm::perspective(glm::radians(outerCutOff * 2.0f), aspect, 0.1f, 100.0f);
+	float fov = outerCutoffDegrees * 2.0f;
+	lightProjection = glm::perspective(glm::radians(fov), aspect, 0.1f, 100.0f);
 }
 
 // Destructor
@@ -55,8 +58,8 @@ void Flashlight::useLight(Shader* lightShader)
 	lightShader->setFloat("flashLight.diffuseIntensity", lightDiffuseIntensity);
 	lightShader->setVec3("flashLight.lightPosition", lightPosition);
 	lightShader->setVec3("flashLight.lightDirection", lightDirection);
-	lightShader->setFloat("flashLight.cutOff", glm::cos(glm::radians(lightCutOff)));
-	lightShader->setFloat("flashLight.outerCutOff", glm::cos(glm::radians(lightOuterCutOff)));
+	lightShader->setFloat("flashLight.cutOff", lightCutOff);
+	lightShader->setFloat("flashLight.outerCutOff", lightOuterCutOff);
 	lightShader->setFloat("flashLight.constant", constant);
 	lightShader->setFloat("flashLight.linear", linear);
 	lightShader->setFloat("flashLight.quadratic", quadratic);
