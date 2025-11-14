@@ -68,6 +68,17 @@ uniform OmniShadowMap omniShadowMaps[NR_POINT_LIGHTS];
 
 uniform vec3 cameraPosition;
 
+// Samples use for omni shadow pcf performance upgrade
+vec3 sampleOffsetDirections[20] = vec3[]
+(
+   vec3( 1,  1,  1), vec3( 1, -1,  1), vec3(-1, -1,  1), vec3(-1,  1,  1), 
+   vec3( 1,  1, -1), vec3( 1, -1, -1), vec3(-1, -1, -1), vec3(-1,  1, -1),
+   vec3( 1,  1,  0), vec3( 1, -1,  0), vec3(-1, -1,  0), vec3(-1,  1,  0),
+   vec3( 1,  0,  1), vec3(-1,  0,  1), vec3( 1,  0, -1), vec3(-1,  0, -1),
+   vec3( 0,  1,  1), vec3( 0, -1,  1), vec3( 0, -1, -1), vec3( 0,  1, -1)
+);   
+
+
 float CalculateDirectionalShadowFactor()
 {	
 
@@ -104,7 +115,6 @@ float CalculateDirectionalShadowFactor()
 	{
 		shadow = 0.0;
 	}
-	
 	return shadow;
 }
 
@@ -144,7 +154,6 @@ float CalculateFlashLightShadowFactor()
 	{
 		shadow = 0.0;
 	}
-	
 	return shadow;
 }
 
@@ -153,20 +162,33 @@ float CalculateOmniShadowFactor(PointLight pLight, int shadowIndex)
 	// Calculating vector going from Fragment to Light
 	vec3 fragToLight = FragPos - pLight.lightPosition;
 	
-	// Calculate closest point depth
-	float closest = texture(omniShadowMaps[shadowIndex].shadowMap, fragToLight).r;
-	
-	// Multiply to change from 0-1 values to original value
-	closest *= omniShadowMaps[shadowIndex].farPlane;
 	
 	// Calculate current depth point
 	float current = length(fragToLight);
 	
 	// Avoid shadow acne
 	float bias = 0.05;
+	float shadow = 0.0;
+	int samples = 20;
+	float viewDistance = length(cameraPosition - FragPos);
+	float diskRadius = (1.0 + (viewDistance/omniShadowMaps[shadowIndex].farPlane)) / 25.0;
 	
-	// Calculate shadow
-	float shadow = current - bias > closest ? 1.0 : 0.0;
+	for (int i = 0 ; i < samples; i++)
+	{
+		// Calculate closest 
+		float closest = texture(omniShadowMaps[shadowIndex].shadowMap, fragToLight + sampleOffsetDirections[i] * diskRadius).r;
+		// Multiply to change from 0-1 values to original values
+		closest *= omniShadowMaps[shadowIndex].farPlane;
+		if (current - bias > closest)
+		{
+			shadow+=1.0;
+		}
+	}
+	
+
+	
+	// Calculate average
+	shadow /= float(samples);
 	
 	return shadow;
 }
@@ -261,7 +283,8 @@ vec4 CalculateFlashLight(){
 			
 			specular = flashLight.lightColor * flashLight.diffuseIntensity * material.specularIntensity * flashLightSpecularFactor;
 		}
-		flashLightColor = vec4(ambient * spotIntensity + (1.0 - shadowFactor) * (diffuse + specular) * flashAttenuation * spotIntensity, 1.0f);
+		vec3 combinedLight = ambient + (1.0 - shadowFactor) * (diffuse + specular);
+		flashLightColor = vec4(combinedLight * flashAttenuation * spotIntensity, 1.0f);
 	}
 	return flashLightColor;
 }
