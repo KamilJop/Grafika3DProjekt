@@ -37,6 +37,9 @@ static const char* vertexShader = "Shaders/shader.vert";
 static const char* fragmentShader = "Shaders/shader.frag";
 static const char* shadowVertexShader = "Shaders/directional_shadow_map.vert";
 static const char* shadowFragmentShader = "Shaders/directional_shadow_map.frag";
+static const char* omniShadowVertexShader = "Shaders/omni_shadow_map.vert";
+static const char* omniShadowGeometryShader = "Shaders/omni_shadow_map.geom";
+static const char* omniShadowFragmentShader = "Shaders/omni_shadow_map.frag";
 
 // Texture file paths
 static const char* brickTexture = "Textures/brick.png";
@@ -95,6 +98,10 @@ int main()
 	Shader* shadowShader = new Shader();
 	shadowShader->CreateShader(shadowVertexShader, shadowFragmentShader);
 	shaderList.push_back(shadowShader);
+
+	Shader* omniShadowShader = new Shader();
+	omniShadowShader->CreateShader(omniShadowVertexShader, omniShadowGeometryShader, omniShadowFragmentShader);
+	shaderList.push_back(omniShadowShader);
 
 	// Set perspective 
 	glm::mat4 projection;
@@ -158,9 +165,9 @@ Scene* createMainScene(Camera * camera) {
 
 	// Light
 	mainLight = new DirectionalLight(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(2.0f, -5.0f, -3.0f), 0.00001f, 0.0001f, 2048.0f, 2048.0f);
-	pointLight = new PointLight(glm::vec3(1.0f, 0.0f, 0.0f), 0.5f, 0.9f, glm::vec3(0.0f, 1.0f, -3.5f), 1.0f, 0.09f, 0.032f, 0);
-	pointLight2 = new PointLight(glm::vec3(0.0f, 0.0f, 1.0f), 0.5f, 0.9f, glm::vec3(-3.5f, 0.5f, -4.0f), 1.0f, 0.12f, 0.062f, 1);
-	pointLight3 = new PointLight(glm::vec3(0.0f, 1.0f, 0.0f), 0.5f, 0.9f, glm::vec3(3.5f, 0.5f, -4.0f), 1.0f, 0.12f, 0.062f, 2);
+	pointLight = new PointLight(glm::vec3(1.0f, 0.0f, 0.0f), 0.5f, 0.9f, glm::vec3(0.0f, 1.0f, -3.5f), 1.0f, 0.09f, 0.032f, 0, 100.0f, 0.01f, 2048.0f, 2048.0f);
+	pointLight2 = new PointLight(glm::vec3(0.0f, 0.0f, 1.0f), 0.5f, 0.9f, glm::vec3(-3.5f, 0.5f, -4.0f), 1.0f, 0.12f, 0.062f, 1, 100.0f, 0.01f, 2048.0f, 2048.0f);
+	pointLight3 = new PointLight(glm::vec3(0.0f, 1.0f, 0.0f), 0.5f, 0.9f, glm::vec3(3.5f, 0.5f, -4.0f), 1.0f, 0.12f, 0.062f, 2, 100.0f, 0.01f, 2048.0f, 2048.0f);
 	flashlight = new Flashlight(glm::vec3(1.0f, 1.0f, 0.85f), 0.001f, 5.2f, camera->getCameraPosition(), 1.0f, 0.07f, 0.017f, camera->getCameraFront(), 25.0f, 32.5f, 2048.0f,2048.0f);
 
 	// Add entities and lights to scene

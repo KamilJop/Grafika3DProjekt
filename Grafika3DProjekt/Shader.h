@@ -16,6 +16,7 @@ public:
 	Shader();
 
 	void CreateShader(const char* vertexPath, const char* fragmentPath);
+	void CreateShader(const char* vertexPath, const char* geometryPath, const char* fragmentPath);
 
 	std::string ReadFile(const char* filePath);
 
@@ -49,6 +50,7 @@ private:
 
 
 	void CompileShader(const char* vertexCode, const char* fragmentCode);
+	void CompileShader(const char* vertexCode, const char* geometryCode, const char* fragmentCode);
 	void AddShader(GLuint theProgram, const char* shaderCode, GLenum shaderType);
 
 };
