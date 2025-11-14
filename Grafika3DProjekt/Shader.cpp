@@ -49,6 +49,20 @@ void Shader::CreateShader(const char* vertexPath, const char* fragmentPath)
 	CompileShader(vShaderCode, fShaderCode);
 }
 
+void Shader::CreateShader(const char* vertexPath, const char* geometryPath, const char* fragmentPath)
+{
+	// Read shader files
+	std::string vertexCode = ReadFile(vertexPath);
+	std::string geometryCode = ReadFile(geometryPath);
+	std::string fragmentCode = ReadFile(fragmentPath);
+	// Convert co character arrays
+	const char* vShaderCode = vertexCode.c_str();
+	const char* gShaderCode = geometryCode.c_str();
+	const char* fShaderCode = fragmentCode.c_str();
+	// Compile the shader
+	CompileShader(vShaderCode, gShaderCode, fShaderCode);
+}
+
 
 // Method to add shader to program
 void Shader::AddShader(GLuint theProgram, const char* shaderCode, GLenum shaderType) {
@@ -115,6 +129,37 @@ void Shader::CompileShader(const char* vertexCode, const char* fragmentCode) {
 	}
 }
 
+void Shader::CompileShader(const char* vertexCode, const char* geometryCode, const char* fragmentCode) {
+	// Create shader program
+	shaderId = glCreateProgram();
+	// Check for errors
+	if (!shaderId) {
+		std::cout << "Error creating shader program!" << std::endl;
+		return;
+	}
+	// Add vertex, geometry and fragment shaders
+	AddShader(shaderId, vertexCode, GL_VERTEX_SHADER);
+	AddShader(shaderId, geometryCode, GL_GEOMETRY_SHADER);
+	AddShader(shaderId, fragmentCode, GL_FRAGMENT_SHADER);
+	// Link and validate shader program
+	GLint result = 0;
+	GLchar eLog[1024] = { 0 };
+	glLinkProgram(shaderId);
+	glGetProgramiv(shaderId, GL_LINK_STATUS, &result);
+	if (!result) {
+		glGetProgramInfoLog(shaderId, sizeof(eLog), NULL, eLog);
+		std::cout << "Error linking program: " << eLog << std::endl;
+		return;
+	}
+	glValidateProgram(shaderId);
+	glGetProgramiv(shaderId, GL_VALIDATE_STATUS, &result);
+	if (!result) {
+		glGetProgramInfoLog(shaderId, sizeof(eLog), NULL, eLog);
+		std::cout << "Error validating program: " << eLog << std::endl;
+		return;
+	}
+}
+
 
 // Method to use the shader program
 void Shader::UseShader() {
@@ -135,3 +180,4 @@ Shader::~Shader()
 {
 	ClearShader();
 }
+
