@@ -57,6 +57,13 @@ void PointLight::useLight(Shader* lightShader)
 	lightShader->setFloat(base + "constant", constant);
 	lightShader->setFloat(base + "linear", linear);
 	lightShader->setFloat(base + "quadratic", quadratic);
+
+	std::string shadowBase = "omniShadowMaps[" + indexString + "].";
+
+	lightShader->setFloat(shadowBase + "farPlane", farPlane);
+	int textureUnit = 3 + lightIndex;
+	shadowMap->Read(GL_TEXTURE0 + textureUnit);
+	lightShader->setInt(shadowBase + "shadowMap", textureUnit);
 }
 
 std::vector<glm::mat4> PointLight::calculateLightTransform()

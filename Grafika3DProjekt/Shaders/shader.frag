@@ -28,6 +28,12 @@ struct PointLight
 	float quadratic;
 };
 
+struct OmniShadowMap
+{
+	samplerCube shadowMap;
+	float farPlane;
+};
+
 struct FlashLight
 {
 	vec3 lightColor;
@@ -58,6 +64,7 @@ uniform Material material;
 uniform sampler2D u_Texture;
 uniform sampler2D directionalShadowMap;
 uniform sampler2D flashShadowMap;
+uniform OmniShadowMap omniShadowMaps[NR_POINT_LIGHTS];
 
 uniform vec3 cameraPosition;
 
@@ -141,6 +148,28 @@ float CalculateFlashLightShadowFactor()
 	return shadow;
 }
 
+float CalculateOmniShadowFactor(PointLight pLight, int shadowIndex)
+{
+	// Calculating vector going from Fragment to Light
+	vec3 fragToLight = FragPos - pLight.lightPosition;
+	
+	// Calculate closest point depth
+	float closest = texture(omniShadowMaps[shadowIndex].shadowMap, fragToLight).r;
+	
+	// Multiply to change from 0-1 values to original value
+	closest *= omniShadowMaps[shadowIndex].farPlane;
+	
+	// Calculate current depth point
+	float current = length(fragToLight);
+	
+	// Avoid shadow acne
+	float bias = 0.05;
+	
+	// Calculate shadow
+	float shadow = current - bias > closest ? 1.0 : 0.0;
+	
+	return shadow;
+}
 
 vec4 CalculateDirectionalLight()
 {
@@ -238,7 +267,7 @@ vec4 CalculateFlashLight(){
 }
 
 
-vec4 CalculatePointLight(PointLight pointLight){
+vec4 CalculatePointLight(PointLight pointLight, int shadowIndex){
 	// Calculate vector between point light source and current fragment
 	vec3 pointLightDistanceVector = pointLight.lightPosition - FragPos;
 	
@@ -247,6 +276,9 @@ vec4 CalculatePointLight(PointLight pointLight){
 	
 	// Calculate direction vector between point light source and current fragment
 	vec3 pointLightDirection = normalize(pointLightDistanceVector);
+	
+	//Calculate shadow factor
+	float shadowFactor = CalculateOmniShadowFactor(pointLight, shadowIndex);
 	
 	// Calculate attenuation using formula
 	float attenuation = 1.0 / (pointLight.constant + pointLight.linear * distance + pointLight.quadratic * distance * distance);
@@ -277,7 +309,7 @@ vec4 CalculatePointLight(PointLight pointLight){
 			pointLightSpecularColor = vec4(pointLight.lightColor * material.specularIntensity * pointSpecularFactor, 1.0f);
 		}
 	}
-	return(pointLightAmbientColor + pointLightDiffuseColor + pointLightSpecularColor) * attenuation;
+	return(pointLightAmbientColor + (1.0 - shadowFactor)*( pointLightDiffuseColor + pointLightSpecularColor)) * attenuation;
 }
 
 
@@ -290,7 +322,7 @@ void main()
 	vec4 pointLightFinalColor = vec4(0.0f);
 	
 	for(int i = 0; i < NR_POINT_LIGHTS; i++)
-        pointLightFinalColor += CalculatePointLight(pointLights[i]);    
+        pointLightFinalColor += CalculatePointLight(pointLights[i],i);    
 
 	// Summmarize all light colors together
 	vec4 finalLightColor = directionalLightFinalColor + pointLightFinalColor + flashLightFinalColor;
