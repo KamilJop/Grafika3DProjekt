@@ -168,6 +168,7 @@
     <ClInclude Include="ShadowMap.h" />
     <ClInclude Include="SpinningEntity.h" />
     <ClInclude Include="stb_image.h" />
+    <ClInclude Include="stb_loader.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
