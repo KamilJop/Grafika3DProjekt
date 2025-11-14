@@ -39,6 +39,7 @@ public:
 	}
 	void Render(Shader* shader, glm::mat4 projection);
 	void Update(float deltaTime);
+	void RenderShadowMap(Shader* shadowShader);
 
 
 	
