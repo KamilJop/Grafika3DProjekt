@@ -87,12 +87,12 @@ Skybox* skybox;
 // Skybox faces
 std::vector<std::string> skyboxFaces
 {
-	"Textures/Skybox/posx.jpg",
-	"Textures/Skybox/negx.jpg",
-	"Textures/Skybox/posy.jpg",
-	"Textures/Skybox/negy.jpg",
-	"Textures/Skybox/posz.jpg",
-	"Textures/Skybox/negz.jpg"
+	"Textures/Skybox/Cold Night__Cam_2_Left+X.png",
+	"Textures/Skybox/Cold Night__Cam_3_Right-X.png",
+	"Textures/Skybox/Cold Night__Cam_4_Up+Y.png",
+	"Textures/Skybox/Cold Night__Cam_5_Down-Y.png",
+	"Textures/Skybox/Cold Night__Cam_0_Front+Z.png",
+	"Textures/Skybox/Cold Night__Cam_1_Back-Z.png"
 };
 
 // Function prototypes
@@ -195,7 +195,7 @@ Scene* createMainScene(Camera * camera) {
 	skybox = new Skybox(skyboxFaces);
 
 	// Light
-	mainLight = new DirectionalLight(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(2.0f, -5.0f, -3.0f), 0.15f, 0.25f, 2048.0f, 2048.0f);
+	mainLight = new DirectionalLight(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(-1.0f, -5.0f, -5.5f), 0.1f, 0.22f, 2048.0f, 2048.0f);
 	pointLight = new PointLight(glm::vec3(1.0f, 0.0f, 0.0f), 0.01f, 0.9f, glm::vec3(-15.0f, 1.5f, -3.0f), 1.0f, 0.09f, 0.032f, 0, 100.0f, 0.01f, 2048.0f, 2048.0f);
 	pointLight2 = new PointLight(glm::vec3(0.0f, 0.0f, 1.0f), 0.01f, 0.9f, glm::vec3(1.0f, 1.5f, -3.0f), 1.0f, 0.12f, 0.062f, 1, 100.0f, 0.01f, 2048.0f, 2048.0f);
 	pointLight3 = new PointLight(glm::vec3(0.0f, 1.0f, 0.0f), 0.01f, 0.9f, glm::vec3(15.5f, 1.0f, -1.0f), 1.0f, 0.12f, 0.062f, 2, 100.0f, 0.01f, 2048.0f, 2048.0f);
