@@ -5,6 +5,7 @@ in vec3 Normal;
 in vec3 FragPos;
 in vec2 TextureCoordinates;
 in vec4 DirectionalLightSpacePosition;
+in vec4 FlashLightSpacePosition;
 
 out vec4 colour;
 
@@ -56,6 +57,7 @@ uniform FlashLight flashLight;
 uniform Material material;
 uniform sampler2D u_Texture;
 uniform sampler2D directionalShadowMap;
+uniform sampler2D flashShadowMap;
 
 uniform vec3 cameraPosition;
 
@@ -99,6 +101,45 @@ float CalculateDirectionalShadowFactor()
 	return shadow;
 }
 
+float CalculateFlashLightShadowFactor()
+{	
+
+	
+	// Get Projection coordinates
+	vec3 projCoords = FlashLightSpacePosition.xyz / FlashLightSpacePosition.w;
+	
+	// Change values to values between 0 and 1
+	projCoords = (projCoords * 0.5) + 0.5;
+	
+	// Calculating hwo far the fragment is from the light
+	float current = projCoords.z;
+	
+	// Avoiding shadow acne effect
+	float bias = 0.00001;
+	
+	// Avoiding pixelating shadows
+	float shadow = 0.0;
+	vec2 texelSize = 1.0 / textureSize(flashShadowMap,0);
+	
+	for( int x = -1 ; x <= 1; ++x)
+	{
+		for(int y = -1; y <= 1; ++y)
+		{
+			float pcfDepth = texture(flashShadowMap, projCoords.xy + vec2(x,y) * texelSize).r;
+			shadow += current - bias > pcfDepth ? 1.0 : 0.0;
+		}
+	}
+	
+	shadow /= 9.0;
+	
+	
+	if(projCoords.z > 1.0)
+	{
+		shadow = 0.0;
+	}
+	
+	return shadow;
+}
 
 
 vec4 CalculateDirectionalLight()
@@ -140,6 +181,9 @@ vec4 CalculateDirectionalLight()
 
 
 vec4 CalculateFlashLight(){
+
+	float shadowFactor = CalculateFlashLightShadowFactor();
+	
 	//Initialize black if we're outside the cone
 	vec4 flashLightColor = vec4(0.0f);
 	
@@ -188,7 +232,7 @@ vec4 CalculateFlashLight(){
 			
 			specular = flashLight.lightColor * flashLight.diffuseIntensity * material.specularIntensity * flashLightSpecularFactor;
 		}
-		flashLightColor = vec4(ambient * spotIntensity + (diffuse + specular) * flashAttenuation * spotIntensity, 1.0f);
+		flashLightColor = vec4(ambient * spotIntensity + (1.0 - shadowFactor) * (diffuse + specular) * flashAttenuation * spotIntensity, 1.0f);
 	}
 	return flashLightColor;
 }

@@ -78,6 +78,7 @@ Scene* scene = nullptr;
 
 Scene* createMainScene(Camera* camera);
 void DirectionalLightShadowMapPass();
+void FlashlightShadowMapPass();
 void RenderScenePass(glm::mat4 projection);
 
 int main()
@@ -117,8 +118,11 @@ int main()
 		// Get + Handle user input events
 		glfwPollEvents();
 		
-		// Shadow map pass
+		// Shadow map for dirlight pass
 		DirectionalLightShadowMapPass();
+
+		// Shadow map for flashlight pass
+		FlashlightShadowMapPass();
 
 		// Render scene pass
 		RenderScenePass(projection);
@@ -157,7 +161,7 @@ Scene* createMainScene(Camera * camera) {
 	pointLight = new PointLight(glm::vec3(1.0f, 0.0f, 0.0f), 0.5f, 0.9f, glm::vec3(0.0f, 1.0f, -3.5f), 1.0f, 0.09f, 0.032f, 0);
 	pointLight2 = new PointLight(glm::vec3(0.0f, 0.0f, 1.0f), 0.5f, 0.9f, glm::vec3(-3.5f, 0.5f, -4.0f), 1.0f, 0.12f, 0.062f, 1);
 	pointLight3 = new PointLight(glm::vec3(0.0f, 1.0f, 0.0f), 0.5f, 0.9f, glm::vec3(3.5f, 0.5f, -4.0f), 1.0f, 0.12f, 0.062f, 2);
-	flashlight = new Flashlight(glm::vec3(1.0f, 1.0f, 0.85f), 0.02f, 1.2f, camera->getCameraPosition(), 1.0f, 0.07f, 0.017f, camera->getCameraFront(), 14.0f, 15.5f);
+	flashlight = new Flashlight(glm::vec3(1.0f, 1.0f, 0.85f), 0.001f, 4.2f, camera->getCameraPosition(), 1.0f, 0.07f, 0.017f, camera->getCameraFront(), 20.0f, 25.5f, 2048.0f,2048.0f);
 
 	// Add entities and lights to scene
 	scene->AddEntity(doorEntity);
@@ -180,12 +184,29 @@ void DirectionalLightShadowMapPass() {
 	glClear(GL_DEPTH_BUFFER_BIT);
 
 	glm::mat4 lightTransform = mainLight->CalculateLightTransform();
-	shaderList[1]->setMat4("directionalLightSpaceTransform", lightTransform);
+	shaderList[1]->setMat4("lightSpaceTransform", lightTransform);
 
 	scene->RenderShadowMap(shaderList[1]);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+}
+
+void FlashlightShadowMapPass() {
+
+	shaderList[1]->UseShader();
+	glViewport(0, 0, flashlight->getShadowMap()->getShadowWidth(), flashlight->getShadowMap()->getShadowHeight());
+
+	flashlight->getShadowMap()->Write();
+	glClear(GL_DEPTH_BUFFER_BIT);
+
+	glm::mat4 lightTransform = flashlight->CalculateLightTransform();
+
+	shaderList[1]->setMat4("lightSpaceTransform", lightTransform);
+
+	scene->RenderShadowMap(shaderList[1]);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void RenderScenePass(glm::mat4 projectionMatrix)
@@ -205,6 +226,11 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 
 	// Bind the shadow map to texture unit 1
 	mainLight->getShadowMap()->Read(GL_TEXTURE1);
+
+	// Set the flashlight shadow map uniform to texture unit 2
+	shaderList[0]->setInt("flashShadowMap", 2);
+
+	flashlight->getShadowMap()->Read(GL_TEXTURE2);
 
 	// Update the scene
 	scene->Update(deltaTime);

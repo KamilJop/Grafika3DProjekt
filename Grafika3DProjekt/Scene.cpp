@@ -22,6 +22,7 @@ void Scene::Render(Shader* shader, glm::mat4 projection)
 	shader->setMat4("view", camera->getViewMatrix());
 	shader->setVec3("cameraPosition", camera->getCameraPosition());
 	shader->setMat4("directionalLightSpaceTransform", dirLight->CalculateLightTransform());
+	shader->setMat4("flashLightSpaceTransform", flashLight->CalculateLightTransform());
 	for (auto& pLight : pointLights)
 	{
 		pLight->useLight(shader);
@@ -32,8 +33,9 @@ void Scene::Render(Shader* shader, glm::mat4 projection)
 	}
 	if (flashLight && camera->getFlashlightState())
 	{
-		flashLight->setLightPosition(camera->getCameraPosition());
-		flashLight->setLightDirection(camera->getCameraFront());
+		// Potem do odkomentowania :D
+		/*flashLight->setLightPosition(camera->getCameraPosition());
+		flashLight->setLightDirection(camera->getCameraFront());*/
 		flashLight->useLight(shader);
 	}
 	else
