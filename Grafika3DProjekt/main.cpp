@@ -22,6 +22,8 @@
 #include "Model.h"
 #include "Scene.h"
 #include "ShadowMap.h"
+#include "Skybox.h"
+
 // Window dimensions
 const GLint WIDTH = 1280, HEIGHT = 720;
 
@@ -79,6 +81,21 @@ Model chest;
 // Create scene
 Scene* scene = nullptr;
 
+// Create skybox
+Skybox* skybox;
+
+// Skybox faces
+std::vector<std::string> skyboxFaces
+{
+	"Textures/Skybox/posx.jpg",
+	"Textures/Skybox/negx.jpg",
+	"Textures/Skybox/posy.jpg",
+	"Textures/Skybox/negy.jpg",
+	"Textures/Skybox/posz.jpg",
+	"Textures/Skybox/negz.jpg"
+};
+
+// Function prototypes
 Scene* createMainScene(Camera* camera);
 void DirectionalLightShadowMapPass();
 void FlashlightShadowMapPass();
@@ -174,6 +191,9 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(floorEntity);
 	scene->AddEntity(chestEntity);
 
+	// Skybox
+	skybox = new Skybox(skyboxFaces);
+
 	// Light
 	mainLight = new DirectionalLight(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(2.0f, -5.0f, -3.0f), 0.15f, 0.25f, 2048.0f, 2048.0f);
 	pointLight = new PointLight(glm::vec3(1.0f, 0.0f, 0.0f), 0.01f, 0.9f, glm::vec3(-15.0f, 1.5f, -3.0f), 1.0f, 0.09f, 0.032f, 0, 100.0f, 0.01f, 2048.0f, 2048.0f);
@@ -267,6 +287,8 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 	// Clear buffers
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	skybox->DrawSkybox(camera.getViewMatrix(), projectionMatrix);
 
 	// Use shader program
 	shaderList[0]->UseShader();

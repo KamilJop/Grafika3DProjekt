@@ -72,7 +72,8 @@ Skybox::Skybox(std::vector<std::string> faces) {
 
 }
 
-void Skybox::DrawSkybox(glm::mat4 viewMatrix, glm::mat4 projectionMatrix) {
+void Skybox::DrawSkybox(glm::mat4 viewMatrix, glm::mat4 projectionMatrix) 
+{
 	// Disable depth mask
 	glDepthMask(GL_FALSE);
 
