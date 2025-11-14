@@ -82,7 +82,9 @@ Scene* scene = nullptr;
 Scene* createMainScene(Camera* camera);
 void DirectionalLightShadowMapPass();
 void FlashlightShadowMapPass();
+void OmniShadowMapPass(PointLight* pLight);
 void RenderScenePass(glm::mat4 projection);
+
 
 int main()
 {
@@ -117,6 +119,9 @@ int main()
 		float currentFrame = static_cast<float>(glfwGetTime());
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
+		float fps = 1.0f / deltaTime;
+		printf("\rFPS: %.2f", fps);
+		fflush(stdout);
 
 		// Camera movement
 		camera.ProcessKeyboard(mainWindow.getKeys(), deltaTime);
@@ -130,6 +135,12 @@ int main()
 
 		// Shadow map for flashlight pass
 		FlashlightShadowMapPass();
+
+		// Shadow map for point lights
+		for (int i = 0; i < scene->pointLights.size(); i++)
+		{
+			OmniShadowMapPass(scene->pointLights[i]);
+		}
 
 		// Render scene pass
 		RenderScenePass(projection);
@@ -215,6 +226,36 @@ void FlashlightShadowMapPass() {
 	scene->RenderShadowMap(shaderList[1]);
 	glCullFace(GL_BACK);
 
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+void OmniShadowMapPass(PointLight* pLight) {
+
+	// Use the omni-directional shadow map shader
+	shaderList[2]->UseShader();
+	// Setup viewport
+	glViewport(0, 0, pLight->getShadowMap()->getShadowWidth(), pLight->getShadowMap()->getShadowHeight());
+
+	// Turn on front face culling
+	glCullFace(GL_FRONT);
+
+	// Bind the shadow map for writing
+	pLight->getShadowMap()->Write();
+
+	// Clear depth buffer
+	glClear(GL_DEPTH_BUFFER_BIT);
+
+	// Get the light transformation matrices
+	std::vector<glm::mat4> lightTransforms = pLight->calculateLightTransform();
+	for (GLuint i = 0; i < 6; ++i)
+	{
+		std::string uniformName = "lightMatrices[" + std::to_string(i) + "]";
+		shaderList[2]->setMat4(uniformName, lightTransforms[i]);
+	}
+	shaderList[2]->setFloat("farPlane", pLight->getFarPlane());
+	shaderList[2]->setVec3("lightPos", pLight->getLightPosition());
+	scene->RenderShadowMap(shaderList[2]);
+	glCullFace(GL_BACK);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 

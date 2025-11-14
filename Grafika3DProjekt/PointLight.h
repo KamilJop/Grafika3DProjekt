@@ -11,6 +11,9 @@ public:
 	void useLight(Shader* lightShader);
 	glm::vec3 getColor() { return lightColor; }
 	glm::vec3 getPosition() { return lightPosition; }
+	OmniShadowMap* getShadowMap() { return shadowMap; }
+	glm::vec3 getLightPosition() { return lightPosition; }
+	GLfloat getFarPlane() { return farPlane; }
 	std::vector<glm::mat4> calculateLightTransform();
 protected:
 	glm::vec3 lightPosition;

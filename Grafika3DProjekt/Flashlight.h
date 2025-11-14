@@ -11,6 +11,7 @@ public:
 	void setLightPosition(glm::vec3 pos);
 	void setLightDirection(glm::vec3 dir);
 	void useLight(Shader* lightShader);
+	
 	ShadowMap* getShadowMap() { return shadowMap; }
 	glm::mat4 CalculateLightTransform();
 	
