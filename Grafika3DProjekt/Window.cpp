@@ -87,6 +87,10 @@ int Window::Initialise() {
 	// Enable depth test
 	glEnable(GL_DEPTH_TEST);
 
+	// Enable face culling
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+
 	// Set viewport size
 	glViewport(0, 0, bufferWidth, bufferHeight);
 

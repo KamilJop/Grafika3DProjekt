@@ -30,6 +30,8 @@ public:
 
 	glm::vec3 getCameraPosition() { return Position; }
 	glm::vec3 getCameraFront() { return Front; }
+	glm::vec3 getCameraRight() { return Right; }
+	glm::vec3 getCameraUp() { return Up; }
 
 	bool getFlashlightState() { return isFlashlightOn; }
 	void setFlashlightState(bool state) { isFlashlightOn = state; }

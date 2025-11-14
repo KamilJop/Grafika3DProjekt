@@ -74,7 +74,7 @@ bool ShadowMap::Init(GLuint width, GLuint height)
 void ShadowMap::Write()
 {
 	// Bind the FBO
-	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, FBO);
 }	
 
 // Bind the shadow map for reading

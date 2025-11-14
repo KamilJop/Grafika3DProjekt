@@ -37,6 +37,9 @@ static const char* vertexShader = "Shaders/shader.vert";
 static const char* fragmentShader = "Shaders/shader.frag";
 static const char* shadowVertexShader = "Shaders/directional_shadow_map.vert";
 static const char* shadowFragmentShader = "Shaders/directional_shadow_map.frag";
+static const char* omniShadowVertexShader = "Shaders/omni_shadow_map.vert";
+static const char* omniShadowGeometryShader = "Shaders/omni_shadow_map.geom";
+static const char* omniShadowFragmentShader = "Shaders/omni_shadow_map.frag";
 
 // Texture file paths
 static const char* brickTexture = "Textures/brick.png";
@@ -78,7 +81,10 @@ Scene* scene = nullptr;
 
 Scene* createMainScene(Camera* camera);
 void DirectionalLightShadowMapPass();
+void FlashlightShadowMapPass();
+void OmniShadowMapPass(PointLight* pLight);
 void RenderScenePass(glm::mat4 projection);
+
 
 int main()
 {
@@ -95,6 +101,10 @@ int main()
 	shadowShader->CreateShader(shadowVertexShader, shadowFragmentShader);
 	shaderList.push_back(shadowShader);
 
+	Shader* omniShadowShader = new Shader();
+	omniShadowShader->CreateShader(omniShadowVertexShader, omniShadowGeometryShader, omniShadowFragmentShader);
+	shaderList.push_back(omniShadowShader);
+
 	// Set perspective 
 	glm::mat4 projection;
 	projection = glm::perspective(glm::radians(60.0f), (GLfloat)mainWindow.getBufferWidth() / (GLfloat)mainWindow.getBufferHeight(), 0.1f, 100.0f);
@@ -109,6 +119,9 @@ int main()
 		float currentFrame = static_cast<float>(glfwGetTime());
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
+		float fps = 1.0f / deltaTime;
+		printf("\rFPS: %.2f", fps);
+		fflush(stdout);
 
 		// Camera movement
 		camera.ProcessKeyboard(mainWindow.getKeys(), deltaTime);
@@ -117,8 +130,17 @@ int main()
 		// Get + Handle user input events
 		glfwPollEvents();
 		
-		// Shadow map pass
+		// Shadow map for dirlight pass
 		DirectionalLightShadowMapPass();
+
+		// Shadow map for flashlight pass
+		FlashlightShadowMapPass();
+
+		// Shadow map for point lights
+		for (int i = 0; i < scene->pointLights.size(); i++)
+		{
+			OmniShadowMapPass(scene->pointLights[i]);
+		}
 
 		// Render scene pass
 		RenderScenePass(projection);
@@ -153,11 +175,11 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(chestEntity);
 
 	// Light
-	mainLight = new DirectionalLight(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(2.0f, -5.0f, -3.0f), 0.1f, 0.4f, 2048.0f, 2048.0f);
-	pointLight = new PointLight(glm::vec3(1.0f, 0.0f, 0.0f), 0.5f, 0.9f, glm::vec3(0.0f, 1.0f, -3.5f), 1.0f, 0.09f, 0.032f, 0);
-	pointLight2 = new PointLight(glm::vec3(0.0f, 0.0f, 1.0f), 0.5f, 0.9f, glm::vec3(-3.5f, 0.5f, -4.0f), 1.0f, 0.12f, 0.062f, 1);
-	pointLight3 = new PointLight(glm::vec3(0.0f, 1.0f, 0.0f), 0.5f, 0.9f, glm::vec3(3.5f, 0.5f, -4.0f), 1.0f, 0.12f, 0.062f, 2);
-	flashlight = new Flashlight(glm::vec3(1.0f, 1.0f, 0.85f), 0.02f, 1.2f, camera->getCameraPosition(), 1.0f, 0.07f, 0.017f, camera->getCameraFront(), 14.0f, 15.5f);
+	mainLight = new DirectionalLight(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(2.0f, -5.0f, -3.0f), 0.15f, 0.25f, 2048.0f, 2048.0f);
+	pointLight = new PointLight(glm::vec3(1.0f, 0.0f, 0.0f), 0.01f, 0.9f, glm::vec3(-15.0f, 1.5f, -3.0f), 1.0f, 0.09f, 0.032f, 0, 100.0f, 0.01f, 2048.0f, 2048.0f);
+	pointLight2 = new PointLight(glm::vec3(0.0f, 0.0f, 1.0f), 0.01f, 0.9f, glm::vec3(1.0f, 1.5f, -3.0f), 1.0f, 0.12f, 0.062f, 1, 100.0f, 0.01f, 2048.0f, 2048.0f);
+	pointLight3 = new PointLight(glm::vec3(0.0f, 1.0f, 0.0f), 0.01f, 0.9f, glm::vec3(15.5f, 1.0f, -1.0f), 1.0f, 0.12f, 0.062f, 2, 100.0f, 0.01f, 2048.0f, 2048.0f);
+	flashlight = new Flashlight(glm::vec3(1.0f, 1.0f, 0.85f), 0.001f, 3.2f, camera->getCameraPosition(), 1.0f, 0.07f, 0.017f, camera->getCameraFront(), 25.0f, 32.5f, 2048.0f,2048.0f);
 
 	// Add entities and lights to scene
 	scene->AddEntity(doorEntity);
@@ -175,17 +197,66 @@ Scene* createMainScene(Camera * camera) {
 void DirectionalLightShadowMapPass() {
 	shaderList[1]->UseShader();
 	glViewport(0, 0, mainLight->getShadowMap()->getShadowWidth(), mainLight->getShadowMap()->getShadowHeight());
-
+	glCullFace(GL_FRONT);
 	mainLight->getShadowMap()->Write();
 	glClear(GL_DEPTH_BUFFER_BIT);
 
 	glm::mat4 lightTransform = mainLight->CalculateLightTransform();
-	shaderList[1]->setMat4("directionalLightSpaceTransform", lightTransform);
+	shaderList[1]->setMat4("lightSpaceTransform", lightTransform);
 
 	scene->RenderShadowMap(shaderList[1]);
 
+	glCullFace(GL_BACK);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+}
+
+void FlashlightShadowMapPass() {
+
+	shaderList[1]->UseShader();
+	glViewport(0, 0, flashlight->getShadowMap()->getShadowWidth(), flashlight->getShadowMap()->getShadowHeight());
+	glCullFace(GL_FRONT);
+	flashlight->getShadowMap()->Write();
+	glClear(GL_DEPTH_BUFFER_BIT);
+
+	glm::mat4 lightTransform = flashlight->CalculateLightTransform();
+
+	shaderList[1]->setMat4("lightSpaceTransform", lightTransform);
+
+	scene->RenderShadowMap(shaderList[1]);
+	glCullFace(GL_BACK);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+void OmniShadowMapPass(PointLight* pLight) {
+
+	// Use the omni-directional shadow map shader
+	shaderList[2]->UseShader();
+	// Setup viewport
+	glViewport(0, 0, pLight->getShadowMap()->getShadowWidth(), pLight->getShadowMap()->getShadowHeight());
+
+	// Turn on front face culling
+	glCullFace(GL_FRONT);
+
+	// Bind the shadow map for writing
+	pLight->getShadowMap()->Write();
+
+	// Clear depth buffer
+	glClear(GL_DEPTH_BUFFER_BIT);
+
+	// Get the light transformation matrices
+	std::vector<glm::mat4> lightTransforms = pLight->calculateLightTransform();
+	for (GLuint i = 0; i < 6; ++i)
+	{
+		std::string uniformName = "lightMatrices[" + std::to_string(i) + "]";
+		shaderList[2]->setMat4(uniformName, lightTransforms[i]);
+	}
+	shaderList[2]->setFloat("farPlane", pLight->getFarPlane());
+	shaderList[2]->setVec3("lightPos", pLight->getLightPosition());
+	scene->RenderShadowMap(shaderList[2]);
+	glCullFace(GL_BACK);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void RenderScenePass(glm::mat4 projectionMatrix)
@@ -205,6 +276,13 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 
 	// Bind the shadow map to texture unit 1
 	mainLight->getShadowMap()->Read(GL_TEXTURE1);
+
+	// Set the flashlight shadow map uniform to texture unit 2
+	shaderList[0]->setInt("flashShadowMap", 2);
+
+	flashlight->getShadowMap()->Read(GL_TEXTURE2);
+
+
 
 	// Update the scene
 	scene->Update(deltaTime);

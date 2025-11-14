@@ -22,6 +22,7 @@ void Scene::Render(Shader* shader, glm::mat4 projection)
 	shader->setMat4("view", camera->getViewMatrix());
 	shader->setVec3("cameraPosition", camera->getCameraPosition());
 	shader->setMat4("directionalLightSpaceTransform", dirLight->CalculateLightTransform());
+	shader->setMat4("flashLightSpaceTransform", flashLight->CalculateLightTransform());
 	for (auto& pLight : pointLights)
 	{
 		pLight->useLight(shader);
@@ -32,8 +33,25 @@ void Scene::Render(Shader* shader, glm::mat4 projection)
 	}
 	if (flashLight && camera->getFlashlightState())
 	{
-		flashLight->setLightPosition(camera->getCameraPosition());
-		flashLight->setLightDirection(camera->getCameraFront());
+		glm::vec3 camPos = camera->getCameraPosition();
+		glm::vec3 camFront = camera->getCameraFront();
+		glm::vec3 camRight = camera->getCameraRight();
+		glm::vec3 camUp = camera->getCameraUp();
+
+		glm::vec3 offset;
+		offset.x = +0.25f;  // w prawo (symulacja rêki)
+		offset.y = -0.20f;  // w dó³ (rêka ni¿ej ni¿ g³owa)
+		offset.z = +0.20f;  // lekko przed kamerê
+
+		glm::vec3 finalPos =
+			camPos +
+			camRight * offset.x +
+			camUp * offset.y +
+			camFront * offset.z;
+
+		flashLight->setLightPosition(finalPos);
+		flashLight->setLightDirection(camFront);
+
 		flashLight->useLight(shader);
 	}
 	else
