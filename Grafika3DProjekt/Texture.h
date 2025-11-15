@@ -12,7 +12,7 @@ public:
 
 	bool LoadTexture();
 	bool LoadTextureAlpha();
-	void UseTexture();
+	void UseTexture(GLenum textureUnit);
 	void ClearTexture();
 
 private:

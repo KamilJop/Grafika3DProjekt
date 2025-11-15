@@ -309,7 +309,8 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 
 	flashlight->getShadowMap()->Read(GL_TEXTURE2);
 
-
+	shaderList[0]->setInt("material.textureMap", 0); 
+	shaderList[0]->setInt("material.normalMap", 3);  
 
 	// Update the scene
 	scene->Update(deltaTime);

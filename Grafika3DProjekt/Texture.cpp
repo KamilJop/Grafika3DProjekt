@@ -80,8 +80,8 @@ bool Texture::LoadTextureAlpha()
 }
 
 // Use the texture
-void Texture::UseTexture()
+void Texture::UseTexture(GLenum textureUnit)
 {
-	glActiveTexture(GL_TEXTURE0);
+	glActiveTexture(textureUnit);
 	glBindTexture(GL_TEXTURE_2D, textureID);
 }

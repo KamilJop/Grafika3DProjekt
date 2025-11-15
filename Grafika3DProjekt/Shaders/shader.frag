@@ -54,6 +54,8 @@ struct Material
 {
 	float specularIntensity;
 	float shininess;
+	sampler2D textureMap;
+	sampler2D normalMap;
 };
 
 
@@ -61,7 +63,6 @@ uniform DirectionalLight directionalLight;
 uniform PointLight pointLights[NR_POINT_LIGHTS];
 uniform FlashLight flashLight;
 uniform Material material;
-uniform sampler2D u_Texture;
 uniform sampler2D directionalShadowMap;
 uniform sampler2D flashShadowMap;
 uniform OmniShadowMap omniShadowMaps[NR_POINT_LIGHTS];
@@ -339,7 +340,7 @@ vec4 CalculatePointLight(PointLight pointLight, int shadowIndex){
 
 void main()
 {
-	vec4 textureColor = texture(u_Texture, TextureCoordinates);
+	vec4 textureColor = texture(material.textureMap, TextureCoordinates);
 	vec4 directionalLightFinalColor = CalculateDirectionalLight();
 	vec4 flashLightFinalColor = CalculateFlashLight();
 	vec4 pointLightFinalColor = vec4(0.0f);
