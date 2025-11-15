@@ -148,6 +148,9 @@ void Model::LoadMaterials(const aiScene* scene)
 		if(material ->GetTexture(aiTextureType_NORMALS, 0, &normalPath) == AI_SUCCESS) {
 			textureFound = true;
 		}
+		if(material ->GetTexture(aiTextureType_HEIGHT, 0, &normalPath) == AI_SUCCESS) {
+			textureFound = true;
+		}
 
 		if(textureFound){
 			// Get the filename from the full path
