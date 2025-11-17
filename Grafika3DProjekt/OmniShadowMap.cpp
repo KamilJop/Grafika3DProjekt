@@ -54,3 +54,7 @@ void OmniShadowMap::Read(GLenum textureUnit) {
 void OmniShadowMap::Write() {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, FBO);
 }
+
+OmniShadowMap::~OmniShadowMap() {
+	ShadowMap::~ShadowMap();
+}

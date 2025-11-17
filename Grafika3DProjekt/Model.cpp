@@ -170,7 +170,7 @@ void Model::LoadMaterials(const aiScene* scene)
 			// Load the texture
 			normalMaps[i] = new Texture(fullpath.c_str());
 			// Error handling
-			if (!normalMaps[i]->LoadTextureAlpha()) {
+			if (!normalMaps[i]->LoadNormalMap()) {
 				printf("Failed to load normal map: %s\n", fullpath.c_str());
 				fflush(stdout);
 				delete normalMaps[i];
