@@ -6,6 +6,7 @@ in vec3 FragPos;
 in vec2 TextureCoordinates;
 in vec4 DirectionalLightSpacePosition;
 in vec4 FlashLightSpacePosition;
+in mat3 TBN;
 
 out vec4 colour;
 
@@ -194,7 +195,7 @@ float CalculateOmniShadowFactor(PointLight pLight, int shadowIndex)
 	return shadow;
 }
 
-vec4 CalculateDirectionalLight()
+vec4 CalculateDirectionalLight(vec3 worldNormal)
 {
 	// Calculate shadow Factor
 	float shadowFactor = CalculateDirectionalShadowFactor();
@@ -204,7 +205,7 @@ vec4 CalculateDirectionalLight()
 	
 	// Diffuse calculations 
 	// Calculate angle between the Normal and light direction
-	float diffuseFactor = max(dot(normalize(Normal), normalize(-directionalLight.lightDirection)), 0.0f);
+	float diffuseFactor = max(dot(worldNormal, normalize(-directionalLight.lightDirection)), 0.0f);
 	// Calculate diffuse color based on diffuse factor
 	vec4 lightDiffuseColor = vec4(directionalLight.lightColor, 1.0f) * directionalLight.lightDiffuseIntensity * diffuseFactor;
 	
@@ -220,7 +221,7 @@ vec4 CalculateDirectionalLight()
 		vec3 halfwayDir = normalize(normalize(-directionalLight.lightDirection) + fragToCam);
 		
 		// Calculate angle between normal and halfwayDir
-		float specularFactor = pow(max(dot(normalize(Normal), halfwayDir), 0.0), material.shininess);
+		float specularFactor = pow(max(dot(worldNormal, halfwayDir), 0.0), material.shininess);
 		
 		if(specularFactor > 0.0f)
 		{	
@@ -232,7 +233,7 @@ vec4 CalculateDirectionalLight()
 }
 
 
-vec4 CalculateFlashLight(){
+vec4 CalculateFlashLight(vec3 worldNormal){
 
 	float shadowFactor = CalculateFlashLightShadowFactor();
 	
@@ -266,7 +267,7 @@ vec4 CalculateFlashLight(){
 		vec3 ambient = flashLight.lightColor * flashLight.ambientIntensity;
 		
 		// Calculate diffuse lightning for flashlight
-		vec3 norm = normalize(Normal) ;
+		vec3 norm = worldNormal ;
 		float diff = max(dot(norm, flashLightDirection), 0.0f);
 		vec3 diffuse = flashLight.lightColor * flashLight.diffuseIntensity * diff;
 		
@@ -291,7 +292,7 @@ vec4 CalculateFlashLight(){
 }
 
 
-vec4 CalculatePointLight(PointLight pointLight, int shadowIndex){
+vec4 CalculatePointLight(PointLight pointLight, int shadowIndex, vec3 worldNormal){
 	// Calculate vector between point light source and current fragment
 	vec3 pointLightDistanceVector = pointLight.lightPosition - FragPos;
 	
@@ -311,7 +312,7 @@ vec4 CalculatePointLight(PointLight pointLight, int shadowIndex){
 	vec4 pointLightAmbientColor = vec4(pointLight.lightColor, 1.0f) * pointLight.lightAmbientIntensity;
 	
 	// Calculate diffuse color and multiply by attenuation
-	float pointDiffuseFactor = max(dot(Normal, pointLightDirection), 0.0f);
+	float pointDiffuseFactor = max(dot(worldNormal, pointLightDirection), 0.0f);
 	vec4 pointLightDiffuseColor = vec4(pointLight.lightColor, 1.0f) * pointLight.lightDiffuseIntensity * pointDiffuseFactor;
 	
 	// Initialize empty vec4 for specular lightning
@@ -321,12 +322,11 @@ vec4 CalculatePointLight(PointLight pointLight, int shadowIndex){
 	if (pointDiffuseFactor > 0.0f){
 		// Calculate direction we're looking at fragment with
 		vec3 fragToCam = normalize(cameraPosition - FragPos);
-		
 		// Calculate halfwayDir for Blinn Phong
 		vec3 halfwayDir = normalize(pointLightDirection + fragToCam);
 		
 		// Calculate angle between normal and halfwayDir 
-		float pointSpecularFactor = pow(max(dot(normalize(Normal), halfwayDir), 0.0), material.shininess);
+		float pointSpecularFactor = pow(max(dot(worldNormal, halfwayDir), 0.0), material.shininess);
 		if(pointSpecularFactor > 0.0f)
 		{
 			// Calculate specular color and multiply it by attenuation
@@ -339,18 +339,26 @@ vec4 CalculatePointLight(PointLight pointLight, int shadowIndex){
 
 
 void main()
-{
+{	
+	vec3 normalNEW = texture(material.normalMap, TextureCoordinates).rgb;
+	normalNEW = normalNEW * 2.0 - 1.0;
+	normalNEW = normalize(TBN * normalNEW);
+	
 	vec4 textureColor = texture(material.textureMap, TextureCoordinates);
-	vec4 directionalLightFinalColor = CalculateDirectionalLight();
-	vec4 flashLightFinalColor = CalculateFlashLight();
+	vec4 directionalLightFinalColor = CalculateDirectionalLight(normalNEW);
+	vec4 flashLightFinalColor = CalculateFlashLight(normalNEW);
 	vec4 pointLightFinalColor = vec4(0.0f);
 	
+
+	
 	for(int i = 0; i < NR_POINT_LIGHTS; i++)
-        pointLightFinalColor += CalculatePointLight(pointLights[i],i);    
+        pointLightFinalColor += CalculatePointLight(pointLights[i],i,normalNEW);    
 
 	// Summmarize all light colors together
 	vec4 finalLightColor = directionalLightFinalColor + pointLightFinalColor + flashLightFinalColor;
 	
 	// Multiply the color by light 
 	colour = finalLightColor * textureColor;
+	
+
 }

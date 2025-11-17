@@ -177,6 +177,10 @@ void Model::LoadMaterials(const aiScene* scene)
 				normalMaps[i] = nullptr;
 			}
 		}
+		if (!normalMaps[i]) {
+			normalMaps[i] = new Texture("Textures/default_normal.png");
+			normalMaps[i]->LoadNormalMap();
+		}
 
 	}
 }
