@@ -39,9 +39,9 @@ void Scene::Render(Shader* shader, glm::mat4 projection)
 		glm::vec3 camUp = camera->getCameraUp();
 
 		glm::vec3 offset;
-		offset.x = +0.25f;  // w prawo (symulacja rêki)
-		offset.y = -0.20f;  // w dó³ (rêka ni¿ej ni¿ g³owa)
-		offset.z = +0.20f;  // lekko przed kamerê
+		offset.x = +0.25f;  
+		offset.y = -0.20f;  
+		offset.z = +0.20f;  
 
 		glm::vec3 finalPos =
 			camPos +

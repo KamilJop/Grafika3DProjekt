@@ -1,6 +1,6 @@
 #pragma once
 #include <glad/glad.h>
-#include "stb_image.h"
+#include "stb_loader.h"
 #include <string>
 
 
@@ -12,7 +12,8 @@ public:
 
 	bool LoadTexture();
 	bool LoadTextureAlpha();
-	void UseTexture();
+	bool LoadNormalMap();
+	void UseTexture(GLenum textureUnit);
 	void ClearTexture();
 
 private:
