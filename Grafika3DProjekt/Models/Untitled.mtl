@@ -11,4 +11,4 @@ illum 2
 map_Kd C:/metal_tool_chest_diff_8k.jpg
 map_Ns C:/metal_tool_chest_rough_8k.png
 map_refl C:/metal_tool_chest_metal_8k.png
-map_Bump -bm 1.000000 C:/metal_tool_chest_nor_gl_8k.png
+norm C:/metal_tool_chest_nor_gl_8k.png
