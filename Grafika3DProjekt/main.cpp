@@ -309,8 +309,10 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 
 	flashlight->getShadowMap()->Read(GL_TEXTURE2);
 
+	// Set texture units for material maps
 	shaderList[0]->setInt("material.textureMap", 0); 
 	shaderList[0]->setInt("material.normalMap", 3);  
+	shaderList[0]->setInt("material.heightMap", 4);
 
 	// Update the scene
 	scene->Update(deltaTime);

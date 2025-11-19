@@ -7,6 +7,8 @@ in vec2 TextureCoordinates;
 in vec4 DirectionalLightSpacePosition;
 in vec4 FlashLightSpacePosition;
 in mat3 TBN;
+in vec3 TangentViewPos;
+in vec3 TangentFragPos;
 
 out vec4 colour;
 
@@ -57,6 +59,7 @@ struct Material
 	float shininess;
 	sampler2D textureMap;
 	sampler2D normalMap;
+	sampler2D heightMap;
 };
 
 
@@ -336,15 +339,31 @@ vec4 CalculatePointLight(PointLight pointLight, int shadowIndex, vec3 worldNorma
 	return(pointLightAmbientColor + (1.0 - shadowFactor)*( pointLightDiffuseColor + pointLightSpecularColor)) * attenuation;
 }
 
-
+vec2 ParallaxMapping(vec2 tCords, vec3 vDir)
+{
+	// Na chwile testowo
+	float heightScale = 0.05;
+	float height = texture(material.heightMap, tCords).r;
+	
+	vec2 p = vDir.xy / vDir.z * (height * heightScale);
+	return tCords - p;
+}
 
 void main()
 {	
-	vec3 normalNEW = texture(material.normalMap, TextureCoordinates).rgb;
+
+	vec3 viewDirNEW = normalize(TangentViewPos - TangentFragPos);
+	vec2 texCoords = ParallaxMapping(TextureCoordinates, viewDirNEW);
+	
+	if(texCoords.x > 1.0 || texCoords.y > 1.0 || texCoords.x < 0.0 || texCoords.y < 0.0)
+		discard;
+
+
+	vec3 normalNEW = texture(material.normalMap, texCoords).rgb;
 	normalNEW = normalNEW * 2.0 - 1.0;
 	normalNEW = normalize(TBN * normalNEW);
 	
-	vec4 textureColor = texture(material.textureMap, TextureCoordinates);
+	vec4 textureColor = texture(material.textureMap, texCoords);
 	vec4 directionalLightFinalColor = CalculateDirectionalLight(normalNEW);
 	vec4 flashLightFinalColor = CalculateFlashLight(normalNEW);
 	vec4 pointLightFinalColor = vec4(0.0f);

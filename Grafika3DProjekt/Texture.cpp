@@ -80,7 +80,7 @@ bool Texture::LoadTextureAlpha()
 
 bool Texture::LoadMaps()
 {
-	printf("Loading normal map texture: %s\n", fileLocation.c_str());
+	printf("Loading map texture: %s\n", fileLocation.c_str());
 	fflush(stdout);
 	unsigned char* texData = stbi_load(fileLocation.c_str(), &width, &height, &bitDepth, 0);
 	if (!texData)

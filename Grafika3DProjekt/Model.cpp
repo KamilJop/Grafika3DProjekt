@@ -266,6 +266,9 @@ void Model::RenderModel()
 		if (materialIndex < normalMaps.size() && normalMaps[materialIndex]) {
 			normalMaps[materialIndex]->UseTexture(GL_TEXTURE3);
 		}
+		if (materialIndex < paralaxMaps.size() && paralaxMaps[materialIndex]) {
+			paralaxMaps[materialIndex]->UseTexture(GL_TEXTURE4);
+		}
 		meshes[i]->RenderMesh();
 	}
 }
