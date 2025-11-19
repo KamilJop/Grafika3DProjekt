@@ -28,6 +28,7 @@ private:
 	std::vector<Mesh*> meshes;
 	std::vector<Texture*> textures;
 	std::vector<Texture*> normalMaps;
+	std::vector<Texture*> paralaxMaps;
 	std::vector<unsigned int> meshToTexture;
 	std::string directory;
 };

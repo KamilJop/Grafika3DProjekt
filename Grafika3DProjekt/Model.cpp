@@ -89,6 +89,7 @@ void Model::LoadMaterials(const aiScene* scene)
 {
 	textures.resize(scene->mNumMaterials);
 	normalMaps.resize(scene->mNumMaterials);
+	paralaxMaps.resize(scene->mNumMaterials);
 
 	for (size_t i = 0; i < scene->mNumMaterials; i++) {
 		aiMaterial* material = scene->mMaterials[i];
@@ -145,12 +146,14 @@ void Model::LoadMaterials(const aiScene* scene)
 		aiString normalPath;
 		textureFound = false;
 		
+		// Check for normal map 
 		if(material ->GetTexture(aiTextureType_NORMALS, 0, &normalPath) == AI_SUCCESS) {
 			textureFound = true;
 		}
-		//if(material ->GetTexture(aiTextureType_HEIGHT, 0, &normalPath) == AI_SUCCESS) {
-		//	textureFound = true;
-		//}
+		// Check as HEIGHT in case the model uses that type
+		else if(material ->GetTexture(aiTextureType_HEIGHT, 0, &normalPath) == AI_SUCCESS) {
+			textureFound = true;
+		}
 
 		if(textureFound){
 			// Get the filename from the full path
@@ -170,7 +173,7 @@ void Model::LoadMaterials(const aiScene* scene)
 			// Load the texture
 			normalMaps[i] = new Texture(fullpath.c_str());
 			// Error handling
-			if (!normalMaps[i]->LoadNormalMap()) {
+			if (!normalMaps[i]->LoadMaps()) {
 				printf("Failed to load normal map: %s\n", fullpath.c_str());
 				fflush(stdout);
 				delete normalMaps[i];
@@ -179,8 +182,47 @@ void Model::LoadMaterials(const aiScene* scene)
 		}
 		if (!normalMaps[i]) {
 			normalMaps[i] = new Texture("Textures/default_normal.png");
-			normalMaps[i]->LoadNormalMap();
+			normalMaps[i]->LoadMaps();
 		}
+
+		// Try loading the parallax map 
+		aiString parallaxPath;
+		textureFound = false;
+		// Check for parallax map
+		if (material->GetTexture(aiTextureType_DISPLACEMENT, 0, &parallaxPath) == AI_SUCCESS) {
+			textureFound = true;
+		}
+
+		if (textureFound) {
+			// Get the filename from the full path
+			std::string fullpath_s = parallaxPath.C_Str();
+			std::string filename;
+			// Find the last slash or backslash (in case of Windows paths in downloaded models)
+			size_t lastSlash = fullpath_s.find_last_of("/\\");
+			// Extract the filename
+			if (lastSlash == std::string::npos) {
+				filename = fullpath_s;
+			}
+			else {
+				filename = fullpath_s.substr(lastSlash + 1);
+			}
+			// Create the full path to the texture
+			std::string fullpath = "Textures/" + filename;
+			// Load the texture
+			paralaxMaps[i] = new Texture(fullpath.c_str());
+			// Error handling
+			if (!paralaxMaps[i]->LoadMaps()) {
+				printf("Failed to load paralax map: %s\n", fullpath.c_str());
+				fflush(stdout);
+				delete paralaxMaps[i];
+				paralaxMaps[i] = nullptr;
+			}
+		}
+		if (!paralaxMaps[i]) {
+			paralaxMaps[i] = new Texture("Textures/default_height.png");
+			paralaxMaps[i]->LoadMaps();
+		}
+
 
 	}
 }
