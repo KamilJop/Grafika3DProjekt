@@ -60,6 +60,7 @@ Entity* floorEntity;
 Entity* xwingEntity;
 Entity* chestEntity;
 Entity* sculptureEntity;
+Entity* testWallEntity;
 
 // Light source
 DirectionalLight* mainLight;
@@ -79,6 +80,7 @@ Model floorModel;
 Model xwing;
 Model chest;
 Model sculpture;
+Model testWall;
 
 // Create scene
 Scene* scene = nullptr;
@@ -180,7 +182,8 @@ Scene* createMainScene(Camera * camera) {
 	door.LoadModel("Models/door.obj");
 	floorModel.LoadModel("Models/Cranberry_Doormat.obj");
 	chest.LoadModel("Models/Untitled.obj");
-	sculpture.LoadModel("Models/rzezba.obj");
+	testWall.LoadModel("Models/testsciana.obj");
+	//sculpture.LoadModel("Models/rzezba.obj");
 
 	// Create Materials
 	shinyMaterial = new Material(0.7f, 64.0f);
@@ -190,20 +193,23 @@ Scene* createMainScene(Camera * camera) {
 	doorEntity = new SpinningEntity(&door, shinyMaterial, glm::vec3(0.0f, -1.0f, -2.0f), glm::vec3(0.0f), glm::vec3(0.8f));
 	floorEntity = new Entity(&floorModel, lessShinyMaterial, glm::vec3(0.0f, -1.5f, -3.0f), glm::vec3(0.0f), glm::vec3(0.5f));
 	chestEntity = new Entity(&chest, shinyMaterial, glm::vec3(2.0f, -1.0f, -4.0f), glm::vec3(0.0f, -45.0f, 0.0f), glm::vec3(1.3f));
-	sculptureEntity = new Entity(&sculpture, lessShinyMaterial, glm::vec3(-10.0f, -1.0f, -4.0f), glm::vec3(0.0f, 30.0f, 0.0f), glm::vec3(4.0f));
+	testWallEntity = new Entity(&testWall, lessShinyMaterial, glm::vec3(-2.0f, -2.0f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.3f));
+	//sculptureEntity = new Entity(&sculpture, lessShinyMaterial, glm::vec3(-10.0f, -1.0f, -4.0f), glm::vec3(0.0f, 30.0f, 0.0f), glm::vec3(4.0f));
+	// Add entities to scene
 	scene->AddEntity(doorEntity);
 	scene->AddEntity(floorEntity);
 	scene->AddEntity(chestEntity);
-	scene->AddEntity(sculptureEntity);
+	scene->AddEntity(testWallEntity);
+	//scene->AddEntity(sculptureEntity);
 
 	// Skybox
 	skybox = new Skybox(skyboxFaces);
 
 	// Light
-	mainLight = new DirectionalLight(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(-1.0f, -5.0f, -5.5f), 0.1f, 0.22f, 2048.0f, 2048.0f);
+	mainLight = new DirectionalLight(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(-1.0f, -5.0f, -5.5f), 0.3f, 0.22f, 2048.0f, 2048.0f);
 	pointLight = new PointLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.3f, 0.9f, glm::vec3(-10.0f, 1.0f, -3.0f), 1.0f, 0.09f, 0.032f, 0, 100.0f, 0.01f, 2048.0f, 2048.0f);
-	pointLight2 = new PointLight(glm::vec3(0.0f, 0.0f, 1.0f), 0.01f, 0.9f, glm::vec3(1.0f, 1.5f, -3.0f), 1.0f, 0.12f, 0.062f, 1, 100.0f, 0.01f, 2048.0f, 2048.0f);
-	pointLight3 = new PointLight(glm::vec3(0.0f, 1.0f, 0.0f), 0.01f, 0.9f, glm::vec3(15.5f, 1.0f, -1.0f), 1.0f, 0.12f, 0.062f, 2, 100.0f, 0.01f, 2048.0f, 2048.0f);
+	pointLight2 = new PointLight(glm::vec3(0.0f, 0.0f, 1.0f), 0.25f, 0.9f, glm::vec3(8.0f, 1.5f, -6.0f), 1.0f, 0.12f, 0.062f, 1, 100.0f, 0.01f, 2048.0f, 2048.0f);
+	pointLight3 = new PointLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.25f, 0.9f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.12f, 0.062f, 2, 100.0f, 0.01f, 2048.0f, 2048.0f);
 	flashlight = new Flashlight(glm::vec3(1.0f, 1.0f, 0.85f), 0.001f, 3.2f, camera->getCameraPosition(), 1.0f, 0.07f, 0.017f, camera->getCameraFront(), 25.0f, 32.5f, 2048.0f,2048.0f);
 
 	// Add entities and lights to scene
