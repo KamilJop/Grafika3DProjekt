@@ -69,6 +69,14 @@ void Mesh::CreateMesh(GLfloat* vertices, unsigned int* indices, unsigned int num
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (GLvoid*)(6 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(2);
 
+	// Tangent (Normal mapping)
+	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, stride, (GLvoid*)(8 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(3);
+
+	// Bitangent (Normal mapping)
+	glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, stride, (GLvoid*)(11 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(4);
+
 	// Unbind VAO
 	glBindVertexArray(0);
 

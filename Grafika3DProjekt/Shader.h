@@ -22,6 +22,7 @@ public:
 
 	void UseShader();
 	void ClearShader();
+	int getShaderID() const { return shaderId; }
 
 
 	void setMat4(const std::string& name, const glm::mat4& mat) const {
