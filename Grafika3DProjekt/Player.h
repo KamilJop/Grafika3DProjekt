@@ -2,6 +2,7 @@
 #include <glm/glm.hpp>
 #include "Camera.h"
 #include "Entity.h"
+#include "CollisionBox.h"
 
 class Player
 {
@@ -17,6 +18,9 @@ public:
 	bool isCrouching = false;
 	bool isFlipping = false;
 	Camera* camera;
+	CollisionBox playerCollisions;
+
+
 	void UpdatePhysics(float deltaTime);
 	void Jump();
 	void changeFlashlightState();
@@ -24,6 +28,8 @@ public:
 	void Crouch(bool state);
 	bool getFlashlightState() { return isFlashlightOn; }
 	void updateFlashlightPosition(const glm::vec3& finalPos);
+	void updatePlayerCollisions();
+	CollisionBox GetPlayerCollisions() { return playerCollisions; };
 	
 
 };

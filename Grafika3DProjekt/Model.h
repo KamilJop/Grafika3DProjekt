@@ -9,12 +9,8 @@
 #include <glm/glm.hpp>
 #include "Mesh.h"
 #include "Texture.h"
+#include "CollisionBox.h"
 
-struct CollisionBox
-{
-	glm::vec3 min;
-	glm::vec3 max;
-};
 
 class Model
 {
@@ -25,6 +21,8 @@ public:
 	void LoadModel(const std::string& path);
 	void RenderModel();
 	void ClearModel();
+	CollisionBox GetCollisionBox() { return collisionBox; }
+
 private:
 
 	void LoadNode(aiNode* node, const aiScene* scene);

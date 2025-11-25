@@ -17,6 +17,7 @@ Player::~Player()
 
 void Player::UpdatePhysics(float deltaTime)
 {
+	updatePlayerCollisions();
 	const float gravity = -9.81f;
 	velocity.y += gravity * deltaTime;
 	position += velocity * deltaTime;
@@ -91,4 +92,16 @@ void Player::updateFlashlightPosition(const glm::vec3& finalPos)
 void Player::flashlightFlipTrick(bool state)
 {
 	isFlipping = state;
+}
+
+void Player::updatePlayerCollisions() {
+	float width = 0.6f;
+	float height = 1.8f;
+
+	if (isCrouching) height = 1.2f; 
+
+	float halfWidth = width / 2.0f;
+
+	playerCollisions.min = glm::vec3(position.x - halfWidth, position.y, position.z - halfWidth);
+	playerCollisions.max = glm::vec3(position.x + halfWidth, position.y + height, position.z + halfWidth);
 }

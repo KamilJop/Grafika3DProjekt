@@ -10,6 +10,10 @@ Entity::Entity(Model* model,Material* material, glm::vec3 pos, glm::vec3 rot, gl
 	entityModel = model;
 	entityMaterial = material;
 	modelMatrix = CalculateModelMatrix();
+	collisions = model->GetCollisionBox();
+
+	// Update collision box
+	UpdateCollisionBox();
 }
 
 
@@ -98,7 +102,16 @@ void Entity::DrawEntity(Shader* shader)
 	// Set material properties in shader
 	entityMaterial->useMaterial(shader);
 
-	// Draw the model
+	// Draw the models
 	entityModel->RenderModel();
 
+}
+
+void Entity::UpdateCollisionBox()
+{
+	collisions.min = position + entityModel->GetCollisionBox().min * scale;
+	collisions.max = position + entityModel->GetCollisionBox().max * scale;
+	printf("Collision Box Updated: Min(%.2f, %.2f, %.2f) Max(%.2f, %.2f, %.2f)\n",
+		collisions.min.x, collisions.min.y, collisions.min.z,
+		collisions.max.x, collisions.max.y, collisions.max.z);
 }
