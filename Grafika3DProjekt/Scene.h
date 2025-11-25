@@ -6,6 +6,7 @@
 #include "PointLight.h"
 #include "Flashlight.h"
 #include "Camera.h"
+#include "Player.h"
 class Scene
 {
 public:
@@ -14,8 +15,9 @@ public:
 	DirectionalLight* dirLight;
 	Flashlight* flashLight;
 	Camera* camera;
+	Player* player;
 
-	Scene(Camera* cam);
+	Scene(Camera* cam, Player* play);
 	~Scene();
 	void AddEntity(Entity* entity)
 	{

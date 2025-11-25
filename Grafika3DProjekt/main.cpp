@@ -23,6 +23,7 @@
 #include "Scene.h"
 #include "ShadowMap.h"
 #include "Skybox.h"
+#include "Player.h"
 
 // Window dimensions
 const GLint WIDTH = 1280, HEIGHT = 720;
@@ -82,6 +83,9 @@ Model chest;
 Model sculpture;
 Model testWall;
 
+// Create player
+Player player(&camera);
+
 // Create scene
 Scene* scene = nullptr;
 
@@ -100,11 +104,12 @@ std::vector<std::string> skyboxFaces
 };
 
 // Function prototypes
-Scene* createMainScene(Camera* camera);
+Scene* createMainScene(Camera* camera, Player* play);
 void DirectionalLightShadowMapPass();
 void FlashlightShadowMapPass();
 void OmniShadowMapPass(PointLight* pLight);
 void RenderScenePass(glm::mat4 projection);
+void HandleKeyboardInput(float deltaTime);
 
 
 int main()
@@ -131,7 +136,7 @@ int main()
 	projection = glm::perspective(glm::radians(60.0f), (GLfloat)mainWindow.getBufferWidth() / (GLfloat)mainWindow.getBufferHeight(), 0.1f, 100.0f);
 
 	// Create main scene
-	scene = createMainScene(&camera);
+	scene = createMainScene(&camera, &player);
 
 	// Loop until window closed
 	while (!mainWindow.getShouldClose())
@@ -145,8 +150,13 @@ int main()
 		fflush(stdout);
 
 		// Camera movement
-		camera.ProcessKeyboard(mainWindow.getKeys(), deltaTime);
 		camera.ProcessMouseMovement(mainWindow.getXChange(), mainWindow.getYChange());
+
+		// Keyboard movement
+		HandleKeyboardInput(deltaTime);
+		
+		// Update player physics
+		player.UpdatePhysics(deltaTime);
 
 		// Get + Handle user input events
 		glfwPollEvents();
@@ -173,10 +183,10 @@ int main()
 	return 0;
 }
 
-Scene* createMainScene(Camera * camera) {
+Scene* createMainScene(Camera * camera, Player* play) {
 
 	// Create scene
-	scene = new Scene(camera);
+	scene = new Scene(camera, play);
 
 	// Load Models
 	door.LoadModel("Models/door.obj");
@@ -223,7 +233,6 @@ Scene* createMainScene(Camera * camera) {
 
 	return scene;
 }
-
 
 void DirectionalLightShadowMapPass() {
 	shaderList[1]->UseShader();
@@ -325,4 +334,44 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 
 	// Render the scene
 	scene->Render(shaderList[0], projectionMatrix);
+}
+
+void HandleKeyboardInput(float deltaTime) {
+	float velocity = camera.MovementSpeed * deltaTime;
+
+	glm::vec3 front = camera.getCameraFront();
+	front.y = 0.0f;
+	front = glm::normalize(front);
+
+	glm::vec3 right = camera.getCameraRight();
+	right.y = 0.0f;
+	right = glm::normalize(right);
+
+	if (mainWindow.getKeys()[GLFW_KEY_W])
+	{
+		player.position += front * velocity;
+	}
+	if (mainWindow.getKeys()[GLFW_KEY_S])
+	{
+		player.position -= front * velocity;
+	}
+	if (mainWindow.getKeys()[GLFW_KEY_A])
+	{
+		player.position -= right * velocity;
+	}
+	if (mainWindow.getKeys()[GLFW_KEY_D])
+	{
+		player.position += right * velocity;
+	}
+
+	if (mainWindow.getKeys()[GLFW_KEY_SPACE])
+	{
+		player.Jump();
+	}
+
+	if (mainWindow.getKeys()[GLFW_KEY_F])
+	{
+		player.changeFlashlightState();
+		mainWindow.getKeys()[GLFW_KEY_F] = false;
+	}
 }

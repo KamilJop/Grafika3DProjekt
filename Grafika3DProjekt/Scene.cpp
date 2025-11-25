@@ -1,8 +1,9 @@
 #include "Scene.h"
 
-Scene::Scene(Camera* cam)
+Scene::Scene(Camera* cam, Player* play)
 {
 	camera = cam;
+	player = play;
 	dirLight = nullptr;
 	flashLight = nullptr;
 }
@@ -31,7 +32,7 @@ void Scene::Render(Shader* shader, glm::mat4 projection)
 	{
 		dirLight->useLight(shader);
 	}
-	if (flashLight && camera->getFlashlightState())
+	if (flashLight && player->getFlashlightState())
 	{
 		glm::vec3 camPos = camera->getCameraPosition();
 		glm::vec3 camFront = camera->getCameraFront();
