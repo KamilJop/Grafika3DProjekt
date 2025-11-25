@@ -200,10 +200,10 @@ Scene* createMainScene(Camera * camera, Player* play) {
 	lessShinyMaterial = new Material(0.5f, 256.0f);
 
 	// Create Entities
-	doorEntity = new SpinningEntity(&door, shinyMaterial, glm::vec3(0.0f, -1.0f, -2.0f), glm::vec3(0.0f), glm::vec3(0.8f));
-	floorEntity = new Entity(&floorModel, lessShinyMaterial, glm::vec3(0.0f, -1.5f, -3.0f), glm::vec3(0.0f), glm::vec3(0.5f));
-	chestEntity = new Entity(&chest, shinyMaterial, glm::vec3(2.0f, -1.0f, -4.0f), glm::vec3(0.0f, -45.0f, 0.0f), glm::vec3(1.3f));
-	testWallEntity = new Entity(&testWall, lessShinyMaterial, glm::vec3(-2.0f, -2.0f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.3f));
+	doorEntity = new SpinningEntity(&door, shinyMaterial, glm::vec3(0.0f, 0.5f, -2.0f), glm::vec3(0.0f), glm::vec3(0.8f));
+	floorEntity = new Entity(&floorModel, lessShinyMaterial, glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f), glm::vec3(0.5f));
+	chestEntity = new Entity(&chest, shinyMaterial, glm::vec3(2.0f, 0.5f, -4.0f), glm::vec3(0.0f, -45.0f, 0.0f), glm::vec3(1.3f));
+	testWallEntity = new Entity(&testWall, lessShinyMaterial, glm::vec3(-2.0f, -0.5f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.3f));
 	//sculptureEntity = new Entity(&sculpture, lessShinyMaterial, glm::vec3(-10.0f, -1.0f, -4.0f), glm::vec3(0.0f, 30.0f, 0.0f), glm::vec3(4.0f));
 	// Add entities to scene
 	scene->AddEntity(doorEntity);
@@ -337,7 +337,12 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 }
 
 void HandleKeyboardInput(float deltaTime) {
+
 	float velocity = camera.MovementSpeed * deltaTime;
+	if (player.isCrouching)
+	{
+		velocity *= 0.3f;
+	}
 
 	glm::vec3 front = camera.getCameraFront();
 	front.y = 0.0f;
@@ -373,5 +378,13 @@ void HandleKeyboardInput(float deltaTime) {
 	{
 		player.changeFlashlightState();
 		mainWindow.getKeys()[GLFW_KEY_F] = false;
+	}
+
+	if (mainWindow.getKeys()[GLFW_KEY_LEFT_SHIFT])
+	{
+		player.Crouch(true);
+	}
+	else {
+		player.Crouch(false);
 	}
 }

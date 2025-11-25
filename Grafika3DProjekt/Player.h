@@ -10,11 +10,14 @@ public:
 	glm::vec3 velocity;
 	bool isFlashlightOn = false;
 	bool onGround = false;
+	bool isCrouching = false;
 	Camera* camera;
 	void UpdatePhysics(float deltaTime);
 	void Jump();
-	bool getFlashlightState() { return isFlashlightOn; }
 	void changeFlashlightState();
+	void Crouch(bool state);
+	bool getFlashlightState() { return isFlashlightOn; }
+	
 
 };
 
