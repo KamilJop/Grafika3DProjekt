@@ -62,6 +62,7 @@ Entity* xwingEntity;
 Entity* chestEntity;
 Entity* sculptureEntity;
 Entity* testWallEntity;
+Entity* flashlightEntity;
 
 // Light source
 DirectionalLight* mainLight;
@@ -82,9 +83,10 @@ Model xwing;
 Model chest;
 Model sculpture;
 Model testWall;
+Model flashlightModel;
 
 // Create player
-Player player(&camera);
+Player* player;
 
 // Create scene
 Scene* scene = nullptr;
@@ -104,7 +106,7 @@ std::vector<std::string> skyboxFaces
 };
 
 // Function prototypes
-Scene* createMainScene(Camera* camera, Player* play);
+Scene* createMainScene(Camera* camera);
 void DirectionalLightShadowMapPass();
 void FlashlightShadowMapPass();
 void OmniShadowMapPass(PointLight* pLight);
@@ -136,7 +138,7 @@ int main()
 	projection = glm::perspective(glm::radians(60.0f), (GLfloat)mainWindow.getBufferWidth() / (GLfloat)mainWindow.getBufferHeight(), 0.1f, 100.0f);
 
 	// Create main scene
-	scene = createMainScene(&camera, &player);
+	scene = createMainScene(&camera);
 
 	// Loop until window closed
 	while (!mainWindow.getShouldClose())
@@ -156,7 +158,7 @@ int main()
 		HandleKeyboardInput(deltaTime);
 		
 		// Update player physics
-		player.UpdatePhysics(deltaTime);
+		player->UpdatePhysics(deltaTime);
 
 		// Get + Handle user input events
 		glfwPollEvents();
@@ -183,17 +185,18 @@ int main()
 	return 0;
 }
 
-Scene* createMainScene(Camera * camera, Player* play) {
+Scene* createMainScene(Camera * camera) {
 
-	// Create scene
-	scene = new Scene(camera, play);
+
 
 	// Load Models
 	door.LoadModel("Models/door.obj");
 	floorModel.LoadModel("Models/Cranberry_Doormat.obj");
 	chest.LoadModel("Models/Untitled.obj");
 	testWall.LoadModel("Models/testsciana.obj");
+	flashlightModel.LoadModel("Models/flashlight.obj");
 	//sculpture.LoadModel("Models/rzezba.obj");
+
 
 	// Create Materials
 	shinyMaterial = new Material(0.7f, 64.0f);
@@ -204,13 +207,12 @@ Scene* createMainScene(Camera * camera, Player* play) {
 	floorEntity = new Entity(&floorModel, lessShinyMaterial, glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f), glm::vec3(0.5f));
 	chestEntity = new Entity(&chest, shinyMaterial, glm::vec3(2.0f, 0.5f, -4.0f), glm::vec3(0.0f, -45.0f, 0.0f), glm::vec3(1.3f));
 	testWallEntity = new Entity(&testWall, lessShinyMaterial, glm::vec3(-2.0f, -0.5f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.3f));
+	flashlightEntity = new Entity(&flashlightModel, shinyMaterial, glm::vec3(5.0f,2.0f,-3.0f), glm::vec3(0.0f), glm::vec3(0.05f));
+	flashlightEntity->setCastsShadow(false);
 	//sculptureEntity = new Entity(&sculpture, lessShinyMaterial, glm::vec3(-10.0f, -1.0f, -4.0f), glm::vec3(0.0f, 30.0f, 0.0f), glm::vec3(4.0f));
-	// Add entities to scene
-	scene->AddEntity(doorEntity);
-	scene->AddEntity(floorEntity);
-	scene->AddEntity(chestEntity);
-	scene->AddEntity(testWallEntity);
-	//scene->AddEntity(sculptureEntity);
+
+	// Create Player
+	player = new Player(camera, flashlightEntity);
 
 	// Skybox
 	skybox = new Skybox(skyboxFaces);
@@ -222,14 +224,22 @@ Scene* createMainScene(Camera * camera, Player* play) {
 	pointLight3 = new PointLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.25f, 0.9f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.12f, 0.062f, 2, 100.0f, 0.01f, 2048.0f, 2048.0f);
 	flashlight = new Flashlight(glm::vec3(1.0f, 1.0f, 0.85f), 0.001f, 3.2f, camera->getCameraPosition(), 1.0f, 0.07f, 0.017f, camera->getCameraFront(), 25.0f, 32.5f, 2048.0f,2048.0f);
 
+	// Create scene
+	scene = new Scene(camera, player);
+
 	// Add entities and lights to scene
-	scene->AddEntity(doorEntity);
-	scene->AddEntity(floorEntity);
 	scene->AddPointLight(pointLight);
 	scene->AddPointLight(pointLight2);
 	scene->AddPointLight(pointLight3);
 	scene->SetDirectionalLight(mainLight);
 	scene->SetFlashlight(flashlight);
+
+	scene->AddEntity(doorEntity);
+	scene->AddEntity(floorEntity);
+	scene->AddEntity(chestEntity);
+	scene->AddEntity(testWallEntity);
+	scene->AddEntity(flashlightEntity);
+	//scene->AddEntity(sculptureEntity);
 
 	return scene;
 }
@@ -339,7 +349,7 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 void HandleKeyboardInput(float deltaTime) {
 
 	float velocity = camera.MovementSpeed * deltaTime;
-	if (player.isCrouching)
+	if (player->isCrouching)
 	{
 		velocity *= 0.3f;
 	}
@@ -354,37 +364,37 @@ void HandleKeyboardInput(float deltaTime) {
 
 	if (mainWindow.getKeys()[GLFW_KEY_W])
 	{
-		player.position += front * velocity;
+		player->position += front * velocity;
 	}
 	if (mainWindow.getKeys()[GLFW_KEY_S])
 	{
-		player.position -= front * velocity;
+		player->position -= front * velocity;
 	}
 	if (mainWindow.getKeys()[GLFW_KEY_A])
 	{
-		player.position -= right * velocity;
+		player->position -= right * velocity;
 	}
 	if (mainWindow.getKeys()[GLFW_KEY_D])
 	{
-		player.position += right * velocity;
+		player->position += right * velocity;
 	}
 
 	if (mainWindow.getKeys()[GLFW_KEY_SPACE])
 	{
-		player.Jump();
+		player->Jump();
 	}
 
 	if (mainWindow.getKeys()[GLFW_KEY_F])
 	{
-		player.changeFlashlightState();
+		player->changeFlashlightState();
 		mainWindow.getKeys()[GLFW_KEY_F] = false;
 	}
 
 	if (mainWindow.getKeys()[GLFW_KEY_LEFT_SHIFT])
 	{
-		player.Crouch(true);
+		player->Crouch(true);
 	}
 	else {
-		player.Crouch(false);
+		player->Crouch(false);
 	}
 }

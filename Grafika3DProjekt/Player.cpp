@@ -1,8 +1,9 @@
 #include "Player.h"
 
-Player::Player(Camera* cam, glm::vec3 pos, glm::vec3 vel)
+Player::Player(Camera* cam, Entity* flashlight, glm::vec3 pos, glm::vec3 vel)
 {
 	camera = cam;
+	flashlightEntity = flashlight;
 	position = pos;
 	velocity = vel;
 }
@@ -55,4 +56,12 @@ void Player::Crouch(bool state)
 void Player::changeFlashlightState()
 {
 	isFlashlightOn = !isFlashlightOn;
+}
+
+void Player::updateFlashlightPosition(const glm::vec3& finalPos)
+{
+	flashlightEntity->setPosition(finalPos);
+	float pitch = camera->Pitch;
+	float yaw = camera->Yaw;
+	flashlightEntity->setRotation(glm::vec3(-pitch, -yaw + 90.0f, 0.0f));
 }

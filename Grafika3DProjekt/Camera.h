@@ -31,6 +31,8 @@ public:
 	glm::vec3 getCameraRight() { return Right; }
 	glm::vec3 getCameraUp() { return Up; }
 	void ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true);
+	float getPitch() { return Pitch; }
+	float getYaw() { return Yaw; }
 	
 
 private:
