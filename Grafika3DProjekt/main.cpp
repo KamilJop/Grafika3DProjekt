@@ -362,21 +362,27 @@ void HandleKeyboardInput(float deltaTime) {
 	right.y = 0.0f;
 	right = glm::normalize(right);
 
+	bool isMoving = false;
+
 	if (mainWindow.getKeys()[GLFW_KEY_W])
 	{
 		player->position += front * velocity;
+		isMoving = true;
 	}
 	if (mainWindow.getKeys()[GLFW_KEY_S])
 	{
 		player->position -= front * velocity;
+		isMoving = true;
 	}
 	if (mainWindow.getKeys()[GLFW_KEY_A])
 	{
 		player->position -= right * velocity;
+		isMoving = true;
 	}
 	if (mainWindow.getKeys()[GLFW_KEY_D])
 	{
 		player->position += right * velocity;
+		isMoving = true;
 	}
 
 	if (mainWindow.getKeys()[GLFW_KEY_SPACE])
@@ -396,5 +402,12 @@ void HandleKeyboardInput(float deltaTime) {
 	}
 	else {
 		player->Crouch(false);
+	}
+
+	if (isMoving) {
+		player->walkTimer += deltaTime;
+	}
+	else {
+		player->walkTimer = glm::mix(player->walkTimer, 0.0f, 5.0f * deltaTime);	
 	}
 }

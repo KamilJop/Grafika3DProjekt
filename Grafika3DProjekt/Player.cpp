@@ -60,7 +60,18 @@ void Player::changeFlashlightState()
 
 void Player::updateFlashlightPosition(const glm::vec3& finalPos)
 {
-	flashlightEntity->setPosition(finalPos);
+	glm::vec3 finalPosAdjusted = finalPos;
+	if(walkTimer>0.0f)
+	{
+		float bobFrequency = 10.0f; 
+		float bobAmountX = 0.015f;  
+		float bobAmountY = 0.005f;  
+		float bobX = cos(walkTimer * bobFrequency / 2.0f) * bobAmountX;
+		float bobY = sin(walkTimer * bobFrequency) * bobAmountY;
+		finalPosAdjusted += camera->Right * bobX;
+		finalPosAdjusted += camera->Up * bobY;
+	}
+	flashlightEntity->setPosition(finalPosAdjusted);
 	float pitch = camera->Pitch;
 	float yaw = camera->Yaw;
 	flashlightEntity->setRotation(glm::vec3(-pitch, -yaw + 90.0f, 0.0f));

@@ -50,6 +50,18 @@ void Scene::Render(Shader* shader, glm::mat4 projection)
 	player->updateFlashlightPosition(finalPos);
 	if (flashLight && player->getFlashlightState())
 	{
+
+		if (player->walkTimer > 0.0f)
+		{
+			float bobFrequency = 10.0f;
+			float bobAmountX = 0.025f;
+			float bobAmountY = 0.015f;
+			float bobX = cos(player->walkTimer * bobFrequency / 2.0f) * bobAmountX;
+			float bobY = sin(player->walkTimer * bobFrequency) * bobAmountY;
+			finalPos += camera->Right * bobX;
+			finalPos += camera->Up * bobY;
+		}
+
 		glm::vec3 lightSourcePos = finalPos + (camFront * 0.3f);
 		flashLight->setLightPosition(lightSourcePos);
 		flashLight->setLightDirection(camFront);

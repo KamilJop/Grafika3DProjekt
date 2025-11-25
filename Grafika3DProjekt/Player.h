@@ -11,6 +11,7 @@ public:
 	glm::vec3 position;
 	glm::vec3 velocity;
 	Entity* flashlightEntity;
+	float walkTimer = 0.0f;
 	bool isFlashlightOn = false;
 	bool onGround = false;
 	bool isCrouching = false;
