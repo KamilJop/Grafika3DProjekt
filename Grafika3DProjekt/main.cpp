@@ -404,6 +404,14 @@ void HandleKeyboardInput(float deltaTime) {
 		player->Crouch(false);
 	}
 
+	if (mainWindow.getKeys()[GLFW_KEY_R])
+	{
+		player->flashlightFlipTrick(true);
+	}
+	else {
+		player->flashlightFlipTrick(false);
+	}
+
 	if (isMoving) {
 		player->walkTimer += deltaTime;
 	}

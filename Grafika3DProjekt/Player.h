@@ -15,10 +15,12 @@ public:
 	bool isFlashlightOn = false;
 	bool onGround = false;
 	bool isCrouching = false;
+	bool isFlipping = false;
 	Camera* camera;
 	void UpdatePhysics(float deltaTime);
 	void Jump();
 	void changeFlashlightState();
+	void flashlightFlipTrick(bool state);
 	void Crouch(bool state);
 	bool getFlashlightState() { return isFlashlightOn; }
 	void updateFlashlightPosition(const glm::vec3& finalPos);

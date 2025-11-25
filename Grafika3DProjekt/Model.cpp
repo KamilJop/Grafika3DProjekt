@@ -16,7 +16,7 @@ void Model::LoadModel(const std::string& path)
 	// Create an instance of the Importer class
 	Assimp::Importer importer;
 	// Read the model file
-	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices | aiProcess_CalcTangentSpace);
+	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices | aiProcess_CalcTangentSpace | aiProcess_GenBoundingBoxes);
 	// Check for errors
 	if (!scene)
 	{
@@ -28,6 +28,8 @@ void Model::LoadModel(const std::string& path)
 	LoadNode(scene->mRootNode, scene);
 	// Load materials
 	LoadMaterials(scene);
+	// Load collision box
+	LoadCollisionBox(scene);
 }
 
 void Model::LoadNode(aiNode* node, const aiScene* scene)
@@ -225,6 +227,27 @@ void Model::LoadMaterials(const aiScene* scene)
 
 
 	}
+}
+
+void Model::LoadCollisionBox(const aiScene* scene)
+{
+	if (scene->mNumMeshes == 0) {
+		return;
+	}
+	const aiAABB& first = scene->mMeshes[0]->mAABB;
+	collisionBox.min = glm::vec3(first.mMin.x, first.mMin.y, first.mMin.z);
+	collisionBox.max = glm::vec3(first.mMax.x, first.mMax.y, first.mMax.z);
+
+	for (size_t i = 1; i < scene->mNumMeshes; i++) {
+		const aiAABB& aabb = scene->mMeshes[i]->mAABB;
+		collisionBox.min.x = std::min(collisionBox.min.x, aabb.mMin.x);
+		collisionBox.min.y = std::min(collisionBox.min.y, aabb.mMin.y);
+		collisionBox.min.z = std::min(collisionBox.min.z, aabb.mMin.z);
+		collisionBox.max.x = std::max(collisionBox.max.x, aabb.mMax.x);
+		collisionBox.max.y = std::max(collisionBox.max.y, aabb.mMax.y);
+		collisionBox.max.z = std::max(collisionBox.max.z, aabb.mMax.z);
+	}
+	printf("Collision Box Min: (%f, %f, %f)\n", collisionBox.min.x, collisionBox.min.y, collisionBox.min.z);
 }
 void Model::ClearModel()
 {
