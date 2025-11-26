@@ -39,7 +39,7 @@ public:
 	{
 		return camera;
 	}
-	void Render(Shader* shader, glm::mat4 projection);
+	void Render(Shader* shader, glm::mat4 projection, float dt);
 	void Update(float deltaTime);
 	void RenderShadowMap(Shader* shadowShader);
 

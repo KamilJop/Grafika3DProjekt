@@ -3,11 +3,12 @@
 #include "Camera.h"
 #include "Entity.h"
 #include "CollisionBox.h"
+#include <vector>
 
 class Player
 {
 public:
-	Player(Camera* cam, Entity* flashlight, glm::vec3 pos = glm::vec3(0.0f), glm::vec3 vel = glm::vec3(0.0f));
+	Player(Camera* cam, Entity* flashlight, glm::vec3 pos = glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3 vel = glm::vec3(0.0f));
 	~Player();
 	glm::vec3 position;
 	glm::vec3 velocity;
@@ -21,7 +22,7 @@ public:
 	CollisionBox playerCollisions;
 
 
-	void UpdatePhysics(float deltaTime);
+	void UpdatePhysics(float deltaTime, std::vector<Entity*>& entities);
 	void Jump();
 	void changeFlashlightState();
 	void flashlightFlipTrick(bool state);

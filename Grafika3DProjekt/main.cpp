@@ -148,6 +148,11 @@ int main()
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 		float fps = 1.0f / deltaTime;
+		// Disable huge delta time while loading assets
+		if (deltaTime > 0.5f)
+		{
+			deltaTime = 0.5f;
+		}
 		printf("\rFPS: %.2f", fps);
 		fflush(stdout);
 
@@ -157,8 +162,6 @@ int main()
 		// Keyboard movement
 		HandleKeyboardInput(deltaTime);
 		
-		// Update player physics
-		player->UpdatePhysics(deltaTime);
 
 		// Get + Handle user input events
 		glfwPollEvents();
@@ -203,8 +206,8 @@ Scene* createMainScene(Camera * camera) {
 	lessShinyMaterial = new Material(0.5f, 256.0f);
 
 	// Create Entities
-	doorEntity = new SpinningEntity(&door, shinyMaterial, glm::vec3(0.0f, 0.5f, -2.0f), glm::vec3(0.0f), glm::vec3(0.8f));
-	floorEntity = new Entity(&floorModel, lessShinyMaterial, glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f), glm::vec3(0.5f));
+	doorEntity = new SpinningEntity(&door, shinyMaterial, glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f), glm::vec3(0.8f));
+	floorEntity = new Entity(&floorModel, lessShinyMaterial, glm::vec3(0.0f, -0.6f, -3.0f), glm::vec3(0.0f), glm::vec3(0.5f));
 	chestEntity = new Entity(&chest, shinyMaterial, glm::vec3(2.0f, 0.5f, -4.0f), glm::vec3(0.0f, -45.0f, 0.0f), glm::vec3(1.3f));
 	testWallEntity = new Entity(&testWall, lessShinyMaterial, glm::vec3(-2.0f, -0.5f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.3f));
 	flashlightEntity = new Entity(&flashlightModel, shinyMaterial, glm::vec3(5.0f,2.0f,-3.0f), glm::vec3(0.0f), glm::vec3(0.05f));
@@ -343,15 +346,15 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 	scene->Update(deltaTime);
 
 	// Render the scene
-	scene->Render(shaderList[0], projectionMatrix);
+	scene->Render(shaderList[0], projectionMatrix, deltaTime);
 }
 
 void HandleKeyboardInput(float deltaTime) {
 
-	float velocity = camera.MovementSpeed * deltaTime;
+	float speed = camera.MovementSpeed;
 	if (player->isCrouching)
 	{
-		velocity *= 0.3f;
+		speed *= 0.3f;
 	}
 
 	glm::vec3 front = camera.getCameraFront();
@@ -363,25 +366,26 @@ void HandleKeyboardInput(float deltaTime) {
 	right = glm::normalize(right);
 
 	bool isMoving = false;
-
+	player->velocity.x = 0.0f;
+	player->velocity.z = 0.0f;
 	if (mainWindow.getKeys()[GLFW_KEY_W])
 	{
-		player->position += front * velocity;
+		player->velocity += front * speed;
 		isMoving = true;
 	}
 	if (mainWindow.getKeys()[GLFW_KEY_S])
 	{
-		player->position -= front * velocity;
+		player->velocity -= front * speed;
 		isMoving = true;
 	}
 	if (mainWindow.getKeys()[GLFW_KEY_A])
 	{
-		player->position -= right * velocity;
+		player->velocity -= right * speed;
 		isMoving = true;
 	}
 	if (mainWindow.getKeys()[GLFW_KEY_D])
 	{
-		player->position += right * velocity;
+		player->velocity += right * speed;
 		isMoving = true;
 	}
 

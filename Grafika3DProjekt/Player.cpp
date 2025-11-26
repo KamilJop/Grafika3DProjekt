@@ -6,6 +6,7 @@ Player::Player(Camera* cam, Entity* flashlight, glm::vec3 pos, glm::vec3 vel)
 	flashlightEntity = flashlight;
 	position = pos;
 	velocity = vel;
+	updatePlayerCollisions();
 }
 
 Player::~Player()
@@ -15,22 +16,95 @@ Player::~Player()
 	velocity = glm::vec3(0.0f);
 }
 
-void Player::UpdatePhysics(float deltaTime)
+void Player::UpdatePhysics(float deltaTime, std::vector<Entity*>& entities)
 {
-	updatePlayerCollisions();
+	// Remember position before checking collisions
+	float previousX = position.x;
+	float previousY = position.y;
+	float previousZ = position.z;
+
+	// Apply gravity
 	const float gravity = -9.81f;
-	velocity.y += gravity * deltaTime;
-	position += velocity * deltaTime;
-	if (position.y <= 0.0f)
+	if (!onGround) 	velocity.y += gravity * deltaTime;
+
+	// X movement
+	position.x += velocity.x * deltaTime;
+	updatePlayerCollisions();
+	
+	// Check for collisions on X axis
+	for (auto& entity : entities)
 	{
-		position.y = 0.0f;
-		velocity.y = 0.0f;
+		CollisionBox otherBox = entity->GetCollisions();
+		// Skip flashlight entity
+		if (entity == flashlightEntity) continue;
+
+		if (playerCollisions.min.x < otherBox.max.x && playerCollisions.max.x > otherBox.min.x &&
+			playerCollisions.min.y < otherBox.max.y && playerCollisions.max.y > otherBox.min.y &&
+			playerCollisions.min.z < otherBox.max.z && playerCollisions.max.z > otherBox.min.z)
+		{
+			// Collision detected go back to previous X
+			position.x = previousX;
+			velocity.x = 0.0f;
+			updatePlayerCollisions(); 
+			break;
+		}
+	}
+
+	// Z movement
+	position.z += velocity.z * deltaTime;
+	updatePlayerCollisions();
+	// Check for collisions on Z axis
+	for (auto& entity : entities)
+	{
+		// Skip flashlight entity
+		if (entity == flashlightEntity) continue;
+
+		CollisionBox otherBox = entity->GetCollisions();
+		if (playerCollisions.min.x < otherBox.max.x && playerCollisions.max.x > otherBox.min.x &&
+			playerCollisions.min.y < otherBox.max.y && playerCollisions.max.y > otherBox.min.y &&
+			playerCollisions.min.z < otherBox.max.z && playerCollisions.max.z > otherBox.min.z)
+		{
+			// Collision detected go back to previous Z
+			position.z = previousZ;
+			velocity.z = 0.0f;
+			updatePlayerCollisions(); 
+			break;
+		}
+	}
+
+	// Y movement
+	position.y += velocity.y * deltaTime;
+	updatePlayerCollisions();
+
+	bool onObject = false;
+
+	for (auto & entity : entities)
+	{
+		// Skip flashlight entity
+		if (entity == flashlightEntity) continue;
+
+		CollisionBox otherBox = entity->GetCollisions();
+		if (playerCollisions.min.x < otherBox.max.x && playerCollisions.max.x > otherBox.min.x &&
+			playerCollisions.min.y < otherBox.max.y && playerCollisions.max.y > otherBox.min.y &&
+			playerCollisions.min.z < otherBox.max.z && playerCollisions.max.z > otherBox.min.z)
+		{
+			// Collision detected go back to previous Y
+			onObject = true;
+			position.y = previousY;
+			velocity.y = 0.0f;
+			updatePlayerCollisions(); 
+			break;
+		}
+	}
+
+	if (onObject)
+	{
 		onGround = true;
 	}
-	else
-	{
+	else {
 		onGround = false;
 	}
+
 
 	float targetHeight = isCrouching ? 1.2f : 1.7f;
 	float currentHeight = camera->Position.y - position.y;
@@ -44,7 +118,7 @@ void Player::Jump()
 {
 	if (onGround)
 	{
-		velocity.y = 5.0f; 
+		velocity.y = 3.0f; 
 		onGround = false;
 	}
 }
@@ -104,4 +178,5 @@ void Player::updatePlayerCollisions() {
 
 	playerCollisions.min = glm::vec3(position.x - halfWidth, position.y, position.z - halfWidth);
 	playerCollisions.max = glm::vec3(position.x + halfWidth, position.y + height, position.z + halfWidth);
+
 }

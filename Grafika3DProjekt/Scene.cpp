@@ -16,7 +16,7 @@ Scene::~Scene()
 	camera = nullptr;
 }
 
-void Scene::Render(Shader* shader, glm::mat4 projection)
+void Scene::Render(Shader* shader, glm::mat4 projection, float dt)
 {
 	shader->UseShader();
 	shader->setMat4("projection", projection);
@@ -47,6 +47,9 @@ void Scene::Render(Shader* shader, glm::mat4 projection)
 		camRight * offset.x +
 		camUp * offset.y +
 		camFront * offset.z;
+
+	// Update player physics
+	player->UpdatePhysics(dt, entities);
 	player->updateFlashlightPosition(finalPos);
 	if (flashLight && player->getFlashlightState())
 	{
