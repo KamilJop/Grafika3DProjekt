@@ -3,7 +3,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "Shader.h"
-
+#include "CollisionBox.h"
 #include "Model.h"
 #include "Material.h"
 
@@ -18,7 +18,8 @@ public:
 	glm::vec3 position;
 	glm::vec3 rotation;
 	glm::vec3 scale;
-
+	bool castsShadow = true;
+	CollisionBox collisions;
 
 	Entity(Model* model, Material* material, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal);
 
@@ -29,11 +30,15 @@ public:
 	void setPosition(glm::vec3 newPosition);
 	void setRotation(glm::vec3 newRotation);
 	void setScale(glm::vec3 newScale);
+	void setCastsShadow(bool state) { castsShadow = state; }
 
 	glm::vec3 getPosition();
 	glm::vec3 getRotation();
 	glm::vec3 getScale();
+	bool getCastsShadow() { return castsShadow; }
+	CollisionBox GetCollisions() { return collisions; }
 	void DrawEntity(Shader* shader);
+	void UpdateCollisionBox();
 	virtual void Update(float deltaTime) {};
 
 private:

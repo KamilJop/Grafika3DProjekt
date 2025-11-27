@@ -16,7 +16,7 @@ void Model::LoadModel(const std::string& path)
 	// Create an instance of the Importer class
 	Assimp::Importer importer;
 	// Read the model file
-	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices | aiProcess_CalcTangentSpace);
+	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices | aiProcess_CalcTangentSpace | aiProcess_GenBoundingBoxes);
 	// Check for errors
 	if (!scene)
 	{
@@ -28,6 +28,8 @@ void Model::LoadModel(const std::string& path)
 	LoadNode(scene->mRootNode, scene);
 	// Load materials
 	LoadMaterials(scene);
+	// Load collision box
+	LoadCollisionBox(scene);
 }
 
 void Model::LoadNode(aiNode* node, const aiScene* scene)
@@ -89,6 +91,7 @@ void Model::LoadMaterials(const aiScene* scene)
 {
 	textures.resize(scene->mNumMaterials);
 	normalMaps.resize(scene->mNumMaterials);
+	paralaxMaps.resize(scene->mNumMaterials);
 
 	for (size_t i = 0; i < scene->mNumMaterials; i++) {
 		aiMaterial* material = scene->mMaterials[i];
@@ -145,12 +148,14 @@ void Model::LoadMaterials(const aiScene* scene)
 		aiString normalPath;
 		textureFound = false;
 		
+		// Check for normal map 
 		if(material ->GetTexture(aiTextureType_NORMALS, 0, &normalPath) == AI_SUCCESS) {
 			textureFound = true;
 		}
-		//if(material ->GetTexture(aiTextureType_HEIGHT, 0, &normalPath) == AI_SUCCESS) {
-		//	textureFound = true;
-		//}
+		// Check as HEIGHT in case the model uses that type
+		else if(material ->GetTexture(aiTextureType_HEIGHT, 0, &normalPath) == AI_SUCCESS) {
+			textureFound = true;
+		}
 
 		if(textureFound){
 			// Get the filename from the full path
@@ -170,7 +175,7 @@ void Model::LoadMaterials(const aiScene* scene)
 			// Load the texture
 			normalMaps[i] = new Texture(fullpath.c_str());
 			// Error handling
-			if (!normalMaps[i]->LoadNormalMap()) {
+			if (!normalMaps[i]->LoadMaps()) {
 				printf("Failed to load normal map: %s\n", fullpath.c_str());
 				fflush(stdout);
 				delete normalMaps[i];
@@ -179,10 +184,70 @@ void Model::LoadMaterials(const aiScene* scene)
 		}
 		if (!normalMaps[i]) {
 			normalMaps[i] = new Texture("Textures/default_normal.png");
-			normalMaps[i]->LoadNormalMap();
+			normalMaps[i]->LoadMaps();
 		}
 
+		// Try loading the parallax map 
+		aiString parallaxPath;
+		textureFound = false;
+		// Check for parallax map
+		if (material->GetTexture(aiTextureType_DISPLACEMENT, 0, &parallaxPath) == AI_SUCCESS) {
+			textureFound = true;
+		}
+
+		if (textureFound) {
+			// Get the filename from the full path
+			std::string fullpath_s = parallaxPath.C_Str();
+			std::string filename;
+			// Find the last slash or backslash (in case of Windows paths in downloaded models)
+			size_t lastSlash = fullpath_s.find_last_of("/\\");
+			// Extract the filename
+			if (lastSlash == std::string::npos) {
+				filename = fullpath_s;
+			}
+			else {
+				filename = fullpath_s.substr(lastSlash + 1);
+			}
+			// Create the full path to the texture
+			std::string fullpath = "Textures/" + filename;
+			// Load the texture
+			paralaxMaps[i] = new Texture(fullpath.c_str());
+			// Error handling
+			if (!paralaxMaps[i]->LoadMaps()) {
+				printf("Failed to load paralax map: %s\n", fullpath.c_str());
+				fflush(stdout);
+				delete paralaxMaps[i];
+				paralaxMaps[i] = nullptr;
+			}
+		}
+		if (!paralaxMaps[i]) {
+			paralaxMaps[i] = new Texture("Textures/default_height.png");
+			paralaxMaps[i]->LoadMaps();
+		}
+
+
 	}
+}
+
+void Model::LoadCollisionBox(const aiScene* scene)
+{
+	if (scene->mNumMeshes == 0) {
+		return;
+	}
+	const aiAABB& first = scene->mMeshes[0]->mAABB;
+	collisionBox.min = glm::vec3(first.mMin.x, first.mMin.y, first.mMin.z);
+	collisionBox.max = glm::vec3(first.mMax.x, first.mMax.y, first.mMax.z);
+
+	for (size_t i = 1; i < scene->mNumMeshes; i++) {
+		const aiAABB& aabb = scene->mMeshes[i]->mAABB;
+		collisionBox.min.x = std::min(collisionBox.min.x, aabb.mMin.x);
+		collisionBox.min.y = std::min(collisionBox.min.y, aabb.mMin.y);
+		collisionBox.min.z = std::min(collisionBox.min.z, aabb.mMin.z);
+		collisionBox.max.x = std::max(collisionBox.max.x, aabb.mMax.x);
+		collisionBox.max.y = std::max(collisionBox.max.y, aabb.mMax.y);
+		collisionBox.max.z = std::max(collisionBox.max.z, aabb.mMax.z);
+	}
+	printf("Collision Box Min: (%f, %f, %f)\n", collisionBox.min.x, collisionBox.min.y, collisionBox.min.z);
 }
 void Model::ClearModel()
 {
@@ -223,6 +288,9 @@ void Model::RenderModel()
 		}
 		if (materialIndex < normalMaps.size() && normalMaps[materialIndex]) {
 			normalMaps[materialIndex]->UseTexture(GL_TEXTURE3);
+		}
+		if (materialIndex < paralaxMaps.size() && paralaxMaps[materialIndex]) {
+			paralaxMaps[materialIndex]->UseTexture(GL_TEXTURE4);
 		}
 		meshes[i]->RenderMesh();
 	}

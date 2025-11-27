@@ -7,6 +7,8 @@ in vec2 TextureCoordinates;
 in vec4 DirectionalLightSpacePosition;
 in vec4 FlashLightSpacePosition;
 in mat3 TBN;
+in vec3 TangentViewPos;
+in vec3 TangentFragPos;
 
 out vec4 colour;
 
@@ -57,6 +59,7 @@ struct Material
 	float shininess;
 	sampler2D textureMap;
 	sampler2D normalMap;
+	sampler2D heightMap;
 };
 
 
@@ -336,15 +339,55 @@ vec4 CalculatePointLight(PointLight pointLight, int shadowIndex, vec3 worldNorma
 	return(pointLightAmbientColor + (1.0 - shadowFactor)*( pointLightDiffuseColor + pointLightSpecularColor)) * attenuation;
 }
 
-
+vec2 ParallaxMapping(vec2 tCords, vec3 vDir)
+{	
+	const float minLayers = 8.0;
+	const float maxLayers = 32.0;
+	float numLayers = mix(maxLayers, minLayers, max(dot(vec3(0.0, 0.0, 1.0), vDir), 0.0)); 
+	float layerDepth = 1.0 / numLayers;
+	float currentLayerDepth = 0.0;
+	// Na chwile testowo
+	float heightScale = 0.026;
+	float height = texture(material.heightMap, tCords).r;
+	
+	vec2 p = vDir.xy * heightScale;
+	vec2 deltaTexCoords = p/numLayers;
+	
+	vec2 currentTexCoords = tCords;
+	float currentDepthMapValue = texture(material.heightMap, currentTexCoords).r;
+	
+	while (currentLayerDepth < currentDepthMapValue)
+	{
+		currentTexCoords -= deltaTexCoords;
+		currentDepthMapValue = texture(material.heightMap, currentTexCoords).r;
+		currentLayerDepth += layerDepth;
+	}
+	
+	vec2 prevTexCoords = currentTexCoords + deltaTexCoords;
+	
+	float afterDepth = currentDepthMapValue - currentLayerDepth;
+	float beforeDepth = texture(material.heightMap, prevTexCoords).r - currentLayerDepth + layerDepth;
+	
+	float weight = afterDepth / (afterDepth - beforeDepth);
+	vec2 finalTexCoords = prevTexCoords * weight + currentTexCoords * (1.0 - weight);
+	return finalTexCoords;
+}
 
 void main()
 {	
-	vec3 normalNEW = texture(material.normalMap, TextureCoordinates).rgb;
+
+	vec3 viewDirNEW = normalize(TangentViewPos - TangentFragPos);
+	vec2 texCoords = ParallaxMapping(TextureCoordinates, viewDirNEW);
+	
+	if(texCoords.x > 1.0 || texCoords.y > 1.0 || texCoords.x < 0.0 || texCoords.y < 0.0)
+		discard;
+
+
+	vec3 normalNEW = texture(material.normalMap, texCoords).rgb;
 	normalNEW = normalNEW * 2.0 - 1.0;
 	normalNEW = normalize(TBN * normalNEW);
 	
-	vec4 textureColor = texture(material.textureMap, TextureCoordinates);
+	vec4 textureColor = texture(material.textureMap, texCoords);
 	vec4 directionalLightFinalColor = CalculateDirectionalLight(normalNEW);
 	vec4 flashLightFinalColor = CalculateFlashLight(normalNEW);
 	vec4 pointLightFinalColor = vec4(0.0f);

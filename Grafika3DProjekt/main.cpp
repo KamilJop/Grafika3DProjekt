@@ -23,6 +23,7 @@
 #include "Scene.h"
 #include "ShadowMap.h"
 #include "Skybox.h"
+#include "Player.h"
 
 // Window dimensions
 const GLint WIDTH = 1280, HEIGHT = 720;
@@ -60,6 +61,8 @@ Entity* floorEntity;
 Entity* xwingEntity;
 Entity* chestEntity;
 Entity* sculptureEntity;
+Entity* testWallEntity;
+Entity* flashlightEntity;
 
 // Light source
 DirectionalLight* mainLight;
@@ -79,6 +82,11 @@ Model floorModel;
 Model xwing;
 Model chest;
 Model sculpture;
+Model testWall;
+Model flashlightModel;
+
+// Create player
+Player* player;
 
 // Create scene
 Scene* scene = nullptr;
@@ -103,6 +111,7 @@ void DirectionalLightShadowMapPass();
 void FlashlightShadowMapPass();
 void OmniShadowMapPass(PointLight* pLight);
 void RenderScenePass(glm::mat4 projection);
+void HandleKeyboardInput(float deltaTime);
 
 
 int main()
@@ -139,12 +148,20 @@ int main()
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 		float fps = 1.0f / deltaTime;
+		// Disable huge delta time while loading assets
+		if (deltaTime > 0.5f)
+		{
+			deltaTime = 0.5f;
+		}
 		printf("\rFPS: %.2f", fps);
 		fflush(stdout);
 
 		// Camera movement
-		camera.ProcessKeyboard(mainWindow.getKeys(), deltaTime);
 		camera.ProcessMouseMovement(mainWindow.getXChange(), mainWindow.getYChange());
+
+		// Keyboard movement
+		HandleKeyboardInput(deltaTime);
+		
 
 		// Get + Handle user input events
 		glfwPollEvents();
@@ -173,51 +190,62 @@ int main()
 
 Scene* createMainScene(Camera * camera) {
 
-	// Create scene
-	scene = new Scene(camera);
+
 
 	// Load Models
 	door.LoadModel("Models/door.obj");
 	floorModel.LoadModel("Models/Cranberry_Doormat.obj");
 	chest.LoadModel("Models/Untitled.obj");
-	sculpture.LoadModel("Models/rzezba.obj");
+	testWall.LoadModel("Models/testsciana.obj");
+	flashlightModel.LoadModel("Models/flashlight.obj");
+	//sculpture.LoadModel("Models/rzezba.obj");
+
 
 	// Create Materials
 	shinyMaterial = new Material(0.7f, 64.0f);
 	lessShinyMaterial = new Material(0.5f, 256.0f);
 
 	// Create Entities
-	doorEntity = new SpinningEntity(&door, shinyMaterial, glm::vec3(0.0f, -1.0f, -2.0f), glm::vec3(0.0f), glm::vec3(0.8f));
-	floorEntity = new Entity(&floorModel, lessShinyMaterial, glm::vec3(0.0f, -1.5f, -3.0f), glm::vec3(0.0f), glm::vec3(0.5f));
-	chestEntity = new Entity(&chest, shinyMaterial, glm::vec3(2.0f, -1.0f, -4.0f), glm::vec3(0.0f, -45.0f, 0.0f), glm::vec3(1.3f));
-	sculptureEntity = new Entity(&sculpture, lessShinyMaterial, glm::vec3(-10.0f, -1.0f, -4.0f), glm::vec3(0.0f, 30.0f, 0.0f), glm::vec3(4.0f));
-	scene->AddEntity(doorEntity);
-	scene->AddEntity(floorEntity);
-	scene->AddEntity(chestEntity);
-	scene->AddEntity(sculptureEntity);
+	doorEntity = new SpinningEntity(&door, shinyMaterial, glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f), glm::vec3(0.8f));
+	floorEntity = new Entity(&floorModel, lessShinyMaterial, glm::vec3(0.0f, -0.6f, -3.0f), glm::vec3(0.0f), glm::vec3(0.5f));
+	chestEntity = new Entity(&chest, shinyMaterial, glm::vec3(2.0f, 0.5f, -4.0f), glm::vec3(0.0f, -45.0f, 0.0f), glm::vec3(1.3f));
+	testWallEntity = new Entity(&testWall, lessShinyMaterial, glm::vec3(-2.0f, -0.5f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.3f));
+	flashlightEntity = new Entity(&flashlightModel, shinyMaterial, glm::vec3(5.0f,2.0f,-3.0f), glm::vec3(0.0f), glm::vec3(0.05f));
+	flashlightEntity->setCastsShadow(false);
+	//sculptureEntity = new Entity(&sculpture, lessShinyMaterial, glm::vec3(-10.0f, -1.0f, -4.0f), glm::vec3(0.0f, 30.0f, 0.0f), glm::vec3(4.0f));
+
+	// Create Player
+	player = new Player(camera, flashlightEntity);
 
 	// Skybox
 	skybox = new Skybox(skyboxFaces);
 
 	// Light
-	mainLight = new DirectionalLight(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(-1.0f, -5.0f, -5.5f), 0.1f, 0.22f, 2048.0f, 2048.0f);
+	mainLight = new DirectionalLight(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(-1.0f, -5.0f, -5.5f), 0.3f, 0.22f, 2048.0f, 2048.0f);
 	pointLight = new PointLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.3f, 0.9f, glm::vec3(-10.0f, 1.0f, -3.0f), 1.0f, 0.09f, 0.032f, 0, 100.0f, 0.01f, 2048.0f, 2048.0f);
-	pointLight2 = new PointLight(glm::vec3(0.0f, 0.0f, 1.0f), 0.01f, 0.9f, glm::vec3(1.0f, 1.5f, -3.0f), 1.0f, 0.12f, 0.062f, 1, 100.0f, 0.01f, 2048.0f, 2048.0f);
-	pointLight3 = new PointLight(glm::vec3(0.0f, 1.0f, 0.0f), 0.01f, 0.9f, glm::vec3(15.5f, 1.0f, -1.0f), 1.0f, 0.12f, 0.062f, 2, 100.0f, 0.01f, 2048.0f, 2048.0f);
+	pointLight2 = new PointLight(glm::vec3(0.0f, 0.0f, 1.0f), 0.25f, 0.9f, glm::vec3(8.0f, 1.5f, -6.0f), 1.0f, 0.12f, 0.062f, 1, 100.0f, 0.01f, 2048.0f, 2048.0f);
+	pointLight3 = new PointLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.25f, 0.9f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.12f, 0.062f, 2, 100.0f, 0.01f, 2048.0f, 2048.0f);
 	flashlight = new Flashlight(glm::vec3(1.0f, 1.0f, 0.85f), 0.001f, 3.2f, camera->getCameraPosition(), 1.0f, 0.07f, 0.017f, camera->getCameraFront(), 25.0f, 32.5f, 2048.0f,2048.0f);
 
+	// Create scene
+	scene = new Scene(camera, player);
+
 	// Add entities and lights to scene
-	scene->AddEntity(doorEntity);
-	scene->AddEntity(floorEntity);
 	scene->AddPointLight(pointLight);
 	scene->AddPointLight(pointLight2);
 	scene->AddPointLight(pointLight3);
 	scene->SetDirectionalLight(mainLight);
 	scene->SetFlashlight(flashlight);
 
+	scene->AddEntity(doorEntity);
+	scene->AddEntity(floorEntity);
+	scene->AddEntity(chestEntity);
+	scene->AddEntity(testWallEntity);
+	scene->AddEntity(flashlightEntity);
+	//scene->AddEntity(sculptureEntity);
+
 	return scene;
 }
-
 
 void DirectionalLightShadowMapPass() {
 	shaderList[1]->UseShader();
@@ -309,12 +337,89 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 
 	flashlight->getShadowMap()->Read(GL_TEXTURE2);
 
+	// Set texture units for material maps
 	shaderList[0]->setInt("material.textureMap", 0); 
 	shaderList[0]->setInt("material.normalMap", 3);  
+	shaderList[0]->setInt("material.heightMap", 4);
 
 	// Update the scene
 	scene->Update(deltaTime);
 
 	// Render the scene
-	scene->Render(shaderList[0], projectionMatrix);
+	scene->Render(shaderList[0], projectionMatrix, deltaTime);
+}
+
+void HandleKeyboardInput(float deltaTime) {
+
+	float speed = camera.MovementSpeed;
+	if (player->isCrouching)
+	{
+		speed *= 0.3f;
+	}
+
+	glm::vec3 front = camera.getCameraFront();
+	front.y = 0.0f;
+	front = glm::normalize(front);
+
+	glm::vec3 right = camera.getCameraRight();
+	right.y = 0.0f;
+	right = glm::normalize(right);
+
+	bool isMoving = false;
+	player->velocity.x = 0.0f;
+	player->velocity.z = 0.0f;
+	if (mainWindow.getKeys()[GLFW_KEY_W])
+	{
+		player->velocity += front * speed;
+		isMoving = true;
+	}
+	if (mainWindow.getKeys()[GLFW_KEY_S])
+	{
+		player->velocity -= front * speed;
+		isMoving = true;
+	}
+	if (mainWindow.getKeys()[GLFW_KEY_A])
+	{
+		player->velocity -= right * speed;
+		isMoving = true;
+	}
+	if (mainWindow.getKeys()[GLFW_KEY_D])
+	{
+		player->velocity += right * speed;
+		isMoving = true;
+	}
+
+	if (mainWindow.getKeys()[GLFW_KEY_SPACE])
+	{
+		player->Jump();
+	}
+
+	if (mainWindow.getKeys()[GLFW_KEY_F])
+	{
+		player->changeFlashlightState();
+		mainWindow.getKeys()[GLFW_KEY_F] = false;
+	}
+
+	if (mainWindow.getKeys()[GLFW_KEY_LEFT_SHIFT])
+	{
+		player->Crouch(true);
+	}
+	else {
+		player->Crouch(false);
+	}
+
+	if (mainWindow.getKeys()[GLFW_KEY_R])
+	{
+		player->flashlightFlipTrick(true);
+	}
+	else {
+		player->flashlightFlipTrick(false);
+	}
+
+	if (isMoving) {
+		player->walkTimer += deltaTime;
+	}
+	else {
+		player->walkTimer = glm::mix(player->walkTimer, 0.0f, 5.0f * deltaTime);	
+	}
 }

@@ -13,12 +13,15 @@ out vec2 TextureCoordinates;
 out vec4 DirectionalLightSpacePosition;
 out vec4 FlashLightSpacePosition;
 out mat3 TBN;
+out vec3 TangentViewPos;
+out vec3 TangentFragPos;
 
 uniform mat4 model;
 uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 directionalLightSpaceTransform;
 uniform mat4 flashLightSpaceTransform;
+uniform vec3 cameraPosition;
 
 
 
@@ -33,6 +36,8 @@ void main()
 	vCol = vec4(1.0f,1.0f,1.0f,1.0f);
 	TextureCoordinates = aTexture;
 
+	// Normal map 
+
 	vec3 T = normalize(vec3(model * vec4(aTangent, 0.0)));
 	vec3 N = normalize(vec3(model * vec4(aNormal, 0.0)));
 
@@ -41,4 +46,10 @@ void main()
 	vec3 B = cross(N, T);
 
 	TBN = mat3(T, B, N);  
+	
+	// Parallax 
+	mat3 TBN_inverse = transpose(TBN);
+	
+	TangentViewPos = TBN_inverse * cameraPosition;
+	TangentFragPos = TBN_inverse * FragPos;
 }

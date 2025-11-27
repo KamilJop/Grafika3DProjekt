@@ -61,7 +61,7 @@ void PointLight::useLight(Shader* lightShader)
 	std::string shadowBase = "omniShadowMaps[" + indexString + "].";
 
 	lightShader->setFloat(shadowBase + "farPlane", farPlane);
-	int textureUnit = 4 + lightIndex;
+	int textureUnit = 5 + lightIndex;
 	shadowMap->Read(GL_TEXTURE0 + textureUnit);
 	lightShader->setInt(shadowBase + "shadowMap", textureUnit);
 }
