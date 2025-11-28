@@ -115,6 +115,14 @@ void RenderScenePass(glm::mat4 projection);
 void HandleKeyboardInput(float deltaTime);
 
 
+enum ShaderTypes
+{
+	SHADER_DEFAULT,
+	SHADER_DIRLIGHT_SHADOWMAP,
+	SHADER_OMNI_SHADOWMAP,
+	SHADER_OUTLINE
+};
+
 int main()
 {
 	// Create Window
@@ -255,16 +263,16 @@ Scene* createMainScene(Camera * camera) {
 }
 
 void DirectionalLightShadowMapPass() {
-	shaderList[1]->UseShader();
+	shaderList[SHADER_DIRLIGHT_SHADOWMAP]->UseShader();
 	glViewport(0, 0, mainLight->getShadowMap()->getShadowWidth(), mainLight->getShadowMap()->getShadowHeight());
 	glCullFace(GL_FRONT);
 	mainLight->getShadowMap()->Write();
 	glClear(GL_DEPTH_BUFFER_BIT);
 
 	glm::mat4 lightTransform = mainLight->CalculateLightTransform();
-	shaderList[1]->setMat4("lightSpaceTransform", lightTransform);
+	shaderList[SHADER_DIRLIGHT_SHADOWMAP]->setMat4("lightSpaceTransform", lightTransform);
 
-	scene->RenderShadowMap(shaderList[1]);
+	scene->RenderShadowMap(shaderList[SHADER_DIRLIGHT_SHADOWMAP]);
 
 	glCullFace(GL_BACK);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -273,7 +281,7 @@ void DirectionalLightShadowMapPass() {
 
 void FlashlightShadowMapPass() {
 
-	shaderList[1]->UseShader();
+	shaderList[SHADER_DIRLIGHT_SHADOWMAP]->UseShader();
 	glViewport(0, 0, flashlight->getShadowMap()->getShadowWidth(), flashlight->getShadowMap()->getShadowHeight());
 	glCullFace(GL_FRONT);
 	flashlight->getShadowMap()->Write();
@@ -281,9 +289,9 @@ void FlashlightShadowMapPass() {
 
 	glm::mat4 lightTransform = flashlight->CalculateLightTransform();
 
-	shaderList[1]->setMat4("lightSpaceTransform", lightTransform);
+	shaderList[SHADER_DIRLIGHT_SHADOWMAP]->setMat4("lightSpaceTransform", lightTransform);
 
-	scene->RenderShadowMap(shaderList[1]);
+	scene->RenderShadowMap(shaderList[SHADER_DIRLIGHT_SHADOWMAP]);
 	glCullFace(GL_BACK);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -292,7 +300,7 @@ void FlashlightShadowMapPass() {
 void OmniShadowMapPass(PointLight* pLight) {
 
 	// Use the omni-directional shadow map shader
-	shaderList[2]->UseShader();
+	shaderList[SHADER_OMNI_SHADOWMAP]->UseShader();
 	// Setup viewport
 	glViewport(0, 0, pLight->getShadowMap()->getShadowWidth(), pLight->getShadowMap()->getShadowHeight());
 
@@ -310,11 +318,11 @@ void OmniShadowMapPass(PointLight* pLight) {
 	for (GLuint i = 0; i < 6; ++i)
 	{
 		std::string uniformName = "lightMatrices[" + std::to_string(i) + "]";
-		shaderList[2]->setMat4(uniformName, lightTransforms[i]);
+		shaderList[SHADER_OMNI_SHADOWMAP]->setMat4(uniformName, lightTransforms[i]);
 	}
-	shaderList[2]->setFloat("farPlane", pLight->getFarPlane());
-	shaderList[2]->setVec3("lightPos", pLight->getLightPosition());
-	scene->RenderShadowMap(shaderList[2]);
+	shaderList[SHADER_OMNI_SHADOWMAP]->setFloat("farPlane", pLight->getFarPlane());
+	shaderList[SHADER_OMNI_SHADOWMAP]->setVec3("lightPos", pLight->getLightPosition());
+	scene->RenderShadowMap(shaderList[SHADER_OMNI_SHADOWMAP]);
 	glCullFace(GL_BACK);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
@@ -336,45 +344,45 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 
 	
 	// Use shader program
-	shaderList[0]->UseShader();
+	shaderList[SHADER_DEFAULT]->UseShader();
 
 	// Set the shadow map uniform to texture unit 1
-	shaderList[0]->setInt("directionalShadowMap", 1);
+	shaderList[SHADER_DEFAULT]->setInt("directionalShadowMap", 1);
 
 	// Bind the shadow map to texture unit 1
 	mainLight->getShadowMap()->Read(GL_TEXTURE1);
 
 	// Set the flashlight shadow map uniform to texture unit 2
-	shaderList[0]->setInt("flashShadowMap", 2);
+	shaderList[SHADER_DEFAULT]->setInt("flashShadowMap", 2);
 
 	flashlight->getShadowMap()->Read(GL_TEXTURE2);
 
 	// Set texture units for material maps
-	shaderList[0]->setInt("material.textureMap", 0); 
-	shaderList[0]->setInt("material.normalMap", 3);  
-	shaderList[0]->setInt("material.heightMap", 4);
+	shaderList[SHADER_DEFAULT]->setInt("material.textureMap", 0);
+	shaderList[SHADER_DEFAULT]->setInt("material.normalMap", 3);
+	shaderList[SHADER_DEFAULT]->setInt("material.heightMap", 4);
 
 	glEnable(GL_STENCIL_TEST);
 	glStencilMask(0x00);
 	glStencilFunc(GL_ALWAYS, 1, 0xFF);
 
 	// Render scene without outlines first
-	scene->RenderWithoutOutline(shaderList[0], projectionMatrix);
+	scene->RenderWithoutOutline(shaderList[SHADER_DEFAULT], projectionMatrix);
 
 	glStencilMask(0xFF);
 	glStencilFunc(GL_ALWAYS, 1, 0xFF);
 	// Now render objects again but only writing to stencil buffer
-	scene->RenderWithOutline(shaderList[0], projectionMatrix);
+	scene->RenderWithOutline(shaderList[SHADER_DEFAULT], projectionMatrix);
 
 	// Render outlines
 	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_FRONT);
 
-	shaderList[3]->UseShader();
+	shaderList[SHADER_OUTLINE]->UseShader();
 	float outline = 0.01f;
-	shaderList[3]->setFloat("outline", outline);
-	scene->RenderWithOutline(shaderList[3], projectionMatrix);
+	shaderList[SHADER_OUTLINE]->setFloat("outline", outline);
+	scene->RenderWithOutline(shaderList[SHADER_OUTLINE], projectionMatrix);
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthMask(GL_TRUE);
