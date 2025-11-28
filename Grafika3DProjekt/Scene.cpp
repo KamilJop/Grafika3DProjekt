@@ -16,7 +16,7 @@ Scene::~Scene()
 	camera = nullptr;
 }
 
-void Scene::Render(Shader* shader, glm::mat4 projection, float dt)
+void Scene::RenderWithoutOutline(Shader* shader, glm::mat4 projection)
 {
 	shader->UseShader();
 	shader->setMat4("projection", projection);
@@ -32,6 +32,67 @@ void Scene::Render(Shader* shader, glm::mat4 projection, float dt)
 	{
 		dirLight->useLight(shader);
 	}
+
+	if (flashLight && player->getFlashlightState())
+	{
+		flashLight->useLight(shader);
+	}
+	else
+	{
+		shader->setFloat("flashLight.ambientIntensity", 0.0f);
+		shader->setFloat("flashLight.diffuseIntensity", 0.0f);
+	}
+
+	for (auto& entity : entities)
+	{
+		if (!entity->isOutlined()) {
+			entity->DrawEntity(shader);
+		}
+	}
+		
+}
+
+void Scene::RenderWithOutline(Shader* shader, glm::mat4 projection)
+{
+	shader->UseShader();
+	shader->setMat4("projection", projection);
+	shader->setMat4("view", camera->getViewMatrix());
+	shader->setVec3("cameraPosition", camera->getCameraPosition());
+	shader->setMat4("directionalLightSpaceTransform", dirLight->CalculateLightTransform());
+	shader->setMat4("flashLightSpaceTransform", flashLight->CalculateLightTransform());
+	for (auto& pLight : pointLights)
+	{
+		pLight->useLight(shader);
+	}
+	if (dirLight)
+	{
+		dirLight->useLight(shader);
+	}
+
+	if (flashLight && player->getFlashlightState())
+	{
+		flashLight->useLight(shader);
+	}
+	else
+	{
+		shader->setFloat("flashLight.ambientIntensity", 0.0f);
+		shader->setFloat("flashLight.diffuseIntensity", 0.0f);
+	}
+
+	for (auto& entity : entities)
+	{
+		if (entity->isOutlined()) {
+			entity->DrawEntity(shader);
+		}
+	}
+
+}
+
+void Scene::Update(float deltaTime)
+{
+	// Update player physics
+	player->UpdatePhysics(deltaTime, entities);
+
 	glm::vec3 camPos = camera->getCameraPosition();
 	glm::vec3 camFront = camera->getCameraFront();
 	glm::vec3 camRight = camera->getCameraRight();
@@ -48,12 +109,8 @@ void Scene::Render(Shader* shader, glm::mat4 projection, float dt)
 		camUp * offset.y +
 		camFront * offset.z;
 
-	// Update player physics
-	player->UpdatePhysics(dt, entities);
-	player->updateFlashlightPosition(finalPos);
 	if (flashLight && player->getFlashlightState())
 	{
-
 		if (player->walkTimer > 0.0f)
 		{
 			float bobFrequency = 10.0f;
@@ -68,26 +125,10 @@ void Scene::Render(Shader* shader, glm::mat4 projection, float dt)
 		glm::vec3 lightSourcePos = finalPos + (camFront * 0.3f);
 		flashLight->setLightPosition(lightSourcePos);
 		flashLight->setLightDirection(camFront);
-
-		flashLight->useLight(shader);
 	}
-	else
-	{
-		shader->setFloat("flashLight.ambientIntensity", 0.0f);
-		shader->setFloat("flashLight.diffuseIntensity", 0.0f);
-	}
+	player->updateFlashlightPosition(finalPos);
 
-	for (auto& entity : entities)
-	{
-		entity->DrawEntity(shader);
-	}
-	
-	
-	
-}
 
-void Scene::Update(float deltaTime)
-{
 	for (auto& entity : entities)
 	{
 		entity->Update(deltaTime);

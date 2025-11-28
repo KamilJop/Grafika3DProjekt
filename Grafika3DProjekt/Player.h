@@ -17,7 +17,6 @@ public:
 	bool isFlashlightOn = false;
 	bool onGround = false;
 	bool isCrouching = false;
-	bool isFlipping = false;
 	Camera* camera;
 	CollisionBox playerCollisions;
 
@@ -25,7 +24,6 @@ public:
 	void UpdatePhysics(float deltaTime, std::vector<Entity*>& entities);
 	void Jump();
 	void changeFlashlightState();
-	void flashlightFlipTrick(bool state);
 	void Crouch(bool state);
 	bool getFlashlightState() { return isFlashlightOn; }
 	void updateFlashlightPosition(const glm::vec3& finalPos);

@@ -43,7 +43,8 @@ static const char* shadowFragmentShader = "Shaders/directional_shadow_map.frag";
 static const char* omniShadowVertexShader = "Shaders/omni_shadow_map.vert";
 static const char* omniShadowGeometryShader = "Shaders/omni_shadow_map.geom";
 static const char* omniShadowFragmentShader = "Shaders/omni_shadow_map.frag";
-
+static const char* outlineVertexShader = "Shaders/outline.vert";
+static const char* outlineFragmentShader = "Shaders/outline.frag";
 // Texture file paths
 static const char* brickTexture = "Textures/brick.png";
 static const char* stoneTexture = "Textures/stone.png";
@@ -133,6 +134,10 @@ int main()
 	omniShadowShader->CreateShader(omniShadowVertexShader, omniShadowGeometryShader, omniShadowFragmentShader);
 	shaderList.push_back(omniShadowShader);
 
+	Shader* outlineShader = new Shader();
+	outlineShader->CreateShader(outlineVertexShader, outlineFragmentShader);
+	shaderList.push_back(outlineShader);
+
 	// Set perspective 
 	glm::mat4 projection;
 	projection = glm::perspective(glm::radians(60.0f), (GLfloat)mainWindow.getBufferWidth() / (GLfloat)mainWindow.getBufferHeight(), 0.1f, 100.0f);
@@ -162,7 +167,6 @@ int main()
 		// Keyboard movement
 		HandleKeyboardInput(deltaTime);
 		
-
 		// Get + Handle user input events
 		glfwPollEvents();
 		
@@ -177,6 +181,10 @@ int main()
 		{
 			OmniShadowMapPass(scene->pointLights[i]);
 		}
+
+		// Update the scene
+		scene->Update(deltaTime);
+
 
 		// Render scene pass
 		RenderScenePass(projection);
@@ -206,12 +214,14 @@ Scene* createMainScene(Camera * camera) {
 	lessShinyMaterial = new Material(0.5f, 256.0f);
 
 	// Create Entities
-	doorEntity = new SpinningEntity(&door, shinyMaterial, glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f), glm::vec3(0.8f));
+	doorEntity = new SpinningEntity(&door, shinyMaterial, glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f), glm::vec3(1.4f));
 	floorEntity = new Entity(&floorModel, lessShinyMaterial, glm::vec3(0.0f, -0.6f, -3.0f), glm::vec3(0.0f), glm::vec3(0.5f));
 	chestEntity = new Entity(&chest, shinyMaterial, glm::vec3(2.0f, 0.5f, -4.0f), glm::vec3(0.0f, -45.0f, 0.0f), glm::vec3(1.3f));
 	testWallEntity = new Entity(&testWall, lessShinyMaterial, glm::vec3(-2.0f, -0.5f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.3f));
 	flashlightEntity = new Entity(&flashlightModel, shinyMaterial, glm::vec3(5.0f,2.0f,-3.0f), glm::vec3(0.0f), glm::vec3(0.05f));
 	flashlightEntity->setCastsShadow(false);
+	doorEntity->setOutlined(true);
+	flashlightEntity->setOutlined(true);
 	//sculptureEntity = new Entity(&sculpture, lessShinyMaterial, glm::vec3(-10.0f, -1.0f, -4.0f), glm::vec3(0.0f, 30.0f, 0.0f), glm::vec3(4.0f));
 
 	// Create Player
@@ -319,10 +329,15 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 
 	// Clear buffers
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearStencil(0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
+	glDisable(GL_STENCIL_TEST);
+	// Draw skybox first
 	skybox->DrawSkybox(camera.getViewMatrix(), projectionMatrix);
 
+	
 	// Use shader program
 	shaderList[0]->UseShader();
 
@@ -342,11 +357,30 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 	shaderList[0]->setInt("material.normalMap", 3);  
 	shaderList[0]->setInt("material.heightMap", 4);
 
-	// Update the scene
-	scene->Update(deltaTime);
+	glEnable(GL_STENCIL_TEST);
+	glStencilMask(0x00);
+	glStencilFunc(GL_ALWAYS, 1, 0xFF);
 
-	// Render the scene
-	scene->Render(shaderList[0], projectionMatrix, deltaTime);
+	// Render scene without outlines first
+	scene->RenderWithoutOutline(shaderList[0], projectionMatrix);
+
+	glStencilMask(0xFF);
+	glStencilFunc(GL_ALWAYS, 1, 0xFF);
+	// Now render objects again but only writing to stencil buffer
+	scene->RenderWithOutline(shaderList[0], projectionMatrix);
+
+	// Render outlines
+	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+	glDisable(GL_DEPTH_TEST);
+	glDepthMask(GL_FALSE);
+
+	shaderList[3]->UseShader();
+	float outline = 0.08f;
+	shaderList[3]->setFloat("outline", outline);
+	scene->RenderWithOutline(shaderList[3], projectionMatrix);
+
+	glEnable(GL_DEPTH_TEST);
+	glDepthMask(GL_TRUE);
 }
 
 void HandleKeyboardInput(float deltaTime) {
@@ -391,6 +425,7 @@ void HandleKeyboardInput(float deltaTime) {
 
 	if (mainWindow.getKeys()[GLFW_KEY_SPACE])
 	{
+		printf("Jump\n");
 		player->Jump();
 	}
 
@@ -407,19 +442,11 @@ void HandleKeyboardInput(float deltaTime) {
 	else {
 		player->Crouch(false);
 	}
-
-	if (mainWindow.getKeys()[GLFW_KEY_R])
-	{
-		player->flashlightFlipTrick(true);
-	}
-	else {
-		player->flashlightFlipTrick(false);
-	}
-
 	if (isMoving) {
 		player->walkTimer += deltaTime;
 	}
 	else {
-		player->walkTimer = glm::mix(player->walkTimer, 0.0f, 5.0f * deltaTime);	
+		// TODO smooth reset
+		player->walkTimer = 0.0f;
 	}
 }

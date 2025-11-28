@@ -19,6 +19,7 @@ public:
 	glm::vec3 rotation;
 	glm::vec3 scale;
 	bool castsShadow = true;
+	bool outlined = false;
 	CollisionBox collisions;
 
 	Entity(Model* model, Material* material, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal);
@@ -36,6 +37,8 @@ public:
 	glm::vec3 getRotation();
 	glm::vec3 getScale();
 	bool getCastsShadow() { return castsShadow; }
+	bool isOutlined() { return outlined; }
+	void setOutlined(bool state) { outlined = state; }
 	CollisionBox GetCollisions() { return collisions; }
 	void DrawEntity(Shader* shader);
 	void UpdateCollisionBox();
