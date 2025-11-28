@@ -22,6 +22,8 @@ public:
 
 
 	void UpdatePhysics(float deltaTime, std::vector<Entity*>& entities);
+	void checkTargettedEntity(std::vector<Entity*>& entities);
+	bool checkRayEntityIntersection(const glm::vec3& rayOrigin, const glm::vec3& rayDirection, Entity* entity, float& outDistance);
 	void Jump();
 	void changeFlashlightState();
 	void Crouch(bool state);

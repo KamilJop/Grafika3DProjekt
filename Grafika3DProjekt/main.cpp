@@ -1,4 +1,4 @@
-#define STB_IMAGE_IMPLEMENTATION
+﻿#define STB_IMAGE_IMPLEMENTATION
 
 #include <stdio.h>
 #include <glad\glad.h>
@@ -185,7 +185,6 @@ int main()
 		// Update the scene
 		scene->Update(deltaTime);
 
-
 		// Render scene pass
 		RenderScenePass(projection);
 
@@ -206,7 +205,7 @@ Scene* createMainScene(Camera * camera) {
 	chest.LoadModel("Models/Untitled.obj");
 	testWall.LoadModel("Models/testsciana.obj");
 	flashlightModel.LoadModel("Models/flashlight.obj");
-	//sculpture.LoadModel("Models/rzezba.obj");
+	sculpture.LoadModel("Models/rzezba.obj");
 
 
 	// Create Materials
@@ -218,11 +217,9 @@ Scene* createMainScene(Camera * camera) {
 	floorEntity = new Entity(&floorModel, lessShinyMaterial, glm::vec3(0.0f, -0.6f, -3.0f), glm::vec3(0.0f), glm::vec3(0.5f));
 	chestEntity = new Entity(&chest, shinyMaterial, glm::vec3(2.0f, 0.5f, -4.0f), glm::vec3(0.0f, -45.0f, 0.0f), glm::vec3(1.3f));
 	testWallEntity = new Entity(&testWall, lessShinyMaterial, glm::vec3(-2.0f, -0.5f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.3f));
-	flashlightEntity = new Entity(&flashlightModel, shinyMaterial, glm::vec3(5.0f,2.0f,-3.0f), glm::vec3(0.0f), glm::vec3(0.05f));
+	flashlightEntity = new Entity(&flashlightModel, shinyMaterial, glm::vec3(5.0f,2.0f,-3.0f), glm::vec3(0.0f), glm::vec3(0.03f));
 	flashlightEntity->setCastsShadow(false);
-	doorEntity->setOutlined(true);
-	flashlightEntity->setOutlined(true);
-	//sculptureEntity = new Entity(&sculpture, lessShinyMaterial, glm::vec3(-10.0f, -1.0f, -4.0f), glm::vec3(0.0f, 30.0f, 0.0f), glm::vec3(4.0f));
+	sculptureEntity = new Entity(&sculpture, lessShinyMaterial, glm::vec3(-10.0f, -1.0f, -4.0f), glm::vec3(0.0f, 30.0f, 0.0f), glm::vec3(4.0f));
 
 	// Create Player
 	player = new Player(camera, flashlightEntity);
@@ -252,7 +249,7 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(chestEntity);
 	scene->AddEntity(testWallEntity);
 	scene->AddEntity(flashlightEntity);
-	//scene->AddEntity(sculptureEntity);
+	scene->AddEntity(sculptureEntity);
 
 	return scene;
 }
@@ -371,16 +368,17 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 
 	// Render outlines
 	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
-	glDisable(GL_DEPTH_TEST);
-	glDepthMask(GL_FALSE);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_FRONT);
 
 	shaderList[3]->UseShader();
-	float outline = 0.08f;
+	float outline = 0.01f;
 	shaderList[3]->setFloat("outline", outline);
 	scene->RenderWithOutline(shaderList[3], projectionMatrix);
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthMask(GL_TRUE);
+	glCullFace(GL_BACK);
 }
 
 void HandleKeyboardInput(float deltaTime) {
@@ -425,7 +423,6 @@ void HandleKeyboardInput(float deltaTime) {
 
 	if (mainWindow.getKeys()[GLFW_KEY_SPACE])
 	{
-		printf("Jump\n");
 		player->Jump();
 	}
 

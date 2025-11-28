@@ -133,6 +133,8 @@ void Scene::Update(float deltaTime)
 	{
 		entity->Update(deltaTime);
 	}
+
+	player->checkTargettedEntity(entities);
 }	
 
 

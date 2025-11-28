@@ -156,14 +156,77 @@ void Player::updateFlashlightPosition(const glm::vec3& finalPos)
 
 
 void Player::updatePlayerCollisions() {
-	float width = 0.6f;
+	float width = 1.2f;
 	float height = 1.8f;
 
-	if (isCrouching) height = 1.2f; 
+	if (isCrouching) height = 1.8f; 
 
 	float halfWidth = width / 2.0f;
 
 	playerCollisions.min = glm::vec3(position.x - halfWidth, position.y, position.z - halfWidth);
 	playerCollisions.max = glm::vec3(position.x + halfWidth, position.y + height, position.z + halfWidth);
 
+}
+
+void Player::checkTargettedEntity(std::vector<Entity*>& entities)
+{
+	// Raycasting parameters
+	float reachDistance = 5.0f;
+	glm::vec3 rayOrigin = camera->getCameraPosition();
+	glm::vec3 rayDirection = camera->getCameraFront();
+	Entity* closestEntity = nullptr;
+	float closestDistance = reachDistance;
+	// Check intersection with each entity
+	for (auto& entity : entities)
+	{
+		// Skip flashlight entity
+		if (entity == flashlightEntity) continue;
+		entity->setOutlined(false);
+		float intersectionDistance = 10000.0f;
+		if (checkRayEntityIntersection(rayOrigin, rayDirection, entity, intersectionDistance))
+		{
+			if (intersectionDistance < closestDistance)
+			{
+				closestDistance = intersectionDistance;
+				closestEntity = entity;
+			}
+		}
+	}
+	// Outline the closest entity if any
+	if (closestEntity)
+	{
+		printf("Targeting entity at distance: %.2f\n", closestDistance);
+		closestEntity->setOutlined(true);
+	}
+}
+
+
+bool Player::checkRayEntityIntersection(const glm::vec3& rayOrigin, const glm::vec3& rayDirection, Entity* entity, float& outDistance)
+{
+	CollisionBox box = entity->GetCollisions();
+
+	float tx1 = (box.min.x - rayOrigin.x) / rayDirection.x;
+	float tx2 = (box.max.x - rayOrigin.x) / rayDirection.x;
+
+	float tmin = std::min(tx1, tx2);
+	float tmax = std::max(tx1, tx2);
+
+	float ty1 = (box.min.y - rayOrigin.y) / rayDirection.y;
+	float ty2 = (box.max.y - rayOrigin.y) / rayDirection.y;
+
+	tmin = std::max(tmin, std::min(ty1, ty2));
+	tmax = std::min(tmax, std::max(ty1, ty2));
+
+	float tz1 = (box.min.z - rayOrigin.z) / rayDirection.z;
+	float tz2 = (box.max.z - rayOrigin.z) / rayDirection.z;
+
+	tmin = std::max(tmin, std::min(tz1, tz2));
+	tmax = std::min(tmax, std::max(tz1, tz2));
+
+	if (tmax >= tmin && tmin >= 0.0f)
+	{
+		outDistance = tmin;
+		return true;
+	}
+	return false;
 }
