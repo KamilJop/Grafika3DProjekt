@@ -93,6 +93,12 @@ void TextRenderer::Load(std::string font, unsigned int fontSize) {
 
 void TextRenderer::RenderText(std::string text, float x, float y, float scale, glm::vec3 color) {
 
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_STENCIL_TEST);
+	glDisable(GL_CULL_FACE);
+
 	// Use shader
 	textShader->UseShader();
 
@@ -134,4 +140,19 @@ void TextRenderer::RenderText(std::string text, float x, float y, float scale, g
 	}
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+	glEnable(GL_DEPTH_TEST);
+	glDisable(GL_BLEND);
+	glEnable(GL_STENCIL_TEST);
+	glEnable(GL_CULL_FACE);
+}
+
+float TextRenderer::GetTextWidth(std::string text) {
+	float width = 0.0f;
+	std::string::const_iterator c;
+	for (c = text.begin(); c != text.end(); c++) {
+		Character ch = Characters[*c];
+		width += (ch.Advance >> 6); 
+	}
+	return width;
 }

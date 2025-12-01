@@ -1,11 +1,12 @@
 #include "Scene.h"
 
-Scene::Scene(Camera* cam, Player* play)
+Scene::Scene(Camera* cam, Player* play, TextRenderer* renderer)
 {
 	camera = cam;
 	player = play;
 	dirLight = nullptr;
 	flashLight = nullptr;
+	textRenderer = renderer;
 }
 Scene::~Scene()
 {
@@ -37,6 +38,7 @@ void Scene::RenderWithOutline(Shader* shader, glm::mat4 projection)
 	{
 		if (entity->isOutlined()) {
 			entity->DrawEntity(shader);
+			RenderTooltip(entity);
 		}
 	}
 
@@ -129,4 +131,11 @@ void Scene::RenderLogic(Shader* shader, glm::mat4 projection)
 		shader->setFloat("flashLight.ambientIntensity", 0.0f);
 		shader->setFloat("flashLight.diffuseIntensity", 0.0f);
 	}
+}
+
+void Scene::RenderTooltip(Entity* selectedEntity)
+{
+	float offset = textRenderer->GetTextWidth(selectedEntity->title) / 2.0f;
+
+	textRenderer->RenderText( selectedEntity->title, 640.0f - offset, 670.0f, 1.0f, glm::vec3(1.0f, 0.0f, 1.0f));
 }

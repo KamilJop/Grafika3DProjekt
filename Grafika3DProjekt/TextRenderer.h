@@ -21,6 +21,7 @@ class TextRenderer
 	~TextRenderer();
 	void Load(std::string font, unsigned int fontSize);
 	void RenderText(std::string text, float x, float y, float scale, glm::vec3 color);
+	float GetTextWidth(std::string text);
 
 	private:
 		unsigned int VAO, VBO;

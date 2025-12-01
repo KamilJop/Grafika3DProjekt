@@ -109,6 +109,7 @@ std::vector<std::string> skyboxFaces
 
 // Text Renderer
 TextRenderer* textRenderer;
+TextRenderer* tooltipRenderer;
 
 
 // Function prototypes
@@ -199,15 +200,12 @@ int main()
 		// Render scene pass
 		RenderScenePass(projection);
 
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glDisable(GL_DEPTH_TEST);
-		glDisable(GL_STENCIL_TEST);
-
+		// Render FPS
 		textRenderer->RenderText("FPS: " + std::to_string((int)fps), 25.0f, 25.0f, 1.0f, glm::vec3(0.5f, 0.8f, 0.2f));
 
-		glEnable(GL_DEPTH_TEST);
-		glDisable(GL_BLEND);
+		// Render crosshair
+		float textWidth = tooltipRenderer->GetTextWidth("+");
+		tooltipRenderer->RenderText("+", (mainWindow.getBufferWidth() / 2.0f) - textWidth, (mainWindow.getBufferHeight() / 2.0f) - 10.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 
 		// Swap buffers
 		mainWindow.swapBuffers();
@@ -249,8 +247,10 @@ Scene* createMainScene(Camera * camera) {
 
 	// Text renderer
 	textRenderer = new TextRenderer(mainWindow.getBufferWidth(), mainWindow.getBufferHeight());
+	tooltipRenderer = new TextRenderer(mainWindow.getBufferWidth(), mainWindow.getBufferHeight());
 	// Load font
 	textRenderer->Load("Fonts/BitterPro-Medium.ttf", 12);
+	tooltipRenderer->Load("Fonts/BitterPro-Bold.ttf", 36);
 
 	// Skybox
 	skybox = new Skybox(skyboxFaces);
@@ -263,7 +263,7 @@ Scene* createMainScene(Camera * camera) {
 	flashlight = new Flashlight(glm::vec3(1.0f, 1.0f, 0.85f), 0.001f, 3.2f, camera->getCameraPosition(), 1.0f, 0.07f, 0.017f, camera->getCameraFront(), 25.0f, 32.5f, 2048.0f,2048.0f);
 
 	// Create scene
-	scene = new Scene(camera, player);
+	scene = new Scene(camera, player, tooltipRenderer);
 
 	// Add entities and lights to scene
 	scene->AddPointLight(pointLight);
@@ -407,6 +407,7 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 	glEnable(GL_DEPTH_TEST);
 	glDepthMask(GL_TRUE);
 	glCullFace(GL_BACK);
+	glDisable(GL_STENCIL_TEST);
 }
 
 void HandleKeyboardInput(float deltaTime) {

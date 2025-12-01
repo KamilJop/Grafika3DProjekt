@@ -7,6 +7,7 @@
 #include "Flashlight.h"
 #include "Camera.h"
 #include "Player.h"
+#include "TextRenderer.h"
 class Scene
 {
 public:
@@ -16,8 +17,9 @@ public:
 	Flashlight* flashLight;
 	Camera* camera;
 	Player* player;
+	TextRenderer* textRenderer;
 
-	Scene(Camera* cam, Player* play);
+	Scene(Camera* cam, Player* play, TextRenderer* renderer);
 	~Scene();
 	void AddEntity(Entity* entity)
 	{
@@ -43,6 +45,7 @@ public:
 	void RenderWithoutOutline(Shader* shader, glm::mat4 projection);
 	void Update(float deltaTime);
 	void RenderShadowMap(Shader* shadowShader);
+	void RenderTooltip(Entity* selectedEntity);
 
 private:
 	void RenderLogic(Shader* shader, glm::mat4 projection);
