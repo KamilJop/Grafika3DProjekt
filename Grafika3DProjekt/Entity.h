@@ -20,6 +20,7 @@ public:
 	glm::vec3 scale;
 	bool castsShadow = true;
 	bool outlined = false;
+	bool hasCollisions = true;
 	bool interactable;
 	CollisionBox collisions;
 	std::string title = "Untitled object";
@@ -35,12 +36,14 @@ public:
 	void setScale(glm::vec3 newScale);
 	void setCastsShadow(bool state) { castsShadow = state; }
 	void setTitle(std::string newTitle) { title = newTitle; }
-
+	void setColissions(bool state) { hasCollisions = state; }
 	glm::vec3 getPosition();
 	glm::vec3 getRotation();
 	glm::vec3 getScale();
 	bool getInteractable() { return interactable; }
 	bool getCastsShadow() { return castsShadow; }
+	bool getColissions() { return hasCollisions; }
+	std::string getTitle() { return title; }
 	bool isOutlined() { return outlined; }
 	void setOutlined(bool state) { outlined = state; }
 	CollisionBox GetCollisions() { return collisions; }

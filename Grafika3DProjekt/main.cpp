@@ -236,13 +236,15 @@ Scene* createMainScene(Camera * camera) {
 	lessShinyMaterial = new Material(0.5f, 256.0f);
 
 	// Create Entities
-	doorEntity = new Door(&door, shinyMaterial, glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f), glm::vec3(1.4f), "Doors");
+	framuga = new Entity(&framugaModel, lessShinyMaterial, glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f), glm::vec3(1.4f));
+	doorEntity = new Door(&door, shinyMaterial, glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f), glm::vec3(1.4f), "Doors", framuga);
 	floorEntity = new Entity(&floorModel, lessShinyMaterial, glm::vec3(0.0f, -0.6f, -3.0f), glm::vec3(0.0f), glm::vec3(0.5f));
 	chestEntity = new Entity(&chest, shinyMaterial, glm::vec3(2.0f, 0.5f, -4.0f), glm::vec3(0.0f, -45.0f, 0.0f), glm::vec3(1.3f));
 	testWallEntity = new Entity(&testWall, lessShinyMaterial, glm::vec3(-2.0f, -0.5f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.3f));
 	flashlightEntity = new Entity(&flashlightModel, shinyMaterial, glm::vec3(5.0f,2.0f,-3.0f), glm::vec3(0.0f), glm::vec3(0.03f));
 	flashlightEntity->setCastsShadow(false);
-	framuga = new Entity(&framugaModel, lessShinyMaterial, glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f), glm::vec3(1.4f));
+	flashlightEntity->setTitle("Flashlight");
+	
 	/*sculptureEntity = new Entity(&sculpture, lessShinyMaterial, glm::vec3(-10.0f, -1.0f, -4.0f), glm::vec3(0.0f, 30.0f, 0.0f), glm::vec3(4.0f));
 	sculptureEntity->setTitle("Sculpture");*/
 
@@ -395,18 +397,20 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 	// Render scene without outlines first
 	scene->RenderWithoutOutline(shaderList[SHADER_DEFAULT], projectionMatrix);
 
+
 	glStencilMask(0xFF);
 	glStencilFunc(GL_ALWAYS, 1, 0xFF);
 	// Now render objects again but only writing to stencil buffer
 	scene->RenderWithOutline(shaderList[SHADER_DEFAULT], projectionMatrix);
 
 	// Render outlines
+	glDisable(GL_DEPTH_TEST);
 	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_FRONT);
 
 	shaderList[SHADER_OUTLINE]->UseShader();
-	float outline = 0.022f;
+	float outline = 0.005f;
 	shaderList[SHADER_OUTLINE]->setFloat("outline", outline);
 	scene->RenderWithOutline(shaderList[SHADER_OUTLINE], projectionMatrix);
 
@@ -414,6 +418,9 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 	glDepthMask(GL_TRUE);
 	glCullFace(GL_BACK);
 	glDisable(GL_STENCIL_TEST);
+
+	// Render flashlight last (to be in front of all objects)
+	scene->RenderFlashlightEntity(shaderList[SHADER_DEFAULT], projectionMatrix);
 }
 
 void HandleKeyboardInput(float deltaTime, Scene* currentScene) {

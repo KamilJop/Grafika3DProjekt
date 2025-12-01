@@ -43,13 +43,17 @@ public:
 	}
 	void RenderWithOutline (Shader* shader, glm::mat4 projection);
 	void RenderWithoutOutline(Shader* shader, glm::mat4 projection);
+	void RenderFlashlightEntity(Shader* shader, glm::mat4 projection);
 	void Update(float deltaTime);
 	void RenderShadowMap(Shader* shadowShader);
 	void RenderTooltip(Entity* selectedEntity);
 	std::vector<Entity*> getEntities() { return entities; }
 
+
+
 private:
 	void RenderLogic(Shader* shader, glm::mat4 projection);
+	Entity* getEntityByTitle(const std::string& title);
 	
 
 };

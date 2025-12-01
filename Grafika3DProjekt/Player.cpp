@@ -37,6 +37,7 @@ void Player::UpdatePhysics(float deltaTime, std::vector<Entity*>& entities)
 		CollisionBox otherBox = entity->GetCollisions();
 		// Skip flashlight entity
 		if (entity == flashlightEntity) continue;
+		if (!entity->getColissions()) continue;
 
 		if (playerCollisions.min.x < otherBox.max.x && playerCollisions.max.x > otherBox.min.x &&
 			playerCollisions.min.y < otherBox.max.y && playerCollisions.max.y > otherBox.min.y &&
@@ -58,7 +59,7 @@ void Player::UpdatePhysics(float deltaTime, std::vector<Entity*>& entities)
 	{
 		// Skip flashlight entity
 		if (entity == flashlightEntity) continue;
-
+		if (!entity->getColissions()) continue;
 		CollisionBox otherBox = entity->GetCollisions();
 		if (playerCollisions.min.x < otherBox.max.x && playerCollisions.max.x > otherBox.min.x &&
 			playerCollisions.min.y < otherBox.max.y && playerCollisions.max.y > otherBox.min.y &&
@@ -82,7 +83,7 @@ void Player::UpdatePhysics(float deltaTime, std::vector<Entity*>& entities)
 	{
 		// Skip flashlight entity
 		if (entity == flashlightEntity) continue;
-
+		if (!entity->getColissions()) continue;
 		CollisionBox otherBox = entity->GetCollisions();
 		if (playerCollisions.min.x < otherBox.max.x && playerCollisions.max.x > otherBox.min.x &&
 			playerCollisions.min.y < otherBox.max.y && playerCollisions.max.y > otherBox.min.y &&
@@ -156,7 +157,7 @@ void Player::updateFlashlightPosition(const glm::vec3& finalPos)
 
 
 void Player::updatePlayerCollisions() {
-	float width = 1.2f;
+	float width = 0.7f;
 	float height = 1.8f;
 
 	if (isCrouching) height = 1.8f; 
@@ -171,7 +172,7 @@ void Player::updatePlayerCollisions() {
 void Player::checkTargettedEntity(std::vector<Entity*>& entities)
 {
 	// Raycasting parameters
-	float reachDistance = 5.0f;
+	float reachDistance = 3.0f;
 	glm::vec3 rayOrigin = camera->getCameraPosition();
 	glm::vec3 rayDirection = camera->getCameraFront();
 	Entity* closestEntity = nullptr;

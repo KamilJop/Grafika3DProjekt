@@ -24,6 +24,7 @@ void Scene::RenderWithoutOutline(Shader* shader, glm::mat4 projection)
 	for (auto& entity : entities)
 	{
 		if (!entity->isOutlined()) {
+			if (entity->getTitle() == "Flashlight") continue;
 			entity->DrawEntity(shader);
 		}
 	}
@@ -37,6 +38,7 @@ void Scene::RenderWithOutline(Shader* shader, glm::mat4 projection)
 	for (auto& entity : entities)
 	{
 		if (entity->isOutlined()) {
+			if (entity->getTitle() == "Flashlight") continue;
 			entity->DrawEntity(shader);
 			RenderTooltip(entity);
 		}
@@ -138,4 +140,25 @@ void Scene::RenderTooltip(Entity* selectedEntity)
 	float offset = textRenderer->GetTextWidth(selectedEntity->title) / 2.0f;
 
 	textRenderer->RenderText( selectedEntity->title, 640.0f - offset, 670.0f, 1.0f, glm::vec3(1.0f, 0.0f, 1.0f));
+}
+
+
+Entity* Scene::getEntityByTitle(const std::string& title)
+{
+	for (auto& entity : entities)
+	{
+		if (entity->getTitle() == title)
+			return entity;
+	}
+	return nullptr;
+}
+
+void Scene::RenderFlashlightEntity(Shader* shader, glm::mat4 projection)
+{
+	RenderLogic(shader, projection);
+	Entity* flashlightEntity = getEntityByTitle("Flashlight");
+	if (flashlightEntity)
+	{
+		flashlightEntity->DrawEntity(shader);
+	}
 }
