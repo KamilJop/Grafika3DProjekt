@@ -24,6 +24,7 @@
 #include "ShadowMap.h"
 #include "Skybox.h"
 #include "Player.h"
+#include <ft2build.h>
 
 // Window dimensions
 const GLint WIDTH = 1280, HEIGHT = 720;
