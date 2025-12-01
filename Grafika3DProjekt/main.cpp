@@ -24,7 +24,7 @@
 #include "ShadowMap.h"
 #include "Skybox.h"
 #include "Player.h"
-#include <ft2build.h>
+#include "TextRenderer.h"
 
 // Window dimensions
 const GLint WIDTH = 1280, HEIGHT = 720;
@@ -107,6 +107,10 @@ std::vector<std::string> skyboxFaces
 	"Textures/Skybox/Cold Night__Cam_1_Back-Z.png"
 };
 
+// Text Renderer
+TextRenderer* textRenderer;
+
+
 // Function prototypes
 Scene* createMainScene(Camera* camera);
 void DirectionalLightShadowMapPass();
@@ -121,7 +125,7 @@ enum ShaderTypes
 	SHADER_DEFAULT,
 	SHADER_DIRLIGHT_SHADOWMAP,
 	SHADER_OMNI_SHADOWMAP,
-	SHADER_OUTLINE
+	SHADER_OUTLINE,
 };
 
 int main()
@@ -167,8 +171,6 @@ int main()
 		{
 			deltaTime = 0.5f;
 		}
-		printf("\rFPS: %.2f", fps);
-		fflush(stdout);
 
 		// Camera movement
 		camera.ProcessMouseMovement(mainWindow.getXChange(), mainWindow.getYChange());
@@ -196,6 +198,16 @@ int main()
 
 		// Render scene pass
 		RenderScenePass(projection);
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glDisable(GL_DEPTH_TEST);
+		glDisable(GL_STENCIL_TEST);
+
+		textRenderer->RenderText("FPS: " + std::to_string((int)fps), 25.0f, 25.0f, 1.0f, glm::vec3(0.5f, 0.8f, 0.2f));
+
+		glEnable(GL_DEPTH_TEST);
+		glDisable(GL_BLEND);
 
 		// Swap buffers
 		mainWindow.swapBuffers();
@@ -229,9 +241,16 @@ Scene* createMainScene(Camera * camera) {
 	flashlightEntity = new Entity(&flashlightModel, shinyMaterial, glm::vec3(5.0f,2.0f,-3.0f), glm::vec3(0.0f), glm::vec3(0.03f));
 	flashlightEntity->setCastsShadow(false);
 	sculptureEntity = new Entity(&sculpture, lessShinyMaterial, glm::vec3(-10.0f, -1.0f, -4.0f), glm::vec3(0.0f, 30.0f, 0.0f), glm::vec3(4.0f));
+	doorEntity->setTitle("Door");
+	sculptureEntity->setTitle("Sculpture");
 
 	// Create Player
 	player = new Player(camera, flashlightEntity);
+
+	// Text renderer
+	textRenderer = new TextRenderer(mainWindow.getBufferWidth(), mainWindow.getBufferHeight());
+	// Load font
+	textRenderer->Load("Fonts/BitterPro-Medium.ttf", 12);
 
 	// Skybox
 	skybox = new Skybox(skyboxFaces);

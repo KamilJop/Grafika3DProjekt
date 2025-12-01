@@ -1,7 +1,7 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-
+#include <string>
 #include "Shader.h"
 #include "CollisionBox.h"
 #include "Model.h"
@@ -21,6 +21,7 @@ public:
 	bool castsShadow = true;
 	bool outlined = false;
 	CollisionBox collisions;
+	std::string title = "Untitled object";
 
 	Entity(Model* model, Material* material, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal);
 
@@ -32,6 +33,7 @@ public:
 	void setRotation(glm::vec3 newRotation);
 	void setScale(glm::vec3 newScale);
 	void setCastsShadow(bool state) { castsShadow = state; }
+	void setTitle(std::string newTitle) { title = newTitle; }
 
 	glm::vec3 getPosition();
 	glm::vec3 getRotation();

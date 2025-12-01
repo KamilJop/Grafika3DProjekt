@@ -18,30 +18,7 @@ Scene::~Scene()
 
 void Scene::RenderWithoutOutline(Shader* shader, glm::mat4 projection)
 {
-	shader->UseShader();
-	shader->setMat4("projection", projection);
-	shader->setMat4("view", camera->getViewMatrix());
-	shader->setVec3("cameraPosition", camera->getCameraPosition());
-	shader->setMat4("directionalLightSpaceTransform", dirLight->CalculateLightTransform());
-	shader->setMat4("flashLightSpaceTransform", flashLight->CalculateLightTransform());
-	for (auto& pLight : pointLights)
-	{
-		pLight->useLight(shader);
-	}
-	if (dirLight)
-	{
-		dirLight->useLight(shader);
-	}
-
-	if (flashLight && player->getFlashlightState())
-	{
-		flashLight->useLight(shader);
-	}
-	else
-	{
-		shader->setFloat("flashLight.ambientIntensity", 0.0f);
-		shader->setFloat("flashLight.diffuseIntensity", 0.0f);
-	}
+	RenderLogic(shader, projection);
 
 	for (auto& entity : entities)
 	{
@@ -54,30 +31,7 @@ void Scene::RenderWithoutOutline(Shader* shader, glm::mat4 projection)
 
 void Scene::RenderWithOutline(Shader* shader, glm::mat4 projection)
 {
-	shader->UseShader();
-	shader->setMat4("projection", projection);
-	shader->setMat4("view", camera->getViewMatrix());
-	shader->setVec3("cameraPosition", camera->getCameraPosition());
-	shader->setMat4("directionalLightSpaceTransform", dirLight->CalculateLightTransform());
-	shader->setMat4("flashLightSpaceTransform", flashLight->CalculateLightTransform());
-	for (auto& pLight : pointLights)
-	{
-		pLight->useLight(shader);
-	}
-	if (dirLight)
-	{
-		dirLight->useLight(shader);
-	}
-
-	if (flashLight && player->getFlashlightState())
-	{
-		flashLight->useLight(shader);
-	}
-	else
-	{
-		shader->setFloat("flashLight.ambientIntensity", 0.0f);
-		shader->setFloat("flashLight.diffuseIntensity", 0.0f);
-	}
+	RenderLogic(shader, projection);
 
 	for (auto& entity : entities)
 	{
@@ -146,5 +100,33 @@ void Scene::RenderShadowMap(Shader* shadowShader)
 			continue;
 		shadowShader->setMat4("model", entity->GetModelMatrix());
 		entity->DrawEntity(shadowShader);
+	}
+}
+
+void Scene::RenderLogic(Shader* shader, glm::mat4 projection)
+{
+	shader->UseShader();
+	shader->setMat4("projection", projection);
+	shader->setMat4("view", camera->getViewMatrix());
+	shader->setVec3("cameraPosition", camera->getCameraPosition());
+	shader->setMat4("directionalLightSpaceTransform", dirLight->CalculateLightTransform());
+	shader->setMat4("flashLightSpaceTransform", flashLight->CalculateLightTransform());
+	for (auto& pLight : pointLights)
+	{
+		pLight->useLight(shader);
+	}
+	if (dirLight)
+	{
+		dirLight->useLight(shader);
+	}
+
+	if (flashLight && player->getFlashlightState())
+	{
+		flashLight->useLight(shader);
+	}
+	else
+	{
+		shader->setFloat("flashLight.ambientIntensity", 0.0f);
+		shader->setFloat("flashLight.diffuseIntensity", 0.0f);
 	}
 }

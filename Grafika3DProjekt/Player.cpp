@@ -195,7 +195,6 @@ void Player::checkTargettedEntity(std::vector<Entity*>& entities)
 	// Outline the closest entity if any
 	if (closestEntity)
 	{
-		printf("Targeting entity at distance: %.2f\n", closestDistance);
 		closestEntity->setOutlined(true);
 	}
 }
