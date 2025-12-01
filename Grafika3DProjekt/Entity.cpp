@@ -2,7 +2,7 @@
 
 
 // Constructor
-Entity::Entity(Model* model,Material* material, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal)
+Entity::Entity(Model* model,Material* material, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, bool interaction)
 {
 	position = pos;
 	rotation = rot;
@@ -11,7 +11,7 @@ Entity::Entity(Model* model,Material* material, glm::vec3 pos, glm::vec3 rot, gl
 	entityMaterial = material;
 	modelMatrix = CalculateModelMatrix();
 	collisions = model->GetCollisionBox();
-
+	interactable = interaction;
 	// Update collision box
 	UpdateCollisionBox();
 }

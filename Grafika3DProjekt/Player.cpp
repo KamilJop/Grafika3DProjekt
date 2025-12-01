@@ -181,6 +181,8 @@ void Player::checkTargettedEntity(std::vector<Entity*>& entities)
 	{
 		// Skip flashlight entity
 		if (entity == flashlightEntity) continue;
+		// Only consider interactable entities
+		if (!entity->getInteractable()) continue;
 		entity->setOutlined(false);
 		float intersectionDistance = 10000.0f;
 		if (checkRayEntityIntersection(rayOrigin, rayDirection, entity, intersectionDistance))

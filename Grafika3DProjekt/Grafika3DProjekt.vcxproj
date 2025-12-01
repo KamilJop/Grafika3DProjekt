@@ -136,6 +136,7 @@
     <ClCompile Include="..\External Libs\GLAD\src\glad.c" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DirectionalLight.cpp" />
+    <ClCompile Include="Door.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Flashlight.cpp" />
     <ClCompile Include="Light.cpp" />
@@ -150,7 +151,6 @@
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShadowMap.cpp" />
     <ClCompile Include="Skybox.cpp" />
-    <ClCompile Include="SpinningEntity.cpp" />
     <ClCompile Include="TextRenderer.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -159,6 +159,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CollisionBox.h" />
     <ClInclude Include="DirectionalLight.h" />
+    <ClInclude Include="Door.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Flashlight.h" />
     <ClInclude Include="Light.h" />
@@ -173,7 +174,6 @@
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShadowMap.h" />
     <ClInclude Include="Skybox.h" />
-    <ClInclude Include="SpinningEntity.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="stb_loader.h" />
     <ClInclude Include="TextRenderer.h" />

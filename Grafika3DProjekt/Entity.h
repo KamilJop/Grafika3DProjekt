@@ -20,10 +20,11 @@ public:
 	glm::vec3 scale;
 	bool castsShadow = true;
 	bool outlined = false;
+	bool interactable;
 	CollisionBox collisions;
 	std::string title = "Untitled object";
 
-	Entity(Model* model, Material* material, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal);
+	Entity(Model* model, Material* material, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, bool interaction = false);
 
 	~Entity();
 
@@ -38,6 +39,7 @@ public:
 	glm::vec3 getPosition();
 	glm::vec3 getRotation();
 	glm::vec3 getScale();
+	bool getInteractable() { return interactable; }
 	bool getCastsShadow() { return castsShadow; }
 	bool isOutlined() { return outlined; }
 	void setOutlined(bool state) { outlined = state; }
@@ -45,6 +47,7 @@ public:
 	void DrawEntity(Shader* shader);
 	void UpdateCollisionBox();
 	virtual void Update(float deltaTime) {};
+	virtual void Interact() {};
 
 private:
 	glm::mat4 modelMatrix;

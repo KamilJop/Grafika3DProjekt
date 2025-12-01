@@ -12,7 +12,6 @@
 #include <vector>
 #include "Camera.h"
 #include "Entity.h"
-#include "SpinningEntity.h"
 #include "DirectionalLight.h"
 #include "Material.h"
 #include "PointLight.h"
@@ -25,6 +24,7 @@
 #include "Skybox.h"
 #include "Player.h"
 #include "TextRenderer.h"
+#include "Door.h"
 
 // Window dimensions
 const GLint WIDTH = 1280, HEIGHT = 720;
@@ -58,13 +58,14 @@ float lastFrame = 0.0f;
 Camera camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 5.0f, 0.1f);
 
 // Entity
-SpinningEntity* doorEntity;
+Door* doorEntity;
 Entity* floorEntity;
 Entity* xwingEntity;
 Entity* chestEntity;
 Entity* sculptureEntity;
 Entity* testWallEntity;
 Entity* flashlightEntity;
+Entity* framuga;
 
 // Light source
 DirectionalLight* mainLight;
@@ -86,6 +87,7 @@ Model chest;
 Model sculpture;
 Model testWall;
 Model flashlightModel;
+Model framugaModel;
 
 // Create player
 Player* player;
@@ -118,7 +120,7 @@ void DirectionalLightShadowMapPass();
 void FlashlightShadowMapPass();
 void OmniShadowMapPass(PointLight* pLight);
 void RenderScenePass(glm::mat4 projection);
-void HandleKeyboardInput(float deltaTime);
+void HandleKeyboardInput(float deltaTime, Scene* currentScene);
 
 
 enum ShaderTypes
@@ -177,7 +179,7 @@ int main()
 		camera.ProcessMouseMovement(mainWindow.getXChange(), mainWindow.getYChange());
 
 		// Keyboard movement
-		HandleKeyboardInput(deltaTime);
+		HandleKeyboardInput(deltaTime, scene);
 		
 		// Get + Handle user input events
 		glfwPollEvents();
@@ -224,7 +226,9 @@ Scene* createMainScene(Camera * camera) {
 	chest.LoadModel("Models/Untitled.obj");
 	testWall.LoadModel("Models/testsciana.obj");
 	flashlightModel.LoadModel("Models/flashlight.obj");
-	sculpture.LoadModel("Models/rzezba.obj");
+	framugaModel.LoadModel("Models/framuga.obj");
+
+	/*sculpture.LoadModel("Models/rzezba.obj");*/
 
 
 	// Create Materials
@@ -232,15 +236,15 @@ Scene* createMainScene(Camera * camera) {
 	lessShinyMaterial = new Material(0.5f, 256.0f);
 
 	// Create Entities
-	doorEntity = new SpinningEntity(&door, shinyMaterial, glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f), glm::vec3(1.4f));
+	doorEntity = new Door(&door, shinyMaterial, glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f), glm::vec3(1.4f), "Doors");
 	floorEntity = new Entity(&floorModel, lessShinyMaterial, glm::vec3(0.0f, -0.6f, -3.0f), glm::vec3(0.0f), glm::vec3(0.5f));
 	chestEntity = new Entity(&chest, shinyMaterial, glm::vec3(2.0f, 0.5f, -4.0f), glm::vec3(0.0f, -45.0f, 0.0f), glm::vec3(1.3f));
 	testWallEntity = new Entity(&testWall, lessShinyMaterial, glm::vec3(-2.0f, -0.5f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.3f));
 	flashlightEntity = new Entity(&flashlightModel, shinyMaterial, glm::vec3(5.0f,2.0f,-3.0f), glm::vec3(0.0f), glm::vec3(0.03f));
 	flashlightEntity->setCastsShadow(false);
-	sculptureEntity = new Entity(&sculpture, lessShinyMaterial, glm::vec3(-10.0f, -1.0f, -4.0f), glm::vec3(0.0f, 30.0f, 0.0f), glm::vec3(4.0f));
-	doorEntity->setTitle("Door");
-	sculptureEntity->setTitle("Sculpture");
+	framuga = new Entity(&framugaModel, lessShinyMaterial, glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f), glm::vec3(1.4f));
+	/*sculptureEntity = new Entity(&sculpture, lessShinyMaterial, glm::vec3(-10.0f, -1.0f, -4.0f), glm::vec3(0.0f, 30.0f, 0.0f), glm::vec3(4.0f));
+	sculptureEntity->setTitle("Sculpture");*/
 
 	// Create Player
 	player = new Player(camera, flashlightEntity);
@@ -277,7 +281,8 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(chestEntity);
 	scene->AddEntity(testWallEntity);
 	scene->AddEntity(flashlightEntity);
-	scene->AddEntity(sculptureEntity);
+	scene->AddEntity(framuga);
+	/*scene->AddEntity(sculptureEntity);*/
 
 	return scene;
 }
@@ -386,6 +391,7 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 	glStencilMask(0x00);
 	glStencilFunc(GL_ALWAYS, 1, 0xFF);
 
+
 	// Render scene without outlines first
 	scene->RenderWithoutOutline(shaderList[SHADER_DEFAULT], projectionMatrix);
 
@@ -400,7 +406,7 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 	glCullFace(GL_FRONT);
 
 	shaderList[SHADER_OUTLINE]->UseShader();
-	float outline = 0.01f;
+	float outline = 0.022f;
 	shaderList[SHADER_OUTLINE]->setFloat("outline", outline);
 	scene->RenderWithOutline(shaderList[SHADER_OUTLINE], projectionMatrix);
 
@@ -410,7 +416,7 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 	glDisable(GL_STENCIL_TEST);
 }
 
-void HandleKeyboardInput(float deltaTime) {
+void HandleKeyboardInput(float deltaTime, Scene* currentScene) {
 
 	float speed = camera.MovementSpeed;
 	if (player->isCrouching)
@@ -459,6 +465,17 @@ void HandleKeyboardInput(float deltaTime) {
 	{
 		player->changeFlashlightState();
 		mainWindow.getKeys()[GLFW_KEY_F] = false;
+	}
+	if (mainWindow.getKeys()[GLFW_KEY_E])
+	{
+		for(auto & entity : currentScene->entities) {
+			if(entity->isOutlined())
+				{
+				entity->Interact();
+				break;
+			}
+		}
+		mainWindow.getKeys()[GLFW_KEY_E] = false;
 	}
 
 	if (mainWindow.getKeys()[GLFW_KEY_LEFT_SHIFT])

@@ -46,6 +46,7 @@ public:
 	void Update(float deltaTime);
 	void RenderShadowMap(Shader* shadowShader);
 	void RenderTooltip(Entity* selectedEntity);
+	std::vector<Entity*> getEntities() { return entities; }
 
 private:
 	void RenderLogic(Shader* shader, glm::mat4 projection);
