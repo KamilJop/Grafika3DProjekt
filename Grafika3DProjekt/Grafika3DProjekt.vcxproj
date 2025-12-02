@@ -90,15 +90,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\External Libs\GLFW\include;$(SolutionDir)\External Libs\GLM;$(SolutionDir)\External Libs\GLAD\include;$(SolutionDir)\External Libs\ASSIMP\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\External Libs\GLFW\include;$(SolutionDir)\External Libs\GLM;$(SolutionDir)\External Libs\GLAD\include;$(SolutionDir)\External Libs\ASSIMP\include;$(SolutionDir)\External Libs\FREETYPE\include;$(SolutionDIr)\External Libs\IMGUI</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\External Libs\GLFW\lib-vc2022;$(SolutionDir)\External Libs\ASSIMP\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;assimp-vc143-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\External Libs\GLFW\lib-vc2022;$(SolutionDir)\External Libs\ASSIMP\lib;$(SolutionDir)\External Libs\FREETYPE\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;assimp-vc143-mtd.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -121,21 +121,30 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\External Libs\GLFW\include;$(SolutionDir)\External Libs\GLM;$(SolutionDir)\External Libs\GLAD\include;$(SolutionDir)\External Libs\ASSIMP\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\External Libs\GLFW\include;$(SolutionDir)\External Libs\GLM;$(SolutionDir)\External Libs\GLAD\include;$(SolutionDir)\External Libs\ASSIMP\include;$(SolutionDir)\External Libs\FREETYPE\include;$(SolutionDIr)\External Libs\IMGUI</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;assimp-vc143-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)\External Libs\GLFW\lib-vc2022;$(SolutionDir)\External Libs\ASSIMP\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;assimp-vc143-mtd.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\External Libs\GLFW\lib-vc2022;$(SolutionDir)\External Libs\ASSIMP\lib;$(SolutionDir)\External Libs\FREETYPE\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\External Libs\GLAD\src\glad.c" />
+    <ClCompile Include="..\External Libs\IMGUI\imgui.cpp" />
+    <ClCompile Include="..\External Libs\IMGUI\imgui_demo.cpp" />
+    <ClCompile Include="..\External Libs\IMGUI\imgui_draw.cpp" />
+    <ClCompile Include="..\External Libs\IMGUI\imgui_impl_glfw.cpp" />
+    <ClCompile Include="..\External Libs\IMGUI\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="..\External Libs\IMGUI\imgui_tables.cpp" />
+    <ClCompile Include="..\External Libs\IMGUI\imgui_widgets.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Config.cpp" />
     <ClCompile Include="DirectionalLight.cpp" />
+    <ClCompile Include="Door.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Flashlight.cpp" />
     <ClCompile Include="Light.cpp" />
@@ -144,18 +153,32 @@
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="OmniShadowMap.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShadowMap.cpp" />
     <ClCompile Include="Skybox.cpp" />
-    <ClCompile Include="SpinningEntity.cpp" />
+    <ClCompile Include="TextRenderer.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="UI.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\External Libs\IMGUI\imconfig.h" />
+    <ClInclude Include="..\External Libs\IMGUI\imgui.h" />
+    <ClInclude Include="..\External Libs\IMGUI\imgui_impl_glfw.h" />
+    <ClInclude Include="..\External Libs\IMGUI\imgui_impl_opengl3.h" />
+    <ClInclude Include="..\External Libs\IMGUI\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="..\External Libs\IMGUI\imgui_internal.h" />
+    <ClInclude Include="..\External Libs\IMGUI\imstb_rectpack.h" />
+    <ClInclude Include="..\External Libs\IMGUI\imstb_textedit.h" />
+    <ClInclude Include="..\External Libs\IMGUI\imstb_truetype.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CollisionBox.h" />
+    <ClInclude Include="Config.h" />
     <ClInclude Include="DirectionalLight.h" />
+    <ClInclude Include="Door.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Flashlight.h" />
     <ClInclude Include="Light.h" />
@@ -163,15 +186,18 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="OmniShadowMap.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="PointLight.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShadowMap.h" />
     <ClInclude Include="Skybox.h" />
-    <ClInclude Include="SpinningEntity.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="stb_loader.h" />
+    <ClInclude Include="TextRenderer.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="UI.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

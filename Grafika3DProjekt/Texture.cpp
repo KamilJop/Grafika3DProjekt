@@ -9,7 +9,6 @@ Texture::Texture(const char* fileLoc)
 	height = 0;
 	bitDepth = 0;
 	fileLocation = fileLoc;
-	printf("Texture created: %s\n", fileLocation.c_str());
 }
 
 // Clear texture data
@@ -79,9 +78,9 @@ bool Texture::LoadTextureAlpha()
 	return true;
 }
 
-bool Texture::LoadNormalMap()
+bool Texture::LoadMaps()
 {
-	printf("Loading normal map texture: %s\n", fileLocation.c_str());
+	printf("Loading map texture: %s\n", fileLocation.c_str());
 	fflush(stdout);
 	unsigned char* texData = stbi_load(fileLocation.c_str(), &width, &height, &bitDepth, 0);
 	if (!texData)
@@ -97,6 +96,8 @@ bool Texture::LoadNormalMap()
 		dataFormat = GL_RGB;
 	else if (bitDepth == 4) 
 		dataFormat = GL_RGBA;
+	else if (bitDepth == 1) 
+		dataFormat = GL_RED;	
 	else {
 		printf("Unsupported normal map channel count: %d\n", bitDepth);
 		stbi_image_free(texData);

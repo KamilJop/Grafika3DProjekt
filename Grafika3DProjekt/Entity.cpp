@@ -2,7 +2,7 @@
 
 
 // Constructor
-Entity::Entity(Model* model,Material* material, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal)
+Entity::Entity(Model* model,Material* material, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, bool interaction)
 {
 	position = pos;
 	rotation = rot;
@@ -10,6 +10,10 @@ Entity::Entity(Model* model,Material* material, glm::vec3 pos, glm::vec3 rot, gl
 	entityModel = model;
 	entityMaterial = material;
 	modelMatrix = CalculateModelMatrix();
+	collisions = model->GetCollisionBox();
+	interactable = interaction;
+	// Update collision box
+	UpdateCollisionBox();
 }
 
 
@@ -77,8 +81,8 @@ glm::mat4 Entity::CalculateModelMatrix()
 	model = glm::translate(model, position);
 
 	// Apply rotations
-	model = glm::rotate(model, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+	model = glm::rotate(model, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
 
 	// Apply scaling
@@ -98,7 +102,44 @@ void Entity::DrawEntity(Shader* shader)
 	// Set material properties in shader
 	entityMaterial->useMaterial(shader);
 
-	// Draw the model
+	// Draw the models
 	entityModel->RenderModel();
+
+}
+
+void Entity::UpdateCollisionBox()
+{
+	// Get model matrix
+	glm::mat4 modelMatrix = GetModelMatrix();
+
+	// Copy local collision box corners
+	glm::vec3 localMin = entityModel->GetCollisionBox().min;
+	glm::vec3 localMax = entityModel->GetCollisionBox().max;
+
+	// Setup array for 8 corners of the AABB
+	glm::vec3 corners[8];
+	corners[0] = glm::vec3(localMin.x, localMin.y, localMin.z);
+	corners[1] = glm::vec3(localMin.x, localMin.y, localMax.z);
+	corners[2] = glm::vec3(localMin.x, localMax.y, localMin.z);
+	corners[3] = glm::vec3(localMin.x, localMax.y, localMax.z);
+	corners[4] = glm::vec3(localMax.x, localMin.y, localMin.z);
+	corners[5] = glm::vec3(localMax.x, localMin.y, localMax.z);
+	corners[6] = glm::vec3(localMax.x, localMax.y, localMin.z);
+	corners[7] = glm::vec3(localMax.x, localMax.y, localMax.z);
+
+	// Initialize with extreme values
+	collisions.min = glm::vec3(10000.0f, 10000.0f, 10000.0f);
+	collisions.max = glm::vec3(-10000.0f, - 10000.0f, -10000.0f);
+
+	
+	for (int i = 0; i < 8; i++)
+	{
+		// Transform each corner by model matrix
+		glm::vec4 transformedPos = modelMatrix * glm::vec4(corners[i], 1.0f);
+
+		// Calculate new min and max
+		collisions.min = glm::min(collisions.min, glm::vec3(transformedPos));
+		collisions.max = glm::max(collisions.max, glm::vec3(transformedPos));
+	}
 
 }

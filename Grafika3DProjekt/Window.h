@@ -24,7 +24,7 @@ public:
 	bool* getKeys() { return keys; }
 	GLfloat getXChange();
 	GLfloat getYChange();
-
+	GLFWwindow* getWindow() { return mainWindow; }
 	void swapBuffers() { glfwSwapBuffers(mainWindow); }
 
 

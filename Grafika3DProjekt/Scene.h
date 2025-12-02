@@ -6,6 +6,9 @@
 #include "PointLight.h"
 #include "Flashlight.h"
 #include "Camera.h"
+#include "Player.h"
+#include "TextRenderer.h"
+#include "Config.h"
 class Scene
 {
 public:
@@ -14,8 +17,11 @@ public:
 	DirectionalLight* dirLight;
 	Flashlight* flashLight;
 	Camera* camera;
+	Player* player;
+	TextRenderer* textRenderer;
+	Config& config = Config::getInstance();
 
-	Scene(Camera* cam);
+	Scene(Camera* cam, Player* play, TextRenderer* renderer);
 	~Scene();
 	void AddEntity(Entity* entity)
 	{
@@ -37,11 +43,19 @@ public:
 	{
 		return camera;
 	}
-	void Render(Shader* shader, glm::mat4 projection);
+	void RenderWithOutline (Shader* shader, glm::mat4 projection);
+	void RenderWithoutOutline(Shader* shader, glm::mat4 projection);
+	void RenderFlashlightEntity(Shader* shader, glm::mat4 projection);
 	void Update(float deltaTime);
 	void RenderShadowMap(Shader* shadowShader);
+	void RenderTooltip(Entity* selectedEntity);
+	std::vector<Entity*> getEntities() { return entities; }
 
 
+
+private:
+	void RenderLogic(Shader* shader, glm::mat4 projection);
+	Entity* getEntityByTitle(const std::string& title);
 	
 
 };

@@ -1,0 +1,45 @@
+# Blender 5.0.0 MTL File: 'None'
+# www.blender.org
+
+newmtl Gold
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd C:/gold_05_color.jpg
+map_Ns C:/gold_05_roughness.jpg
+map_refl C:/gold_05_metal.jpg
+map_Bump -bm 1.000000 C:/gold_05_normal.jpg
+
+newmtl Inside
+Ka 1.000000 1.000000 1.000000
+Ks 0.200000 0.200000 0.200000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd C:/paper_09_color.jpg
+map_Ns C:/paper_09_roughness.jpg
+
+newmtl Photo
+Ns 90.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.100000 0.100000 0.100000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd chrobry.png
+map_Bump -bm 1.000000 C:/painting_45_normal.jpg
+
+newmtl Wood
+Ka 1.000000 1.000000 1.000000
+Ks 0.100000 0.100000 0.100000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd C:/wood_26_color.jpg
+map_Ns C:/wood_26_roughness.jpg

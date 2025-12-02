@@ -31,28 +31,7 @@ glm::mat4 Camera::getViewMatrix()
 	return	glm::lookAt(Position, Position + Front, Up);
 }
 
-// Change the position vector based on keyboard input
-void Camera::ProcessKeyboard(bool* keys, float deltaTime)
-{
-	float velocity = MovementSpeed * deltaTime;
-	if (keys[GLFW_KEY_W] == GLFW_PRESS)
-		Position += Front * velocity;
-	if (keys[GLFW_KEY_S] == GLFW_PRESS)
-		Position -= Front * velocity;
-	if (keys[GLFW_KEY_A] == GLFW_PRESS)
-		Position -= Right * velocity;
-	if (keys[GLFW_KEY_D] == GLFW_PRESS)
-		Position += Right * velocity;
-	if (keys[GLFW_KEY_F] == GLFW_PRESS)
-	{
-		isFlashlightOn = !isFlashlightOn;
-		keys[GLFW_KEY_F] = GLFW_RELEASE; 
-	}
-		
-	if (Position.y < 0.0f) Position.y = 0.0f;
-	if (Position.y > 2.0f) Position.y = 2.0f;
-	
-}
+
 
 // Change the yaw and pitch based on mouse movement
 void Camera::ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch)

@@ -22,8 +22,6 @@ public:
 	float MovementSpeed;
 	float MouseSensitivity;
 
-	bool isFlashlightOn = false;
-
 	Camera(glm::vec3 Position, glm::vec3 Up, float yaw, float pitch, float speed, float sensitivity);
 
 	glm::mat4 getViewMatrix();
@@ -32,12 +30,9 @@ public:
 	glm::vec3 getCameraFront() { return Front; }
 	glm::vec3 getCameraRight() { return Right; }
 	glm::vec3 getCameraUp() { return Up; }
-
-	bool getFlashlightState() { return isFlashlightOn; }
-	void setFlashlightState(bool state) { isFlashlightOn = state; }
-
-	void ProcessKeyboard(bool * keys, float deltaTime);
 	void ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true);
+	float getPitch() { return Pitch; }
+	float getYaw() { return Yaw; }
 	
 
 private:
