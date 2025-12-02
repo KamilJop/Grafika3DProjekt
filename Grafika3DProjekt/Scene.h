@@ -8,6 +8,7 @@
 #include "Camera.h"
 #include "Player.h"
 #include "TextRenderer.h"
+#include "Config.h"
 class Scene
 {
 public:
@@ -18,6 +19,7 @@ public:
 	Camera* camera;
 	Player* player;
 	TextRenderer* textRenderer;
+	Config& config = Config::getInstance();
 
 	Scene(Camera* cam, Player* play, TextRenderer* renderer);
 	~Scene();

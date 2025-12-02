@@ -138,8 +138,10 @@ void Scene::RenderLogic(Shader* shader, glm::mat4 projection)
 void Scene::RenderTooltip(Entity* selectedEntity)
 {
 	float offset = textRenderer->GetTextWidth(selectedEntity->title) / 2.0f;
+	float width = config.screenWidth / 2.0f;
+	float height = config.screenHeight - 50.0f;
 
-	textRenderer->RenderText( selectedEntity->title, 640.0f - offset, 670.0f, 1.0f, glm::vec3(1.0f, 0.0f, 1.0f));
+	textRenderer->RenderText( selectedEntity->title, width - offset, height, 1.0f, glm::vec3(config.highlightColor[0],config.highlightColor[1],config.highlightColor[2]));
 }
 
 

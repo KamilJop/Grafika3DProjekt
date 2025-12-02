@@ -128,8 +128,8 @@ void Entity::UpdateCollisionBox()
 	corners[7] = glm::vec3(localMax.x, localMax.y, localMax.z);
 
 	// Initialize with extreme values
-	collisions.min = glm::vec3(std::numeric_limits<float>::max());
-	collisions.max = glm::vec3(std::numeric_limits<float>::lowest());
+	collisions.min = glm::vec3(10000.0f, 10000.0f, 10000.0f);
+	collisions.max = glm::vec3(-10000.0f, - 10000.0f, -10000.0f);
 
 	
 	for (int i = 0; i < 8; i++)

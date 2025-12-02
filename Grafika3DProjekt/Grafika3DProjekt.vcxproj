@@ -142,6 +142,7 @@
     <ClCompile Include="..\External Libs\IMGUI\imgui_tables.cpp" />
     <ClCompile Include="..\External Libs\IMGUI\imgui_widgets.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Config.cpp" />
     <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="Door.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="..\External Libs\IMGUI\imstb_truetype.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CollisionBox.h" />
+    <ClInclude Include="Config.h" />
     <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="Door.h" />
     <ClInclude Include="Entity.h" />

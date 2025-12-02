@@ -26,6 +26,7 @@
 #include "TextRenderer.h"
 #include "Door.h"
 #include "UI.h"
+#include "Config.h"
 
 
 enum ShaderTypes
@@ -44,8 +45,10 @@ enum GameStates
 	STATE_GAME_END
 };
 
+Config& config = Config::getInstance();
+
 // Window dimensions
-const GLint WIDTH = 1280, HEIGHT = 720;
+ GLint WIDTH = config.screenWidth, HEIGHT = config.screenHeight;
 
 // Create window object
 Window mainWindow;
@@ -226,7 +229,9 @@ int main()
 		RenderScenePass(projection);
 
 		// Render FPS
-		textRenderer->RenderText("FPS: " + std::to_string((int)fps), 25.0f, 25.0f, 1.0f, glm::vec3(0.5f, 0.8f, 0.2f));
+		if (config.showFPS) {
+			textRenderer->RenderText("FPS: " + std::to_string((int)fps), 25.0f, 25.0f, 1.0f, glm::vec3(0.5f, 0.8f, 0.2f));
+		}
 
 		// Render crosshair
 		float textWidth = tooltipRenderer->GetTextWidth("+");
@@ -427,6 +432,7 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 	shaderList[SHADER_OUTLINE]->UseShader();
 	float outline = 0.005f;
 	shaderList[SHADER_OUTLINE]->setFloat("outline", outline);
+	shaderList[SHADER_OUTLINE]->setVec3("outlineColor", glm::vec3(config.outlineColor[0],config.outlineColor[1],config.outlineColor[2]));
 	scene->RenderWithOutline(shaderList[SHADER_OUTLINE], projectionMatrix);
 
 
