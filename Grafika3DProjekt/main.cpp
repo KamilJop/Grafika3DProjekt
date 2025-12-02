@@ -25,6 +25,7 @@
 #include "Player.h"
 #include "TextRenderer.h"
 #include "Door.h"
+#include "UI.h"
 
 
 enum ShaderTypes
@@ -76,6 +77,9 @@ float lastFrame = 0.0f;
 
 // Camera
 Camera camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f, 5.0f, 0.1f);
+
+// UI
+UI* gameUI;
 
 // Entity
 Door* doorEntity;
@@ -151,6 +155,9 @@ int main()
 	mainWindow = Window(WIDTH, HEIGHT);
 	mainWindow.Initialise();
 
+	// Create UI
+	gameUI = new UI(mainWindow.getWindow());
+
 	// Create Shaders
 	Shader* shader1 = new Shader();
 	shader1->CreateShader(vertexShader, fragmentShader);
@@ -224,6 +231,10 @@ int main()
 		// Render crosshair
 		float textWidth = tooltipRenderer->GetTextWidth("+");
 		tooltipRenderer->RenderText("+", (mainWindow.getBufferWidth() / 2.0f) - textWidth, (mainWindow.getBufferHeight() / 2.0f) - 10.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+
+		if(gameState == STATE_PAUSED) {
+			gameUI->DrawPauseMenu();
+		}
 
 		// Swap buffers
 		mainWindow.swapBuffers();

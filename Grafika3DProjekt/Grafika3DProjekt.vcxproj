@@ -90,7 +90,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\External Libs\GLFW\include;$(SolutionDir)\External Libs\GLM;$(SolutionDir)\External Libs\GLAD\include;$(SolutionDir)\External Libs\ASSIMP\include;$(SolutionDir)\External Libs\FREETYPE\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\External Libs\GLFW\include;$(SolutionDir)\External Libs\GLM;$(SolutionDir)\External Libs\GLAD\include;$(SolutionDir)\External Libs\ASSIMP\include;$(SolutionDir)\External Libs\FREETYPE\include;$(SolutionDIr)\External Libs\IMGUI</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -121,7 +121,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\External Libs\GLFW\include;$(SolutionDir)\External Libs\GLM;$(SolutionDir)\External Libs\GLAD\include;$(SolutionDir)\External Libs\ASSIMP\include;$(SolutionDir)\External Libs\FREETYPE\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\External Libs\GLFW\include;$(SolutionDir)\External Libs\GLM;$(SolutionDir)\External Libs\GLAD\include;$(SolutionDir)\External Libs\ASSIMP\include;$(SolutionDir)\External Libs\FREETYPE\include;$(SolutionDIr)\External Libs\IMGUI</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -134,6 +134,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\External Libs\GLAD\src\glad.c" />
+    <ClCompile Include="..\External Libs\IMGUI\imgui.cpp" />
+    <ClCompile Include="..\External Libs\IMGUI\imgui_demo.cpp" />
+    <ClCompile Include="..\External Libs\IMGUI\imgui_draw.cpp" />
+    <ClCompile Include="..\External Libs\IMGUI\imgui_impl_glfw.cpp" />
+    <ClCompile Include="..\External Libs\IMGUI\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="..\External Libs\IMGUI\imgui_tables.cpp" />
+    <ClCompile Include="..\External Libs\IMGUI\imgui_widgets.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="Door.cpp" />
@@ -153,9 +160,19 @@
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="TextRenderer.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="UI.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\External Libs\IMGUI\imconfig.h" />
+    <ClInclude Include="..\External Libs\IMGUI\imgui.h" />
+    <ClInclude Include="..\External Libs\IMGUI\imgui_impl_glfw.h" />
+    <ClInclude Include="..\External Libs\IMGUI\imgui_impl_opengl3.h" />
+    <ClInclude Include="..\External Libs\IMGUI\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="..\External Libs\IMGUI\imgui_internal.h" />
+    <ClInclude Include="..\External Libs\IMGUI\imstb_rectpack.h" />
+    <ClInclude Include="..\External Libs\IMGUI\imstb_textedit.h" />
+    <ClInclude Include="..\External Libs\IMGUI\imstb_truetype.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CollisionBox.h" />
     <ClInclude Include="DirectionalLight.h" />
@@ -178,6 +195,7 @@
     <ClInclude Include="stb_loader.h" />
     <ClInclude Include="TextRenderer.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="UI.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
