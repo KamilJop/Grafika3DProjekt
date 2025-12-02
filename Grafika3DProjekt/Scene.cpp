@@ -159,6 +159,7 @@ void Scene::RenderFlashlightEntity(Shader* shader, glm::mat4 projection)
 	Entity* flashlightEntity = getEntityByTitle("Flashlight");
 	if (flashlightEntity)
 	{
+		glClear(GL_DEPTH_BUFFER_BIT);
 		flashlightEntity->DrawEntity(shader);
 	}
 }

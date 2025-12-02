@@ -66,6 +66,7 @@ Entity* sculptureEntity;
 Entity* testWallEntity;
 Entity* flashlightEntity;
 Entity* framuga;
+Entity* paintingEntity;
 
 // Light source
 DirectionalLight* mainLight;
@@ -88,6 +89,7 @@ Model sculpture;
 Model testWall;
 Model flashlightModel;
 Model framugaModel;
+Model paintingModel;
 
 // Create player
 Player* player;
@@ -227,6 +229,7 @@ Scene* createMainScene(Camera * camera) {
 	testWall.LoadModel("Models/testsciana.obj");
 	flashlightModel.LoadModel("Models/flashlight.obj");
 	framugaModel.LoadModel("Models/framuga.obj");
+	paintingModel.LoadModel("Models/chrobry.obj");
 
 	/*sculpture.LoadModel("Models/rzezba.obj");*/
 
@@ -236,12 +239,14 @@ Scene* createMainScene(Camera * camera) {
 	lessShinyMaterial = new Material(0.5f, 256.0f);
 
 	// Create Entities
-	framuga = new Entity(&framugaModel, lessShinyMaterial, glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f), glm::vec3(1.4f));
+	framuga = new Entity(&framugaModel, lessShinyMaterial, glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f), glm::vec3(1.41f));
 	doorEntity = new Door(&door, shinyMaterial, glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f), glm::vec3(1.4f), "Doors", framuga);
 	floorEntity = new Entity(&floorModel, lessShinyMaterial, glm::vec3(0.0f, -0.6f, -3.0f), glm::vec3(0.0f), glm::vec3(0.5f));
 	chestEntity = new Entity(&chest, shinyMaterial, glm::vec3(2.0f, 0.5f, -4.0f), glm::vec3(0.0f, -45.0f, 0.0f), glm::vec3(1.3f));
 	testWallEntity = new Entity(&testWall, lessShinyMaterial, glm::vec3(-2.0f, -0.5f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.3f));
 	flashlightEntity = new Entity(&flashlightModel, shinyMaterial, glm::vec3(5.0f,2.0f,-3.0f), glm::vec3(0.0f), glm::vec3(0.03f));
+	paintingEntity = new Entity(&paintingModel, lessShinyMaterial, glm::vec3(-8.0f, 3.0f, -4.0f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(5.0f), true);
+	paintingEntity->setTitle("Boleslaw Chrobry");
 	flashlightEntity->setCastsShadow(false);
 	flashlightEntity->setTitle("Flashlight");
 	
@@ -284,6 +289,7 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(testWallEntity);
 	scene->AddEntity(flashlightEntity);
 	scene->AddEntity(framuga);
+	scene->AddEntity(paintingEntity);
 	/*scene->AddEntity(sculptureEntity);*/
 
 	return scene;
@@ -356,57 +362,41 @@ void OmniShadowMapPass(PointLight* pLight) {
 
 void RenderScenePass(glm::mat4 projectionMatrix)
 {
-	// Go back to the default framebuffer
+	// Setup viewport and clear buffers
 	glViewport(0, 0, mainWindow.getBufferWidth(), mainWindow.getBufferHeight());
-
-	// Clear buffers
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClearStencil(0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-
-	glDisable(GL_STENCIL_TEST);
-	// Draw skybox first
-	skybox->DrawSkybox(camera.getViewMatrix(), projectionMatrix);
-
 	
-	// Use shader program
+	// Draw skybox 
+	glDisable(GL_STENCIL_TEST);
+	skybox->DrawSkybox(camera.getViewMatrix(), projectionMatrix);
+	glEnable(GL_STENCIL_TEST);
+	
+	// Shader configurations
 	shaderList[SHADER_DEFAULT]->UseShader();
-
-	// Set the shadow map uniform to texture unit 1
 	shaderList[SHADER_DEFAULT]->setInt("directionalShadowMap", 1);
-
-	// Bind the shadow map to texture unit 1
 	mainLight->getShadowMap()->Read(GL_TEXTURE1);
-
-	// Set the flashlight shadow map uniform to texture unit 2
 	shaderList[SHADER_DEFAULT]->setInt("flashShadowMap", 2);
-
 	flashlight->getShadowMap()->Read(GL_TEXTURE2);
-
-	// Set texture units for material maps
 	shaderList[SHADER_DEFAULT]->setInt("material.textureMap", 0);
 	shaderList[SHADER_DEFAULT]->setInt("material.normalMap", 3);
 	shaderList[SHADER_DEFAULT]->setInt("material.heightMap", 4);
 
-	glEnable(GL_STENCIL_TEST);
+	// Render scene without outlines not writing to stencil buffer
 	glStencilMask(0x00);
-	glStencilFunc(GL_ALWAYS, 1, 0xFF);
-
-
-	// Render scene without outlines first
 	scene->RenderWithoutOutline(shaderList[SHADER_DEFAULT], projectionMatrix);
 
-
+	// Now render objects again but only writing to stencil buffer
 	glStencilMask(0xFF);
 	glStencilFunc(GL_ALWAYS, 1, 0xFF);
-	// Now render objects again but only writing to stencil buffer
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 	scene->RenderWithOutline(shaderList[SHADER_DEFAULT], projectionMatrix);
 
 	// Render outlines
-	glDisable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);
 	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
-	glEnable(GL_CULL_FACE);
+	glStencilMask(0x00);
 	glCullFace(GL_FRONT);
 
 	shaderList[SHADER_OUTLINE]->UseShader();
@@ -414,12 +404,12 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 	shaderList[SHADER_OUTLINE]->setFloat("outline", outline);
 	scene->RenderWithOutline(shaderList[SHADER_OUTLINE], projectionMatrix);
 
-	glEnable(GL_DEPTH_TEST);
-	glDepthMask(GL_TRUE);
-	glCullFace(GL_BACK);
-	glDisable(GL_STENCIL_TEST);
 
 	// Render flashlight last (to be in front of all objects)
+	glDepthMask(GL_TRUE);
+	glStencilMask(0xFF);
+	glCullFace(GL_BACK);
+	glDisable(GL_STENCIL_TEST);
 	scene->RenderFlashlightEntity(shaderList[SHADER_DEFAULT], projectionMatrix);
 }
 
