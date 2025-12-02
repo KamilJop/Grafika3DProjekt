@@ -26,6 +26,23 @@
 #include "TextRenderer.h"
 #include "Door.h"
 
+
+enum ShaderTypes
+{
+	SHADER_DEFAULT,
+	SHADER_DIRLIGHT_SHADOWMAP,
+	SHADER_OMNI_SHADOWMAP,
+	SHADER_OUTLINE,
+};
+
+enum GameStates
+{
+	STATE_MAIN_MENU,
+	STATE_PLAYING,
+	STATE_PAUSED,
+	STATE_GAME_END
+};
+
 // Window dimensions
 const GLint WIDTH = 1280, HEIGHT = 720;
 
@@ -49,6 +66,9 @@ static const char* outlineFragmentShader = "Shaders/outline.frag";
 // Texture file paths
 static const char* brickTexture = "Textures/brick.png";
 static const char* stoneTexture = "Textures/stone.png";
+
+// Game state
+GameStates gameState = STATE_PLAYING;
 
 // Delta time
 float deltaTime = 0.0f;
@@ -123,15 +143,7 @@ void FlashlightShadowMapPass();
 void OmniShadowMapPass(PointLight* pLight);
 void RenderScenePass(glm::mat4 projection);
 void HandleKeyboardInput(float deltaTime, Scene* currentScene);
-
-
-enum ShaderTypes
-{
-	SHADER_DEFAULT,
-	SHADER_DIRLIGHT_SHADOWMAP,
-	SHADER_OMNI_SHADOWMAP,
-	SHADER_OUTLINE,
-};
+void SetGameState(GameStates newState);
 
 int main()
 {
@@ -171,15 +183,20 @@ int main()
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 		float fps = 1.0f / deltaTime;
+
 		// Disable huge delta time while loading assets
 		if (deltaTime > 0.5f)
 		{
 			deltaTime = 0.5f;
 		}
 
-		// Camera movement
-		camera.ProcessMouseMovement(mainWindow.getXChange(), mainWindow.getYChange());
-
+		if (gameState == STATE_PLAYING) {
+			// Camera movement
+			camera.ProcessMouseMovement(mainWindow.getXChange(), mainWindow.getYChange());
+			// Update the scene
+			scene->Update(deltaTime);
+		}
+		
 		// Keyboard movement
 		HandleKeyboardInput(deltaTime, scene);
 		
@@ -197,9 +214,6 @@ int main()
 		{
 			OmniShadowMapPass(scene->pointLights[i]);
 		}
-
-		// Update the scene
-		scene->Update(deltaTime);
 
 		// Render scene pass
 		RenderScenePass(projection);
@@ -415,6 +429,23 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 
 void HandleKeyboardInput(float deltaTime, Scene* currentScene) {
 
+	if (mainWindow.getKeys()[GLFW_KEY_ESCAPE])
+	{
+		if (gameState == STATE_PLAYING)
+		{
+			SetGameState(STATE_PAUSED);
+		}
+		else if (gameState == STATE_PAUSED)
+		{
+			SetGameState(STATE_PLAYING);
+		}
+		mainWindow.getKeys()[GLFW_KEY_ESCAPE] = false;
+	}
+	
+	if(gameState != STATE_PLAYING) {
+		return;
+	}
+
 	float speed = camera.MovementSpeed;
 	if (player->isCrouching)
 	{
@@ -488,5 +519,14 @@ void HandleKeyboardInput(float deltaTime, Scene* currentScene) {
 	else {
 		// TODO smooth reset
 		player->walkTimer = 0.0f;
+	}
+}
+
+void SetGameState(GameStates newState) {
+	gameState = newState;
+	if(gameState == STATE_PLAYING) {
+		glfwSetInputMode(mainWindow.getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	} else {
+		glfwSetInputMode(mainWindow.getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	}
 }

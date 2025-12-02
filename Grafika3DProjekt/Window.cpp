@@ -116,12 +116,6 @@ void Window::handleKeys(GLFWwindow* window, int key, int code, int action, int m
 	// Get the pointer to the Window class
 	Window* theWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
 
-	// Close the window if ESC is pressed
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-	{
-		glfwSetWindowShouldClose(window, GL_TRUE);
-	}
-
 	// Update the keys array if keys pressed/released
 	if (key >= 0 && key < 1024)
 	{
