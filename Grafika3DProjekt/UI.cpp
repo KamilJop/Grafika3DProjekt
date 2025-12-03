@@ -115,6 +115,7 @@ void UI::DrawQuitConfirmation() {
 
 
 	if (ImGui::Button("Yes", ImVec2(120, 0))) {
+		config.Save();
 		glfwSetWindowShouldClose(appWindow, GLFW_TRUE);
 		ImGui::CloseCurrentPopup();
 	}
