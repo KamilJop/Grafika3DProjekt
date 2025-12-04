@@ -1,26 +1,29 @@
 #pragma once
 #include <iostream>
+#include <fstream>
+#include <string>
 class Config
 {
 public:
-	int screenWidth = 1280;
-	int screenHeight = 720;
+	int screenWidth;
+	int screenHeight;
 
-	float musicVolume = 0.5f;
-	float sfxVolume = 0.5f;
+	float musicVolume;
+	float sfxVolume;
 
-	bool fullscreen = false;
-	bool showFPS = true;
-	bool antiAliasing = true;
+	bool fullscreen;
+	bool showFPS;
+	bool antiAliasing;
 
-	float outlineColor[3] = { 1.0f, 1.0f, 1.0f };
-	float highlightColor[3] = { 1.0f, 1.0f, 0.0f };
+	float outlineColor[3];
+	float highlightColor[3];
 
 
 	// Singleton instance accessor
 	static Config& getInstance()
 	{
 		static Config instance;
+		instance.Load();
 		return instance;
 	}
 
@@ -30,7 +33,11 @@ public:
 	Config& operator=(const Config&) = delete;
 	Config& operator=(Config&&) = delete;
 
+	void Load();
+	void Save();
+
 protected:
 	Config() = default;
+	std::string configFilePath = "config.txt";
 };
 
