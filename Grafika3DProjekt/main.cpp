@@ -259,7 +259,7 @@ Scene* createMainScene(Camera * camera) {
 	testWall.LoadModel("Models/testsciana.obj");
 	flashlightModel.LoadModel("Models/flashlight.obj");
 	framugaModel.LoadModel("Models/framuga.obj");
-	paintingModel.LoadModel("Models/chrobry.obj");
+	paintingModel.LoadModel("Models/V3TEST.obj");
 
 	/*sculpture.LoadModel("Models/rzezba.obj");*/
 
@@ -275,8 +275,8 @@ Scene* createMainScene(Camera * camera) {
 	chestEntity = new Entity(&chest, shinyMaterial, glm::vec3(2.0f, 0.5f, -4.0f), glm::vec3(0.0f, -45.0f, 0.0f), glm::vec3(1.3f));
 	testWallEntity = new Entity(&testWall, lessShinyMaterial, glm::vec3(-2.0f, -0.5f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.3f));
 	flashlightEntity = new Entity(&flashlightModel, shinyMaterial, glm::vec3(5.0f,2.0f,-3.0f), glm::vec3(0.0f), glm::vec3(0.03f));
-	paintingEntity = new Entity(&paintingModel, lessShinyMaterial, glm::vec3(-8.0f, 3.0f, -4.0f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(5.0f), true);
-	paintingEntity->setTitle("Boleslaw Chrobry");
+	paintingEntity = new Entity(&paintingModel, lessShinyMaterial, glm::vec3(-8.0f, 3.0f, -4.0f), glm::vec3(180.0f, 90.0f, 90.0f), glm::vec3(3.0f), true);
+	paintingEntity->setTitle("Mieszko I");
 	flashlightEntity->setCastsShadow(false);
 	flashlightEntity->setTitle("Flashlight");
 	

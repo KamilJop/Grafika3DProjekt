@@ -1,0 +1,33 @@
+# Blender 5.0.0 MTL File: 'V3TEST.blend'
+# www.blender.org
+
+newmtl Black_wood
+Ns 665.089661
+Ka 0.200000 0.200000 0.200000
+Kd 0.001031 0.001015 0.000944
+Ks 0.300000 0.300000 0.300000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+
+newmtl Painting
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:/Users/vezzu/Downloads/k4.png
+map_Ns C:/painting like Vincent van Gogh roughness.jpg
+map_Bump -bm 1.000000 C:/painting like Vincent van Gogh normal.jpg
+
+newmtl Paiting_back
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.638270 0.638270 0.638270
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
