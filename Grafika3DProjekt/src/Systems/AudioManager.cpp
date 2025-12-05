@@ -42,7 +42,7 @@ int AudioManager::PlayMusicTrack(const std::string& name, float volume, bool loo
 	if(it != musicTracks.end())
 	{
 		currentMusicHandle = soloud.play(*it->second, volume);
-		it->second->setLooping(loop);
+		soloud.setLooping(currentMusicHandle, loop);
 		return currentMusicHandle;
 	}
 	return -1;

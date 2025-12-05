@@ -1,7 +1,7 @@
 #include "Door.h"
 
 
-Door::Door(Model* model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, std::string name,Entity* frame, bool interaction)
+Door::Door(Model* model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, std::string name,Entity* frame, std::string keyTag, bool interaction)
 	: Entity(model, pos, rot, scal, interaction)
 {
 	isOpen = false;
@@ -9,9 +9,11 @@ Door::Door(Model* model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, std::stri
 	isTryingToOpen = false;
 	title = name;
 	doorFrame = frame;
+	doorKeyTag = keyTag;
 	AudioManager::GetInstance().Load3DSoundEffect("door_opening", openingSoundPath);
 	AudioManager::GetInstance().Load3DSoundEffect("door_closing", closingSoundPath);
 	AudioManager::GetInstance().Load3DSoundEffect("door_locked", lockedSoundPath);
+	AudioManager::GetInstance().Load3DSoundEffect("door_unlocking", unlockingSoundPath);
 }
 
 Door::~Door()
@@ -23,12 +25,19 @@ Door::~Door()
 	doorFrame = nullptr;
 }
 
-void Door::Interact()
+void Door::Interact(Inventory* playerInventory)
 {
 	if (isAnimating || isTryingToOpen) return;
 
 	if (isLocked)
 	{
+		if(playerInventory->HasItem(doorKeyTag))
+		{
+			isLocked = false;
+			AudioManager::GetInstance().Play3DSoundEffect(unlockingSoundName, position, config.sfxVolume * 2.0);
+			return;
+		}
+
 		isTryingToOpen = true;
 		animCounter = 0.0;
 		AudioManager::GetInstance().Play3DSoundEffect(lockedSoundName, position, config.sfxVolume * 2.0);

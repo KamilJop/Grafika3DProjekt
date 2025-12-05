@@ -6,6 +6,7 @@
 #include "Rendering/CollisionBox.h"
 #include "Rendering/Model.h"
 #include "Rendering/Material.h"
+#include "../Core/Inventory.h"
 
 
 
@@ -22,6 +23,8 @@ public:
 	bool hasCollisions = true;
 	bool interactable;
 	bool shouldGetDestroyed = false;
+	bool pickable = false;
+	std::string itemTag = "";
 	CollisionBox collisions;
 	std::string title = "Untitled object";
 
@@ -43,6 +46,8 @@ public:
 	bool getInteractable() { return interactable; }
 	bool getCastsShadow() { return castsShadow; }
 	bool getColissions() { return hasCollisions; }
+	bool getPickable() { return pickable; }
+	std::string getTag() { return itemTag; }	
 	std::string getTitle() { return title; }
 	bool isOutlined() { return outlined; }
 	void setOutlined(bool state) { outlined = state; }
@@ -50,7 +55,7 @@ public:
 	void DrawEntity(Shader* shader);
 	void UpdateCollisionBox();
 	virtual void Update(float deltaTime) {};
-	virtual void Interact() {};
+	virtual void Interact(Inventory * playerInventory) {};
 
 private:
 	glm::mat4 modelMatrix;

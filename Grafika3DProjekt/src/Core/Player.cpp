@@ -6,6 +6,7 @@ Player::Player(Camera* cam, Entity* flashlight, glm::vec3 pos, glm::vec3 vel)
 	flashlightEntity = flashlight;
 	position = pos;
 	velocity = vel;
+	playerInventory = Inventory();
 	updatePlayerCollisions();
 }
 
@@ -176,6 +177,7 @@ void Player::checkTargettedEntity(std::vector<Entity*>& entities)
 	glm::vec3 rayOrigin = camera->getCameraPosition();
 	glm::vec3 rayDirection = camera->getCameraFront();
 	Entity* closestEntity = nullptr;
+	targettedEntity = nullptr;
 	float closestDistance = reachDistance;
 	// Check intersection with each entity
 	for (auto& entity : entities)
@@ -199,6 +201,7 @@ void Player::checkTargettedEntity(std::vector<Entity*>& entities)
 	if (closestEntity)
 	{
 		closestEntity->setOutlined(true);
+		targettedEntity = closestEntity;
 	}
 }
 
@@ -231,4 +234,13 @@ bool Player::checkRayEntityIntersection(const glm::vec3& rayOrigin, const glm::v
 		return true;
 	}
 	return false;
+}
+
+void Player::pickUpEntity(Entity* entity)
+{
+	if (entity->getInteractable())
+	{
+		playerInventory.AddItem(entity->getTag(), "Textures/default_item.png");
+		entity->shouldGetDestroyed = true;
+	}
 }

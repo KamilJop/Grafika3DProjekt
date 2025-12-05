@@ -277,7 +277,7 @@ Scene* createMainScene(Camera * camera) {
 
 	// Create Entities
 	framuga = new Entity(&framugaModel,glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f), glm::vec3(1.41f));
-	doorEntity = new Door(&door, glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f), glm::vec3(1.4f), "Doors", framuga);
+	doorEntity = new Door(&door, glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f), glm::vec3(1.4f), "Doors", framuga, "mainKey");
 	doorEntity->setLocked(true);
 	floorEntity = new Entity(&floorModel, glm::vec3(0.0f, -0.6f, -3.0f), glm::vec3(0.0f), glm::vec3(0.5f));
 	chestEntity = new Entity(&chest, glm::vec3(2.0f, 0.5f, -4.0f), glm::vec3(0.0f, -45.0f, 0.0f), glm::vec3(1.3f));
@@ -287,7 +287,7 @@ Scene* createMainScene(Camera * camera) {
 	paintingEntity->setTitle("Mieszko I");
 	flashlightEntity->setCastsShadow(false);
 	flashlightEntity->setTitle("Flashlight");
-	keyEntity = new Key(&keyModel, glm::vec3(2.0f, 0.0f, -4.0f), glm::vec3(90.0f,0.0f,0.0f), glm::vec3(0.75f), true);
+	keyEntity = new Key(&keyModel, glm::vec3(2.0f, 0.0f, -4.0f), glm::vec3(90.0f,0.0f,0.0f), glm::vec3(0.75f), "mainKey", "NOPATH0", true);
 	keyEntity->setTitle("Key");
 	keyEntity->setColissions(false);
 
@@ -527,28 +527,15 @@ void HandleKeyboardInput(float deltaTime, Scene* currentScene) {
 	}
 	if (mainWindow.getKeys()[GLFW_KEY_E])
 	{
-		for(auto & entity : currentScene->entities) {
-			if(entity->isOutlined())
-				{
-				entity->Interact();
-				break;
-			}
-		}
 		mainWindow.getKeys()[GLFW_KEY_E] = false;
-	}
 
-	// DEBUG toggle door lock
-	if (mainWindow.getKeys()[GLFW_KEY_Q])
-	{	
-		if (doorEntity->isLocked) {
-			doorEntity->setLocked(false);
-			mainWindow.getKeys()[GLFW_KEY_Q] = false;
-		}
-		else {
-			doorEntity->setLocked(true);
-			mainWindow.getKeys()[GLFW_KEY_Q] = false;
-		}
-			
+		Entity* target = player->getTargettedEntity();
+		if (!target) return;
+		if (!target->getInteractable()) return;
+		target->Interact(player->getInventory());
+		if (!target->getPickable()) return;
+		player->pickUpEntity(target);
+		return;
 	}
 
 	if (mainWindow.getKeys()[GLFW_KEY_LEFT_SHIFT])

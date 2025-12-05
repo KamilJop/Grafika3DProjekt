@@ -4,6 +4,7 @@
 #include "Entities/Entity.h"
 #include "Rendering/CollisionBox.h"
 #include <vector>
+#include "Inventory.h"
 
 class Player
 {
@@ -13,12 +14,14 @@ public:
 	glm::vec3 position;
 	glm::vec3 velocity;
 	Entity* flashlightEntity;
+	Entity* targettedEntity = nullptr;
 	float walkTimer = 0.0f;
 	bool isFlashlightOn = false;
 	bool onGround = false;
 	bool isCrouching = false;
 	Camera* camera;
 	CollisionBox playerCollisions;
+	Inventory playerInventory;
 
 
 	void UpdatePhysics(float deltaTime, std::vector<Entity*>& entities);
@@ -28,8 +31,12 @@ public:
 	void changeFlashlightState();
 	void Crouch(bool state);
 	bool getFlashlightState() { return isFlashlightOn; }
+	Inventory* getInventory() { return &playerInventory; };
 	void updateFlashlightPosition(const glm::vec3& finalPos);
 	void updatePlayerCollisions();
+	void pickUpEntity(Entity* entity);
+	Entity* getTargettedEntity() { return targettedEntity; };
+	bool hasTargettedEntity() { return targettedEntity != nullptr; };
 	CollisionBox GetPlayerCollisions() { return playerCollisions; };
 	
 
