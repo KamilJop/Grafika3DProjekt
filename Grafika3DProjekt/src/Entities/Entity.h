@@ -21,6 +21,7 @@ public:
 	bool outlined = false;
 	bool hasCollisions = true;
 	bool interactable;
+	bool shouldGetDestroyed = false;
 	CollisionBox collisions;
 	std::string title = "Untitled object";
 

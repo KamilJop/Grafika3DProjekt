@@ -27,6 +27,7 @@
 #include "UI/UI.h"
 #include "Config.h"
 #include "Systems/AudioManager.h"
+#include "Entities/Key.h"
 
 
 enum ShaderTypes
@@ -186,8 +187,8 @@ int main()
 
 	audioManager.Init();
 	audioManager.LoadMusicTrack("background", "Audio/background_music.mp3");
-	int backgroundMusicHandle = audioManager.PlayMusicTrack("background", config.musicVolume, true);
-
+	int backgroundMusicHandle = audioManager.PlayMusicTrack("background", config.musicVolume, 1);
+	
 	// Loop until window closed
 	while (!mainWindow.getShouldClose())
 	{
@@ -286,7 +287,7 @@ Scene* createMainScene(Camera * camera) {
 	paintingEntity->setTitle("Mieszko I");
 	flashlightEntity->setCastsShadow(false);
 	flashlightEntity->setTitle("Flashlight");
-	keyEntity = new Entity(&keyModel, glm::vec3(2.0f, 0.0f, -4.0f), glm::vec3(90.0f,0.0f,0.0f), glm::vec3(0.75f), true);
+	keyEntity = new Key(&keyModel, glm::vec3(2.0f, 0.0f, -4.0f), glm::vec3(90.0f,0.0f,0.0f), glm::vec3(0.75f), true);
 	keyEntity->setTitle("Key");
 	keyEntity->setColissions(false);
 
