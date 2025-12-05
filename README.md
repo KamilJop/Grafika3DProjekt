@@ -93,21 +93,7 @@ Ensure the following libraries are installed and linked in your IDE/CMake:
 - FreeType
 - Dear ImGui
 
-## 2. Configuration File
-
-A `config.txt` file must be placed in the same directory as the compiled executable (.exe).
-
-**Example structure:**
-
-```text
-1280 720            # Resolution
-0.5 0.5             # Volume (Music, SFX)
-0 1 1               # Fullscreen, ShowFPS, AntiAliasing
-0.7 0.2 0.7         # Outline Color (RGB)
-1.0 1.0 1.0         # Highlight Color (RGB)
-```
-
-## 3. Project Structure
+## 2. Project Structure
 
 Ensure your working directory contains these folders:
 
