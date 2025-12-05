@@ -2,10 +2,10 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <string>
-#include "Shader.h"
-#include "CollisionBox.h"
-#include "Model.h"
-#include "Material.h"
+#include "Rendering/Shader.h"
+#include "Rendering/CollisionBox.h"
+#include "Rendering/Model.h"
+#include "Rendering/Material.h"
 
 
 

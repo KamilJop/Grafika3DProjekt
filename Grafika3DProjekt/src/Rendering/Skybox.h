@@ -1,5 +1,5 @@
 #pragma once
-#include "stb_loader.h"
+#include "External/stb_loader.h"
 #include <vector>
 #include <string>
 #include <glad/glad.h>

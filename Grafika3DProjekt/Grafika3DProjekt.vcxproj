@@ -90,15 +90,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\External Libs\GLFW\include;$(SolutionDir)\External Libs\GLM;$(SolutionDir)\External Libs\GLAD\include;$(SolutionDir)\External Libs\ASSIMP\include;$(SolutionDir)\External Libs\FREETYPE\include;$(SolutionDIr)\External Libs\IMGUI</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\External Libs\GLFW\include;$(SolutionDir)\External Libs\GLM;$(SolutionDir)\External Libs\GLAD\include;$(SolutionDir)\External Libs\ASSIMP\include;$(SolutionDir)\External Libs\FREETYPE\include;$(SolutionDIr)\External Libs\IMGUI;$(ProjectDir)src;$(SolutionDir)\External Libs\SOLOUD\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\External Libs\GLFW\lib-vc2022;$(SolutionDir)\External Libs\ASSIMP\lib;$(SolutionDir)\External Libs\FREETYPE\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;assimp-vc143-mtd.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\External Libs\GLFW\lib-vc2022;$(SolutionDir)\External Libs\ASSIMP\lib;$(SolutionDir)\External Libs\FREETYPE\lib;$(SolutionDir)\External Libs\SOLOUD\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;assimp-vc143-mtd.lib;freetype.lib;soloud_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -121,15 +121,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\External Libs\GLFW\include;$(SolutionDir)\External Libs\GLM;$(SolutionDir)\External Libs\GLAD\include;$(SolutionDir)\External Libs\ASSIMP\include;$(SolutionDir)\External Libs\FREETYPE\include;$(SolutionDIr)\External Libs\IMGUI</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\External Libs\GLFW\include;$(SolutionDir)\External Libs\GLM;$(SolutionDir)\External Libs\GLAD\include;$(SolutionDir)\External Libs\ASSIMP\include;$(SolutionDir)\External Libs\FREETYPE\include;$(SolutionDIr)\External Libs\IMGUI;$(ProjectDir)src;$(SolutionDir)\External Libs\SOLOUD\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;assimp-vc143-mtd.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)\External Libs\GLFW\lib-vc2022;$(SolutionDir)\External Libs\ASSIMP\lib;$(SolutionDir)\External Libs\FREETYPE\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;assimp-vc143-mtd.lib;freetype.lib;soloud_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\External Libs\GLFW\lib-vc2022;$(SolutionDir)\External Libs\ASSIMP\lib;$(SolutionDir)\External Libs\FREETYPE\lib;$(SolutionDir)\External Libs\SOLOUD\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -141,28 +141,28 @@
     <ClCompile Include="..\External Libs\IMGUI\imgui_impl_opengl3.cpp" />
     <ClCompile Include="..\External Libs\IMGUI\imgui_tables.cpp" />
     <ClCompile Include="..\External Libs\IMGUI\imgui_widgets.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="Config.cpp" />
-    <ClCompile Include="DirectionalLight.cpp" />
-    <ClCompile Include="Door.cpp" />
-    <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="Flashlight.cpp" />
-    <ClCompile Include="Light.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Material.cpp" />
-    <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="Model.cpp" />
-    <ClCompile Include="OmniShadowMap.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="PointLight.cpp" />
-    <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="ShadowMap.cpp" />
-    <ClCompile Include="Skybox.cpp" />
-    <ClCompile Include="TextRenderer.cpp" />
-    <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="UI.cpp" />
-    <ClCompile Include="Window.cpp" />
+    <ClCompile Include="src\Core\Camera.cpp" />
+    <ClCompile Include="src\Core\Config.cpp" />
+    <ClCompile Include="src\Light\DirectionalLight.cpp" />
+    <ClCompile Include="src\Entities\Door.cpp" />
+    <ClCompile Include="src\Entities\Entity.cpp" />
+    <ClCompile Include="src\Light\Flashlight.cpp" />
+    <ClCompile Include="src\Light\Light.cpp" />
+    <ClCompile Include="src\Core\main.cpp" />
+    <ClCompile Include="src\Rendering\Material.cpp" />
+    <ClCompile Include="src\Rendering\Mesh.cpp" />
+    <ClCompile Include="src\Rendering\Model.cpp" />
+    <ClCompile Include="src\Light\OmniShadowMap.cpp" />
+    <ClCompile Include="src\Core\Player.cpp" />
+    <ClCompile Include="src\Light\PointLight.cpp" />
+    <ClCompile Include="src\Core\Scene.cpp" />
+    <ClCompile Include="src\Rendering\Shader.cpp" />
+    <ClCompile Include="src\Light\ShadowMap.cpp" />
+    <ClCompile Include="src\Rendering\Skybox.cpp" />
+    <ClCompile Include="src\Systems\TextRenderer.cpp" />
+    <ClCompile Include="src\Rendering\Texture.cpp" />
+    <ClCompile Include="src\UI\UI.cpp" />
+    <ClCompile Include="src\Core\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\External Libs\IMGUI\imconfig.h" />
@@ -174,31 +174,31 @@
     <ClInclude Include="..\External Libs\IMGUI\imstb_rectpack.h" />
     <ClInclude Include="..\External Libs\IMGUI\imstb_textedit.h" />
     <ClInclude Include="..\External Libs\IMGUI\imstb_truetype.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="CollisionBox.h" />
-    <ClInclude Include="Config.h" />
-    <ClInclude Include="DirectionalLight.h" />
-    <ClInclude Include="Door.h" />
-    <ClInclude Include="Entity.h" />
-    <ClInclude Include="Flashlight.h" />
-    <ClInclude Include="Light.h" />
-    <ClInclude Include="Material.h" />
-    <ClInclude Include="Mesh.h" />
-    <ClInclude Include="Model.h" />
-    <ClInclude Include="OmniShadowMap.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="PointLight.h" />
+    <ClInclude Include="src\Core\Camera.h" />
+    <ClInclude Include="src\Rendering\CollisionBox.h" />
+    <ClInclude Include="src\Core\Config.h" />
+    <ClInclude Include="src\Light\DirectionalLight.h" />
+    <ClInclude Include="src\Entities\Door.h" />
+    <ClInclude Include="src\Entities\Entity.h" />
+    <ClInclude Include="src\Light\Flashlight.h" />
+    <ClInclude Include="src\Light\Light.h" />
+    <ClInclude Include="src\Rendering\Material.h" />
+    <ClInclude Include="src\Rendering\Mesh.h" />
+    <ClInclude Include="src\Rendering\Model.h" />
+    <ClInclude Include="src\Light\OmniShadowMap.h" />
+    <ClInclude Include="src\Core\Player.h" />
+    <ClInclude Include="src\Light\PointLight.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="Scene.h" />
-    <ClInclude Include="Shader.h" />
-    <ClInclude Include="ShadowMap.h" />
-    <ClInclude Include="Skybox.h" />
-    <ClInclude Include="stb_image.h" />
-    <ClInclude Include="stb_loader.h" />
-    <ClInclude Include="TextRenderer.h" />
-    <ClInclude Include="Texture.h" />
-    <ClInclude Include="UI.h" />
-    <ClInclude Include="Window.h" />
+    <ClInclude Include="src\Core\Scene.h" />
+    <ClInclude Include="src\Rendering\Shader.h" />
+    <ClInclude Include="src\Light\ShadowMap.h" />
+    <ClInclude Include="src\Rendering\Skybox.h" />
+    <ClInclude Include="src\External\stb_image.h" />
+    <ClInclude Include="src\External\stb_loader.h" />
+    <ClInclude Include="src\Systems\TextRenderer.h" />
+    <ClInclude Include="src\Rendering\Texture.h" />
+    <ClInclude Include="src\UI\UI.h" />
+    <ClInclude Include="src\Core\Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -5,7 +5,7 @@
 #include <map>
 #include <string>
 #include <glad/glad.h>
-#include "Shader.h"
+#include "Rendering/Shader.h"
 
 struct Character{
 	unsigned int TextureID;

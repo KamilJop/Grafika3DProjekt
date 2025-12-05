@@ -3,7 +3,9 @@
 void Config::Load() {
 	std::ifstream configFile(configFilePath);
 	if (!configFile.is_open()) {
-		std::cout << "Could not open config file for reading: " << configFilePath << std::endl;
+		std::cout << "Could not open config file " << configFilePath << std::endl;
+		std::cout << "Creating default config file." << std::endl;
+		CreateDefaultConfig();
 		return;
 	}
 	configFile >> screenWidth >> screenHeight;
@@ -26,4 +28,17 @@ void Config::Save() {
 	configFile << outlineColor[0] << " " << outlineColor[1] << " " << outlineColor[2] << std::endl;
 	configFile << highlightColor[0] << " " << highlightColor[1] << " " << highlightColor[2] << std::endl;
 	configFile.close();
+}
+
+void Config::CreateDefaultConfig() {
+	screenWidth = 1280;
+	screenHeight = 720;
+	musicVolume = 0.5f;
+	sfxVolume = 0.5f;
+	fullscreen = false;
+	showFPS = true;
+	antiAliasing = true;
+	outlineColor[0] = 1.0f; outlineColor[1] = 0.0f; outlineColor[2] = 0.0f;
+	highlightColor[0] = 0.0f; highlightColor[1] = 1.0f; highlightColor[2] = 0.0f;
+	Save();
 }

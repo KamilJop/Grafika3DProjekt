@@ -7,26 +7,32 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm\gtc\type_ptr.hpp>
 #include "Window.h"
-#include "Mesh.h"
-#include "Shader.h"
+#include "Rendering/Mesh.h"
+#include "Rendering/Shader.h"
 #include <vector>
 #include "Camera.h"
-#include "Entity.h"
-#include "DirectionalLight.h"
-#include "Material.h"
-#include "PointLight.h"
-#include "Flashlight.h"
-#include "Texture.h"
+#include "Entities/Entity.h"
+#include "Light/DirectionalLight.h"
+#include "Rendering/Material.h"
+#include "Light/PointLight.h"
+#include "Light/Flashlight.h"
+#include "Rendering/Texture.h"
 #include <assimp/Importer.hpp>
-#include "Model.h"
+#include "Rendering/Model.h"
 #include "Scene.h"
-#include "ShadowMap.h"
-#include "Skybox.h"
+#include "Light/ShadowMap.h"
+#include "Rendering/Skybox.h"
 #include "Player.h"
-#include "TextRenderer.h"
-#include "Door.h"
-#include "UI.h"
+#include "Systems/TextRenderer.h"
+#include "Entities/Door.h"
+#include "UI/UI.h"
 #include "Config.h"
+#include "soloud.h"
+#include "soloud_wavstream.h"
+
+
+SoLoud::Soloud soloud;
+SoLoud::WavStream music;
 
 
 enum ShaderTypes
@@ -185,6 +191,10 @@ int main()
 	// Create main scene
 	scene = createMainScene(&camera);
 
+	soloud.init();
+	music.load("Audio/test.wav");
+	soloud.play(music);
+
 	// Loop until window closed
 	while (!mainWindow.getShouldClose())
 	{
@@ -259,7 +269,7 @@ Scene* createMainScene(Camera * camera) {
 	testWall.LoadModel("Models/testsciana.obj");
 	flashlightModel.LoadModel("Models/flashlight.obj");
 	framugaModel.LoadModel("Models/framuga.obj");
-	paintingModel.LoadModel("Models/chrobry.obj");
+	paintingModel.LoadModel("Models/V3TEST.obj");
 
 	/*sculpture.LoadModel("Models/rzezba.obj");*/
 
@@ -275,8 +285,8 @@ Scene* createMainScene(Camera * camera) {
 	chestEntity = new Entity(&chest, shinyMaterial, glm::vec3(2.0f, 0.5f, -4.0f), glm::vec3(0.0f, -45.0f, 0.0f), glm::vec3(1.3f));
 	testWallEntity = new Entity(&testWall, lessShinyMaterial, glm::vec3(-2.0f, -0.5f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.3f));
 	flashlightEntity = new Entity(&flashlightModel, shinyMaterial, glm::vec3(5.0f,2.0f,-3.0f), glm::vec3(0.0f), glm::vec3(0.03f));
-	paintingEntity = new Entity(&paintingModel, lessShinyMaterial, glm::vec3(-8.0f, 3.0f, -4.0f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(5.0f), true);
-	paintingEntity->setTitle("Boleslaw Chrobry");
+	paintingEntity = new Entity(&paintingModel, lessShinyMaterial, glm::vec3(-8.0f, 3.0f, -4.0f), glm::vec3(180.0f, 90.0f, 90.0f), glm::vec3(3.0f), true);
+	paintingEntity->setTitle("Mieszko I");
 	flashlightEntity->setCastsShadow(false);
 	flashlightEntity->setTitle("Flashlight");
 	

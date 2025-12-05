@@ -1,8 +1,8 @@
 #pragma once
 #include <glm/glm.hpp>
 #include "Camera.h"
-#include "Entity.h"
-#include "CollisionBox.h"
+#include "Entities/Entity.h"
+#include "Rendering/CollisionBox.h"
 #include <vector>
 
 class Player

@@ -1,13 +1,13 @@
 #pragma once
 #include <vector>
-#include "Entity.h"
-#include "Shader.h"
-#include "DirectionalLight.h"
-#include "PointLight.h"
-#include "Flashlight.h"
+#include "Entities/Entity.h"
+#include "Rendering/Shader.h"
+#include "Light/DirectionalLight.h"
+#include "Light/PointLight.h"
+#include "Light/Flashlight.h"
 #include "Camera.h"
 #include "Player.h"
-#include "TextRenderer.h"
+#include "Systems/TextRenderer.h"
 #include "Config.h"
 class Scene
 {

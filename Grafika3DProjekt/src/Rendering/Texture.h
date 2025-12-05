@@ -1,6 +1,6 @@
 #pragma once
 #include <glad/glad.h>
-#include "stb_loader.h"
+#include "External/stb_loader.h"
 #include <string>
 
 

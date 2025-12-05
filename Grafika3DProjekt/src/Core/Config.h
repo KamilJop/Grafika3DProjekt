@@ -38,6 +38,7 @@ public:
 
 protected:
 	Config() = default;
+	void CreateDefaultConfig();
 	std::string configFilePath = "config.txt";
 };
 
