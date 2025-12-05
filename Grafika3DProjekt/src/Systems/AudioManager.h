@@ -31,7 +31,13 @@ public:
 	void StopMusic();
 	void Cleanup();
 
+	AudioManager(const AudioManager&) = delete;
+	AudioManager(AudioManager&&) = delete;
+	AudioManager& operator=(const AudioManager&) = delete;
+	AudioManager& operator=(AudioManager&&) = delete;
+
 private:
+	AudioManager() = default;
 	SoLoud::Soloud soloud;
 	std::map<std::string, SoLoud::Wav*> soundEffects;
 	std::map<std::string, SoLoud::WavStream*> musicTracks;

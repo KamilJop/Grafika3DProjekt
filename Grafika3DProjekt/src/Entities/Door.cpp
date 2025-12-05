@@ -8,8 +8,8 @@ Door::Door(Model* model, Material* material, glm::vec3 pos, glm::vec3 rot, glm::
 	isAnimating = false;
 	title = name;
 	doorFrame = frame;
-	audioManager.Load3DSoundEffect("door_opening", openingSoundPath);
-	audioManager.Load3DSoundEffect("door_closing", closingSoundPath);
+	AudioManager::GetInstance().Load3DSoundEffect("door_opening", openingSoundPath);
+	AudioManager::GetInstance().Load3DSoundEffect("door_closing", closingSoundPath);
 }
 
 Door::~Door()
@@ -25,12 +25,12 @@ void Door::Interact()
 	if (isOpen)
 	{
 		doorFrame->setColissions(false);
-		audioManager.Play3DSoundEffect(openingSoundName,position, config.sfxVolume * 2.0);
+		AudioManager::GetInstance().Play3DSoundEffect(openingSoundName,position, config.sfxVolume * 2.0);
 	}
 	else
 	{
 		doorFrame->setColissions(true);
-		audioManager.Play3DSoundEffect(closingSoundName, position, config.sfxVolume * 2.0);
+		AudioManager::GetInstance().Play3DSoundEffect(closingSoundName, position, config.sfxVolume * 2.0);
 	}
 }
 

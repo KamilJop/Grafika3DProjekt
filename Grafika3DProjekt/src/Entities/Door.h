@@ -10,7 +10,6 @@ public:
 	bool isOpen;
 	bool isAnimating;
 	Entity* doorFrame;
-	AudioManager& audioManager = AudioManager::GetInstance();
 	Config& config = Config::getInstance();
 	std::string openingSoundPath = "Audio/door_opening.mp3";
 	std::string closingSoundPath = "Audio/door_closing.mp3";
