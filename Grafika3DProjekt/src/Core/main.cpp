@@ -285,6 +285,7 @@ Scene* createMainScene(Camera * camera) {
 	// Create Entities
 	framuga = new Entity(&framugaModel, lessShinyMaterial, glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f), glm::vec3(1.41f));
 	doorEntity = new Door(&door, shinyMaterial, glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f), glm::vec3(1.4f), "Doors", framuga);
+	doorEntity->setLocked(true);
 	floorEntity = new Entity(&floorModel, lessShinyMaterial, glm::vec3(0.0f, -0.6f, -3.0f), glm::vec3(0.0f), glm::vec3(0.5f));
 	chestEntity = new Entity(&chest, shinyMaterial, glm::vec3(2.0f, 0.5f, -4.0f), glm::vec3(0.0f, -45.0f, 0.0f), glm::vec3(1.3f));
 	testWallEntity = new Entity(&testWall, lessShinyMaterial, glm::vec3(-2.0f, -0.5f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.3f));
@@ -535,6 +536,20 @@ void HandleKeyboardInput(float deltaTime, Scene* currentScene) {
 			}
 		}
 		mainWindow.getKeys()[GLFW_KEY_E] = false;
+	}
+
+	// DEBUG toggle door lock
+	if (mainWindow.getKeys()[GLFW_KEY_Q])
+	{	
+		if (doorEntity->isLocked) {
+			doorEntity->setLocked(false);
+			mainWindow.getKeys()[GLFW_KEY_Q] = false;
+		}
+		else {
+			doorEntity->setLocked(true);
+			mainWindow.getKeys()[GLFW_KEY_Q] = false;
+		}
+			
 	}
 
 	if (mainWindow.getKeys()[GLFW_KEY_LEFT_SHIFT])

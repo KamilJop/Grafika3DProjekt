@@ -54,7 +54,7 @@ int AudioManager::Play3DSoundEffect(const std::string& name, const glm::vec3& po
 	if(it != soundEffects.end())
 	{
 		int handle = soloud.play3d(*it->second, position.x, position.y, position.z, 0.0f, 0.0f, 0.0f, volume);
-		soloud.set3dSourceAttenuation(handle,1, 1.0f);
+		soloud.set3dSourceAttenuation(handle,2, 0.2f);
 		return handle;
 	}
 	return -1;
