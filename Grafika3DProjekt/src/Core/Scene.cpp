@@ -90,6 +90,13 @@ void Scene::Update(float deltaTime)
 	for (auto& entity : entities)
 	{
 		entity->Update(deltaTime);
+		if (entity->shouldGetDestroyed) {
+			auto it = std::find(entities.begin(), entities.end(), entity);
+			if (it != entities.end()) {
+				delete* it;
+				entities.erase(it);
+			}
+		}
 	}
 
 	player->checkTargettedEntity(entities);

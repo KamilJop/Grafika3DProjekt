@@ -6,6 +6,7 @@
 #include "Rendering/CollisionBox.h"
 #include "Rendering/Model.h"
 #include "Rendering/Material.h"
+#include "../Core/Inventory.h"
 
 
 
@@ -14,7 +15,6 @@ class Entity
 public:
 
 	Model* entityModel;
-	Material* entityMaterial;
 	glm::vec3 position;
 	glm::vec3 rotation;
 	glm::vec3 scale;
@@ -22,10 +22,13 @@ public:
 	bool outlined = false;
 	bool hasCollisions = true;
 	bool interactable;
+	bool shouldGetDestroyed = false;
+	bool pickable = false;
+	std::string itemTag = "";
 	CollisionBox collisions;
 	std::string title = "Untitled object";
 
-	Entity(Model* model, Material* material, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, bool interaction = false);
+	Entity(Model* model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, bool interaction = false);
 
 	~Entity();
 
@@ -43,6 +46,8 @@ public:
 	bool getInteractable() { return interactable; }
 	bool getCastsShadow() { return castsShadow; }
 	bool getColissions() { return hasCollisions; }
+	bool getPickable() { return pickable; }
+	std::string getTag() { return itemTag; }	
 	std::string getTitle() { return title; }
 	bool isOutlined() { return outlined; }
 	void setOutlined(bool state) { outlined = state; }
@@ -50,7 +55,7 @@ public:
 	void DrawEntity(Shader* shader);
 	void UpdateCollisionBox();
 	virtual void Update(float deltaTime) {};
-	virtual void Interact() {};
+	virtual void Interact(Inventory * playerInventory) {};
 
 private:
 	glm::mat4 modelMatrix;

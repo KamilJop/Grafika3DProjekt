@@ -13,7 +13,6 @@
 #include "Camera.h"
 #include "Entities/Entity.h"
 #include "Light/DirectionalLight.h"
-#include "Rendering/Material.h"
 #include "Light/PointLight.h"
 #include "Light/Flashlight.h"
 #include "Rendering/Texture.h"
@@ -27,12 +26,8 @@
 #include "Entities/Door.h"
 #include "UI/UI.h"
 #include "Config.h"
-#include "soloud.h"
-#include "soloud_wavstream.h"
-
-
-SoLoud::Soloud soloud;
-SoLoud::WavStream music;
+#include "Systems/AudioManager.h"
+#include "Entities/Key.h"
 
 
 enum ShaderTypes
@@ -100,6 +95,7 @@ Entity* testWallEntity;
 Entity* flashlightEntity;
 Entity* framuga;
 Entity* paintingEntity;
+Entity* keyEntity;
 
 // Light source
 DirectionalLight* mainLight;
@@ -107,11 +103,6 @@ PointLight* pointLight;
 PointLight* pointLight2;
 PointLight* pointLight3;
 Flashlight* flashlight;
-
-// Materials
-Material* shinyMaterial;
-Material* lessShinyMaterial;
-
 
 // Create models
 Model door;
@@ -123,6 +114,7 @@ Model testWall;
 Model flashlightModel;
 Model framugaModel;
 Model paintingModel;
+Model keyModel;
 
 // Create player
 Player* player;
@@ -148,6 +140,8 @@ std::vector<std::string> skyboxFaces
 TextRenderer* textRenderer;
 TextRenderer* tooltipRenderer;
 
+// Audio Manager
+AudioManager& audioManager = AudioManager::GetInstance();
 
 // Function prototypes
 Scene* createMainScene(Camera* camera);
@@ -191,10 +185,10 @@ int main()
 	// Create main scene
 	scene = createMainScene(&camera);
 
-	soloud.init();
-	music.load("Audio/test.wav");
-	soloud.play(music);
-
+	audioManager.Init();
+	audioManager.LoadMusicTrack("background", "Audio/background_music.mp3");
+	int backgroundMusicHandle = audioManager.PlayMusicTrack("background", config.musicVolume, 1);
+	
 	// Loop until window closed
 	while (!mainWindow.getShouldClose())
 	{
@@ -203,6 +197,13 @@ int main()
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 		float fps = 1.0f / deltaTime;
+
+		audioManager.SetListenerPosition(camera.getCameraPosition());
+		audioManager.Update3DAudio();
+
+		// Update audio volumes based on config
+		audioManager.UpdateMusicVolume(backgroundMusicHandle, config.musicVolume);
+		audioManager.UpdateSFXVolume(config.sfxVolume);
 
 		// Disable huge delta time while loading assets
 		if (deltaTime > 0.5f)
@@ -270,26 +271,28 @@ Scene* createMainScene(Camera * camera) {
 	flashlightModel.LoadModel("Models/flashlight.obj");
 	framugaModel.LoadModel("Models/framuga.obj");
 	paintingModel.LoadModel("Models/V3TEST.obj");
-
+	keyModel.LoadModel("Models/Worn_Key.obj");
 	/*sculpture.LoadModel("Models/rzezba.obj");*/
 
 
-	// Create Materials
-	shinyMaterial = new Material(0.7f, 64.0f);
-	lessShinyMaterial = new Material(0.5f, 256.0f);
-
 	// Create Entities
-	framuga = new Entity(&framugaModel, lessShinyMaterial, glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f), glm::vec3(1.41f));
-	doorEntity = new Door(&door, shinyMaterial, glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f), glm::vec3(1.4f), "Doors", framuga);
-	floorEntity = new Entity(&floorModel, lessShinyMaterial, glm::vec3(0.0f, -0.6f, -3.0f), glm::vec3(0.0f), glm::vec3(0.5f));
-	chestEntity = new Entity(&chest, shinyMaterial, glm::vec3(2.0f, 0.5f, -4.0f), glm::vec3(0.0f, -45.0f, 0.0f), glm::vec3(1.3f));
-	testWallEntity = new Entity(&testWall, lessShinyMaterial, glm::vec3(-2.0f, -0.5f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.3f));
-	flashlightEntity = new Entity(&flashlightModel, shinyMaterial, glm::vec3(5.0f,2.0f,-3.0f), glm::vec3(0.0f), glm::vec3(0.03f));
-	paintingEntity = new Entity(&paintingModel, lessShinyMaterial, glm::vec3(-8.0f, 3.0f, -4.0f), glm::vec3(180.0f, 90.0f, 90.0f), glm::vec3(3.0f), true);
+	framuga = new Entity(&framugaModel,glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f), glm::vec3(1.41f));
+	doorEntity = new Door(&door, glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f), glm::vec3(1.4f), "Doors", framuga, "mainKey");
+	doorEntity->setLocked(true);
+	floorEntity = new Entity(&floorModel, glm::vec3(0.0f, -0.6f, -3.0f), glm::vec3(0.0f), glm::vec3(0.5f));
+	chestEntity = new Entity(&chest, glm::vec3(2.0f, 0.5f, -4.0f), glm::vec3(0.0f, -45.0f, 0.0f), glm::vec3(1.3f));
+	testWallEntity = new Entity(&testWall, glm::vec3(-2.0f, -0.5f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.3f));
+	flashlightEntity = new Entity(&flashlightModel, glm::vec3(5.0f,2.0f,-3.0f), glm::vec3(0.0f), glm::vec3(0.03f));
+	paintingEntity = new Entity(&paintingModel,  glm::vec3(-8.0f, 3.0f, -4.0f), glm::vec3(180.0f, 90.0f, 90.0f), glm::vec3(3.0f), true);
 	paintingEntity->setTitle("Mieszko I");
 	flashlightEntity->setCastsShadow(false);
 	flashlightEntity->setTitle("Flashlight");
-	
+	keyEntity = new Key(&keyModel, glm::vec3(2.0f, 0.0f, -4.0f), glm::vec3(90.0f,0.0f,0.0f), glm::vec3(0.75f), "mainKey", "NOPATH0", true);
+	keyEntity->setTitle("Key");
+	keyEntity->setColissions(false);
+
+
+
 	/*sculptureEntity = new Entity(&sculpture, lessShinyMaterial, glm::vec3(-10.0f, -1.0f, -4.0f), glm::vec3(0.0f, 30.0f, 0.0f), glm::vec3(4.0f));
 	sculptureEntity->setTitle("Sculpture");*/
 
@@ -330,6 +333,7 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(flashlightEntity);
 	scene->AddEntity(framuga);
 	scene->AddEntity(paintingEntity);
+	scene->AddEntity(keyEntity);
 	/*scene->AddEntity(sculptureEntity);*/
 
 	return scene;
@@ -440,7 +444,7 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 	glCullFace(GL_FRONT);
 
 	shaderList[SHADER_OUTLINE]->UseShader();
-	float outline = 0.005f;
+	float outline = 0.0125f;
 	shaderList[SHADER_OUTLINE]->setFloat("outline", outline);
 	shaderList[SHADER_OUTLINE]->setVec3("outlineColor", glm::vec3(config.outlineColor[0],config.outlineColor[1],config.outlineColor[2]));
 	scene->RenderWithOutline(shaderList[SHADER_OUTLINE], projectionMatrix);
@@ -523,14 +527,15 @@ void HandleKeyboardInput(float deltaTime, Scene* currentScene) {
 	}
 	if (mainWindow.getKeys()[GLFW_KEY_E])
 	{
-		for(auto & entity : currentScene->entities) {
-			if(entity->isOutlined())
-				{
-				entity->Interact();
-				break;
-			}
-		}
 		mainWindow.getKeys()[GLFW_KEY_E] = false;
+
+		Entity* target = player->getTargettedEntity();
+		if (!target) return;
+		if (!target->getInteractable()) return;
+		target->Interact(player->getInventory());
+		if (!target->getPickable()) return;
+		player->pickUpEntity(target);
+		return;
 	}
 
 	if (mainWindow.getKeys()[GLFW_KEY_LEFT_SHIFT])

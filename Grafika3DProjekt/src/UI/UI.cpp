@@ -116,6 +116,7 @@ void UI::DrawQuitConfirmation() {
 
 	if (ImGui::Button("Yes", ImVec2(120, 0))) {
 		config.Save();
+		AudioManager::GetInstance().Cleanup();
 		glfwSetWindowShouldClose(appWindow, GLFW_TRUE);
 		ImGui::CloseCurrentPopup();
 	}

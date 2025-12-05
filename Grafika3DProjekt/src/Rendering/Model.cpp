@@ -92,6 +92,7 @@ void Model::LoadMaterials(const aiScene* scene)
 	textures.resize(scene->mNumMaterials);
 	normalMaps.resize(scene->mNumMaterials);
 	paralaxMaps.resize(scene->mNumMaterials);
+	materials.resize(scene->mNumMaterials);
 
 	for (size_t i = 0; i < scene->mNumMaterials; i++) {
 		aiMaterial* material = scene->mMaterials[i];
@@ -100,6 +101,28 @@ void Model::LoadMaterials(const aiScene* scene)
 
 		aiString path;
 		bool textureFound = false;
+
+		// Default material properties
+		float shininess = 32.0f;
+		float specularIntensity = 0.5f;
+
+		// Get shininess
+		if (material->Get(AI_MATKEY_SHININESS, shininess) == AI_SUCCESS)
+		{
+			printf("Shininess for material %zu: %f\n", i, shininess);
+			if (shininess > 256.0f) shininess = 256.0f;
+			if (shininess < 2.0f) shininess = 2.0f; 
+		}
+		// Get specular intensity
+		aiColor4D specColor;
+		if (AI_SUCCESS == material->Get(AI_MATKEY_COLOR_SPECULAR, specColor))
+		{
+			specularIntensity = (specColor.r + specColor.g + specColor.b) / 3.0f;
+			printf("Specular intensity for material %zu: %f\n", i, specularIntensity);
+			if (specularIntensity > 1.0f) specularIntensity = 1.0f;
+		}
+
+		materials[i] = new Material(specularIntensity, shininess);
 
 		// Try loading the diffuse texture
 		if (material->GetTexture(aiTextureType_DIFFUSE, 0, &path) == AI_SUCCESS) {
@@ -279,7 +302,7 @@ void Model::ClearModel()
 	normalMaps.clear();
 }
 
-void Model::RenderModel()
+void Model::RenderModel(Shader* shader)
 {
 	for (size_t i = 0; i < meshes.size(); i++) {
 		unsigned int materialIndex = meshToTexture[i];
@@ -291,6 +314,9 @@ void Model::RenderModel()
 		}
 		if (materialIndex < paralaxMaps.size() && paralaxMaps[materialIndex]) {
 			paralaxMaps[materialIndex]->UseTexture(GL_TEXTURE4);
+		}
+		if (materialIndex < materials.size() && materials[materialIndex]) {
+			materials[materialIndex]->useMaterial(shader);
 		}
 		meshes[i]->RenderMesh();
 	}
