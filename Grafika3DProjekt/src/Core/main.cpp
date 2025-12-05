@@ -27,6 +27,12 @@
 #include "Entities/Door.h"
 #include "UI/UI.h"
 #include "Config.h"
+#include "soloud.h"
+#include "soloud_wavstream.h"
+
+
+SoLoud::Soloud soloud;
+SoLoud::WavStream music;
 
 
 enum ShaderTypes
@@ -184,6 +190,10 @@ int main()
 
 	// Create main scene
 	scene = createMainScene(&camera);
+
+	soloud.init();
+	music.load("Audio/test.wav");
+	soloud.play(music);
 
 	// Loop until window closed
 	while (!mainWindow.getShouldClose())
