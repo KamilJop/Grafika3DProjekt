@@ -1,12 +1,22 @@
 #pragma once
 #include "Entity.h"
+#include "../Systems/AudioManager.h"
+#include "../Core/Config.h"
+#include <string>
+#include <math.h>
 class Door : public Entity
 {
 public:
 	bool isOpen;
+	bool isAnimating;
 	Entity* doorFrame;
-
-	Door(Model* model, Material* material, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, std::string name, Entity* frame, bool interaction = true);
+	AudioManager& audioManager = AudioManager::GetInstance();
+	Config& config = Config::getInstance();
+	std::string openingSoundPath = "Audio/door_opening.mp3";
+	std::string closingSoundPath = "Audio/door_closing.mp3";
+	std::string openingSoundName = "door_opening";
+	std::string closingSoundName = "door_closing";
+	Door(Model* model, Material* material, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, std::string name, Entity* frame,  bool interaction = true);
 	~Door();
 	void Interact() override ;
 	void Update(float deltaTime) override;

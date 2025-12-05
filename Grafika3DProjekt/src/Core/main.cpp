@@ -192,7 +192,6 @@ int main()
 	audioManager.LoadMusicTrack("background", "Audio/background_music.mp3");
 	int backgroundMusicHandle = audioManager.PlayMusicTrack("background", config.musicVolume, true);
 
-
 	// Loop until window closed
 	while (!mainWindow.getShouldClose())
 	{
@@ -203,7 +202,11 @@ int main()
 		float fps = 1.0f / deltaTime;
 
 		audioManager.SetListenerPosition(camera.getCameraPosition());
+		audioManager.Update3DAudio();
+
+		// Update audio volumes based on config
 		audioManager.UpdateMusicVolume(backgroundMusicHandle, config.musicVolume);
+		audioManager.UpdateSFXVolume(config.sfxVolume);
 
 		// Disable huge delta time while loading assets
 		if (deltaTime > 0.5f)

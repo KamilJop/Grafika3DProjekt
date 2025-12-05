@@ -25,6 +25,8 @@ public:
 
 	void SetListenerPosition(const glm::vec3& position);
 	void UpdateMusicVolume(int handle, float volume);
+	void UpdateSFXVolume(float volume);
+	void Update3DAudio();
 
 	void StopMusic();
 	void Cleanup();

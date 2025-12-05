@@ -54,6 +54,7 @@ int AudioManager::Play3DSoundEffect(const std::string& name, const glm::vec3& po
 	if(it != soundEffects.end())
 	{
 		int handle = soloud.play3d(*it->second, position.x, position.y, position.z, 0.0f, 0.0f, 0.0f, volume);
+		soloud.set3dSourceAttenuation(handle,1, 1.0f);
 		return handle;
 	}
 	return -1;
@@ -78,6 +79,18 @@ void AudioManager::SetListenerPosition(const glm::vec3& position)
 void AudioManager::UpdateMusicVolume(int handle, float volume)
 {
 	soloud.setVolume(handle, volume);
+}
+
+void AudioManager::Update3DAudio()
+{
+	soloud.update3dAudio();
+}
+
+void AudioManager::UpdateSFXVolume(float volume) {
+	for (auto &sfx : soundEffects)
+	{
+		sfx.second->setVolume(volume);
+	}
 }
 
 void AudioManager::StopMusic()
