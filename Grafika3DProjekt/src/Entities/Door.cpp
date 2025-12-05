@@ -1,8 +1,8 @@
 #include "Door.h"
 
 
-Door::Door(Model* model, Material* material, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, std::string name,Entity* frame, bool interaction)
-	: Entity(model, material, pos, rot, scal, interaction)
+Door::Door(Model* model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, std::string name,Entity* frame, bool interaction)
+	: Entity(model, pos, rot, scal, interaction)
 {
 	isOpen = false;
 	isAnimating = false;

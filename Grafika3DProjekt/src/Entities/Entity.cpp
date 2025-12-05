@@ -2,13 +2,12 @@
 
 
 // Constructor
-Entity::Entity(Model* model,Material* material, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, bool interaction)
+Entity::Entity(Model* model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, bool interaction)
 {
 	position = pos;
 	rotation = rot;
 	scale = scal;
 	entityModel = model;
-	entityMaterial = material;
 	modelMatrix = CalculateModelMatrix();
 	collisions = model->GetCollisionBox();
 	interactable = interaction;
@@ -24,7 +23,6 @@ Entity::~Entity()
 	rotation = glm::vec3(0.0f);
 	scale = glm::vec3(1.0f);
 	entityModel = nullptr;
-	entityMaterial = nullptr;
 }
 
 // Getter for model matrix
@@ -99,11 +97,8 @@ void Entity::DrawEntity(Shader* shader)
 	// Send the model matrix to the shader
 	shader->setMat4("model", modelMatrix);
 
-	// Set material properties in shader
-	entityMaterial->useMaterial(shader);
-
 	// Draw the models
-	entityModel->RenderModel();
+	entityModel->RenderModel(shader);
 
 }
 

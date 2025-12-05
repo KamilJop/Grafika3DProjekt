@@ -14,7 +14,6 @@ class Entity
 public:
 
 	Model* entityModel;
-	Material* entityMaterial;
 	glm::vec3 position;
 	glm::vec3 rotation;
 	glm::vec3 scale;
@@ -25,7 +24,7 @@ public:
 	CollisionBox collisions;
 	std::string title = "Untitled object";
 
-	Entity(Model* model, Material* material, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, bool interaction = false);
+	Entity(Model* model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, bool interaction = false);
 
 	~Entity();
 
