@@ -141,6 +141,7 @@
     <ClCompile Include="..\External Libs\IMGUI\imgui_impl_opengl3.cpp" />
     <ClCompile Include="..\External Libs\IMGUI\imgui_tables.cpp" />
     <ClCompile Include="..\External Libs\IMGUI\imgui_widgets.cpp" />
+    <ClCompile Include="src\Systems\AudioManager.cpp" />
     <ClCompile Include="src\Core\Camera.cpp" />
     <ClCompile Include="src\Core\Config.cpp" />
     <ClCompile Include="src\Light\DirectionalLight.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="..\External Libs\IMGUI\imstb_rectpack.h" />
     <ClInclude Include="..\External Libs\IMGUI\imstb_textedit.h" />
     <ClInclude Include="..\External Libs\IMGUI\imstb_truetype.h" />
+    <ClInclude Include="src\Systems\AudioManager.h" />
     <ClInclude Include="src\Core\Camera.h" />
     <ClInclude Include="src\Rendering\CollisionBox.h" />
     <ClInclude Include="src\Core\Config.h" />

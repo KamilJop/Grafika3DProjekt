@@ -27,12 +27,7 @@
 #include "Entities/Door.h"
 #include "UI/UI.h"
 #include "Config.h"
-#include "soloud.h"
-#include "soloud_wavstream.h"
-
-
-SoLoud::Soloud soloud;
-SoLoud::WavStream music;
+#include "Systems/AudioManager.h"
 
 
 enum ShaderTypes
@@ -148,6 +143,8 @@ std::vector<std::string> skyboxFaces
 TextRenderer* textRenderer;
 TextRenderer* tooltipRenderer;
 
+// Audio Manager
+AudioManager& audioManager = AudioManager::GetInstance();
 
 // Function prototypes
 Scene* createMainScene(Camera* camera);
@@ -191,9 +188,10 @@ int main()
 	// Create main scene
 	scene = createMainScene(&camera);
 
-	soloud.init();
-	music.load("Audio/test.wav");
-	soloud.play(music);
+	audioManager.Init();
+	audioManager.LoadMusicTrack("background", "Audio/background_music.mp3");
+	int backgroundMusicHandle = audioManager.PlayMusicTrack("background", config.musicVolume, true);
+
 
 	// Loop until window closed
 	while (!mainWindow.getShouldClose())
@@ -203,6 +201,9 @@ int main()
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 		float fps = 1.0f / deltaTime;
+
+		audioManager.SetListenerPosition(camera.getCameraPosition());
+		audioManager.UpdateMusicVolume(backgroundMusicHandle, config.musicVolume);
 
 		// Disable huge delta time while loading assets
 		if (deltaTime > 0.5f)
