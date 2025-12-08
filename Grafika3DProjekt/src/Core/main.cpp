@@ -28,6 +28,7 @@
 #include "Config.h"
 #include "Systems/AudioManager.h"
 #include "Entities/Key.h"
+#include "Systems/SpriteRenderer.h"
 
 
 enum ShaderTypes
@@ -36,6 +37,7 @@ enum ShaderTypes
 	SHADER_DIRLIGHT_SHADOWMAP,
 	SHADER_OMNI_SHADOWMAP,
 	SHADER_OUTLINE,
+	SHADER_SPRITES
 };
 
 enum GameStates
@@ -68,6 +70,8 @@ static const char* omniShadowGeometryShader = "Shaders/omni_shadow_map.geom";
 static const char* omniShadowFragmentShader = "Shaders/omni_shadow_map.frag";
 static const char* outlineVertexShader = "Shaders/outline.vert";
 static const char* outlineFragmentShader = "Shaders/outline.frag";
+static const char* spriteVertexShader = "Shaders/spriteShader.vert";
+static const char* spriteFragmentShader = "Shaders/spriteShader.frag";
 // Texture file paths
 static const char* brickTexture = "Textures/brick.png";
 static const char* stoneTexture = "Textures/stone.png";
@@ -96,6 +100,7 @@ Entity* flashlightEntity;
 Entity* framuga;
 Entity* paintingEntity;
 Entity* keyEntity;
+Entity* keyEntity2;
 
 // Light source
 DirectionalLight* mainLight;
@@ -140,6 +145,13 @@ std::vector<std::string> skyboxFaces
 TextRenderer* textRenderer;
 TextRenderer* tooltipRenderer;
 
+// Sprite Renderer
+SpriteRenderer* spriteRenderer;
+
+
+// Sprites
+Texture* keySprite;
+
 // Audio Manager
 AudioManager& audioManager = AudioManager::GetInstance();
 
@@ -151,6 +163,7 @@ void OmniShadowMapPass(PointLight* pLight);
 void RenderScenePass(glm::mat4 projection);
 void HandleKeyboardInput(float deltaTime, Scene* currentScene);
 void SetGameState(GameStates newState);
+void DrawInventory();
 
 int main()
 {
@@ -177,6 +190,20 @@ int main()
 	Shader* outlineShader = new Shader();
 	outlineShader->CreateShader(outlineVertexShader, outlineFragmentShader);
 	shaderList.push_back(outlineShader);
+
+	Shader* spriteShader = new Shader();
+	spriteShader->CreateShader(spriteVertexShader, spriteFragmentShader);
+	shaderList.push_back(spriteShader);
+
+	keySprite = new Texture("Textures/Icons/door_key.png");
+	keySprite->LoadTextureAlpha();
+
+	spriteRenderer = new SpriteRenderer(*shaderList[SHADER_SPRITES]);
+	glm::mat4 projectionUI = glm::ortho(0.0f, (float)WIDTH, (float)HEIGHT, 0.0f, -1.0f, 1.0f);
+
+	shaderList[SHADER_SPRITES]->UseShader();
+	shaderList[SHADER_SPRITES]->setInt("image", 0);
+	shaderList[SHADER_SPRITES]->setMat4("projection", projectionUI);
 
 	// Set perspective 
 	glm::mat4 projection;
@@ -239,6 +266,9 @@ int main()
 		// Render scene pass
 		RenderScenePass(projection);
 
+		// Draw UI
+		DrawInventory();
+
 		// Render FPS
 		if (config.showFPS) {
 			textRenderer->RenderText("FPS: " + std::to_string((int)fps), 25.0f, 25.0f, 1.0f, glm::vec3(0.5f, 0.8f, 0.2f));
@@ -287,10 +317,12 @@ Scene* createMainScene(Camera * camera) {
 	paintingEntity->setTitle("Mieszko I");
 	flashlightEntity->setCastsShadow(false);
 	flashlightEntity->setTitle("Flashlight");
-	keyEntity = new Key(&keyModel, glm::vec3(2.0f, 0.0f, -4.0f), glm::vec3(90.0f,0.0f,0.0f), glm::vec3(0.75f), "mainKey", "NOPATH0", true);
+	keyEntity = new Key(&keyModel, glm::vec3(2.0f, 0.0f, -4.0f), glm::vec3(90.0f,0.0f,0.0f), glm::vec3(0.75f), "mainKey", keySprite, true);
 	keyEntity->setTitle("Key");
 	keyEntity->setColissions(false);
-
+	keyEntity2 = new Key(&keyModel, glm::vec3(-2.0f, 0.0f, -8.0f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.75f), "chestKey", keySprite, true);
+	keyEntity2->setTitle("Key2");
+	keyEntity2->setColissions(false);
 
 
 	/*sculptureEntity = new Entity(&sculpture, lessShinyMaterial, glm::vec3(-10.0f, -1.0f, -4.0f), glm::vec3(0.0f, 30.0f, 0.0f), glm::vec3(4.0f));
@@ -334,6 +366,7 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(framuga);
 	scene->AddEntity(paintingEntity);
 	scene->AddEntity(keyEntity);
+	scene->AddEntity(keyEntity2);
 	/*scene->AddEntity(sculptureEntity);*/
 
 	return scene;
@@ -561,4 +594,18 @@ void SetGameState(GameStates newState) {
 	} else {
 		glfwSetInputMode(mainWindow.getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	}
+}
+
+void DrawInventory() {
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glDisable(GL_DEPTH_TEST);
+	std::vector<Item> inventory = player->getInventory()->GetItems();
+	int i = 0;
+	for (auto item : inventory) {
+		spriteRenderer->DrawSprite(item.imageTexture, glm::vec2(20.0f + i * 70.0f, HEIGHT - 100.0f), glm::vec2(64.0f, 64.0f));
+		i++;
+	}
+	glEnable(GL_DEPTH_TEST);
+	glDisable(GL_BLEND);
 }

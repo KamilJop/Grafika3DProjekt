@@ -33,6 +33,7 @@ void Door::Interact(Inventory* playerInventory)
 	{
 		if(playerInventory->HasItem(doorKeyTag))
 		{
+			playerInventory->RemoveItem(doorKeyTag);
 			isLocked = false;
 			AudioManager::GetInstance().Play3DSoundEffect(unlockingSoundName, position, config.sfxVolume * 2.0);
 			return;

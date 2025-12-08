@@ -240,7 +240,7 @@ void Player::pickUpEntity(Entity* entity)
 {
 	if (entity->getInteractable())
 	{
-		playerInventory.AddItem(entity->getTag(), "Textures/default_item.png");
+		playerInventory.AddItem(entity->getTag(),entity->getTexture());
 		entity->shouldGetDestroyed = true;
 	}
 }

@@ -1,11 +1,11 @@
 #include "Inventory.h"
 
 
-void Inventory::AddItem(const std::string& tag, const std::string& imagePath)
+void Inventory::AddItem(const std::string& tag, Texture* tex)
 {
 	Item newItem;
 	newItem.tag = tag;
-	newItem.imagePath = imagePath;
+	newItem.imageTexture = tex;
 	items.push_back(newItem);
 	printf("Item with tag '%s' added to inventory.\n", tag.c_str());
 }

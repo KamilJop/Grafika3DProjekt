@@ -1,10 +1,10 @@
 #include "Key.h"
 
-Key::Key(Model* model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, std::string tag, std::string image, bool interaction)
+Key::Key(Model* model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, std::string tag, Texture* tex, bool interaction)
 	: Entity(model, pos, rot, scal, interaction)
 {
 	itemTag = tag;
-	itemImagePath = image;
+	itemTexture = tex;
 	pickable = true;
 	AudioManager::GetInstance().Load3DSoundEffect(pickupSoundName, pickupSoundPath);
 }

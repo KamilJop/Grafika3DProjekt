@@ -47,6 +47,7 @@ public:
 	bool getCastsShadow() { return castsShadow; }
 	bool getColissions() { return hasCollisions; }
 	bool getPickable() { return pickable; }
+	virtual Texture* getTexture() { return nullptr; };
 	std::string getTag() { return itemTag; }	
 	std::string getTitle() { return title; }
 	bool isOutlined() { return outlined; }
