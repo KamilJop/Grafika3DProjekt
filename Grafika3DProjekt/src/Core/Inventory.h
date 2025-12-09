@@ -3,22 +3,26 @@
 #include <string>
 #include <vector>
 #include "../Rendering/Texture.h"
+#include "../Systems/TextRenderer.h"
+#include "Config.h"
 struct Item
 {
 	std::string tag;
+	std::string title;
 	Texture* imageTexture;
 };
 class Inventory
 {
 public:
-	Inventory() {};
+	Inventory();
 	~Inventory() {};
-	void AddItem(const std::string& tag, Texture* tex);
+	void AddItem(const std::string& tag,const std::string& name, Texture* tex);
 	void RemoveItem(const std::string& tag);
 	bool HasItem(const std::string& tag);
 	std::vector<Item> GetItems() { return items; }
 private:
 	std::vector<Item> items;
+	TextRenderer* textRenderer;
 
 };
 

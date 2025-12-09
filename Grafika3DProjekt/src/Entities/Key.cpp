@@ -5,7 +5,7 @@ Key::Key(Model* model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, std::string
 {
 	itemTag = tag;
 	itemTexture = tex;
-	pickable = true;
+	pickable = true;	
 	AudioManager::GetInstance().Load3DSoundEffect(pickupSoundName, pickupSoundPath);
 }
 
@@ -20,4 +20,10 @@ void Key::Update(float deltaTime)
 	if (isPickedUp) {
 		shouldGetDestroyed = true;
 	}
+}
+
+Key::~Key()
+{
+	itemTexture = nullptr;
+	isPickedUp = false;
 }

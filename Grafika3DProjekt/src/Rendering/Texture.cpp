@@ -14,6 +14,7 @@ Texture::Texture(const char* fileLoc)
 // Clear texture data
 void Texture::ClearTexture()
 {
+	printf("!!! NISZCZENIE TEKSTURY ID: %d !!!\n", textureID);
 	glDeleteTextures(1, &textureID);
 	textureID = 0;
 	width = 0;
@@ -50,6 +51,7 @@ bool Texture::LoadTextureAlpha()
 	if (bitDepth == 4) {
 		internalFormat = GL_RGBA;
 		dataFormat = GL_RGBA;
+		printf("Texture has alpha channel.\n");
 	}
 	else if (bitDepth == 3) {
 		internalFormat = GL_RGB;

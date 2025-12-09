@@ -101,6 +101,7 @@ Entity* framuga;
 Entity* paintingEntity;
 Entity* keyEntity;
 Entity* keyEntity2;
+Entity* keyEntity3;
 
 // Light source
 DirectionalLight* mainLight;
@@ -151,6 +152,8 @@ SpriteRenderer* spriteRenderer;
 
 // Sprites
 Texture* keySprite;
+Texture* keySprite2;
+Texture* keySprite3;
 
 // Audio Manager
 AudioManager& audioManager = AudioManager::GetInstance();
@@ -197,6 +200,12 @@ int main()
 
 	keySprite = new Texture("Textures/Icons/door_key.png");
 	keySprite->LoadTextureAlpha();
+
+	keySprite2 = new Texture("Textures/Icons/door_key.png");
+	keySprite2->LoadTextureAlpha();
+
+	keySprite3 = new Texture("Textures/Icons/door_key.png");	
+	keySprite3->LoadTextureAlpha();
 
 	spriteRenderer = new SpriteRenderer(*shaderList[SHADER_SPRITES]);
 	glm::mat4 projectionUI = glm::ortho(0.0f, (float)WIDTH, (float)HEIGHT, 0.0f, -1.0f, 1.0f);
@@ -320,10 +329,13 @@ Scene* createMainScene(Camera * camera) {
 	keyEntity = new Key(&keyModel, glm::vec3(2.0f, 0.0f, -4.0f), glm::vec3(90.0f,0.0f,0.0f), glm::vec3(0.75f), "mainKey", keySprite, true);
 	keyEntity->setTitle("Key");
 	keyEntity->setColissions(false);
-	keyEntity2 = new Key(&keyModel, glm::vec3(-2.0f, 0.0f, -8.0f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.75f), "chestKey", keySprite, true);
+	keyEntity2 = new Key(&keyModel, glm::vec3(-2.0f, 0.0f, -8.0f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.75f), "chestKey", keySprite2, true);
 	keyEntity2->setTitle("Key2");
 	keyEntity2->setColissions(false);
 
+	keyEntity3 = new Key(&keyModel, glm::vec3(10.0f, 0.0f, -5.0f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.75f), "extraKey", keySprite3, true);
+	keyEntity3->setTitle("Key3");
+	keyEntity3->setColissions(false);
 
 	/*sculptureEntity = new Entity(&sculpture, lessShinyMaterial, glm::vec3(-10.0f, -1.0f, -4.0f), glm::vec3(0.0f, 30.0f, 0.0f), glm::vec3(4.0f));
 	sculptureEntity->setTitle("Sculpture");*/
@@ -367,6 +379,7 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(paintingEntity);
 	scene->AddEntity(keyEntity);
 	scene->AddEntity(keyEntity2);
+	scene->AddEntity(keyEntity3);
 	/*scene->AddEntity(sculptureEntity);*/
 
 	return scene;
@@ -600,12 +613,32 @@ void DrawInventory() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_STENCIL_TEST);
+	glDepthMask(GL_FALSE);
 	std::vector<Item> inventory = player->getInventory()->GetItems();
+	float startingX = 15.0f;
+	float offsetY = 15.0f;
+	float imageSize = 96.0f;
+	float spacing = imageSize + 10.0f;
 	int i = 0;
-	for (auto item : inventory) {
-		spriteRenderer->DrawSprite(item.imageTexture, glm::vec2(20.0f + i * 70.0f, HEIGHT - 100.0f), glm::vec2(64.0f, 64.0f));
+	for (auto &item : inventory) {
+		float spritePosX = startingX + i * spacing;
+		float spritePosY = offsetY;
+		spriteRenderer->DrawSprite(item.imageTexture, glm::vec2(spritePosX,spritePosY), glm::vec2(imageSize, imageSize));
+		i++;
+	}
+	i = 0;
+	for (auto & item : inventory) {
+		float spritePosX = startingX + i * spacing;
+		float spriteCenterX = spritePosX + imageSize / 2.0f;
+		float textWidth = textRenderer->GetTextWidth(item.title);
+		float textStartX = spriteCenterX - (textWidth / 2.0f);
+		float textPosY = HEIGHT - offsetY - imageSize - 15.0f;
+		textRenderer->RenderText(item.title, textStartX, textPosY, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 		i++;
 	}
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_STENCIL_TEST);
+	glDepthMask(GL_TRUE);
 	glDisable(GL_BLEND);
 }

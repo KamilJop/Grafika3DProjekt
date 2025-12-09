@@ -3,7 +3,7 @@
 
 SpriteRenderer::SpriteRenderer(Shader& shader)
 {
-	this->rendererShader = shader;
+	this->rendererShader = &shader;
 	this->initRenderData();
 }
 
@@ -15,7 +15,7 @@ SpriteRenderer::~SpriteRenderer()
 void SpriteRenderer::DrawSprite(Texture* texture, glm::vec2 position, glm::vec2 size, float rotate, glm::vec3 color)
 {
 	// Use the shader
-	this->rendererShader.UseShader();
+	this->rendererShader->UseShader();
 
 	// Create transformations
 	glm::mat4 model = glm::mat4(1.0f);
@@ -30,11 +30,10 @@ void SpriteRenderer::DrawSprite(Texture* texture, glm::vec2 position, glm::vec2 
 	// Scale
 	model = glm::scale(model, glm::vec3(size, 1.0f));
 	// Set uniforms
-	this->rendererShader.setMat4("model", model);
-	this->rendererShader.setVec3("spriteColor", color);
+	this->rendererShader->setMat4("model", model);
+	this->rendererShader->setVec3("spriteColor", color);
 	// Render textured quad
-	glActiveTexture(GL_TEXTURE0);
-	texture->UseTexture(0);
+	texture->UseTexture(GL_TEXTURE0);
 	glBindVertexArray(this->quadVAO);
 	// Draw call
 	glDrawArrays(GL_TRIANGLES, 0, 6);

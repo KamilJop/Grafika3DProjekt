@@ -240,7 +240,7 @@ void Player::pickUpEntity(Entity* entity)
 {
 	if (entity->getInteractable())
 	{
-		playerInventory.AddItem(entity->getTag(),entity->getTexture());
+		playerInventory.AddItem(entity->getTag(),entity->getTitle(), entity->getTexture());
 		entity->shouldGetDestroyed = true;
 	}
 }
