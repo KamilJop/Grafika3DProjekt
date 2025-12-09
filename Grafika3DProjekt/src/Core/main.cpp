@@ -280,12 +280,12 @@ int main()
 
 		// Render FPS
 		if (config.showFPS) {
-			textRenderer->RenderText("FPS: " + std::to_string((int)fps), 25.0f, 25.0f, 1.0f, glm::vec3(0.5f, 0.8f, 0.2f));
+			textRenderer->RenderText("FPS: " + std::to_string((int)fps), 25.0f, 25.0f, 1.0f, glm::vec4(0.5f, 0.8f, 0.2f, 1.0f));
 		}
 
 		// Render crosshair
 		float textWidth = tooltipRenderer->GetTextWidth("+");
-		tooltipRenderer->RenderText("+", (mainWindow.getBufferWidth() / 2.0f) - textWidth, (mainWindow.getBufferHeight() / 2.0f) - 10.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+		tooltipRenderer->RenderText("+", (mainWindow.getBufferWidth() / 2.0f) - textWidth, (mainWindow.getBufferHeight() / 2.0f) - 10.0f, 1.0f, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 
 		if(gameState == STATE_PAUSED) {
 			gameUI->DrawPauseMenu();
@@ -634,9 +634,10 @@ void DrawInventory() {
 		float textWidth = textRenderer->GetTextWidth(item.title);
 		float textStartX = spriteCenterX - (textWidth / 2.0f);
 		float textPosY = HEIGHT - offsetY - imageSize - 15.0f;
-		textRenderer->RenderText(item.title, textStartX, textPosY, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+		textRenderer->RenderText(item.title, textStartX, textPosY, 1.0f, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 		i++;
 	}
+	player->getInventory()->DrawNotification(deltaTime);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_STENCIL_TEST);
 	glDepthMask(GL_TRUE);

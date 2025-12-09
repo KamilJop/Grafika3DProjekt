@@ -148,7 +148,7 @@ void Scene::RenderTooltip(Entity* selectedEntity)
 	float width = config.screenWidth / 2.0f;
 	float height = config.screenHeight - 50.0f;
 
-	textRenderer->RenderText( selectedEntity->title, width - offset, height, 1.0f, glm::vec3(config.highlightColor[0],config.highlightColor[1],config.highlightColor[2]));
+	textRenderer->RenderText( selectedEntity->title, width - offset, height, 1.0f, glm::vec4(config.highlightColor[0],config.highlightColor[1],config.highlightColor[2],1.0f));
 }
 
 

@@ -14,7 +14,6 @@ Texture::Texture(const char* fileLoc)
 // Clear texture data
 void Texture::ClearTexture()
 {
-	printf("!!! NISZCZENIE TEKSTURY ID: %d !!!\n", textureID);
 	glDeleteTextures(1, &textureID);
 	textureID = 0;
 	width = 0;

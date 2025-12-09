@@ -91,7 +91,7 @@ void TextRenderer::Load(std::string font, unsigned int fontSize) {
 	
 }
 
-void TextRenderer::RenderText(std::string text, float x, float y, float scale, glm::vec3 color) {
+void TextRenderer::RenderText(std::string text, float x, float y, float scale, glm::vec4 color) {
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -103,7 +103,7 @@ void TextRenderer::RenderText(std::string text, float x, float y, float scale, g
 	textShader->UseShader();
 
 	// Set text color uniform
-	textShader->setVec3("textColor", color);
+	textShader->setVec4("textColor", color);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(VAO);
