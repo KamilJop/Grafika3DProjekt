@@ -78,6 +78,8 @@ static const char* spriteFragmentShader = "Shaders/spriteShader.frag";
 static const char* brickTexture = "Textures/brick.png";
 static const char* stoneTexture = "Textures/stone.png";
 
+
+
 // Game state
 GameStates gameState = STATE_PLAYING;
 
@@ -185,6 +187,9 @@ int main()
 
 	// Create UI
 	gameUI = new UI(mainWindow.getWindow());
+
+	UI::wasPauseMenuOpen = false;
+	UI::isPauseMenuOpen = false;
 
 	// Create Shaders
 	Shader* shader1 = new Shader();
@@ -303,7 +308,17 @@ int main()
 		tooltipRenderer->RenderText("+", (mainWindow.getBufferWidth() / 2.0f) - textWidth, (mainWindow.getBufferHeight() / 2.0f) - 10.0f, 1.0f, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 
 		if(gameState == STATE_PAUSED) {
+			UI::isPauseMenuOpen = true;
 			gameUI->DrawPauseMenu();
+		}
+		else {
+			UI::isPauseMenuOpen = false;
+		}
+
+		if(UI::wasPauseMenuOpen && !UI::isPauseMenuOpen) {
+			printf("config saved\n");
+			config.Save();
+			UI::wasPauseMenuOpen = false;
 		}
 
 		// Swap buffers

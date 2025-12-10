@@ -8,6 +8,7 @@
 
 #include "glad/glad.h"
 #include <GLFW/glfw3.h>
+
 class UI
 {
 public:
@@ -17,6 +18,8 @@ public:
 	void DrawPauseMenu();
 	void DrawQuitConfirmation();
 	void DrawResolutionConfirmation();
+	static bool wasPauseMenuOpen;
+	static bool isPauseMenuOpen;
 
 private:
 	GLFWwindow* appWindow;
@@ -25,4 +28,3 @@ private:
 	const int resolutionValues[3][2] = { {1280,720}, {1920,1080}, {2560,1440} };
 	void CenteredText(const char* text);
 };
-
