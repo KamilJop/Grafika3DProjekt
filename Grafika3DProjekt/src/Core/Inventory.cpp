@@ -27,11 +27,12 @@ void Inventory::RemoveItem(const std::string& tag)
 	{
 		if (it->tag == tag)
 		{
-			items.erase(it);
+
 			printf("Item with tag '%s' removed from inventory.\n", tag.c_str());
 			notificationText = "Item removed:    " + it->title;
 			notificationTimer = 2.0f;
 			alpha = 1.0f;
+			items.erase(it);
 			return;
 		}
 	}
@@ -64,3 +65,42 @@ void Inventory::DrawNotification(float deltaTime)
 	}
 	
 }
+
+
+void Inventory::ChangeCurrentItem(int direction)
+{
+	if(direction > 0) {
+		currentItemIndex++;
+		if(currentItemIndex >= maxItems) {
+			currentItemIndex = 0;
+		}
+	} else if(direction < 0) {
+		currentItemIndex--;
+		if(currentItemIndex < 0) {
+			currentItemIndex = maxItems - 1;
+		}
+	}
+}
+
+void Inventory::SetCurrentItem(int index)
+{
+	if (index >= 0 && index < maxItems) {
+		currentItemIndex = index;
+	}
+}
+
+Item* Inventory::GetCurrentItem()
+{
+	Item* currentItem = nullptr;
+	if (items.size() > 0 && currentItemIndex >= 0 && currentItemIndex < items.size()) {
+		currentItem = &items[currentItemIndex];
+	}
+	else {
+		currentItem = new Item();
+		currentItem->tag = "empty";
+		currentItem->title = "Empty";
+		currentItem->imageTexture = nullptr;
+	}
+	return currentItem;
+}
+

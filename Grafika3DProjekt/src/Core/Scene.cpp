@@ -67,6 +67,11 @@ void Scene::Update(float deltaTime)
 		camUp * offset.y +
 		camFront * offset.z;
 
+	if (player->getInventory()->GetCurrentItem()->tag != "flashlight")
+	{
+		player->changeFlashlightState(false);
+	}
+
 	if (flashLight && player->getFlashlightState())
 	{
 		if (player->walkTimer > 0.0f)

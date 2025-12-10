@@ -154,6 +154,9 @@ SpriteRenderer* spriteRenderer;
 Texture* keySprite;
 Texture* keySprite2;
 Texture* keySprite3;
+Texture* itemFrame;
+Texture* selectedItemFrame;
+Texture* flashlightSprite;
 
 // Audio Manager
 AudioManager& audioManager = AudioManager::GetInstance();
@@ -206,6 +209,14 @@ int main()
 
 	keySprite3 = new Texture("Textures/Icons/door_key.png");	
 	keySprite3->LoadTextureAlpha();
+
+	itemFrame = new Texture("Textures/Icons/item_frame.png");
+	itemFrame->LoadTextureAlpha();
+	selectedItemFrame = new Texture("Textures/Icons/item_frame_selected.png");
+	selectedItemFrame->LoadTextureAlpha();
+
+	flashlightSprite = new Texture("Textures/Icons/flashlight.png");
+	flashlightSprite->LoadTextureAlpha();
 
 	spriteRenderer = new SpriteRenderer(*shaderList[SHADER_SPRITES]);
 	glm::mat4 projectionUI = glm::ortho(0.0f, (float)WIDTH, (float)HEIGHT, 0.0f, -1.0f, 1.0f);
@@ -342,6 +353,13 @@ Scene* createMainScene(Camera * camera) {
 
 	// Create Player
 	player = new Player(camera, flashlightEntity);
+
+	// Create flashlight item
+	Item flashlightItem;
+	flashlightItem.tag = "flashlight";
+	flashlightItem.title = "Flashlight";
+	flashlightItem.imageTexture = flashlightSprite;
+	player->getInventory()->AddItem(flashlightItem.tag, flashlightItem.title, flashlightItem.imageTexture);
 
 	// Text renderer
 	textRenderer = new TextRenderer(mainWindow.getBufferWidth(), mainWindow.getBufferHeight());
@@ -501,7 +519,9 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 	glStencilMask(0xFF);
 	glCullFace(GL_BACK);
 	glDisable(GL_STENCIL_TEST);
-	scene->RenderFlashlightEntity(shaderList[SHADER_DEFAULT], projectionMatrix);
+	if (player->getInventory()->GetCurrentItem()->tag == "flashlight") {
+		scene->RenderFlashlightEntity(shaderList[SHADER_DEFAULT], projectionMatrix);
+	}
 }
 
 void HandleKeyboardInput(float deltaTime, Scene* currentScene) {
@@ -568,7 +588,13 @@ void HandleKeyboardInput(float deltaTime, Scene* currentScene) {
 
 	if (mainWindow.getKeys()[GLFW_KEY_F])
 	{
-		player->changeFlashlightState();
+		if(player->getInventory()->GetCurrentItem()->tag != "flashlight") {
+			return;
+		}
+		if (player->getFlashlightState())
+			player->changeFlashlightState(false);
+		else
+			player->changeFlashlightState(true);
 		mainWindow.getKeys()[GLFW_KEY_F] = false;
 	}
 	if (mainWindow.getKeys()[GLFW_KEY_E])
@@ -583,7 +609,6 @@ void HandleKeyboardInput(float deltaTime, Scene* currentScene) {
 		player->pickUpEntity(target);
 		return;
 	}
-
 	if (mainWindow.getKeys()[GLFW_KEY_LEFT_SHIFT])
 	{
 		player->Crouch(true);
@@ -598,6 +623,46 @@ void HandleKeyboardInput(float deltaTime, Scene* currentScene) {
 		// TODO smooth reset
 		player->walkTimer = 0.0f;
 	}
+
+	if (mainWindow.getKeys()[GLFW_KEY_1]) {
+		player->getInventory()->SetCurrentItem(0);
+	}
+	if (mainWindow.getKeys()[GLFW_KEY_2]) {
+		player->getInventory()->SetCurrentItem(1);
+	}
+	if (mainWindow.getKeys()[GLFW_KEY_3]) {
+		player->getInventory()->SetCurrentItem(2);
+	}
+	if (mainWindow.getKeys()[GLFW_KEY_4]) {
+		player->getInventory()->SetCurrentItem(3);
+	}
+	if (mainWindow.getKeys()[GLFW_KEY_5]) {
+		player->getInventory()->SetCurrentItem(4);
+	}
+	if (mainWindow.getKeys()[GLFW_KEY_6]) {
+		player->getInventory()->SetCurrentItem(5);
+	}
+	if (mainWindow.getKeys()[GLFW_KEY_7]) {
+		player->getInventory()->SetCurrentItem(6);
+	}
+	if (mainWindow.getKeys()[GLFW_KEY_8]) {
+		player->getInventory()->SetCurrentItem(7);
+	}
+	if (mainWindow.getKeys()[GLFW_KEY_9]) {
+		player->getInventory()->SetCurrentItem(8);
+	}
+
+
+	double currentScrollY = mainWindow.getScrollY();
+	if (currentScrollY != 0.0) {
+		if (currentScrollY > 0.0) {
+			player->getInventory()->ChangeCurrentItem(1.0);
+		}
+		else {
+			player->getInventory()->ChangeCurrentItem(-1.0);
+		}
+	}
+
 }
 
 void SetGameState(GameStates newState) {
@@ -616,10 +681,22 @@ void DrawInventory() {
 	glDisable(GL_STENCIL_TEST);
 	glDepthMask(GL_FALSE);
 	std::vector<Item> inventory = player->getInventory()->GetItems();
-	float startingX = 15.0f;
-	float offsetY = 15.0f;
+	float startingX = 30.0f;
+	float offsetY = HEIGHT - 100.0f;
 	float imageSize = 96.0f;
 	float spacing = imageSize + 10.0f;
+
+	for(int i = 0 ; i < player->getInventory()->GetMaxItems(); i++) {
+		float spritePosX = startingX + i * spacing;
+		float spritePosY = offsetY;
+		if(i == player->getInventory()->GetCurrentItemIndex()) {
+			spriteRenderer->DrawSprite(selectedItemFrame, glm::vec2(spritePosX,spritePosY), glm::vec2(imageSize, imageSize));
+		}
+		else {
+			spriteRenderer->DrawSprite(itemFrame, glm::vec2(spritePosX, spritePosY), glm::vec2(imageSize, imageSize));
+		}
+	}
+
 	int i = 0;
 	for (auto &item : inventory) {
 		float spritePosX = startingX + i * spacing;

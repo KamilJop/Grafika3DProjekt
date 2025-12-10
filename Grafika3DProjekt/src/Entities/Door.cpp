@@ -31,7 +31,7 @@ void Door::Interact(Inventory* playerInventory)
 
 	if (isLocked)
 	{
-		if(playerInventory->HasItem(doorKeyTag))
+		if(playerInventory->GetCurrentItem()->tag == doorKeyTag)
 		{
 			playerInventory->RemoveItem(doorKeyTag);
 			isLocked = false;

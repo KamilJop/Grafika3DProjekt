@@ -18,10 +18,17 @@ public:
 	~Inventory() {};
 	void AddItem(const std::string& tag,const std::string& name, Texture* tex);
 	void RemoveItem(const std::string& tag);
-	bool HasItem(const std::string& tag);\
+	bool HasItem(const std::string& tag);
 	void DrawNotification(float deltaTime);
+	void ChangeCurrentItem(int direction);
+	void SetCurrentItem(int index);
+	int GetCurrentItemIndex() { return currentItemIndex; }
+	int GetMaxItems() { return maxItems; }
+	Item* GetCurrentItem();
 	std::vector<Item> GetItems() { return items; }
 private:
+	int currentItemIndex = 0;
+	int maxItems = 9;
 	std::vector<Item> items;
 	TextRenderer* textRenderer;
 	float notificationTimer = 0.0f;

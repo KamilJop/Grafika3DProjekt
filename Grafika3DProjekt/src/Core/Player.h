@@ -28,7 +28,7 @@ public:
 	void checkTargettedEntity(std::vector<Entity*>& entities);
 	bool checkRayEntityIntersection(const glm::vec3& rayOrigin, const glm::vec3& rayDirection, Entity* entity, float& outDistance);
 	void Jump();
-	void changeFlashlightState();
+	void changeFlashlightState(bool state);
 	void Crouch(bool state);
 	bool getFlashlightState() { return isFlashlightOn; }
 	Inventory* getInventory() { return &playerInventory; };

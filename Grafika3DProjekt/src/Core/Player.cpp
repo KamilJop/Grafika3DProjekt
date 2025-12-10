@@ -130,9 +130,9 @@ void Player::Crouch(bool state)
 	isCrouching = state;
 }
 
-void Player::changeFlashlightState()
+void Player::changeFlashlightState(bool state)
 {
-	isFlashlightOn = !isFlashlightOn;
+	isFlashlightOn = state;
 }
 
 void Player::updateFlashlightPosition(const glm::vec3& finalPos)
