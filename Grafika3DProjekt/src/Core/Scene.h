@@ -1,4 +1,6 @@
 #pragma once
+#define NOMINMAX
+#include <Windows.h>
 #include <vector>
 #include "Entities/Entity.h"
 #include "Rendering/Shader.h"

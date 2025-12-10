@@ -57,7 +57,7 @@ void Inventory::DrawNotification(float deltaTime)
 	{
 		notificationTimer -= deltaTime;
 		alpha -= deltaTime * 0.5f;
-		float screenWidth = Config::getInstance().screenWidth;
+		int screenWidth = Config::getInstance().screenWidth;
 		float offsetY = 120.0f;
 		float textWidth = textRenderer->GetTextWidth(notificationText);
 		float middleX = (screenWidth - textWidth) / 2.0f;

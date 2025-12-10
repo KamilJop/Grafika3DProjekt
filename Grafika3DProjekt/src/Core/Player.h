@@ -1,4 +1,6 @@
 #pragma once
+#define NOMINMAX
+#include <Windows.h>
 #include <glm/glm.hpp>
 #include "Camera.h"
 #include "Entities/Entity.h"
