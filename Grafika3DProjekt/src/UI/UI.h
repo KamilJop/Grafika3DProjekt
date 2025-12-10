@@ -16,10 +16,13 @@ public:
 	~UI();
 	void DrawPauseMenu();
 	void DrawQuitConfirmation();
+	void DrawResolutionConfirmation();
 
 private:
 	GLFWwindow* appWindow;
-	const char* resolutionOptions[4] = { "1280x720", "1920x1080", "2560x1440", "Fullscreen"};
+	int currentResolution;
+	const char* resolutionOptions[3] = { "1280x720", "1920x1080", "2560x1440"};
+	const int resolutionValues[3][2] = { {1280,720}, {1920,1080}, {2560,1440} };
 	void CenteredText(const char* text);
 };
 

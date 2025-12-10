@@ -50,6 +50,7 @@ bool Texture::LoadTextureAlpha()
 	if (bitDepth == 4) {
 		internalFormat = GL_RGBA;
 		dataFormat = GL_RGBA;
+		printf("Texture has alpha channel.\n");
 	}
 	else if (bitDepth == 3) {
 		internalFormat = GL_RGB;

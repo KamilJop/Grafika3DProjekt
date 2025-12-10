@@ -17,14 +17,17 @@ Window::Window()
 	firstMouseMove = true;
 	xChange = 0.0f;
 	yChange = 0.0f;
+	scrollX = 0.0;
+	scrollY = 0.0;
 
 }
 
 // Constructor with parameters
-Window::Window(GLint windowWidth, GLint windowHeight)
+Window::Window(GLint windowWidth, GLint windowHeight, bool full)
 {
 	width = windowWidth;
 	height = windowHeight;
+	fullscreen = full;
 
 	for (size_t i = 0; i < 1024; i++)
 	{
@@ -54,13 +57,17 @@ int Window::Initialise() {
 	// Set OpenGL version
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
 
 	// Set profile
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 
 	// Create window
-	mainWindow = glfwCreateWindow(width, height, "Gra", NULL, NULL);
+	if(fullscreen)
+		mainWindow = glfwCreateWindow(width, height, "Gra", glfwGetPrimaryMonitor(), NULL);
+	else
+		mainWindow = glfwCreateWindow(width, height, "Gra", NULL, NULL);
 	if (!mainWindow)
 	{
 		printf("GLFW window creation failed!");
@@ -150,12 +157,20 @@ void Window::handleMouse(GLFWwindow* window, double xPos, double yPos)
 	theWindow->lastY = yPos;
 }
 
+void Window::handleScroll(GLFWwindow* window, double xOffset, double yOffset)
+{
+	Window* theWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
+	theWindow->scrollX = xOffset;
+	theWindow->scrollY = yOffset;
+}
+
 
 // Setup the callbacks
 void Window::createCallbacks()
 {
 	glfwSetKeyCallback(mainWindow, handleKeys);
 	glfwSetCursorPosCallback(mainWindow, handleMouse);
+	glfwSetScrollCallback(mainWindow, handleScroll);
 }
 
 // Getter for mouse x position change
@@ -179,4 +194,12 @@ Window::~Window()
 {
 	glfwDestroyWindow(mainWindow);
 	glfwTerminate();
+}
+
+
+double Window::getScrollY()
+{
+	double theScrollY = scrollY;
+	scrollY = 0.0;
+	return theScrollY;
 }

@@ -1,5 +1,6 @@
 ﻿#define STB_IMAGE_IMPLEMENTATION
-
+#define NOMINMAX
+#include <Windows.h>
 #include <stdio.h>
 #include <glad\glad.h>
 #include <GLFW\glfw3.h>
@@ -28,6 +29,7 @@
 #include "Config.h"
 #include "Systems/AudioManager.h"
 #include "Entities/Key.h"
+#include "Systems/SpriteRenderer.h"
 
 
 enum ShaderTypes
@@ -36,6 +38,7 @@ enum ShaderTypes
 	SHADER_DIRLIGHT_SHADOWMAP,
 	SHADER_OMNI_SHADOWMAP,
 	SHADER_OUTLINE,
+	SHADER_SPRITES
 };
 
 enum GameStates
@@ -68,6 +71,8 @@ static const char* omniShadowGeometryShader = "Shaders/omni_shadow_map.geom";
 static const char* omniShadowFragmentShader = "Shaders/omni_shadow_map.frag";
 static const char* outlineVertexShader = "Shaders/outline.vert";
 static const char* outlineFragmentShader = "Shaders/outline.frag";
+static const char* spriteVertexShader = "Shaders/spriteShader.vert";
+static const char* spriteFragmentShader = "Shaders/spriteShader.frag";
 // Texture file paths
 static const char* brickTexture = "Textures/brick.png";
 static const char* stoneTexture = "Textures/stone.png";
@@ -96,6 +101,8 @@ Entity* flashlightEntity;
 Entity* framuga;
 Entity* paintingEntity;
 Entity* keyEntity;
+Entity* keyEntity2;
+Entity* keyEntity3;
 
 // Light source
 DirectionalLight* mainLight;
@@ -140,6 +147,18 @@ std::vector<std::string> skyboxFaces
 TextRenderer* textRenderer;
 TextRenderer* tooltipRenderer;
 
+// Sprite Renderer
+SpriteRenderer* spriteRenderer;
+
+
+// Sprites
+Texture* keySprite;
+Texture* keySprite2;
+Texture* keySprite3;
+Texture* itemFrame;
+Texture* selectedItemFrame;
+Texture* flashlightSprite;
+
 // Audio Manager
 AudioManager& audioManager = AudioManager::GetInstance();
 
@@ -151,12 +170,19 @@ void OmniShadowMapPass(PointLight* pLight);
 void RenderScenePass(glm::mat4 projection);
 void HandleKeyboardInput(float deltaTime, Scene* currentScene);
 void SetGameState(GameStates newState);
+void DrawInventory();
+
+int uiWidth, uiHeight;
 
 int main()
-{
+{	
+
 	// Create Window
-	mainWindow = Window(WIDTH, HEIGHT);
+	mainWindow = Window(WIDTH, HEIGHT, config.fullscreen);
 	mainWindow.Initialise();
+
+	uiWidth = mainWindow.getBufferWidth();
+	uiHeight = mainWindow.getBufferHeight();
 
 	// Create UI
 	gameUI = new UI(mainWindow.getWindow());
@@ -178,6 +204,35 @@ int main()
 	outlineShader->CreateShader(outlineVertexShader, outlineFragmentShader);
 	shaderList.push_back(outlineShader);
 
+	Shader* spriteShader = new Shader();
+	spriteShader->CreateShader(spriteVertexShader, spriteFragmentShader);
+	shaderList.push_back(spriteShader);
+
+	keySprite = new Texture("Textures/Icons/door_key.png");
+	keySprite->LoadTextureAlpha();
+
+	keySprite2 = new Texture("Textures/Icons/door_key.png");
+	keySprite2->LoadTextureAlpha();
+
+	keySprite3 = new Texture("Textures/Icons/door_key.png");	
+	keySprite3->LoadTextureAlpha();
+
+	itemFrame = new Texture("Textures/Icons/item_frame.png");
+	itemFrame->LoadTextureAlpha();
+	selectedItemFrame = new Texture("Textures/Icons/item_frame_selected.png");
+	selectedItemFrame->LoadTextureAlpha();
+
+	flashlightSprite = new Texture("Textures/Icons/flashlight.png");
+	flashlightSprite->LoadTextureAlpha();
+
+	spriteRenderer = new SpriteRenderer(*shaderList[SHADER_SPRITES]);
+	glm::mat4 projectionUI = glm::ortho(0.0f, (float)uiWidth, (float)uiHeight, 0.0f, -1.0f, 1.0f);
+
+	shaderList[SHADER_SPRITES]->UseShader();
+	shaderList[SHADER_SPRITES]->setInt("image", 0);
+	shaderList[SHADER_SPRITES]->setMat4("projection", projectionUI);
+
+	
 	// Set perspective 
 	glm::mat4 projection;
 	projection = glm::perspective(glm::radians(60.0f), (GLfloat)mainWindow.getBufferWidth() / (GLfloat)mainWindow.getBufferHeight(), 0.1f, 100.0f);
@@ -216,6 +271,9 @@ int main()
 			camera.ProcessMouseMovement(mainWindow.getXChange(), mainWindow.getYChange());
 			// Update the scene
 			scene->Update(deltaTime);
+			// Update held entity model
+			player->setHeldEntityModel(player->getInventory()->GetCurrentItem()->itemModel);
+			player->setHeldEntityScale(player->getInventory()->GetCurrentItem()->itemScale);
 		}
 		
 		// Keyboard movement
@@ -239,14 +297,17 @@ int main()
 		// Render scene pass
 		RenderScenePass(projection);
 
+		// Draw UI
+		DrawInventory();
+
 		// Render FPS
 		if (config.showFPS) {
-			textRenderer->RenderText("FPS: " + std::to_string((int)fps), 25.0f, 25.0f, 1.0f, glm::vec3(0.5f, 0.8f, 0.2f));
+			textRenderer->RenderText("FPS: " + std::to_string((int)fps), 10.0f, uiHeight - 20.0f, 1.0f, glm::vec4(0.5f, 0.8f, 0.2f, 1.0f));
 		}
 
 		// Render crosshair
 		float textWidth = tooltipRenderer->GetTextWidth("+");
-		tooltipRenderer->RenderText("+", (mainWindow.getBufferWidth() / 2.0f) - textWidth, (mainWindow.getBufferHeight() / 2.0f) - 10.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+		tooltipRenderer->RenderText("+", (mainWindow.getBufferWidth() / 2.0f) - textWidth, (mainWindow.getBufferHeight() / 2.0f) - 10.0f, 1.0f, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 
 		if(gameState == STATE_PAUSED) {
 			gameUI->DrawPauseMenu();
@@ -287,17 +348,30 @@ Scene* createMainScene(Camera * camera) {
 	paintingEntity->setTitle("Mieszko I");
 	flashlightEntity->setCastsShadow(false);
 	flashlightEntity->setTitle("Flashlight");
-	keyEntity = new Key(&keyModel, glm::vec3(2.0f, 0.0f, -4.0f), glm::vec3(90.0f,0.0f,0.0f), glm::vec3(0.75f), "mainKey", "NOPATH0", true);
+	keyEntity = new Key(&keyModel, glm::vec3(2.0f, 0.0f, -4.0f), glm::vec3(90.0f,0.0f,0.0f), glm::vec3(0.75f), "mainKey", keySprite, true);
 	keyEntity->setTitle("Key");
 	keyEntity->setColissions(false);
+	keyEntity2 = new Key(&keyModel, glm::vec3(-2.0f, 0.0f, -8.0f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.75f), "chestKey", keySprite2, true);
+	keyEntity2->setTitle("Key2");
+	keyEntity2->setColissions(false);
 
-
+	keyEntity3 = new Key(&keyModel, glm::vec3(10.0f, 0.0f, -5.0f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.75f), "extraKey", keySprite3, true);
+	keyEntity3->setTitle("Key3");
+	keyEntity3->setColissions(false);
 
 	/*sculptureEntity = new Entity(&sculpture, lessShinyMaterial, glm::vec3(-10.0f, -1.0f, -4.0f), glm::vec3(0.0f, 30.0f, 0.0f), glm::vec3(4.0f));
 	sculptureEntity->setTitle("Sculpture");*/
 
 	// Create Player
 	player = new Player(camera, flashlightEntity);
+
+	// Create flashlight item
+	Item flashlightItem;
+	flashlightItem.tag = "flashlight";
+	flashlightItem.title = "Flashlight";
+	flashlightItem.imageTexture = flashlightSprite;
+	flashlightItem.itemModel = &flashlightModel;
+	player->getInventory()->AddItem(flashlightItem.tag, flashlightItem.title, flashlightItem.imageTexture, flashlightItem.itemModel, flashlightEntity->getScale());
 
 	// Text renderer
 	textRenderer = new TextRenderer(mainWindow.getBufferWidth(), mainWindow.getBufferHeight());
@@ -334,6 +408,8 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(framuga);
 	scene->AddEntity(paintingEntity);
 	scene->AddEntity(keyEntity);
+	scene->AddEntity(keyEntity2);
+	scene->AddEntity(keyEntity3);
 	/*scene->AddEntity(sculptureEntity);*/
 
 	return scene;
@@ -435,7 +511,7 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 	glStencilMask(0xFF);
 	glStencilFunc(GL_ALWAYS, 1, 0xFF);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-	scene->RenderWithOutline(shaderList[SHADER_DEFAULT], projectionMatrix);
+	scene->RenderWithOutline(shaderList[SHADER_DEFAULT], projectionMatrix, uiWidth, uiHeight);
 
 	// Render outlines
 	glEnable(GL_DEPTH_TEST);
@@ -447,7 +523,7 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 	float outline = 0.0125f;
 	shaderList[SHADER_OUTLINE]->setFloat("outline", outline);
 	shaderList[SHADER_OUTLINE]->setVec3("outlineColor", glm::vec3(config.outlineColor[0],config.outlineColor[1],config.outlineColor[2]));
-	scene->RenderWithOutline(shaderList[SHADER_OUTLINE], projectionMatrix);
+	scene->RenderWithOutline(shaderList[SHADER_OUTLINE], projectionMatrix, uiWidth, uiHeight);
 
 
 	// Render flashlight last (to be in front of all objects)
@@ -455,7 +531,9 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 	glStencilMask(0xFF);
 	glCullFace(GL_BACK);
 	glDisable(GL_STENCIL_TEST);
-	scene->RenderFlashlightEntity(shaderList[SHADER_DEFAULT], projectionMatrix);
+	if (player->heldEntity) {
+		scene->RenderHeldEntity(shaderList[SHADER_DEFAULT], projectionMatrix);
+	}
 }
 
 void HandleKeyboardInput(float deltaTime, Scene* currentScene) {
@@ -522,7 +600,13 @@ void HandleKeyboardInput(float deltaTime, Scene* currentScene) {
 
 	if (mainWindow.getKeys()[GLFW_KEY_F])
 	{
-		player->changeFlashlightState();
+		if(player->getInventory()->GetCurrentItem()->tag != "flashlight") {
+			return;
+		}
+		if (player->getFlashlightState())
+			player->changeFlashlightState(false);
+		else
+			player->changeFlashlightState(true);
 		mainWindow.getKeys()[GLFW_KEY_F] = false;
 	}
 	if (mainWindow.getKeys()[GLFW_KEY_E])
@@ -537,7 +621,6 @@ void HandleKeyboardInput(float deltaTime, Scene* currentScene) {
 		player->pickUpEntity(target);
 		return;
 	}
-
 	if (mainWindow.getKeys()[GLFW_KEY_LEFT_SHIFT])
 	{
 		player->Crouch(true);
@@ -552,6 +635,55 @@ void HandleKeyboardInput(float deltaTime, Scene* currentScene) {
 		// TODO smooth reset
 		player->walkTimer = 0.0f;
 	}
+
+	if (mainWindow.getKeys()[GLFW_KEY_1]) {
+		player->getInventory()->SetCurrentItem(0);
+		mainWindow.getKeys()[GLFW_KEY_1] = false;
+	}
+	if (mainWindow.getKeys()[GLFW_KEY_2]) {
+		player->getInventory()->SetCurrentItem(1);
+		mainWindow.getKeys()[GLFW_KEY_2] = false;
+	}
+	if (mainWindow.getKeys()[GLFW_KEY_3]) {
+		player->getInventory()->SetCurrentItem(2);
+		mainWindow.getKeys()[GLFW_KEY_3] = false;
+	}
+	if (mainWindow.getKeys()[GLFW_KEY_4]) {
+		player->getInventory()->SetCurrentItem(3);
+		mainWindow.getKeys()[GLFW_KEY_4] = false;
+	}
+	if (mainWindow.getKeys()[GLFW_KEY_5]) {
+		player->getInventory()->SetCurrentItem(4);
+		mainWindow.getKeys()[GLFW_KEY_5] = false;
+	}
+	if (mainWindow.getKeys()[GLFW_KEY_6]) {
+		player->getInventory()->SetCurrentItem(5);
+		mainWindow.getKeys()[GLFW_KEY_6] = false;
+	}
+	if (mainWindow.getKeys()[GLFW_KEY_7]) {
+		player->getInventory()->SetCurrentItem(6);
+		mainWindow.getKeys()[GLFW_KEY_7] = false;
+	}
+	if (mainWindow.getKeys()[GLFW_KEY_8]) {
+		player->getInventory()->SetCurrentItem(7);
+		mainWindow.getKeys()[GLFW_KEY_8] = false;
+	}
+	if (mainWindow.getKeys()[GLFW_KEY_9]) {
+		player->getInventory()->SetCurrentItem(8);
+		mainWindow.getKeys()[GLFW_KEY_9] = false;
+	}
+
+
+	double currentScrollY = mainWindow.getScrollY();
+	if (currentScrollY != 0.0) {
+		if (currentScrollY > 0.0) {
+			player->getInventory()->ChangeCurrentItem(1);
+		}
+		else {
+			player->getInventory()->ChangeCurrentItem(-1);
+		}
+	}
+
 }
 
 void SetGameState(GameStates newState) {
@@ -561,4 +693,51 @@ void SetGameState(GameStates newState) {
 	} else {
 		glfwSetInputMode(mainWindow.getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	}
+}
+
+void DrawInventory() {
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_STENCIL_TEST);
+	glDepthMask(GL_FALSE);
+	std::vector<Item> inventory = player->getInventory()->GetItems();
+	float startingX = 30.0f ;
+	float offsetY = uiHeight - 100.0f;
+	float imageSize = 64.0 ;
+	float spacing = imageSize + 15.0f;
+
+	for(int i = 0 ; i < player->getInventory()->GetMaxItems(); i++) {
+		float spritePosX = startingX + i * spacing;
+		float spritePosY = offsetY;
+		if(i == player->getInventory()->GetCurrentItemIndex()) {
+			spriteRenderer->DrawSprite(selectedItemFrame, glm::vec2(spritePosX,spritePosY), glm::vec2(imageSize, imageSize));
+		}
+		else {
+			spriteRenderer->DrawSprite(itemFrame, glm::vec2(spritePosX, spritePosY), glm::vec2(imageSize, imageSize));
+		}
+	}
+
+	int i = 0;
+	for (auto &item : inventory) {
+		float spritePosX = startingX + i * spacing;
+		float spritePosY = offsetY;
+		spriteRenderer->DrawSprite(item.imageTexture, glm::vec2(spritePosX,spritePosY), glm::vec2(imageSize, imageSize));
+		i++;
+	}
+	i = 0;
+	for (auto & item : inventory) {
+		float spritePosX = startingX + i * spacing;
+		float spriteCenterX = spritePosX + imageSize / 2.0f;
+		float textWidth = textRenderer->GetTextWidth(item.title);
+		float textStartX = spriteCenterX - (textWidth / 2.0f);
+		float textPosY = uiHeight - offsetY - imageSize - 15.0f;
+		textRenderer->RenderText(item.title, textStartX, textPosY, 1.0f, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		i++;
+	}
+	player->getInventory()->DrawNotification(deltaTime);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_STENCIL_TEST);
+	glDepthMask(GL_TRUE);
+	glDisable(GL_BLEND);
 }

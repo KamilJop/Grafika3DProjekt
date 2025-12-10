@@ -12,7 +12,7 @@ class Window
 public:
 	Window();
 
-	Window(GLint windowWidth, GLint windowHeight);
+	Window(GLint windowWidth, GLint windowHeight, bool full = false);
 
 	int Initialise();
 
@@ -24,6 +24,7 @@ public:
 	bool* getKeys() { return keys; }
 	GLfloat getXChange();
 	GLfloat getYChange();
+	double getScrollY();
 	GLFWwindow* getWindow() { return mainWindow; }
 	void swapBuffers() { glfwSwapBuffers(mainWindow); }
 
@@ -33,18 +34,24 @@ public:
 private:
 	GLFWwindow* mainWindow;
 	GLint width, height;
+	bool fullscreen;
 	GLint bufferWidth, bufferHeight;
 
 	GLfloat lastX;
 	GLfloat lastY;
 	GLfloat xChange;
 	GLfloat yChange;
+
+	double scrollX;
+	double scrollY;
+
 	bool firstMouseMove;
 
 	bool keys[1024];
 
 	static void handleKeys(GLFWwindow* window, int key, int code, int action, int mode);
 	static void handleMouse(GLFWwindow* window, double xPos, double yPos);
+	static void handleScroll(GLFWwindow* window, double xOffset, double yOffset);
 	void createCallbacks();
 
 

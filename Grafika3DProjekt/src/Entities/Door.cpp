@@ -31,16 +31,17 @@ void Door::Interact(Inventory* playerInventory)
 
 	if (isLocked)
 	{
-		if(playerInventory->HasItem(doorKeyTag))
+		if(playerInventory->GetCurrentItem()->tag == doorKeyTag)
 		{
+			playerInventory->RemoveItem(doorKeyTag);
 			isLocked = false;
-			AudioManager::GetInstance().Play3DSoundEffect(unlockingSoundName, position, config.sfxVolume * 2.0);
+			AudioManager::GetInstance().Play3DSoundEffect(unlockingSoundName, position, config.sfxVolume * 2.0f);
 			return;
 		}
 
 		isTryingToOpen = true;
 		animCounter = 0.0;
-		AudioManager::GetInstance().Play3DSoundEffect(lockedSoundName, position, config.sfxVolume * 2.0);
+		AudioManager::GetInstance().Play3DSoundEffect(lockedSoundName, position, config.sfxVolume * 2.0f);
 		return;
 	}
 
@@ -50,12 +51,12 @@ void Door::Interact(Inventory* playerInventory)
 	if (isOpen)
 	{
 		doorFrame->setColissions(false);
-		AudioManager::GetInstance().Play3DSoundEffect(openingSoundName,position, config.sfxVolume * 2.0);
+		AudioManager::GetInstance().Play3DSoundEffect(openingSoundName,position, config.sfxVolume * 2.0f);
 	}
 	else
 	{
 		doorFrame->setColissions(true);
-		AudioManager::GetInstance().Play3DSoundEffect(closingSoundName, position, config.sfxVolume * 2.0);
+		AudioManager::GetInstance().Play3DSoundEffect(closingSoundName, position, config.sfxVolume * 2.0f);
 	}
 }
 

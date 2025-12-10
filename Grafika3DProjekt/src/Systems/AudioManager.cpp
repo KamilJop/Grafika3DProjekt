@@ -65,7 +65,12 @@ int AudioManager::Play2DSoundEffect(const std::string& name, float volume)
 	auto it = soundEffects.find(name);
 	if(it != soundEffects.end())
 	{
+		if (active2DHandles.count(name))
+		{
+			soloud.stop(active2DHandles[name]);
+		}
 		int handle = soloud.play(*it->second, volume);
+		active2DHandles[name] = handle;
 		return handle;
 	}
 	return -1;

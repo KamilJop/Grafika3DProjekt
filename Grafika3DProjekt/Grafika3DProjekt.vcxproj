@@ -99,6 +99,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)\External Libs\GLFW\lib-vc2022;$(SolutionDir)\External Libs\ASSIMP\lib;$(SolutionDir)\External Libs\FREETYPE\lib;$(SolutionDir)\External Libs\SOLOUD\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;assimp-vc143-mtd.lib;freetype.lib;soloud_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>LIBCMTD</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -130,6 +131,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;assimp-vc143-mtd.lib;freetype.lib;soloud_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\External Libs\GLFW\lib-vc2022;$(SolutionDir)\External Libs\ASSIMP\lib;$(SolutionDir)\External Libs\FREETYPE\lib;$(SolutionDir)\External Libs\SOLOUD\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>LIBCMTD</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -141,6 +143,7 @@
     <ClCompile Include="..\External Libs\IMGUI\imgui_impl_opengl3.cpp" />
     <ClCompile Include="..\External Libs\IMGUI\imgui_tables.cpp" />
     <ClCompile Include="..\External Libs\IMGUI\imgui_widgets.cpp" />
+    <ClCompile Include="src\Systems\SpriteRenderer.cpp" />
     <ClCompile Include="src\Core\Inventory.cpp" />
     <ClCompile Include="src\Entities\Key.cpp" />
     <ClCompile Include="src\Systems\AudioManager.cpp" />
@@ -177,6 +180,7 @@
     <ClInclude Include="..\External Libs\IMGUI\imstb_rectpack.h" />
     <ClInclude Include="..\External Libs\IMGUI\imstb_textedit.h" />
     <ClInclude Include="..\External Libs\IMGUI\imstb_truetype.h" />
+    <ClInclude Include="src\Systems\SpriteRenderer.h" />
     <ClInclude Include="src\Core\Inventory.h" />
     <ClInclude Include="src\Entities\Key.h" />
     <ClInclude Include="src\Systems\AudioManager.h" />

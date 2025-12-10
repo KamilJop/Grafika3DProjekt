@@ -15,6 +15,7 @@ public:
 	bool LoadMaps();
 	void UseTexture(GLenum textureUnit);
 	void ClearTexture();
+	GLuint getTextureID() { return textureID; }
 
 private:
 	GLuint textureID;

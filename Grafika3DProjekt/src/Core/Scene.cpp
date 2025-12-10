@@ -31,7 +31,7 @@ void Scene::RenderWithoutOutline(Shader* shader, glm::mat4 projection)
 		
 }
 
-void Scene::RenderWithOutline(Shader* shader, glm::mat4 projection)
+void Scene::RenderWithOutline(Shader* shader, glm::mat4 projection, int w , int h)
 {
 	RenderLogic(shader, projection);
 
@@ -40,7 +40,7 @@ void Scene::RenderWithOutline(Shader* shader, glm::mat4 projection)
 		if (entity->isOutlined()) {
 			if (entity->getTitle() == "Flashlight") continue;
 			entity->DrawEntity(shader);
-			RenderTooltip(entity);
+			RenderTooltip(entity, w , h);
 		}
 	}
 
@@ -67,6 +67,11 @@ void Scene::Update(float deltaTime)
 		camUp * offset.y +
 		camFront * offset.z;
 
+	if (player->getInventory()->GetCurrentItem()->tag != "flashlight")
+	{
+		player->changeFlashlightState(false);
+	}
+
 	if (flashLight && player->getFlashlightState())
 	{
 		if (player->walkTimer > 0.0f)
@@ -84,7 +89,8 @@ void Scene::Update(float deltaTime)
 		flashLight->setLightPosition(lightSourcePos);
 		flashLight->setLightDirection(camFront);
 	}
-	player->updateFlashlightPosition(finalPos);
+	player->updateHeldEntityPosition(finalPos);
+
 
 
 	for (auto& entity : entities)
@@ -142,13 +148,11 @@ void Scene::RenderLogic(Shader* shader, glm::mat4 projection)
 	}
 }
 
-void Scene::RenderTooltip(Entity* selectedEntity)
+void Scene::RenderTooltip(Entity* selectedEntity, int w, int h)
 {
 	float offset = textRenderer->GetTextWidth(selectedEntity->title) / 2.0f;
-	float width = config.screenWidth / 2.0f;
-	float height = config.screenHeight - 50.0f;
 
-	textRenderer->RenderText( selectedEntity->title, width - offset, height, 1.0f, glm::vec3(config.highlightColor[0],config.highlightColor[1],config.highlightColor[2]));
+	textRenderer->RenderText( selectedEntity->title, w/2 - offset, h - 50.0f, 1.0f, glm::vec4(config.highlightColor[0],config.highlightColor[1],config.highlightColor[2],1.0f));
 }
 
 
@@ -170,5 +174,17 @@ void Scene::RenderFlashlightEntity(Shader* shader, glm::mat4 projection)
 	{
 		glClear(GL_DEPTH_BUFFER_BIT);
 		flashlightEntity->DrawEntity(shader);
+	}
+}
+
+void Scene::RenderHeldEntity(Shader* shader, glm::mat4 projection)
+{
+	RenderLogic(shader, projection);
+	Entity* heldEntity = player->heldEntity;
+	if (heldEntity->entityModel != nullptr)
+	{
+		if (heldEntity->getTitle() == "Flashlight") return;
+		glClear(GL_DEPTH_BUFFER_BIT);
+		heldEntity->DrawEntity(shader);
 	}
 }

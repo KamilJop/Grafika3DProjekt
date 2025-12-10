@@ -1,4 +1,6 @@
 #pragma once
+#define NOMINMAX
+#include <Windows.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <string>
@@ -47,8 +49,10 @@ public:
 	bool getCastsShadow() { return castsShadow; }
 	bool getColissions() { return hasCollisions; }
 	bool getPickable() { return pickable; }
+	virtual Texture* getTexture() { return nullptr; };
 	std::string getTag() { return itemTag; }	
 	std::string getTitle() { return title; }
+	Model* getModel() { return entityModel; }	
 	bool isOutlined() { return outlined; }
 	void setOutlined(bool state) { outlined = state; }
 	CollisionBox GetCollisions() { return collisions; }

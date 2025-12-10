@@ -9,7 +9,13 @@ Entity::Entity(Model* model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, bool 
 	scale = scal;
 	entityModel = model;
 	modelMatrix = CalculateModelMatrix();
-	collisions = model->GetCollisionBox();
+	if (model != nullptr) {
+		collisions = model->GetCollisionBox();
+	}
+	else {
+		collisions.min = glm::vec3(0.0f);
+		collisions.max = glm::vec3(0.0f);
+	}
 	interactable = interaction;
 	// Update collision box
 	UpdateCollisionBox();
@@ -91,6 +97,7 @@ glm::mat4 Entity::CalculateModelMatrix()
 // Draw the entity
 void Entity::DrawEntity(Shader* shader)
 {
+	if (entityModel == nullptr) return;
 	// Recalculate model matrix
 	modelMatrix = CalculateModelMatrix();
 
@@ -104,6 +111,7 @@ void Entity::DrawEntity(Shader* shader)
 
 void Entity::UpdateCollisionBox()
 {
+	if (entityModel == nullptr) return;
 	// Get model matrix
 	glm::mat4 modelMatrix = GetModelMatrix();
 

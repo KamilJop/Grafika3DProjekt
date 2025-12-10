@@ -9,6 +9,18 @@ UI::UI(GLFWwindow* window)
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;   
 
+	switch (config.screenWidth) {
+		case 1280:
+			currentResolution = 0;
+			break;
+		case 1920:
+			currentResolution = 1;
+			break;
+		case 2560:
+			currentResolution = 2;
+			break;
+	}
+
 	ImGui::StyleColorsDark();
 	ImGui_ImplGlfw_InitForOpenGL(appWindow, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
@@ -19,10 +31,10 @@ void UI :: DrawPauseMenu() {
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 
-	float screenWidth = config.screenWidth;
-	float screenHeight = config.screenHeight;
-	ImVec2 center = ImVec2(screenWidth * 0.5f, screenHeight * 0.5f);
-	ImGui::SetNextWindowPos(center, ImGuiCond_Always, ImVec2(0.5f, 0.5f));
+
+	const ImGuiViewport* viewport = ImGui::GetMainViewport();
+	ImVec2 viewportCenter = viewport->GetCenter();
+	ImGui::SetNextWindowPos(viewportCenter, ImGuiCond_Always, ImVec2(0.5f, 0.5f));
 
 	ImVec2 dummyVec = ImVec2(10.0f, 10.0f);
 	float windowWidth = 400.0f;
@@ -57,19 +69,27 @@ void UI :: DrawPauseMenu() {
 
 	CenteredText("Resolution:");
 	ImGui::Dummy(dummyVec);
-	static int currentResolution = 0;
 
 	middleX = middleX - 100.0f;
 	ImGui::SetCursorPosX(middleX);
 	ImGui::SetNextItemWidth(200.0f);
-	ImGui::Combo("##Resolution", &currentResolution, resolutionOptions, IM_ARRAYSIZE(resolutionOptions));
-
+	if (ImGui::Combo("##Resolution", &currentResolution, resolutionOptions, IM_ARRAYSIZE(resolutionOptions))) {
+		ImGui::OpenPopup("Confirm Resolution Change");
+	};
 
 	ImGui::Dummy(dummyVec);
 	float textSize = ImGui::CalcTextSize("Show FPS?:").x;
 	middleX = windowWidth * 0.5f - (textSize * 0.5f) - 10.0f;
 	ImGui::SetCursorPosX(middleX);
 	ImGui::Checkbox("Show FPS?", &config.showFPS);	
+
+	ImGui::Dummy(dummyVec);
+	textSize = ImGui::CalcTextSize("Fullscreen?:").x;
+	middleX = windowWidth * 0.5f - (textSize * 0.5f) - 10.0f;
+	ImGui::SetCursorPosX(middleX);
+	if (ImGui::Checkbox("Fullscreen?", &config.fullscreen)) {
+		ImGui::OpenPopup("Confirm Resolution Change");
+	};
 
 	ImGui::Dummy(dummyVec);
 	CenteredText("Entity outline color");
@@ -99,6 +119,7 @@ void UI :: DrawPauseMenu() {
 	}
 	ImGui::PopStyleVar();
 	DrawQuitConfirmation();
+	DrawResolutionConfirmation();
 
 	ImGui::End();
 	ImGui::Render();
@@ -128,6 +149,41 @@ void UI::DrawQuitConfirmation() {
 		ImGui::CloseCurrentPopup();
 	}
 
+	ImGui::EndPopup();
+}
+
+void UI::DrawResolutionConfirmation() {
+	if (!ImGui::IsPopupOpen("Confirm Resolution Change"))
+		return;
+	ImGui::BeginPopupModal("Confirm Resolution Change", NULL, ImGuiWindowFlags_AlwaysAutoResize);
+	CenteredText("Those changes need restart of the game");
+	if (ImGui::Button("Restart Now", ImVec2(120, 0))) {
+		AudioManager::GetInstance().Cleanup();
+		config.screenWidth = resolutionValues[currentResolution][0];
+		config.screenHeight = resolutionValues[currentResolution][1];
+		config.Save();
+		glfwSetWindowShouldClose(appWindow, GLFW_TRUE);
+		ImGui::CloseCurrentPopup();
+	}
+	ImGui::SetItemDefaultFocus();
+	ImGui::SameLine();
+	if (ImGui::Button("Cancel", ImVec2(120, 0))) {
+		currentResolution = 0;
+		switch (config.screenWidth) {
+		case 1280:
+			currentResolution = 0;
+			break;
+		case 1920:
+			currentResolution = 1;
+			break;
+		case 2560:
+			currentResolution = 2;
+			break;
+		}
+		config.fullscreen = !config.fullscreen;
+		ImGui::CloseCurrentPopup();
+
+	}
 	ImGui::EndPopup();
 }
 

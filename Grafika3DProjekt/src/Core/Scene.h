@@ -1,4 +1,6 @@
 #pragma once
+#define NOMINMAX
+#include <Windows.h>
 #include <vector>
 #include "Entities/Entity.h"
 #include "Rendering/Shader.h"
@@ -43,12 +45,13 @@ public:
 	{
 		return camera;
 	}
-	void RenderWithOutline (Shader* shader, glm::mat4 projection);
+	void RenderWithOutline (Shader* shader, glm::mat4 projection, int w, int h);
 	void RenderWithoutOutline(Shader* shader, glm::mat4 projection);
 	void RenderFlashlightEntity(Shader* shader, glm::mat4 projection);
+	void RenderHeldEntity(Shader* shader, glm::mat4 projection);
 	void Update(float deltaTime);
 	void RenderShadowMap(Shader* shadowShader);
-	void RenderTooltip(Entity* selectedEntity);
+	void RenderTooltip(Entity* selectedEntity, int w, int h);
 	std::vector<Entity*> getEntities() { return entities; }
 
 

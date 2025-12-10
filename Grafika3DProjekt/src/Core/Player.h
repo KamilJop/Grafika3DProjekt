@@ -1,4 +1,6 @@
 #pragma once
+#define NOMINMAX
+#include <Windows.h>
 #include <glm/glm.hpp>
 #include "Camera.h"
 #include "Entities/Entity.h"
@@ -14,6 +16,7 @@ public:
 	glm::vec3 position;
 	glm::vec3 velocity;
 	Entity* flashlightEntity;
+	Entity* heldEntity;
 	Entity* targettedEntity = nullptr;
 	float walkTimer = 0.0f;
 	bool isFlashlightOn = false;
@@ -28,12 +31,14 @@ public:
 	void checkTargettedEntity(std::vector<Entity*>& entities);
 	bool checkRayEntityIntersection(const glm::vec3& rayOrigin, const glm::vec3& rayDirection, Entity* entity, float& outDistance);
 	void Jump();
-	void changeFlashlightState();
+	void changeFlashlightState(bool state);
 	void Crouch(bool state);
 	bool getFlashlightState() { return isFlashlightOn; }
 	Inventory* getInventory() { return &playerInventory; };
-	void updateFlashlightPosition(const glm::vec3& finalPos);
 	void updatePlayerCollisions();
+	void setHeldEntityModel(Model* model) { heldEntity->entityModel = model; };
+	void setHeldEntityScale(glm::vec3 scale) { heldEntity->setScale(scale); };
+	void updateHeldEntityPosition(const glm::vec3& finalPos);
 	void pickUpEntity(Entity* entity);
 	Entity* getTargettedEntity() { return targettedEntity; };
 	bool hasTargettedEntity() { return targettedEntity != nullptr; };
