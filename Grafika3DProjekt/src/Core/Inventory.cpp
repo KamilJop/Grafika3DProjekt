@@ -1,5 +1,4 @@
 #include "Inventory.h"
-
 Inventory::Inventory()
 {	
 	Config& config = Config::getInstance();
@@ -8,12 +7,15 @@ Inventory::Inventory()
 	AudioManager::GetInstance().Load2DSoundEffect("slot_change", slotSoundPath);
 }
 
-void Inventory::AddItem(const std::string& tag, const std::string& name, Texture* tex)
+void Inventory::AddItem(const std::string& tag, const std::string& name, Texture* tex, Model* model, glm::vec3 scale)
 {
+
 	Item newItem;
 	newItem.tag = tag;
 	newItem.imageTexture = tex;
 	newItem.title = name;
+	newItem.itemModel = model;
+	newItem.itemScale = scale;
 	items.push_back(newItem);
 	printf("Item with tag '%s' added to inventory.\n", tag.c_str());
 	notificationText = "Item picked up:    " + name;
@@ -99,10 +101,7 @@ Item* Inventory::GetCurrentItem()
 		currentItem = &items[currentItemIndex];
 	}
 	else {
-		currentItem = new Item();
-		currentItem->tag = "empty";
-		currentItem->title = "Empty";
-		currentItem->imageTexture = nullptr;
+		currentItem = &emptyItem;
 	}
 	return currentItem;
 }

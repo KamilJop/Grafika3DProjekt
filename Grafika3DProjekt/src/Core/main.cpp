@@ -271,6 +271,9 @@ int main()
 			camera.ProcessMouseMovement(mainWindow.getXChange(), mainWindow.getYChange());
 			// Update the scene
 			scene->Update(deltaTime);
+			// Update held entity model
+			player->setHeldEntityModel(player->getInventory()->GetCurrentItem()->itemModel);
+			player->setHeldEntityScale(player->getInventory()->GetCurrentItem()->itemScale);
 		}
 		
 		// Keyboard movement
@@ -367,7 +370,8 @@ Scene* createMainScene(Camera * camera) {
 	flashlightItem.tag = "flashlight";
 	flashlightItem.title = "Flashlight";
 	flashlightItem.imageTexture = flashlightSprite;
-	player->getInventory()->AddItem(flashlightItem.tag, flashlightItem.title, flashlightItem.imageTexture);
+	flashlightItem.itemModel = &flashlightModel;
+	player->getInventory()->AddItem(flashlightItem.tag, flashlightItem.title, flashlightItem.imageTexture, flashlightItem.itemModel, flashlightEntity->getScale());
 
 	// Text renderer
 	textRenderer = new TextRenderer(mainWindow.getBufferWidth(), mainWindow.getBufferHeight());
@@ -527,8 +531,8 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 	glStencilMask(0xFF);
 	glCullFace(GL_BACK);
 	glDisable(GL_STENCIL_TEST);
-	if (player->getInventory()->GetCurrentItem()->tag == "flashlight") {
-		scene->RenderFlashlightEntity(shaderList[SHADER_DEFAULT], projectionMatrix);
+	if (player->heldEntity) {
+		scene->RenderHeldEntity(shaderList[SHADER_DEFAULT], projectionMatrix);
 	}
 }
 

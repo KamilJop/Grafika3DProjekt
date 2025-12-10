@@ -52,6 +52,7 @@ public:
 	virtual Texture* getTexture() { return nullptr; };
 	std::string getTag() { return itemTag; }	
 	std::string getTitle() { return title; }
+	Model* getModel() { return entityModel; }	
 	bool isOutlined() { return outlined; }
 	void setOutlined(bool state) { outlined = state; }
 	CollisionBox GetCollisions() { return collisions; }

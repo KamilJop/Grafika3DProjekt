@@ -89,7 +89,8 @@ void Scene::Update(float deltaTime)
 		flashLight->setLightPosition(lightSourcePos);
 		flashLight->setLightDirection(camFront);
 	}
-	player->updateFlashlightPosition(finalPos);
+	player->updateHeldEntityPosition(finalPos);
+
 
 
 	for (auto& entity : entities)
@@ -173,5 +174,17 @@ void Scene::RenderFlashlightEntity(Shader* shader, glm::mat4 projection)
 	{
 		glClear(GL_DEPTH_BUFFER_BIT);
 		flashlightEntity->DrawEntity(shader);
+	}
+}
+
+void Scene::RenderHeldEntity(Shader* shader, glm::mat4 projection)
+{
+	RenderLogic(shader, projection);
+	Entity* heldEntity = player->heldEntity;
+	if (heldEntity->entityModel != nullptr)
+	{
+		if (heldEntity->getTitle() == "Flashlight") return;
+		glClear(GL_DEPTH_BUFFER_BIT);
+		heldEntity->DrawEntity(shader);
 	}
 }

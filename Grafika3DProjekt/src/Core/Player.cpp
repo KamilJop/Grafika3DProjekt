@@ -7,6 +7,9 @@ Player::Player(Camera* cam, Entity* flashlight, glm::vec3 pos, glm::vec3 vel)
 	position = pos;
 	velocity = vel;
 	playerInventory = Inventory();
+	heldEntity = new Entity(nullptr, glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f));
+	heldEntity->setCastsShadow(false);
+	heldEntity->setColissions(false);
 	updatePlayerCollisions();
 }
 
@@ -19,6 +22,9 @@ Player::~Player()
 
 void Player::UpdatePhysics(float deltaTime, std::vector<Entity*>& entities)
 {
+
+
+
 	// Remember position before checking collisions
 	float previousX = position.x;
 	float previousY = position.y;
@@ -135,7 +141,7 @@ void Player::changeFlashlightState(bool state)
 	isFlashlightOn = state;
 }
 
-void Player::updateFlashlightPosition(const glm::vec3& finalPos)
+void Player::updateHeldEntityPosition(const glm::vec3& finalPos)
 {
 	glm::vec3 finalPosAdjusted = finalPos;
 
@@ -149,12 +155,11 @@ void Player::updateFlashlightPosition(const glm::vec3& finalPos)
 		finalPosAdjusted += camera->Right * bobX;
 		finalPosAdjusted += camera->Up * bobY;
 	}
-	flashlightEntity->setPosition(finalPosAdjusted);
+	heldEntity->setPosition(finalPosAdjusted);
 	float pitch = camera->Pitch;
 	float yaw = camera->Yaw;
-	flashlightEntity->setRotation(glm::vec3(-pitch, -yaw + 90.0f, 0.0f));
+	heldEntity->setRotation(glm::vec3(-pitch, -yaw + 90.0f, 0.0f));
 }
-	
 
 
 void Player::updatePlayerCollisions() {
@@ -240,7 +245,7 @@ void Player::pickUpEntity(Entity* entity)
 {
 	if (entity->getInteractable())
 	{
-		playerInventory.AddItem(entity->getTag(),entity->getTitle(), entity->getTexture());
+		playerInventory.AddItem(entity->getTag(),entity->getTitle(), entity->getTexture(), entity->getModel(), entity->getScale());
 		entity->shouldGetDestroyed = true;
 	}
 }
