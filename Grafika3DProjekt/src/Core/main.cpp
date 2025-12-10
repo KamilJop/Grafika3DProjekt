@@ -30,6 +30,7 @@
 #include "Systems/AudioManager.h"
 #include "Entities/Key.h"
 #include "Systems/SpriteRenderer.h"
+#include "Entities/Radio.h"
 
 
 enum ShaderTypes
@@ -101,8 +102,7 @@ Entity* flashlightEntity;
 Entity* framuga;
 Entity* paintingEntity;
 Entity* keyEntity;
-Entity* keyEntity2;
-Entity* keyEntity3;
+Entity* radioEntity;
 
 // Light source
 DirectionalLight* mainLight;
@@ -122,6 +122,7 @@ Model flashlightModel;
 Model framugaModel;
 Model paintingModel;
 Model keyModel;
+Model radioModel;
 
 // Create player
 Player* player;
@@ -153,8 +154,6 @@ SpriteRenderer* spriteRenderer;
 
 // Sprites
 Texture* keySprite;
-Texture* keySprite2;
-Texture* keySprite3;
 Texture* itemFrame;
 Texture* selectedItemFrame;
 Texture* flashlightSprite;
@@ -210,12 +209,6 @@ int main()
 
 	keySprite = new Texture("Textures/Icons/door_key.png");
 	keySprite->LoadTextureAlpha();
-
-	keySprite2 = new Texture("Textures/Icons/door_key.png");
-	keySprite2->LoadTextureAlpha();
-
-	keySprite3 = new Texture("Textures/Icons/door_key.png");	
-	keySprite3->LoadTextureAlpha();
 
 	itemFrame = new Texture("Textures/Icons/item_frame.png");
 	itemFrame->LoadTextureAlpha();
@@ -333,6 +326,7 @@ Scene* createMainScene(Camera * camera) {
 	framugaModel.LoadModel("Models/framuga.obj");
 	paintingModel.LoadModel("Models/V3TEST.obj");
 	keyModel.LoadModel("Models/Worn_Key.obj");
+	radioModel.LoadModel("Models/radio.obj");
 	/*sculpture.LoadModel("Models/rzezba.obj");*/
 
 
@@ -351,13 +345,8 @@ Scene* createMainScene(Camera * camera) {
 	keyEntity = new Key(&keyModel, glm::vec3(2.0f, 0.0f, -4.0f), glm::vec3(90.0f,0.0f,0.0f), glm::vec3(0.75f), "mainKey", keySprite, true);
 	keyEntity->setTitle("Key");
 	keyEntity->setColissions(false);
-	keyEntity2 = new Key(&keyModel, glm::vec3(-2.0f, 0.0f, -8.0f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.75f), "chestKey", keySprite2, true);
-	keyEntity2->setTitle("Key2");
-	keyEntity2->setColissions(false);
-
-	keyEntity3 = new Key(&keyModel, glm::vec3(10.0f, 0.0f, -5.0f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.75f), "extraKey", keySprite3, true);
-	keyEntity3->setTitle("Key3");
-	keyEntity3->setColissions(false);
+	radioEntity = new Radio(&radioModel, glm::vec3(-4.0f, 0.0f, -3.0f), glm::vec3(0.0f), glm::vec3(4.0f), true);
+	radioEntity->setTitle("Radio");
 
 	/*sculptureEntity = new Entity(&sculpture, lessShinyMaterial, glm::vec3(-10.0f, -1.0f, -4.0f), glm::vec3(0.0f, 30.0f, 0.0f), glm::vec3(4.0f));
 	sculptureEntity->setTitle("Sculpture");*/
@@ -408,8 +397,7 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(framuga);
 	scene->AddEntity(paintingEntity);
 	scene->AddEntity(keyEntity);
-	scene->AddEntity(keyEntity2);
-	scene->AddEntity(keyEntity3);
+	scene->AddEntity(radioEntity);
 	/*scene->AddEntity(sculptureEntity);*/
 
 	return scene;
