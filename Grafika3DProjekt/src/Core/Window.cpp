@@ -23,10 +23,11 @@ Window::Window()
 }
 
 // Constructor with parameters
-Window::Window(GLint windowWidth, GLint windowHeight)
+Window::Window(GLint windowWidth, GLint windowHeight, bool full)
 {
 	width = windowWidth;
 	height = windowHeight;
+	fullscreen = full;
 
 	for (size_t i = 0; i < 1024; i++)
 	{
@@ -56,13 +57,17 @@ int Window::Initialise() {
 	// Set OpenGL version
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
 
 	// Set profile
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 
 	// Create window
-	mainWindow = glfwCreateWindow(width, height, "Gra", NULL, NULL);
+	if(fullscreen)
+		mainWindow = glfwCreateWindow(width, height, "Gra", glfwGetPrimaryMonitor(), NULL);
+	else
+		mainWindow = glfwCreateWindow(width, height, "Gra", NULL, NULL);
 	if (!mainWindow)
 	{
 		printf("GLFW window creation failed!");

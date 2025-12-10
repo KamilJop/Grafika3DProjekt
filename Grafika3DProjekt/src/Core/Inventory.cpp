@@ -5,6 +5,7 @@ Inventory::Inventory()
 	Config& config = Config::getInstance();
 	textRenderer = new TextRenderer(config.screenWidth,config.screenHeight);
 	textRenderer->Load("Fonts/BitterPro-Medium.ttf", 16);
+	AudioManager::GetInstance().Load2DSoundEffect("slot_change", slotSoundPath);
 }
 
 void Inventory::AddItem(const std::string& tag, const std::string& name, Texture* tex)
@@ -69,6 +70,7 @@ void Inventory::DrawNotification(float deltaTime)
 
 void Inventory::ChangeCurrentItem(int direction)
 {
+	AudioManager::GetInstance().Play2DSoundEffect("slot_change", Config::getInstance().sfxVolume);
 	if(direction > 0) {
 		currentItemIndex++;
 		if(currentItemIndex >= maxItems) {
@@ -84,6 +86,7 @@ void Inventory::ChangeCurrentItem(int direction)
 
 void Inventory::SetCurrentItem(int index)
 {
+	AudioManager::GetInstance().Play2DSoundEffect("slot_change", Config::getInstance().sfxVolume);
 	if (index >= 0 && index < maxItems) {
 		currentItemIndex = index;
 	}

@@ -31,7 +31,7 @@ void Scene::RenderWithoutOutline(Shader* shader, glm::mat4 projection)
 		
 }
 
-void Scene::RenderWithOutline(Shader* shader, glm::mat4 projection)
+void Scene::RenderWithOutline(Shader* shader, glm::mat4 projection, int w , int h)
 {
 	RenderLogic(shader, projection);
 
@@ -40,7 +40,7 @@ void Scene::RenderWithOutline(Shader* shader, glm::mat4 projection)
 		if (entity->isOutlined()) {
 			if (entity->getTitle() == "Flashlight") continue;
 			entity->DrawEntity(shader);
-			RenderTooltip(entity);
+			RenderTooltip(entity, w , h);
 		}
 	}
 
@@ -147,13 +147,11 @@ void Scene::RenderLogic(Shader* shader, glm::mat4 projection)
 	}
 }
 
-void Scene::RenderTooltip(Entity* selectedEntity)
+void Scene::RenderTooltip(Entity* selectedEntity, int w, int h)
 {
 	float offset = textRenderer->GetTextWidth(selectedEntity->title) / 2.0f;
-	float width = config.screenWidth / 2.0f;
-	float height = config.screenHeight - 50.0f;
 
-	textRenderer->RenderText( selectedEntity->title, width - offset, height, 1.0f, glm::vec4(config.highlightColor[0],config.highlightColor[1],config.highlightColor[2],1.0f));
+	textRenderer->RenderText( selectedEntity->title, w/2 - offset, h - 50.0f, 1.0f, glm::vec4(config.highlightColor[0],config.highlightColor[1],config.highlightColor[2],1.0f));
 }
 
 

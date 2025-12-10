@@ -4,6 +4,7 @@
 #include <vector>
 #include "../Rendering/Texture.h"
 #include "../Systems/TextRenderer.h"
+#include "../Systems/AudioManager.h"
 #include "Config.h"
 struct Item
 {
@@ -34,6 +35,7 @@ private:
 	float notificationTimer = 0.0f;
 	float alpha = 0.0f;
 	std::string notificationText = "";
+	std::string slotSoundPath = "Audio/eq_change.mp3";
 
 };
 

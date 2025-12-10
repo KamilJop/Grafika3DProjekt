@@ -1,4 +1,5 @@
 #pragma once
+#define NOMINMAX
 #include <iostream>
 #include <vector>
 #include <string>
@@ -41,6 +42,7 @@ private:
 	SoLoud::Soloud soloud;
 	std::map<std::string, SoLoud::Wav*> soundEffects;
 	std::map<std::string, SoLoud::WavStream*> musicTracks;
+	std::map<std::string, int> active2DHandles;
 	int currentMusicHandle = -1;
 };
 

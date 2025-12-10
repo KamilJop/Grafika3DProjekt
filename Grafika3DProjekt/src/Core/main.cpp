@@ -1,5 +1,6 @@
 ﻿#define STB_IMAGE_IMPLEMENTATION
-
+#define NOMINMAX
+#include <Windows.h>
 #include <stdio.h>
 #include <glad\glad.h>
 #include <GLFW\glfw3.h>
@@ -171,11 +172,17 @@ void HandleKeyboardInput(float deltaTime, Scene* currentScene);
 void SetGameState(GameStates newState);
 void DrawInventory();
 
+int uiWidth, uiHeight;
+
 int main()
-{
+{	
+
 	// Create Window
-	mainWindow = Window(WIDTH, HEIGHT);
+	mainWindow = Window(WIDTH, HEIGHT, config.fullscreen);
 	mainWindow.Initialise();
+
+	uiWidth = mainWindow.getBufferWidth();
+	uiHeight = mainWindow.getBufferHeight();
 
 	// Create UI
 	gameUI = new UI(mainWindow.getWindow());
@@ -219,12 +226,13 @@ int main()
 	flashlightSprite->LoadTextureAlpha();
 
 	spriteRenderer = new SpriteRenderer(*shaderList[SHADER_SPRITES]);
-	glm::mat4 projectionUI = glm::ortho(0.0f, (float)WIDTH, (float)HEIGHT, 0.0f, -1.0f, 1.0f);
+	glm::mat4 projectionUI = glm::ortho(0.0f, (float)uiWidth, (float)uiHeight, 0.0f, -1.0f, 1.0f);
 
 	shaderList[SHADER_SPRITES]->UseShader();
 	shaderList[SHADER_SPRITES]->setInt("image", 0);
 	shaderList[SHADER_SPRITES]->setMat4("projection", projectionUI);
 
+	
 	// Set perspective 
 	glm::mat4 projection;
 	projection = glm::perspective(glm::radians(60.0f), (GLfloat)mainWindow.getBufferWidth() / (GLfloat)mainWindow.getBufferHeight(), 0.1f, 100.0f);
@@ -291,7 +299,7 @@ int main()
 
 		// Render FPS
 		if (config.showFPS) {
-			textRenderer->RenderText("FPS: " + std::to_string((int)fps), 25.0f, 25.0f, 1.0f, glm::vec4(0.5f, 0.8f, 0.2f, 1.0f));
+			textRenderer->RenderText("FPS: " + std::to_string((int)fps), 10.0f, uiHeight - 20.0f, 1.0f, glm::vec4(0.5f, 0.8f, 0.2f, 1.0f));
 		}
 
 		// Render crosshair
@@ -499,7 +507,7 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 	glStencilMask(0xFF);
 	glStencilFunc(GL_ALWAYS, 1, 0xFF);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-	scene->RenderWithOutline(shaderList[SHADER_DEFAULT], projectionMatrix);
+	scene->RenderWithOutline(shaderList[SHADER_DEFAULT], projectionMatrix, uiWidth, uiHeight);
 
 	// Render outlines
 	glEnable(GL_DEPTH_TEST);
@@ -511,7 +519,7 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 	float outline = 0.0125f;
 	shaderList[SHADER_OUTLINE]->setFloat("outline", outline);
 	shaderList[SHADER_OUTLINE]->setVec3("outlineColor", glm::vec3(config.outlineColor[0],config.outlineColor[1],config.outlineColor[2]));
-	scene->RenderWithOutline(shaderList[SHADER_OUTLINE], projectionMatrix);
+	scene->RenderWithOutline(shaderList[SHADER_OUTLINE], projectionMatrix, uiWidth, uiHeight);
 
 
 	// Render flashlight last (to be in front of all objects)
@@ -626,40 +634,49 @@ void HandleKeyboardInput(float deltaTime, Scene* currentScene) {
 
 	if (mainWindow.getKeys()[GLFW_KEY_1]) {
 		player->getInventory()->SetCurrentItem(0);
+		mainWindow.getKeys()[GLFW_KEY_1] = false;
 	}
 	if (mainWindow.getKeys()[GLFW_KEY_2]) {
 		player->getInventory()->SetCurrentItem(1);
+		mainWindow.getKeys()[GLFW_KEY_2] = false;
 	}
 	if (mainWindow.getKeys()[GLFW_KEY_3]) {
 		player->getInventory()->SetCurrentItem(2);
+		mainWindow.getKeys()[GLFW_KEY_3] = false;
 	}
 	if (mainWindow.getKeys()[GLFW_KEY_4]) {
 		player->getInventory()->SetCurrentItem(3);
+		mainWindow.getKeys()[GLFW_KEY_4] = false;
 	}
 	if (mainWindow.getKeys()[GLFW_KEY_5]) {
 		player->getInventory()->SetCurrentItem(4);
+		mainWindow.getKeys()[GLFW_KEY_5] = false;
 	}
 	if (mainWindow.getKeys()[GLFW_KEY_6]) {
 		player->getInventory()->SetCurrentItem(5);
+		mainWindow.getKeys()[GLFW_KEY_6] = false;
 	}
 	if (mainWindow.getKeys()[GLFW_KEY_7]) {
 		player->getInventory()->SetCurrentItem(6);
+		mainWindow.getKeys()[GLFW_KEY_7] = false;
 	}
 	if (mainWindow.getKeys()[GLFW_KEY_8]) {
 		player->getInventory()->SetCurrentItem(7);
+		mainWindow.getKeys()[GLFW_KEY_8] = false;
 	}
 	if (mainWindow.getKeys()[GLFW_KEY_9]) {
 		player->getInventory()->SetCurrentItem(8);
+		mainWindow.getKeys()[GLFW_KEY_9] = false;
 	}
 
 
 	double currentScrollY = mainWindow.getScrollY();
 	if (currentScrollY != 0.0) {
 		if (currentScrollY > 0.0) {
-			player->getInventory()->ChangeCurrentItem(1.0);
+			player->getInventory()->ChangeCurrentItem(1);
 		}
 		else {
-			player->getInventory()->ChangeCurrentItem(-1.0);
+			player->getInventory()->ChangeCurrentItem(-1);
 		}
 	}
 
@@ -681,10 +698,10 @@ void DrawInventory() {
 	glDisable(GL_STENCIL_TEST);
 	glDepthMask(GL_FALSE);
 	std::vector<Item> inventory = player->getInventory()->GetItems();
-	float startingX = 30.0f;
-	float offsetY = HEIGHT - 100.0f;
-	float imageSize = 96.0f;
-	float spacing = imageSize + 10.0f;
+	float startingX = 30.0f ;
+	float offsetY = uiHeight - 100.0f;
+	float imageSize = 64.0 ;
+	float spacing = imageSize + 15.0f;
 
 	for(int i = 0 ; i < player->getInventory()->GetMaxItems(); i++) {
 		float spritePosX = startingX + i * spacing;
@@ -710,7 +727,7 @@ void DrawInventory() {
 		float spriteCenterX = spritePosX + imageSize / 2.0f;
 		float textWidth = textRenderer->GetTextWidth(item.title);
 		float textStartX = spriteCenterX - (textWidth / 2.0f);
-		float textPosY = HEIGHT - offsetY - imageSize - 15.0f;
+		float textPosY = uiHeight - offsetY - imageSize - 15.0f;
 		textRenderer->RenderText(item.title, textStartX, textPosY, 1.0f, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 		i++;
 	}
