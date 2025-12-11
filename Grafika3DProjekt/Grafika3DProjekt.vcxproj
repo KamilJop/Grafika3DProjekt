@@ -143,6 +143,8 @@
     <ClCompile Include="..\External Libs\IMGUI\imgui_impl_opengl3.cpp" />
     <ClCompile Include="..\External Libs\IMGUI\imgui_tables.cpp" />
     <ClCompile Include="..\External Libs\IMGUI\imgui_widgets.cpp" />
+    <ClCompile Include="src\Entities\BookshelfPuzzle.cpp" />
+    <ClCompile Include="src\Entities\Book.cpp" />
     <ClCompile Include="src\Entities\Radio.cpp" />
     <ClCompile Include="src\Systems\SpriteRenderer.cpp" />
     <ClCompile Include="src\Core\Inventory.cpp" />
@@ -181,6 +183,8 @@
     <ClInclude Include="..\External Libs\IMGUI\imstb_rectpack.h" />
     <ClInclude Include="..\External Libs\IMGUI\imstb_textedit.h" />
     <ClInclude Include="..\External Libs\IMGUI\imstb_truetype.h" />
+    <ClInclude Include="src\Entities\BookshelfPuzzle.h" />
+    <ClInclude Include="src\Entities\Book.h" />
     <ClInclude Include="src\Entities\Radio.h" />
     <ClInclude Include="src\Systems\SpriteRenderer.h" />
     <ClInclude Include="src\Core\Inventory.h" />

@@ -31,7 +31,8 @@
 #include "Entities/Key.h"
 #include "Systems/SpriteRenderer.h"
 #include "Entities/Radio.h"
-
+#include "Entities/Book.h"
+#include "Entities/BookshelfPuzzle.h"
 
 enum ShaderTypes
 {
@@ -114,7 +115,15 @@ Entity* doorWallRoom1UpEntity;
 Door* doorsRoom1Entity;
 
 // Room 1 interior objects
-Entity* bookshelfEntity;
+BookshelfPuzzle* bookshelfEntity;
+Book* brownBookEntity;
+Book* greenBookEntity;
+Book* orangeBookEntity;
+Book* purpleBookEntity;
+Book* blueBookEntity;
+Book* redBookEntity;
+Book* yellowBookEntity;
+Book* greyBookEntity;
 
 // Light source
 DirectionalLight* mainLight;
@@ -142,6 +151,15 @@ Model doorsRoom1Model;
 
 // Room 1 interior object models
 Model bookshelfModel;
+Model brownBookModel;
+Model greenBookModel;
+Model orangeBookModel;
+Model purpleBookModel;
+Model blueBookModel;
+Model redBookModel;
+Model yellowBookModel;
+Model greyBookModel;
+
 
 // Create player
 Player* player;
@@ -367,6 +385,15 @@ Scene* createMainScene(Camera * camera) {
 
 	// Room 1 interior object models
 	bookshelfModel.LoadModel("Models/bookshelf.obj");
+	brownBookModel.LoadModel("Models/book.obj");
+	greenBookModel.LoadModel("Models/greenBook.obj");
+	orangeBookModel.LoadModel("Models/orangeBook.obj");
+	purpleBookModel.LoadModel("Models/purpleBook.obj");
+	blueBookModel.LoadModel("Models/blueBook.obj");
+	redBookModel.LoadModel("Models/redBook.obj");
+	yellowBookModel.LoadModel("Models/yellowBook.obj");
+	greyBookModel.LoadModel("Models/greyBook.obj");
+
 	/*sculpture.LoadModel("Models/rzezba.obj");*/
 
 
@@ -379,7 +406,7 @@ Scene* createMainScene(Camera * camera) {
 	paintingEntity->setTitle("Mieszko I");
 	flashlightEntity->setCastsShadow(false);
 	flashlightEntity->setTitle("Flashlight");
-	keyEntity = new Key(&keyModel, glm::vec3(2.0f, 0.0f, -4.0f), glm::vec3(90.0f,0.0f,0.0f), glm::vec3(0.75f), "mainKey", keySprite, true);
+	keyEntity = new Key(&keyModel, glm::vec3(1.0f, 1.0f, -2.0f), glm::vec3(90.0f,0.0f,0.0f), glm::vec3(0.75f), "mainKey", keySprite, true);
 	keyEntity->setTitle("Key");
 	keyEntity->setColissions(false);
 	radioEntity = new Radio(&radioModel, glm::vec3(-4.0f, 0.0f, -3.0f), glm::vec3(0.0f), glm::vec3(4.0f), true);
@@ -393,10 +420,36 @@ Scene* createMainScene(Camera * camera) {
 	doorWallRoom1LeftEntity = new Entity(&doorWallRoom1LeftModel, glm::vec3(-7.0f, -0.0f, 1.0f), glm::vec3(0.0f, -90.0f, 0.0f), glm::vec3(1.8f));	
 	doorWallRoom1UpEntity = new Entity(&doorWallRoom1UpModel, glm::vec3(-7.0f, -0.0f, 1.0f), glm::vec3(0.0f, -90.0f, 0.0f), glm::vec3(1.8f));
 	doorsRoom1Entity = new Door(&doorsRoom1Model, glm::vec3(-4.0f, 0.0f, 1.0f), glm::vec3(0.0f,0.0f,0.0f), glm::vec3(1.8f), "Doors", framuga, "finalExitKey");
-	doorsRoom1Entity->setLocked(true);
+	doorsRoom1Entity->setLocked(false);
 
-	bookshelfEntity = new Entity(&bookshelfModel, glm::vec3(1.0f, 0.0f, -7.5f), glm::vec3(0.0f), glm::vec3(1.5f), true);
-	bookshelfEntity->setTitle("Bookshelf");
+	bookshelfEntity = new BookshelfPuzzle(&bookshelfModel, glm::vec3(1.0f, 0.0f, -7.5f), glm::vec3(0.0f), glm::vec3(1.5f));
+
+	redBookEntity = new Book(&redBookModel, glm::vec3(0.42f, 1.54f, -7.3f), glm::vec3(0.0f, 0.0f, 90.0f), glm::vec3(1.4f), "redBook", true);
+	redBookEntity->setTitle("Red Book");
+	redBookEntity->setColissions(false);
+	greyBookEntity = new Book(&greyBookModel, glm::vec3(0.48f, 1.54f, -7.3f), glm::vec3(0.0f, 0.0f, 90.0f), glm::vec3(1.4f), "greyBook", true);
+	greyBookEntity->setTitle("Grey Book");
+	greyBookEntity->setColissions(false);
+	yellowBookEntity = new Book(&yellowBookModel, glm::vec3(0.54f, 1.54f, -7.3f), glm::vec3(0.0f, 0.0f, 90.0f), glm::vec3(1.4f), "yellowBook", true);
+	yellowBookEntity->setTitle("Yellow Book");
+	yellowBookEntity->setColissions(false);
+	brownBookEntity = new Book(&brownBookModel, glm::vec3(0.6f, 1.54f, -7.3f), glm::vec3(0.0f, 0.0f, 90.0f), glm::vec3(1.4f), "brownBook", true);
+	brownBookEntity->setTitle("Brown Book");
+	brownBookEntity->setColissions(false);
+	greenBookEntity = new Book(&greenBookModel, glm::vec3(0.66f, 1.54f, -7.3f), glm::vec3(0.0f, 0.0f, 90.0f), glm::vec3(1.4f), "greenBook", true);
+	greenBookEntity->setTitle("Green Book");
+	greenBookEntity->setColissions(false);
+	orangeBookEntity = new Book(&orangeBookModel, glm::vec3(0.72f, 1.54f, -7.3f), glm::vec3(0.0f, 0.0f, 90.0f), glm::vec3(1.4f), "orangeBook", true);
+	orangeBookEntity->setTitle("Orange Book");
+	orangeBookEntity->setColissions(false);
+	purpleBookEntity = new Book(&purpleBookModel, glm::vec3(0.78f, 1.54f, -7.3f), glm::vec3(0.0f, 0.0f, 90.0f), glm::vec3(1.4f), "purpleBook", true);
+	purpleBookEntity->setTitle("Purple Book");
+	purpleBookEntity->setColissions(false);
+	blueBookEntity = new Book(&blueBookModel, glm::vec3(0.84f, 1.54f, -7.3f), glm::vec3(0.0f, 0.0f, 90.0f), glm::vec3(1.4f), "blueBook", true);
+	blueBookEntity->setTitle("Blue Book");
+	blueBookEntity->setColissions(false);
+
+
 
 	/*sculptureEntity = new Entity(&sculpture, lessShinyMaterial, glm::vec3(-10.0f, -1.0f, -4.0f), glm::vec3(0.0f, 30.0f, 0.0f), glm::vec3(4.0f));
 	sculptureEntity->setTitle("Sculpture");*/
@@ -448,13 +501,22 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(doorWallRoom1UpEntity);
 	scene->AddEntity(doorsRoom1Entity);
 	scene->AddEntity(bookshelfEntity);
+	scene->AddEntity(brownBookEntity);
+	scene->AddEntity(greenBookEntity);
+	scene->AddEntity(orangeBookEntity);
+	scene->AddEntity(purpleBookEntity);
+	scene->AddEntity(blueBookEntity);
+	scene->AddEntity(redBookEntity);
+	scene->AddEntity(yellowBookEntity);
+	scene->AddEntity(greyBookEntity);
 
 
-	//scene->AddEntity(doorEntity);
+
+	/*scene->AddEntity(doorEntity);*/
 	scene->AddEntity(flashlightEntity);
-	//scene->AddEntity(framuga);
+	/*scene->AddEntity(framuga);*/
 	scene->AddEntity(paintingEntity);
-	scene->AddEntity(keyEntity);
+	//scene->AddEntity(keyEntity);
 	scene->AddEntity(radioEntity);
 
 
@@ -568,7 +630,7 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 	glCullFace(GL_FRONT);
 
 	shaderList[SHADER_OUTLINE]->UseShader();
-	float outline = 0.0125f;
+	float outline = 0.0075f;
 	shaderList[SHADER_OUTLINE]->setFloat("outline", outline);
 	shaderList[SHADER_OUTLINE]->setVec3("outlineColor", glm::vec3(config.outlineColor[0],config.outlineColor[1],config.outlineColor[2]));
 	scene->RenderWithOutline(shaderList[SHADER_OUTLINE], projectionMatrix, uiWidth, uiHeight);

@@ -1,0 +1,24 @@
+# Blender 5.0.0 MTL File: 'ksiazka.blend'
+# www.blender.org
+
+newmtl 08_-_Default
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:/jkrss_08 - Default_BaseColor.jpg
+map_Ns C:/jkrss_08 - Default_Roughness.jpg
+map_Bump -bm 1.000000 C:/jkrss_08 - Default_Normal.jpg
+
+newmtl 09_-_Default
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:/orangeBook.png
+map_Ns C:/jkrss_09_-_Default_Roughness.jpg
+map_Bump -bm 1.000000 C:/jkrss_09_-_Default_Normal.jpg
