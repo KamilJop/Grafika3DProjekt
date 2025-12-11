@@ -287,9 +287,9 @@ int main()
 		FlashlightShadowMapPass();
 
 		// Shadow map for point lights
-		for (int i = 0; i < scene->pointLights.size(); i++)
+		for (int i = 0; i < scene->getPointLights().size(); i++)
 		{
-			OmniShadowMapPass(scene->pointLights[i]);
+			OmniShadowMapPass(scene->getPointLights()[i]);
 		}
 
 		// Render scene pass
@@ -534,7 +534,7 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 	glStencilMask(0xFF);
 	glCullFace(GL_BACK);
 	glDisable(GL_STENCIL_TEST);
-	if (player->heldEntity) {
+	if (player->getHeldEntity()) {
 		scene->RenderHeldEntity(shaderList[SHADER_DEFAULT], projectionMatrix);
 	}
 }
@@ -558,8 +558,8 @@ void HandleKeyboardInput(float deltaTime, Scene* currentScene) {
 		return;
 	}
 
-	float speed = camera.MovementSpeed;
-	if (player->isCrouching)
+	float speed = camera.getMovementSpeed();
+	if (player->getCrouching())
 	{
 		speed *= 0.3f;
 	}
@@ -573,26 +573,26 @@ void HandleKeyboardInput(float deltaTime, Scene* currentScene) {
 	right = glm::normalize(right);
 
 	bool isMoving = false;
-	player->velocity.x = 0.0f;
-	player->velocity.z = 0.0f;
+	player->setVelocityX(0.0f);
+	player->setVelocityZ(0.0f);
 	if (mainWindow.getKeys()[GLFW_KEY_W])
 	{
-		player->velocity += front * speed;
+		player->setVelocity(player->getVelocity() += front * speed);
 		isMoving = true;
 	}
 	if (mainWindow.getKeys()[GLFW_KEY_S])
 	{
-		player->velocity -= front * speed;
+		player->setVelocity(player->getVelocity() -= front * speed);
 		isMoving = true;
 	}
 	if (mainWindow.getKeys()[GLFW_KEY_A])
 	{
-		player->velocity -= right * speed;
+		player->setVelocity(player->getVelocity() -= right * speed);
 		isMoving = true;
 	}
 	if (mainWindow.getKeys()[GLFW_KEY_D])
 	{
-		player->velocity += right * speed;
+		player->setVelocity(player->getVelocity() += right * speed);
 		isMoving = true;
 	}
 
@@ -632,11 +632,11 @@ void HandleKeyboardInput(float deltaTime, Scene* currentScene) {
 		player->Crouch(false);
 	}
 	if (isMoving) {
-		player->walkTimer += deltaTime;
+		player->setWalkTimer(player->getWalkTimer() + deltaTime);
 	}
 	else {
 		// TODO smooth reset
-		player->walkTimer = 0.0f;
+		player->setWalkTimer(0.0f);
 	}
 
 	if (mainWindow.getKeys()[GLFW_KEY_1]) {

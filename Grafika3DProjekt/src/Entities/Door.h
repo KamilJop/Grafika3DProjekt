@@ -7,6 +7,15 @@
 class Door : public Entity
 {
 public:
+
+
+
+	Door(Model* model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, std::string name, Entity* frame, std::string keyTag = "No needed",  bool interaction = true);
+	~Door();
+	void setLocked(bool state) { isLocked = state; }
+	void Interact(Inventory* playerInventory) override ;
+	void Update(float deltaTime) override;
+private:
 	bool isOpen;
 	bool isAnimating;
 	bool isTryingToOpen;
@@ -22,12 +31,6 @@ public:
 	std::string closingSoundName = "door_closing";
 	std::string lockedSoundName = "door_locked";
 	std::string unlockingSoundName = "door_unlocking";
-
 	float animCounter = 0.0;
-	Door(Model* model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, std::string name, Entity* frame, std::string keyTag = "No needed",  bool interaction = true);
-	~Door();
-	void setLocked(bool state) { isLocked = state; }
-	void Interact(Inventory* playerInventory) override ;
-	void Update(float deltaTime) override;
 };
 

@@ -74,15 +74,15 @@ void Scene::Update(float deltaTime)
 
 	if (flashLight && player->getFlashlightState())
 	{
-		if (player->walkTimer > 0.0f)
+		if (player->getWalkTimer() > 0.0f)
 		{
 			float bobFrequency = 10.0f;
 			float bobAmountX = 0.025f;
 			float bobAmountY = 0.015f;
-			float bobX = cos(player->walkTimer * bobFrequency / 2.0f) * bobAmountX;
-			float bobY = sin(player->walkTimer * bobFrequency) * bobAmountY;
-			finalPos += camera->Right * bobX;
-			finalPos += camera->Up * bobY;
+			float bobX = cos(player->getWalkTimer() * bobFrequency / 2.0f) * bobAmountX;
+			float bobY = sin(player->getWalkTimer() * bobFrequency) * bobAmountY;
+			finalPos += camera->getCameraRight() * bobX;
+			finalPos += camera->getCameraUp() * bobY;
 		}
 
 		glm::vec3 lightSourcePos = finalPos + (camFront * 0.3f);
@@ -96,7 +96,7 @@ void Scene::Update(float deltaTime)
 	for (auto& entity : entities)
 	{
 		entity->Update(deltaTime);
-		if (entity->shouldGetDestroyed) {
+		if (entity->getShouldGetDestroyed()) {
 			auto it = std::find(entities.begin(), entities.end(), entity);
 			if (it != entities.end()) {
 				delete* it;
@@ -150,9 +150,9 @@ void Scene::RenderLogic(Shader* shader, glm::mat4 projection)
 
 void Scene::RenderTooltip(Entity* selectedEntity, int w, int h)
 {
-	float offset = textRenderer->GetTextWidth(selectedEntity->title) / 2.0f;
+	float offset = textRenderer->GetTextWidth(selectedEntity->getTitle()) / 2.0f;
 
-	textRenderer->RenderText( selectedEntity->title, w/2 - offset, h - 50.0f, 1.0f, glm::vec4(config.highlightColor[0],config.highlightColor[1],config.highlightColor[2],1.0f));
+	textRenderer->RenderText( selectedEntity->getTitle(), w / 2 - offset, h - 50.0f, 1.0f, glm::vec4(config.highlightColor[0], config.highlightColor[1], config.highlightColor[2], 1.0f));
 }
 
 
@@ -180,8 +180,8 @@ void Scene::RenderFlashlightEntity(Shader* shader, glm::mat4 projection)
 void Scene::RenderHeldEntity(Shader* shader, glm::mat4 projection)
 {
 	RenderLogic(shader, projection);
-	Entity* heldEntity = player->heldEntity;
-	if (heldEntity->entityModel != nullptr)
+	Entity* heldEntity = player->getHeldEntity();
+	if (heldEntity->getModel() != nullptr)
 	{
 		if (heldEntity->getTitle() == "Flashlight") return;
 		glClear(GL_DEPTH_BUFFER_BIT);
