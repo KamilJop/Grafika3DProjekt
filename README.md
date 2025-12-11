@@ -5,8 +5,8 @@
 [![License](https://img.shields.io/badge/license-MIT-green.svg)]()
 
 **3D Horror Escape Room** is a first-person puzzle and exploration game built on a custom 3D rendering engine.
-The player navigates a dark environment, solves puzzles, and attempts to escape using a flashlight as their main tool.
-The project focuses on atmospheric rendering, advanced lighting, and interactive gameplay systems.
+The player navigates a dark environment, solves environmental puzzles, and manages an inventory system to escape.
+The project focuses on atmospheric rendering, advanced lighting, 3D spatial audio, and interactive gameplay systems.
 
 Author: **Kamil Jop**
 
@@ -15,8 +15,8 @@ Author: **Kamil Jop**
 ## Important Notice
 
 This project is currently a **Work in Progress**.
-While assets (models, textures, shaders) are included in the repository, external libraries
-(**GLFW**, **GLAD**, **GLM**, **Assimp**, **FreeType**, **Dear ImGui**) must be installed and linked manually
+While assets (models, textures, shaders, audio) are included in the repository, external libraries
+(**GLFW**, **GLAD**, **GLM**, **Assimp**, **FreeType**, **Dear ImGui**, **SoLoud**) must be installed and linked manually
 (CMake or Visual Studio project configuration).
 
 ---
@@ -33,37 +33,50 @@ While assets (models, textures, shaders) are included in the repository, externa
 # Features
 
 ## Core Engine & Rendering
-- **Blinn–Phong lighting model** supporting:
-  - Directional lights
-  - Point lights
-  - Spotlights (Flashlight)
-- **Shadow Mapping**:
+- **Blinn–Phong Lighting Model**:
+  - Directional lights (Sun/Moon)
+  - Point lights (Lamps, Candles)
+  - Dynamic Spotlights (Flashlight)
+- **Advanced Shadows**:
   - Orthographic shadow maps for directional lights
-  - Omni-directional cube-map shadows using geometry shaders
+  - **Omni-directional cube-map shadows** for point lights (Geometry Shaders)
 - **Surface Detail**:
-  - Normal Mapping
+  - Normal Mapping for realistic texture details
   - Steep Parallax Mapping for depth simulation
 - **Post-Processing**:
-  - Object outlining using stencil buffer operations
+  - Object outlining using Stencil Buffer operations
 - **Skybox** using cubemap rendering
 
 ## Gameplay & Mechanics
-- **Escape Room logic**:
-  - Interactive objects (doors, chests) with animated state interpolation
-  - Raycasting-based interaction detection
-- **Flashlight system**:
-  - Dynamic spotlight with “sway” movement simulation
+- **Interaction System**:
+  - Raycasting-based detection for items and interactive objects
+  - Physics-based pick-up system involving "Held Entity" logic
+- **Inventory System**:
+  - Visual HUD with item sprites and active slot selection
+  - **3D Held Items**: Items selected in the inventory are rendered in the player's hand in 3D space
+  - Dynamic notification system for gameplay events
+- **Puzzles**:
+  - Logic-based obstacles (e.g., Door & Key mechanics)
+  - **Bookshelf Puzzle**: Interactive sequencing puzzle requiring specific object manipulation
 - **Physics**:
   - FPS controller (gravity, jump, crouch)
   - Real-time AABB collision detection
 
+## Audio System
+- **3D Spatial Audio** (powered by **SoLoud**):
+  - Sounds attenuate based on distance and position (e.g., door creaks, object movements)
+- **2D UI Sounds**:
+  - Feedback for inventory management and menu interactions
+
 ## System & UI
 - **Configuration Manager**:
-  - Loads resolution, volume, and color settings from `config.txt`
+  - Loads resolution, volume (SFX/Music), and graphics settings from `config.txt`
 - **UI System**:
-  - Dear ImGui for runtime settings, debug options, and pause menu
+  - **Dear ImGui** for pause menu, settings, and debug options
+  - **FreeType** for in-game text rendering (crosshair, subtitles, notifications)
 - **Resource Handling**:
-  - Model loading via Assimp for multiple 3D formats
+  - Model loading via Assimp (.obj, .fbx)
+  - Texture loading via stb_image
 
 ---
 
@@ -71,12 +84,14 @@ While assets (models, textures, shaders) are included in the repository, externa
 
 | Key              | Action                   |
 |------------------|--------------------------|
-| W, A, S, D       | Movement                 |
-| SPACE            | Jump                     |
-| Left SHIFT       | Crouch                   |
-| F                | Toggle Flashlight        |
-| E                | Interact (Door/Chest)    |
-| ESC              | Pause Menu               |
+| **W, A, S, D** | Movement                 |
+| **Mouse** | Look Around              |
+| **SPACE** | Jump                     |
+| **Left SHIFT** | Crouch                   |
+| **F** | Toggle Flashlight        |
+| **E** | Interact / Pick Up Item  |
+| **1-9 / Scroll** | Change Active Item       |
+| **ESC** | Pause Menu               |
 
 ---
 
@@ -84,23 +99,25 @@ While assets (models, textures, shaders) are included in the repository, externa
 
 ## 1. Dependencies
 
-Ensure the following libraries are installed and linked in your IDE/CMake:
+Ensure the following libraries are installed and linked in your IDE (e.g., Visual Studio):
 
-- GLFW
-- GLAD
-- GLM
-- Assimp
-- FreeType
-- Dear ImGui
+- **GLFW** (Windowing and Input)
+- **GLAD** (OpenGL Loader)
+- **GLM** (Mathematics)
+- **Assimp** (Model Loading)
+- **FreeType** (Font Rendering)
+- **Dear ImGui** (UI Interface)
+- **SoLoud** (Audio Engine)
 
 ## 2. Project Structure
 
-Ensure your working directory contains these folders:
+Ensure your working directory contains these folders next to the executable:
 
-- `Shaders/` - Shader source files (.vert, .frag, .geom)
-- `Models/` - 3D models loaded via Assimp (.obj, .fbx, etc.)
-- `Textures/` - Diffuse, normal, and height maps
-
+- `Shaders/` - GLSL source files (.vert, .frag, .geom)
+- `Models/` - 3D models (.obj, .fbx)
+- `Textures/` - Diffuse, normal, height maps, and UI icons
+- `Audio/` - Sound effects and music files
+- `Fonts/` - .ttf font files
 
 ---
 
