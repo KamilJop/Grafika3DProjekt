@@ -30,7 +30,9 @@
 #include "Systems/AudioManager.h"
 #include "Entities/Key.h"
 #include "Systems/SpriteRenderer.h"
-
+#include "Entities/Radio.h"
+#include "Entities/Book.h"
+#include "Entities/BookshelfPuzzle.h"
 
 enum ShaderTypes
 {
@@ -77,6 +79,8 @@ static const char* spriteFragmentShader = "Shaders/spriteShader.frag";
 static const char* brickTexture = "Textures/brick.png";
 static const char* stoneTexture = "Textures/stone.png";
 
+
+
 // Game state
 GameStates gameState = STATE_PLAYING;
 
@@ -92,17 +96,34 @@ UI* gameUI;
 
 // Entity
 Door* doorEntity;
-Entity* floorEntity;
 Entity* xwingEntity;
-Entity* chestEntity;
 Entity* sculptureEntity;
-Entity* testWallEntity;
 Entity* flashlightEntity;
 Entity* framuga;
 Entity* paintingEntity;
 Entity* keyEntity;
-Entity* keyEntity2;
-Entity* keyEntity3;
+Entity* radioEntity;
+
+// Room 1 walls and floor
+Entity* floorRoom1Entity;
+Entity* rightWallRoom1Entity;
+Entity* leftWallRoom1Entity;
+Entity* backWallRoom1Entity;
+Entity* doorWallRoom1RightEntity;
+Entity* doorWallRoom1LeftEntity;
+Entity* doorWallRoom1UpEntity;
+Door* doorsRoom1Entity;
+
+// Room 1 interior objects
+BookshelfPuzzle* bookshelfEntity;
+Book* brownBookEntity;
+Book* greenBookEntity;
+Book* orangeBookEntity;
+Book* purpleBookEntity;
+Book* blueBookEntity;
+Book* redBookEntity;
+Book* yellowBookEntity;
+Book* greyBookEntity;
 
 // Light source
 DirectionalLight* mainLight;
@@ -113,15 +134,32 @@ Flashlight* flashlight;
 
 // Create models
 Model door;
-Model floorModel;
-Model xwing;
-Model chest;
 Model sculpture;
-Model testWall;
 Model flashlightModel;
 Model framugaModel;
 Model paintingModel;
 Model keyModel;
+Model radioModel;
+
+// Room 1 walls and floor models
+Model floorRoom1Model;
+Model fullWallRoom1Model;
+Model doorWallRoom1RightModel;
+Model doorWallRoom1LeftModel;
+Model doorWallRoom1UpModel;
+Model doorsRoom1Model;
+
+// Room 1 interior object models
+Model bookshelfModel;
+Model brownBookModel;
+Model greenBookModel;
+Model orangeBookModel;
+Model purpleBookModel;
+Model blueBookModel;
+Model redBookModel;
+Model yellowBookModel;
+Model greyBookModel;
+
 
 // Create player
 Player* player;
@@ -153,8 +191,6 @@ SpriteRenderer* spriteRenderer;
 
 // Sprites
 Texture* keySprite;
-Texture* keySprite2;
-Texture* keySprite3;
 Texture* itemFrame;
 Texture* selectedItemFrame;
 Texture* flashlightSprite;
@@ -187,6 +223,9 @@ int main()
 	// Create UI
 	gameUI = new UI(mainWindow.getWindow());
 
+	UI::wasPauseMenuOpen = false;
+	UI::isPauseMenuOpen = false;
+
 	// Create Shaders
 	Shader* shader1 = new Shader();
 	shader1->CreateShader(vertexShader, fragmentShader);
@@ -210,12 +249,6 @@ int main()
 
 	keySprite = new Texture("Textures/Icons/door_key.png");
 	keySprite->LoadTextureAlpha();
-
-	keySprite2 = new Texture("Textures/Icons/door_key.png");
-	keySprite2->LoadTextureAlpha();
-
-	keySprite3 = new Texture("Textures/Icons/door_key.png");	
-	keySprite3->LoadTextureAlpha();
 
 	itemFrame = new Texture("Textures/Icons/item_frame.png");
 	itemFrame->LoadTextureAlpha();
@@ -289,9 +322,9 @@ int main()
 		FlashlightShadowMapPass();
 
 		// Shadow map for point lights
-		for (int i = 0; i < scene->pointLights.size(); i++)
+		for (int i = 0; i < scene->getPointLights().size(); i++)
 		{
-			OmniShadowMapPass(scene->pointLights[i]);
+			OmniShadowMapPass(scene->getPointLights()[i]);
 		}
 
 		// Render scene pass
@@ -310,7 +343,17 @@ int main()
 		tooltipRenderer->RenderText("+", (mainWindow.getBufferWidth() / 2.0f) - textWidth, (mainWindow.getBufferHeight() / 2.0f) - 10.0f, 1.0f, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 
 		if(gameState == STATE_PAUSED) {
+			UI::isPauseMenuOpen = true;
 			gameUI->DrawPauseMenu();
+		}
+		else {
+			UI::isPauseMenuOpen = false;
+		}
+
+		if(UI::wasPauseMenuOpen && !UI::isPauseMenuOpen) {
+			printf("config saved\n");
+			config.Save();
+			UI::wasPauseMenuOpen = false;
 		}
 
 		// Swap buffers
@@ -326,13 +369,31 @@ Scene* createMainScene(Camera * camera) {
 
 	// Load Models
 	door.LoadModel("Models/door.obj");
-	floorModel.LoadModel("Models/Cranberry_Doormat.obj");
-	chest.LoadModel("Models/Untitled.obj");
-	testWall.LoadModel("Models/testsciana.obj");
 	flashlightModel.LoadModel("Models/flashlight.obj");
 	framugaModel.LoadModel("Models/framuga.obj");
 	paintingModel.LoadModel("Models/V3TEST.obj");
 	keyModel.LoadModel("Models/Worn_Key.obj");
+	radioModel.LoadModel("Models/radio.obj");
+
+	// Room 1 walls and floor models
+	floorRoom1Model.LoadModel("Models/floorRoom1.obj");
+	fullWallRoom1Model.LoadModel("Models/fullWallRoom1.obj");
+	doorWallRoom1RightModel.LoadModel("Models/doorWallRoom1Right.obj");
+	doorWallRoom1LeftModel.LoadModel("Models/doorWallRoom1Left.obj");
+	doorWallRoom1UpModel.LoadModel("Models/doorWallRoom1Up.obj");
+	doorsRoom1Model.LoadModel("Models/exitDoorsRoom1.obj");
+
+	// Room 1 interior object models
+	bookshelfModel.LoadModel("Models/bookshelf.obj");
+	brownBookModel.LoadModel("Models/book.obj");
+	greenBookModel.LoadModel("Models/greenBook.obj");
+	orangeBookModel.LoadModel("Models/orangeBook.obj");
+	purpleBookModel.LoadModel("Models/purpleBook.obj");
+	blueBookModel.LoadModel("Models/blueBook.obj");
+	redBookModel.LoadModel("Models/redBook.obj");
+	yellowBookModel.LoadModel("Models/yellowBook.obj");
+	greyBookModel.LoadModel("Models/greyBook.obj");
+
 	/*sculpture.LoadModel("Models/rzezba.obj");*/
 
 
@@ -340,24 +401,55 @@ Scene* createMainScene(Camera * camera) {
 	framuga = new Entity(&framugaModel,glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f), glm::vec3(1.41f));
 	doorEntity = new Door(&door, glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f), glm::vec3(1.4f), "Doors", framuga, "mainKey");
 	doorEntity->setLocked(true);
-	floorEntity = new Entity(&floorModel, glm::vec3(0.0f, -0.6f, -3.0f), glm::vec3(0.0f), glm::vec3(0.5f));
-	chestEntity = new Entity(&chest, glm::vec3(2.0f, 0.5f, -4.0f), glm::vec3(0.0f, -45.0f, 0.0f), glm::vec3(1.3f));
-	testWallEntity = new Entity(&testWall, glm::vec3(-2.0f, -0.5f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.3f));
 	flashlightEntity = new Entity(&flashlightModel, glm::vec3(5.0f,2.0f,-3.0f), glm::vec3(0.0f), glm::vec3(0.03f));
-	paintingEntity = new Entity(&paintingModel,  glm::vec3(-8.0f, 3.0f, -4.0f), glm::vec3(180.0f, 90.0f, 90.0f), glm::vec3(3.0f), true);
+	paintingEntity = new Entity(&paintingModel,  glm::vec3(-4.0f, 2.0f, -8.0f), glm::vec3(180.0f, 90.0f, 90.0f), glm::vec3(2.0f), true);
 	paintingEntity->setTitle("Mieszko I");
 	flashlightEntity->setCastsShadow(false);
 	flashlightEntity->setTitle("Flashlight");
-	keyEntity = new Key(&keyModel, glm::vec3(2.0f, 0.0f, -4.0f), glm::vec3(90.0f,0.0f,0.0f), glm::vec3(0.75f), "mainKey", keySprite, true);
+	keyEntity = new Key(&keyModel, glm::vec3(1.0f, 1.0f, -2.0f), glm::vec3(90.0f,0.0f,0.0f), glm::vec3(0.75f), "mainKey", keySprite, true);
 	keyEntity->setTitle("Key");
 	keyEntity->setColissions(false);
-	keyEntity2 = new Key(&keyModel, glm::vec3(-2.0f, 0.0f, -8.0f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.75f), "chestKey", keySprite2, true);
-	keyEntity2->setTitle("Key2");
-	keyEntity2->setColissions(false);
+	radioEntity = new Radio(&radioModel, glm::vec3(-4.0f, 0.0f, -3.0f), glm::vec3(0.0f), glm::vec3(4.0f), true);
+	radioEntity->setTitle("Radio");
 
-	keyEntity3 = new Key(&keyModel, glm::vec3(10.0f, 0.0f, -5.0f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.75f), "extraKey", keySprite3, true);
-	keyEntity3->setTitle("Key3");
-	keyEntity3->setColissions(false);
+	floorRoom1Entity = new Entity(&floorRoom1Model, glm::vec3(2.5f, 0.0f, 1.0f), glm::vec3(0.0f), glm::vec3(1.5f));
+	rightWallRoom1Entity = new Entity(&fullWallRoom1Model, glm::vec3(2.0f, -0.0f, -8.0f), glm::vec3(0.0f), glm::vec3(1.8f));
+	backWallRoom1Entity = new Entity(&fullWallRoom1Model, glm::vec3(-6.5f, -0.0f, -8.0f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(1.8f));
+	leftWallRoom1Entity = new Entity(&fullWallRoom1Model, glm::vec3(-6.0f, -0.0f, 1.0f), glm::vec3(0.0f, 180.0f, 0.0f), glm::vec3(1.8f));
+	doorWallRoom1RightEntity = new Entity(&doorWallRoom1RightModel, glm::vec3(-7.0f, -0.10, 1.0f), glm::vec3(0.0f, -90.0f, 0.0f), glm::vec3(1.8f));
+	doorWallRoom1LeftEntity = new Entity(&doorWallRoom1LeftModel, glm::vec3(-7.0f, -0.0f, 1.0f), glm::vec3(0.0f, -90.0f, 0.0f), glm::vec3(1.8f));	
+	doorWallRoom1UpEntity = new Entity(&doorWallRoom1UpModel, glm::vec3(-7.0f, -0.0f, 1.0f), glm::vec3(0.0f, -90.0f, 0.0f), glm::vec3(1.8f));
+	doorsRoom1Entity = new Door(&doorsRoom1Model, glm::vec3(-4.0f, 0.0f, 1.0f), glm::vec3(0.0f,0.0f,0.0f), glm::vec3(1.8f), "Doors", framuga, "finalExitKey");
+	doorsRoom1Entity->setLocked(false);
+
+	bookshelfEntity = new BookshelfPuzzle(&bookshelfModel, glm::vec3(1.0f, 0.0f, -7.5f), glm::vec3(0.0f), glm::vec3(1.5f));
+
+	redBookEntity = new Book(&redBookModel, glm::vec3(0.42f, 1.54f, -7.3f), glm::vec3(0.0f, 0.0f, 90.0f), glm::vec3(1.4f), "redBook", true);
+	redBookEntity->setTitle("Red Book");
+	redBookEntity->setColissions(false);
+	greyBookEntity = new Book(&greyBookModel, glm::vec3(0.48f, 1.54f, -7.3f), glm::vec3(0.0f, 0.0f, 90.0f), glm::vec3(1.4f), "greyBook", true);
+	greyBookEntity->setTitle("Grey Book");
+	greyBookEntity->setColissions(false);
+	yellowBookEntity = new Book(&yellowBookModel, glm::vec3(0.54f, 1.54f, -7.3f), glm::vec3(0.0f, 0.0f, 90.0f), glm::vec3(1.4f), "yellowBook", true);
+	yellowBookEntity->setTitle("Yellow Book");
+	yellowBookEntity->setColissions(false);
+	brownBookEntity = new Book(&brownBookModel, glm::vec3(0.6f, 1.54f, -7.3f), glm::vec3(0.0f, 0.0f, 90.0f), glm::vec3(1.4f), "brownBook", true);
+	brownBookEntity->setTitle("Brown Book");
+	brownBookEntity->setColissions(false);
+	greenBookEntity = new Book(&greenBookModel, glm::vec3(0.66f, 1.54f, -7.3f), glm::vec3(0.0f, 0.0f, 90.0f), glm::vec3(1.4f), "greenBook", true);
+	greenBookEntity->setTitle("Green Book");
+	greenBookEntity->setColissions(false);
+	orangeBookEntity = new Book(&orangeBookModel, glm::vec3(0.72f, 1.54f, -7.3f), glm::vec3(0.0f, 0.0f, 90.0f), glm::vec3(1.4f), "orangeBook", true);
+	orangeBookEntity->setTitle("Orange Book");
+	orangeBookEntity->setColissions(false);
+	purpleBookEntity = new Book(&purpleBookModel, glm::vec3(0.78f, 1.54f, -7.3f), glm::vec3(0.0f, 0.0f, 90.0f), glm::vec3(1.4f), "purpleBook", true);
+	purpleBookEntity->setTitle("Purple Book");
+	purpleBookEntity->setColissions(false);
+	blueBookEntity = new Book(&blueBookModel, glm::vec3(0.84f, 1.54f, -7.3f), glm::vec3(0.0f, 0.0f, 90.0f), glm::vec3(1.4f), "blueBook", true);
+	blueBookEntity->setTitle("Blue Book");
+	blueBookEntity->setColissions(false);
+
+
 
 	/*sculptureEntity = new Entity(&sculpture, lessShinyMaterial, glm::vec3(-10.0f, -1.0f, -4.0f), glm::vec3(0.0f, 30.0f, 0.0f), glm::vec3(4.0f));
 	sculptureEntity->setTitle("Sculpture");*/
@@ -388,7 +480,7 @@ Scene* createMainScene(Camera * camera) {
 	pointLight = new PointLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.3f, 0.9f, glm::vec3(-10.0f, 1.0f, -3.0f), 1.0f, 0.09f, 0.032f, 0, 100.0f, 0.01f, 2048.0f, 2048.0f);
 	pointLight2 = new PointLight(glm::vec3(0.0f, 0.0f, 1.0f), 0.25f, 0.9f, glm::vec3(8.0f, 1.5f, -6.0f), 1.0f, 0.12f, 0.062f, 1, 100.0f, 0.01f, 2048.0f, 2048.0f);
 	pointLight3 = new PointLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.25f, 0.9f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.12f, 0.062f, 2, 100.0f, 0.01f, 2048.0f, 2048.0f);
-	flashlight = new Flashlight(glm::vec3(1.0f, 1.0f, 0.85f), 0.001f, 3.2f, camera->getCameraPosition(), 1.0f, 0.07f, 0.017f, camera->getCameraFront(), 25.0f, 32.5f, 2048.0f,2048.0f);
+	flashlight = new Flashlight(glm::vec3(1.0f, 1.0f, 0.85f), 0.001f, 1.2f, camera->getCameraPosition(), 1.0f, 0.07f, 0.017f, camera->getCameraFront(), 25.0f, 32.5f, 2048.0f,2048.0f);
 
 	// Create scene
 	scene = new Scene(camera, player, tooltipRenderer);
@@ -400,16 +492,34 @@ Scene* createMainScene(Camera * camera) {
 	scene->SetDirectionalLight(mainLight);
 	scene->SetFlashlight(flashlight);
 
-	scene->AddEntity(doorEntity);
-	scene->AddEntity(floorEntity);
-	scene->AddEntity(chestEntity);
-	scene->AddEntity(testWallEntity);
+	scene->AddEntity(floorRoom1Entity);
+	scene->AddEntity(rightWallRoom1Entity);
+	scene->AddEntity(backWallRoom1Entity);
+	scene->AddEntity(leftWallRoom1Entity);
+	scene->AddEntity(doorWallRoom1RightEntity);
+	scene->AddEntity(doorWallRoom1LeftEntity);
+	scene->AddEntity(doorWallRoom1UpEntity);
+	scene->AddEntity(doorsRoom1Entity);
+	scene->AddEntity(bookshelfEntity);
+	scene->AddEntity(brownBookEntity);
+	scene->AddEntity(greenBookEntity);
+	scene->AddEntity(orangeBookEntity);
+	scene->AddEntity(purpleBookEntity);
+	scene->AddEntity(blueBookEntity);
+	scene->AddEntity(redBookEntity);
+	scene->AddEntity(yellowBookEntity);
+	scene->AddEntity(greyBookEntity);
+
+
+
+	/*scene->AddEntity(doorEntity);*/
 	scene->AddEntity(flashlightEntity);
-	scene->AddEntity(framuga);
+	/*scene->AddEntity(framuga);*/
 	scene->AddEntity(paintingEntity);
-	scene->AddEntity(keyEntity);
-	scene->AddEntity(keyEntity2);
-	scene->AddEntity(keyEntity3);
+	//scene->AddEntity(keyEntity);
+	scene->AddEntity(radioEntity);
+
+
 	/*scene->AddEntity(sculptureEntity);*/
 
 	return scene;
@@ -520,7 +630,7 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 	glCullFace(GL_FRONT);
 
 	shaderList[SHADER_OUTLINE]->UseShader();
-	float outline = 0.0125f;
+	float outline = 0.0075f;
 	shaderList[SHADER_OUTLINE]->setFloat("outline", outline);
 	shaderList[SHADER_OUTLINE]->setVec3("outlineColor", glm::vec3(config.outlineColor[0],config.outlineColor[1],config.outlineColor[2]));
 	scene->RenderWithOutline(shaderList[SHADER_OUTLINE], projectionMatrix, uiWidth, uiHeight);
@@ -531,7 +641,7 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 	glStencilMask(0xFF);
 	glCullFace(GL_BACK);
 	glDisable(GL_STENCIL_TEST);
-	if (player->heldEntity) {
+	if (player->getHeldEntity()) {
 		scene->RenderHeldEntity(shaderList[SHADER_DEFAULT], projectionMatrix);
 	}
 }
@@ -555,8 +665,8 @@ void HandleKeyboardInput(float deltaTime, Scene* currentScene) {
 		return;
 	}
 
-	float speed = camera.MovementSpeed;
-	if (player->isCrouching)
+	float speed = camera.getMovementSpeed();
+	if (player->getCrouching())
 	{
 		speed *= 0.3f;
 	}
@@ -570,26 +680,26 @@ void HandleKeyboardInput(float deltaTime, Scene* currentScene) {
 	right = glm::normalize(right);
 
 	bool isMoving = false;
-	player->velocity.x = 0.0f;
-	player->velocity.z = 0.0f;
+	player->setVelocityX(0.0f);
+	player->setVelocityZ(0.0f);
 	if (mainWindow.getKeys()[GLFW_KEY_W])
 	{
-		player->velocity += front * speed;
+		player->setVelocity(player->getVelocity() += front * speed);
 		isMoving = true;
 	}
 	if (mainWindow.getKeys()[GLFW_KEY_S])
 	{
-		player->velocity -= front * speed;
+		player->setVelocity(player->getVelocity() -= front * speed);
 		isMoving = true;
 	}
 	if (mainWindow.getKeys()[GLFW_KEY_A])
 	{
-		player->velocity -= right * speed;
+		player->setVelocity(player->getVelocity() -= right * speed);
 		isMoving = true;
 	}
 	if (mainWindow.getKeys()[GLFW_KEY_D])
 	{
-		player->velocity += right * speed;
+		player->setVelocity(player->getVelocity() += right * speed);
 		isMoving = true;
 	}
 
@@ -629,11 +739,11 @@ void HandleKeyboardInput(float deltaTime, Scene* currentScene) {
 		player->Crouch(false);
 	}
 	if (isMoving) {
-		player->walkTimer += deltaTime;
+		player->setWalkTimer(player->getWalkTimer() + deltaTime);
 	}
 	else {
 		// TODO smooth reset
-		player->walkTimer = 0.0f;
+		player->setWalkTimer(0.0f);
 	}
 
 	if (mainWindow.getKeys()[GLFW_KEY_1]) {

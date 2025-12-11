@@ -115,11 +115,10 @@ void Player::UpdatePhysics(float deltaTime, std::vector<Entity*>& entities)
 
 
 	float targetHeight = isCrouching ? 1.0f : 1.5f;
-	float currentHeight = camera->Position.y - position.y;
+	float currentHeight = camera->getCameraPosition().y - position.y;
 	float heightDiff = targetHeight - currentHeight;
 	float newHeight = glm::mix(currentHeight, targetHeight, 10.0f * deltaTime);
-
-	camera->Position = position + glm::vec3(0.0f, newHeight, 0.0f);
+	camera->setPosition(position + glm::vec3(0.0f, newHeight, 0.0f));
 }
 
 void Player::Jump()
@@ -152,12 +151,12 @@ void Player::updateHeldEntityPosition(const glm::vec3& finalPos)
 		float bobAmountY = 0.005f;
 		float bobX = cos(walkTimer * bobFrequency / 2.0f) * bobAmountX;
 		float bobY = sin(walkTimer * bobFrequency) * bobAmountY;
-		finalPosAdjusted += camera->Right * bobX;
-		finalPosAdjusted += camera->Up * bobY;
+		finalPosAdjusted += camera->getCameraRight() * bobX;
+		finalPosAdjusted += camera->getCameraUp() * bobY;
 	}
 	heldEntity->setPosition(finalPosAdjusted);
-	float pitch = camera->Pitch;
-	float yaw = camera->Yaw;
+	float pitch = camera->getPitch();
+	float yaw = camera->getYaw();
 	heldEntity->setRotation(glm::vec3(-pitch, -yaw + 90.0f, 0.0f));
 }
 
@@ -246,6 +245,6 @@ void Player::pickUpEntity(Entity* entity)
 	if (entity->getInteractable())
 	{
 		playerInventory.AddItem(entity->getTag(),entity->getTitle(), entity->getTexture(), entity->getModel(), entity->getScale());
-		entity->shouldGetDestroyed = true;
+		entity->setShouldGetDestroyed(true);
 	}
 }

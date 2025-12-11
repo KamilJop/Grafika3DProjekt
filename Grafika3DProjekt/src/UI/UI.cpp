@@ -1,5 +1,6 @@
 #include "UI.h"
-
+bool UI::wasPauseMenuOpen = false;
+bool UI::isPauseMenuOpen = false;
 
 UI::UI(GLFWwindow* window)
 {
@@ -30,6 +31,8 @@ void UI :: DrawPauseMenu() {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
+
+	UI::wasPauseMenuOpen = UI::isPauseMenuOpen;
 
 
 	const ImGuiViewport* viewport = ImGui::GetMainViewport();

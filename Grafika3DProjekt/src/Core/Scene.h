@@ -14,14 +14,6 @@
 class Scene
 {
 public:
-	std::vector<Entity*> entities;
-	std::vector<PointLight*> pointLights;
-	DirectionalLight* dirLight;
-	Flashlight* flashLight;
-	Camera* camera;
-	Player* player;
-	TextRenderer* textRenderer;
-	Config& config = Config::getInstance();
 
 	Scene(Camera* cam, Player* play, TextRenderer* renderer);
 	~Scene();
@@ -53,13 +45,21 @@ public:
 	void RenderShadowMap(Shader* shadowShader);
 	void RenderTooltip(Entity* selectedEntity, int w, int h);
 	std::vector<Entity*> getEntities() { return entities; }
+	std::vector<PointLight*> getPointLights() { return pointLights; }
 
 
 
 private:
+	std::vector<Entity*> entities;
+	std::vector<PointLight*> pointLights;
+	DirectionalLight* dirLight;
+	Flashlight* flashLight;
+	Camera* camera;
+	Player* player;
+	TextRenderer* textRenderer;
+	Config& config = Config::getInstance();
 	void RenderLogic(Shader* shader, glm::mat4 projection);
 	Entity* getEntityByTitle(const std::string& title);
-	
 
 };
 
