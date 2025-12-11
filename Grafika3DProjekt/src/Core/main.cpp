@@ -406,7 +406,7 @@ Scene* createMainScene(Camera * camera) {
 	paintingEntity->setTitle("Mieszko I");
 	flashlightEntity->setCastsShadow(false);
 	flashlightEntity->setTitle("Flashlight");
-	keyEntity = new Key(&keyModel, glm::vec3(1.0f, 1.0f, -2.0f), glm::vec3(90.0f,0.0f,0.0f), glm::vec3(0.75f), "mainKey", keySprite, true);
+	keyEntity = new Key(&keyModel, glm::vec3(1.0f, 0.0f, -2.0f), glm::vec3(90.0f,0.0f,0.0f), glm::vec3(0.75f), "mainKey", keySprite, true);
 	keyEntity->setTitle("Key");
 	keyEntity->setColissions(false);
 	radioEntity = new Radio(&radioModel, glm::vec3(-4.0f, 0.0f, -3.0f), glm::vec3(0.0f), glm::vec3(4.0f), true);
@@ -512,11 +512,11 @@ Scene* createMainScene(Camera * camera) {
 
 
 
-	/*scene->AddEntity(doorEntity);*/
+	scene->AddEntity(doorEntity);
 	scene->AddEntity(flashlightEntity);
-	/*scene->AddEntity(framuga);*/
+	scene->AddEntity(framuga);
 	scene->AddEntity(paintingEntity);
-	//scene->AddEntity(keyEntity);
+	scene->AddEntity(keyEntity);
 	scene->AddEntity(radioEntity);
 
 

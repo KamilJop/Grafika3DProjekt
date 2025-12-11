@@ -23,14 +23,22 @@ While assets (models, textures, shaders, audio) are included in the repository, 
 
 ## Table of Contents
 
+- [Gameplay Preview](#gameplay-preview)
 - [Features](#features)
 - [Controls](#controls)
 - [Setup](#setup)
 - [License](#license)
 
 ---
+## Gameplay Preview
+A glimpse into the puzzle mechanics and interaction system.
+<p align="center">
+  <img src="Footage/gif_bookshelf.gif" width="40%" title="Gameplay Demo">
+  &emsp; &emsp; <img src="Footage/gif_doors.gif" width="40%" title="Gameplay Demo2">
+</p>
+<p align="center">Note: GIF quality reduced.</p>
 
-# Features
+## Features
 
 ## Core Engine & Rendering
 - **Blinn–Phong Lighting Model**:
