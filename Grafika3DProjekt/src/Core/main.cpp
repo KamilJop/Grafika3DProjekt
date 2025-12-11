@@ -95,16 +95,26 @@ UI* gameUI;
 
 // Entity
 Door* doorEntity;
-Entity* floorEntity;
 Entity* xwingEntity;
-Entity* chestEntity;
 Entity* sculptureEntity;
-Entity* testWallEntity;
 Entity* flashlightEntity;
 Entity* framuga;
 Entity* paintingEntity;
 Entity* keyEntity;
 Entity* radioEntity;
+
+// Room 1 walls and floor
+Entity* floorRoom1Entity;
+Entity* rightWallRoom1Entity;
+Entity* leftWallRoom1Entity;
+Entity* backWallRoom1Entity;
+Entity* doorWallRoom1RightEntity;
+Entity* doorWallRoom1LeftEntity;
+Entity* doorWallRoom1UpEntity;
+Door* doorsRoom1Entity;
+
+// Room 1 interior objects
+Entity* bookshelfEntity;
 
 // Light source
 DirectionalLight* mainLight;
@@ -115,16 +125,23 @@ Flashlight* flashlight;
 
 // Create models
 Model door;
-Model floorModel;
-Model xwing;
-Model chest;
 Model sculpture;
-Model testWall;
 Model flashlightModel;
 Model framugaModel;
 Model paintingModel;
 Model keyModel;
 Model radioModel;
+
+// Room 1 walls and floor models
+Model floorRoom1Model;
+Model fullWallRoom1Model;
+Model doorWallRoom1RightModel;
+Model doorWallRoom1LeftModel;
+Model doorWallRoom1UpModel;
+Model doorsRoom1Model;
+
+// Room 1 interior object models
+Model bookshelfModel;
 
 // Create player
 Player* player;
@@ -334,14 +351,22 @@ Scene* createMainScene(Camera * camera) {
 
 	// Load Models
 	door.LoadModel("Models/door.obj");
-	floorModel.LoadModel("Models/Cranberry_Doormat.obj");
-	chest.LoadModel("Models/Untitled.obj");
-	testWall.LoadModel("Models/testsciana.obj");
 	flashlightModel.LoadModel("Models/flashlight.obj");
 	framugaModel.LoadModel("Models/framuga.obj");
 	paintingModel.LoadModel("Models/V3TEST.obj");
 	keyModel.LoadModel("Models/Worn_Key.obj");
 	radioModel.LoadModel("Models/radio.obj");
+
+	// Room 1 walls and floor models
+	floorRoom1Model.LoadModel("Models/floorRoom1.obj");
+	fullWallRoom1Model.LoadModel("Models/fullWallRoom1.obj");
+	doorWallRoom1RightModel.LoadModel("Models/doorWallRoom1Right.obj");
+	doorWallRoom1LeftModel.LoadModel("Models/doorWallRoom1Left.obj");
+	doorWallRoom1UpModel.LoadModel("Models/doorWallRoom1Up.obj");
+	doorsRoom1Model.LoadModel("Models/exitDoorsRoom1.obj");
+
+	// Room 1 interior object models
+	bookshelfModel.LoadModel("Models/bookshelf.obj");
 	/*sculpture.LoadModel("Models/rzezba.obj");*/
 
 
@@ -349,11 +374,8 @@ Scene* createMainScene(Camera * camera) {
 	framuga = new Entity(&framugaModel,glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f), glm::vec3(1.41f));
 	doorEntity = new Door(&door, glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f), glm::vec3(1.4f), "Doors", framuga, "mainKey");
 	doorEntity->setLocked(true);
-	floorEntity = new Entity(&floorModel, glm::vec3(0.0f, -0.6f, -3.0f), glm::vec3(0.0f), glm::vec3(0.5f));
-	chestEntity = new Entity(&chest, glm::vec3(2.0f, 0.5f, -4.0f), glm::vec3(0.0f, -45.0f, 0.0f), glm::vec3(1.3f));
-	testWallEntity = new Entity(&testWall, glm::vec3(-2.0f, -0.5f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.3f));
 	flashlightEntity = new Entity(&flashlightModel, glm::vec3(5.0f,2.0f,-3.0f), glm::vec3(0.0f), glm::vec3(0.03f));
-	paintingEntity = new Entity(&paintingModel,  glm::vec3(-8.0f, 3.0f, -4.0f), glm::vec3(180.0f, 90.0f, 90.0f), glm::vec3(3.0f), true);
+	paintingEntity = new Entity(&paintingModel,  glm::vec3(-4.0f, 2.0f, -8.0f), glm::vec3(180.0f, 90.0f, 90.0f), glm::vec3(2.0f), true);
 	paintingEntity->setTitle("Mieszko I");
 	flashlightEntity->setCastsShadow(false);
 	flashlightEntity->setTitle("Flashlight");
@@ -362,6 +384,19 @@ Scene* createMainScene(Camera * camera) {
 	keyEntity->setColissions(false);
 	radioEntity = new Radio(&radioModel, glm::vec3(-4.0f, 0.0f, -3.0f), glm::vec3(0.0f), glm::vec3(4.0f), true);
 	radioEntity->setTitle("Radio");
+
+	floorRoom1Entity = new Entity(&floorRoom1Model, glm::vec3(2.5f, 0.0f, 1.0f), glm::vec3(0.0f), glm::vec3(1.5f));
+	rightWallRoom1Entity = new Entity(&fullWallRoom1Model, glm::vec3(2.0f, -0.0f, -8.0f), glm::vec3(0.0f), glm::vec3(1.8f));
+	backWallRoom1Entity = new Entity(&fullWallRoom1Model, glm::vec3(-6.5f, -0.0f, -8.0f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(1.8f));
+	leftWallRoom1Entity = new Entity(&fullWallRoom1Model, glm::vec3(-6.0f, -0.0f, 1.0f), glm::vec3(0.0f, 180.0f, 0.0f), glm::vec3(1.8f));
+	doorWallRoom1RightEntity = new Entity(&doorWallRoom1RightModel, glm::vec3(-7.0f, -0.10, 1.0f), glm::vec3(0.0f, -90.0f, 0.0f), glm::vec3(1.8f));
+	doorWallRoom1LeftEntity = new Entity(&doorWallRoom1LeftModel, glm::vec3(-7.0f, -0.0f, 1.0f), glm::vec3(0.0f, -90.0f, 0.0f), glm::vec3(1.8f));	
+	doorWallRoom1UpEntity = new Entity(&doorWallRoom1UpModel, glm::vec3(-7.0f, -0.0f, 1.0f), glm::vec3(0.0f, -90.0f, 0.0f), glm::vec3(1.8f));
+	doorsRoom1Entity = new Door(&doorsRoom1Model, glm::vec3(-4.0f, 0.0f, 1.0f), glm::vec3(0.0f,0.0f,0.0f), glm::vec3(1.8f), "Doors", framuga, "finalExitKey");
+	doorsRoom1Entity->setLocked(true);
+
+	bookshelfEntity = new Entity(&bookshelfModel, glm::vec3(1.0f, 0.0f, -7.5f), glm::vec3(0.0f), glm::vec3(1.5f), true);
+	bookshelfEntity->setTitle("Bookshelf");
 
 	/*sculptureEntity = new Entity(&sculpture, lessShinyMaterial, glm::vec3(-10.0f, -1.0f, -4.0f), glm::vec3(0.0f, 30.0f, 0.0f), glm::vec3(4.0f));
 	sculptureEntity->setTitle("Sculpture");*/
@@ -392,7 +427,7 @@ Scene* createMainScene(Camera * camera) {
 	pointLight = new PointLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.3f, 0.9f, glm::vec3(-10.0f, 1.0f, -3.0f), 1.0f, 0.09f, 0.032f, 0, 100.0f, 0.01f, 2048.0f, 2048.0f);
 	pointLight2 = new PointLight(glm::vec3(0.0f, 0.0f, 1.0f), 0.25f, 0.9f, glm::vec3(8.0f, 1.5f, -6.0f), 1.0f, 0.12f, 0.062f, 1, 100.0f, 0.01f, 2048.0f, 2048.0f);
 	pointLight3 = new PointLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.25f, 0.9f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.12f, 0.062f, 2, 100.0f, 0.01f, 2048.0f, 2048.0f);
-	flashlight = new Flashlight(glm::vec3(1.0f, 1.0f, 0.85f), 0.001f, 3.2f, camera->getCameraPosition(), 1.0f, 0.07f, 0.017f, camera->getCameraFront(), 25.0f, 32.5f, 2048.0f,2048.0f);
+	flashlight = new Flashlight(glm::vec3(1.0f, 1.0f, 0.85f), 0.001f, 1.2f, camera->getCameraPosition(), 1.0f, 0.07f, 0.017f, camera->getCameraFront(), 25.0f, 32.5f, 2048.0f,2048.0f);
 
 	// Create scene
 	scene = new Scene(camera, player, tooltipRenderer);
@@ -404,15 +439,25 @@ Scene* createMainScene(Camera * camera) {
 	scene->SetDirectionalLight(mainLight);
 	scene->SetFlashlight(flashlight);
 
-	scene->AddEntity(doorEntity);
-	scene->AddEntity(floorEntity);
-	scene->AddEntity(chestEntity);
-	scene->AddEntity(testWallEntity);
+	scene->AddEntity(floorRoom1Entity);
+	scene->AddEntity(rightWallRoom1Entity);
+	scene->AddEntity(backWallRoom1Entity);
+	scene->AddEntity(leftWallRoom1Entity);
+	scene->AddEntity(doorWallRoom1RightEntity);
+	scene->AddEntity(doorWallRoom1LeftEntity);
+	scene->AddEntity(doorWallRoom1UpEntity);
+	scene->AddEntity(doorsRoom1Entity);
+	scene->AddEntity(bookshelfEntity);
+
+
+	//scene->AddEntity(doorEntity);
 	scene->AddEntity(flashlightEntity);
-	scene->AddEntity(framuga);
+	//scene->AddEntity(framuga);
 	scene->AddEntity(paintingEntity);
 	scene->AddEntity(keyEntity);
 	scene->AddEntity(radioEntity);
+
+
 	/*scene->AddEntity(sculptureEntity);*/
 
 	return scene;

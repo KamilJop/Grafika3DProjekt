@@ -379,9 +379,6 @@ void main()
 	vec3 viewDirNEW = normalize(TangentViewPos - TangentFragPos);
 	vec2 texCoords = ParallaxMapping(TextureCoordinates, viewDirNEW);
 	
-	if(texCoords.x > 1.0 || texCoords.y > 1.0 || texCoords.x < 0.0 || texCoords.y < 0.0)
-		discard;
-
 
 	vec3 normalNEW = texture(material.normalMap, texCoords).rgb;
 	normalNEW = normalNEW * 2.0 - 1.0;

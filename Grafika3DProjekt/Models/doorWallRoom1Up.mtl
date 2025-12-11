@@ -1,0 +1,15 @@
+# Blender 5.0.0 MTL File: 'SCIANADOBRA1.blend'
+# www.blender.org
+
+newmtl Poliigon_BrickWallReclaimed_8320_2K
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd C:/Poliigon_BrickWallReclaimed_8320_BaseColor.jpg
+map_Ns poligon/Poliigon_BrickWallReclaimed_8320/2K/Poliigon_BrickWallReclaimed_8320_Roughness.jpg
+map_refl poligon/Poliigon_BrickWallReclaimed_8320/2K/Poliigon_BrickWallReclaimed_8320_Metallic.jpg
+map_Bump -bm 1.000000 poligon/Poliigon_BrickWallReclaimed_8320/2K/Poliigon_BrickWallReclaimed_8320_Normal.png
