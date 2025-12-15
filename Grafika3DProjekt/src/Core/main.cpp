@@ -200,6 +200,8 @@ AudioManager& audioManager = AudioManager::GetInstance();
 
 // Function prototypes
 Scene* createMainScene(Camera* camera);
+
+void DrawMainMenu();
 void DirectionalLightShadowMapPass();
 void FlashlightShadowMapPass();
 void OmniShadowMapPass(PointLight* pLight);
@@ -419,7 +421,7 @@ Scene* createMainScene(Camera * camera) {
 	doorWallRoom1RightEntity = new Entity(&doorWallRoom1RightModel, glm::vec3(-7.0f, -0.10, 1.0f), glm::vec3(0.0f, -90.0f, 0.0f), glm::vec3(1.8f));
 	doorWallRoom1LeftEntity = new Entity(&doorWallRoom1LeftModel, glm::vec3(-7.0f, -0.0f, 1.0f), glm::vec3(0.0f, -90.0f, 0.0f), glm::vec3(1.8f));	
 	doorWallRoom1UpEntity = new Entity(&doorWallRoom1UpModel, glm::vec3(-7.0f, -0.0f, 1.0f), glm::vec3(0.0f, -90.0f, 0.0f), glm::vec3(1.8f));
-	doorsRoom1Entity = new Door(&doorsRoom1Model, glm::vec3(-4.0f, 0.0f, 1.0f), glm::vec3(0.0f,0.0f,0.0f), glm::vec3(1.8f), "Doors", framuga, "finalExitKey");
+	doorsRoom1Entity = new Door(&doorsRoom1Model, glm::vec3(-3.1f, 0.0f, 1.0f), glm::vec3(0.0f,0.0f,0.0f), glm::vec3(1.8f), "Doors", framuga, "finalExitKey");
 	doorsRoom1Entity->setLocked(false);
 
 	bookshelfEntity = new BookshelfPuzzle(&bookshelfModel, glm::vec3(1.0f, 0.0f, -7.5f), glm::vec3(0.0f), glm::vec3(1.5f));
@@ -766,22 +768,22 @@ void HandleKeyboardInput(float deltaTime, Scene* currentScene) {
 		player->getInventory()->SetCurrentItem(4);
 		mainWindow.getKeys()[GLFW_KEY_5] = false;
 	}
-	if (mainWindow.getKeys()[GLFW_KEY_6]) {
-		player->getInventory()->SetCurrentItem(5);
-		mainWindow.getKeys()[GLFW_KEY_6] = false;
-	}
-	if (mainWindow.getKeys()[GLFW_KEY_7]) {
-		player->getInventory()->SetCurrentItem(6);
-		mainWindow.getKeys()[GLFW_KEY_7] = false;
-	}
-	if (mainWindow.getKeys()[GLFW_KEY_8]) {
-		player->getInventory()->SetCurrentItem(7);
-		mainWindow.getKeys()[GLFW_KEY_8] = false;
-	}
-	if (mainWindow.getKeys()[GLFW_KEY_9]) {
-		player->getInventory()->SetCurrentItem(8);
-		mainWindow.getKeys()[GLFW_KEY_9] = false;
-	}
+	//if (mainWindow.getKeys()[GLFW_KEY_6]) {
+	//	player->getInventory()->SetCurrentItem(5);
+	//	mainWindow.getKeys()[GLFW_KEY_6] = false;
+	//}
+	//if (mainWindow.getKeys()[GLFW_KEY_7]) {
+	//	player->getInventory()->SetCurrentItem(6);
+	//	mainWindow.getKeys()[GLFW_KEY_7] = false;
+	//}
+	//if (mainWindow.getKeys()[GLFW_KEY_8]) {
+	//	player->getInventory()->SetCurrentItem(7);
+	//	mainWindow.getKeys()[GLFW_KEY_8] = false;
+	//}
+	//if (mainWindow.getKeys()[GLFW_KEY_9]) {
+	//	player->getInventory()->SetCurrentItem(8);
+	//	mainWindow.getKeys()[GLFW_KEY_9] = false;
+	//}
 
 
 	double currentScrollY = mainWindow.getScrollY();
@@ -850,4 +852,8 @@ void DrawInventory() {
 	glEnable(GL_STENCIL_TEST);
 	glDepthMask(GL_TRUE);
 	glDisable(GL_BLEND);
+}
+
+void DrawMainMenu() {
+	gameUI->DrawMainMenu();
 }
