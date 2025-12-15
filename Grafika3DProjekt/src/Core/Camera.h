@@ -22,7 +22,11 @@ public:
 	float getPitch() { return Pitch; }
 	float getYaw() { return Yaw; }
 	float getMovementSpeed() { return MovementSpeed; }
-	void setPosition(glm::vec3 pos) { Position = pos; updateCameraVectors(); }
+	void setPosition(glm::vec3 pos) { Position = pos; updateCameraVectors(); };
+	void setPitch(float pitch) { Pitch = pitch; updateCameraVectors(); };
+	void setYaw(float yaw) { Yaw = yaw; updateCameraVectors(); };
+	void updateCameraVectors();
+
 
 private:
 	glm::vec3 Position;
@@ -36,6 +40,6 @@ private:
 
 	float MovementSpeed;
 	float MouseSensitivity;
-	void updateCameraVectors();
+
 };
 

@@ -70,6 +70,7 @@ uniform Material material;
 uniform sampler2D directionalShadowMap;
 uniform sampler2D flashShadowMap;
 uniform OmniShadowMap omniShadowMaps[NR_POINT_LIGHTS];
+uniform int isSelected;
 
 uniform vec3 cameraPosition;
 
@@ -399,6 +400,9 @@ void main()
 	
 	// Multiply the color by light 
 	colour = finalLightColor * textureColor;
+	if(isSelected== 1){
+		colour.rgb += vec3(0.3, 0.3, 0.0);
+	}
 	
 
 }

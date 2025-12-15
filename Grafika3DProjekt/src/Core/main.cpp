@@ -33,6 +33,7 @@
 #include "Entities/Radio.h"
 #include "Entities/Book.h"
 #include "Entities/BookshelfPuzzle.h"
+#include "Entities/Lock.h"
 
 enum ShaderTypes
 {
@@ -48,7 +49,8 @@ enum GameStates
 	STATE_MAIN_MENU,
 	STATE_PLAYING,
 	STATE_PAUSED,
-	STATE_GAME_END
+	STATE_GAME_END,
+	STATE_MINIGAME
 };
 
 Config& config = Config::getInstance();
@@ -79,6 +81,11 @@ static const char* spriteFragmentShader = "Shaders/spriteShader.frag";
 static const char* brickTexture = "Textures/brick.png";
 static const char* stoneTexture = "Textures/stone.png";
 
+
+glm::vec3 savedCameraPosition;
+float savedCameraYaw;
+float savedCameraPitch;
+Lock* currentActiveLock = nullptr;
 
 
 // Game state
@@ -125,6 +132,11 @@ Book* redBookEntity;
 Book* yellowBookEntity;
 Book* greyBookEntity;
 
+
+//Lock
+Lock* lockEntity;
+
+
 // Light source
 DirectionalLight* mainLight;
 PointLight* pointLight;
@@ -160,6 +172,14 @@ Model redBookModel;
 Model yellowBookModel;
 Model greyBookModel;
 
+// Lock models
+std::vector<Model*> lockRotatingModels;
+Model lockBaseModel;
+Model lockRotatingModel1;
+Model lockRotatingModel2;
+Model lockRotatingModel3;
+Model lockRotatingModel4;
+Model lockMetalPartModel;
 
 // Create player
 Player* player;
@@ -310,6 +330,7 @@ int main()
 			player->setHeldEntityModel(player->getInventory()->GetCurrentItem()->itemModel);
 			player->setHeldEntityScale(player->getInventory()->GetCurrentItem()->itemScale);
 		}
+
 		
 		// Keyboard movement
 		HandleKeyboardInput(deltaTime, scene);
@@ -396,6 +417,20 @@ Scene* createMainScene(Camera * camera) {
 	yellowBookModel.LoadModel("Models/yellowBook.obj");
 	greyBookModel.LoadModel("Models/greyBook.obj");
 
+
+	// Lock models
+	lockBaseModel.LoadModel("Models/lockcz1.obj");
+	lockRotatingModel1.LoadModel("Models/lockcz2.obj");
+	lockRotatingModel2.LoadModel("Models/lockcz3.obj");
+	lockRotatingModel3.LoadModel("Models/lockcz4.obj");
+	lockRotatingModel4.LoadModel("Models/lockcz5.obj");
+	lockRotatingModels.push_back(&lockRotatingModel1);
+	lockRotatingModels.push_back(&lockRotatingModel2);
+	lockRotatingModels.push_back(&lockRotatingModel3);
+	lockRotatingModels.push_back(&lockRotatingModel4);
+	lockMetalPartModel.LoadModel("Models/lockcz6.obj");
+
+
 	/*sculpture.LoadModel("Models/rzezba.obj");*/
 
 
@@ -453,6 +488,11 @@ Scene* createMainScene(Camera * camera) {
 
 
 
+
+
+
+
+
 	/*sculptureEntity = new Entity(&sculpture, lessShinyMaterial, glm::vec3(-10.0f, -1.0f, -4.0f), glm::vec3(0.0f, 30.0f, 0.0f), glm::vec3(4.0f));
 	sculptureEntity->setTitle("Sculpture");*/
 
@@ -487,6 +527,9 @@ Scene* createMainScene(Camera * camera) {
 	// Create scene
 	scene = new Scene(camera, player, tooltipRenderer);
 
+	lockEntity = new Lock(&lockBaseModel, glm::vec3(-2.0f, 0.5f, -1.5f), glm::vec3(0.0f), glm::vec3(4.0f), lockRotatingModels, &lockMetalPartModel, scene, true);
+	lockEntity->setTitle("Lock");
+
 	// Add entities and lights to scene
 	scene->AddPointLight(pointLight);
 	scene->AddPointLight(pointLight2);
@@ -520,6 +563,10 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(paintingEntity);
 	scene->AddEntity(keyEntity);
 	scene->AddEntity(radioEntity);
+
+	scene->AddEntity(lockEntity);
+
+
 
 
 	/*scene->AddEntity(sculptureEntity);*/
@@ -650,6 +697,67 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 
 void HandleKeyboardInput(float deltaTime, Scene* currentScene) {
 
+	if (gameState == STATE_MINIGAME) {
+		if(mainWindow.getKeys()[GLFW_KEY_ESCAPE]) {
+			mainWindow.getKeys()[GLFW_KEY_ESCAPE] = false;
+			camera.setPosition(savedCameraPosition);
+			camera.setPitch(savedCameraPitch);
+			camera.setYaw(savedCameraYaw);
+			camera.updateCameraVectors();
+			currentActiveLock->getLockRolls()[currentActiveLock->getSelectedIndex()]->setSelected(false);
+			currentActiveLock = nullptr;
+			SetGameState(STATE_PLAYING);
+		}
+		if(mainWindow.getKeys()[GLFW_KEY_E]) {
+			mainWindow.getKeys()[GLFW_KEY_E] = false;
+			// right
+			currentActiveLock->changeSelectedIndex(1);
+		}
+		if(mainWindow.getKeys()[GLFW_KEY_Q]) {
+			mainWindow.getKeys()[GLFW_KEY_Q] = false;
+			// left
+			currentActiveLock->changeSelectedIndex(-1);
+		}
+		if (mainWindow.getKeys()[GLFW_KEY_W]) {
+			mainWindow.getKeys()[GLFW_KEY_W] = false;
+			currentActiveLock->moveLockRolls(1);
+			// gora
+		}
+		if (mainWindow.getKeys()[GLFW_KEY_S]) {
+			mainWindow.getKeys()[GLFW_KEY_S] = false;
+			currentActiveLock->moveLockRolls(-1);
+			// dol
+		}
+	}
+
+	if (mainWindow.getKeys()[GLFW_KEY_E])
+	{
+		mainWindow.getKeys()[GLFW_KEY_E] = false;
+
+		Entity* target = player->getTargettedEntity();
+		if (!target) return;
+		if (!target->getInteractable()) return;
+		target->Interact(player->getInventory());
+		Lock* lockTarget = dynamic_cast<Lock*>(target);
+		if (lockTarget != nullptr) {
+			lockTarget->setOutlined(false);
+			lockTarget->getLockRolls()[0]->setSelected(true);
+			savedCameraPosition = camera.getCameraPosition();
+			savedCameraPitch = camera.getPitch();
+			savedCameraYaw = camera.getYaw();
+			currentActiveLock = lockTarget;
+			camera.setPosition(lockTarget->getLockPuzzlePos());
+			camera.setPitch(lockTarget->getLockPuzzlePitch());
+			camera.setYaw(lockTarget->getLockPuzzleYaw());
+			camera.updateCameraVectors();
+			
+			SetGameState(STATE_MINIGAME);
+		}
+		if (!target->getPickable()) return;
+		player->pickUpEntity(target);
+		return;
+	}
+
 	if (mainWindow.getKeys()[GLFW_KEY_ESCAPE])
 	{
 		if (gameState == STATE_PLAYING)
@@ -720,18 +828,6 @@ void HandleKeyboardInput(float deltaTime, Scene* currentScene) {
 		else
 			player->changeFlashlightState(true);
 		mainWindow.getKeys()[GLFW_KEY_F] = false;
-	}
-	if (mainWindow.getKeys()[GLFW_KEY_E])
-	{
-		mainWindow.getKeys()[GLFW_KEY_E] = false;
-
-		Entity* target = player->getTargettedEntity();
-		if (!target) return;
-		if (!target->getInteractable()) return;
-		target->Interact(player->getInventory());
-		if (!target->getPickable()) return;
-		player->pickUpEntity(target);
-		return;
 	}
 	if (mainWindow.getKeys()[GLFW_KEY_LEFT_SHIFT])
 	{
@@ -855,5 +951,5 @@ void DrawInventory() {
 }
 
 void DrawMainMenu() {
-	gameUI->DrawMainMenu();
+	//gameUI->DrawMainMenu();
 }

@@ -44,6 +44,8 @@ public:
 	std::string getTitle() { return title; }
 	Model* getModel() { return entityModel; }	
 	bool isOutlined() { return outlined; }
+	void setSelected(bool state) { selected = state; }
+	bool isSelected() { return selected; }	
 	void setOutlined(bool state) { outlined = state; }
 	CollisionBox GetCollisions() { return collisions; }
 	void DrawEntity(Shader* shader);
@@ -65,7 +67,7 @@ protected:
 	std::string itemTag = "";
 	CollisionBox collisions;
 	std::string title = "Untitled object";
-
+	bool selected = false;
 	glm::mat4 modelMatrix;
 	glm::mat4 CalculateModelMatrix();
 	

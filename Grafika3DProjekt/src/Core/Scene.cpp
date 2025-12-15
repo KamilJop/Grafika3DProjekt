@@ -25,6 +25,12 @@ void Scene::RenderWithoutOutline(Shader* shader, glm::mat4 projection)
 	{
 		if (!entity->isOutlined()) {
 			if (entity->getTitle() == "Flashlight") continue;
+			if (entity->isSelected()) {
+				shader->setInt("isSelected", 1);
+			}
+			else {
+				shader->setInt("isSelected", 0);
+			}
 			entity->DrawEntity(shader);
 		}
 	}
@@ -128,6 +134,7 @@ void Scene::RenderLogic(Shader* shader, glm::mat4 projection)
 	shader->setVec3("cameraPosition", camera->getCameraPosition());
 	shader->setMat4("directionalLightSpaceTransform", dirLight->CalculateLightTransform());
 	shader->setMat4("flashLightSpaceTransform", flashLight->CalculateLightTransform());
+	shader->setInt("isSelected", 0);
 	for (auto& pLight : pointLights)
 	{
 		pLight->useLight(shader);
