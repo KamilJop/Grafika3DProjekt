@@ -3,9 +3,26 @@
 
 Lock::Lock(Model* model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal,std::vector<Model*> models, Model* metalPart,Scene* scene, bool interaction)
     : Entity(model, pos, rot, scal, interaction)
-{
+{	
+	int index = 0;
+	glm::vec3 posOffset = glm::vec3(0.0f);
     for (auto* m : models) {
-        LockRolls.push_back(new Entity(m, pos, rot, scal, false));
+		switch (index) {
+			case 0:
+				posOffset = glm::vec3(0.0375f, 0.11725f, 0.0f);
+				break;
+			case 1:
+				posOffset = glm::vec3(0.0125f, 0.11725f, 0.0f);
+				break;
+			case 2:
+				posOffset = glm::vec3(-0.013f, 0.11725f, 0.0f);
+				break;
+			case 3:
+				posOffset = glm::vec3(-0.038f, 0.11725f, 0.0f);
+				break;
+		}
+		index++;
+        LockRolls.push_back(new Entity(m, pos + posOffset, rot, scal, false));
 		scene->AddEntity(LockRolls.back());
     }
     metalPartModel = new Entity(metalPart, pos, rot, scal, false);
@@ -24,13 +41,12 @@ void Lock::changeSelectedIndex(int direction)
 	if (selectedIndex < 0) selectedIndex = LockRolls.size() - 1;
 	if (selectedIndex >= LockRolls.size()) selectedIndex = 0;
 	LockRolls[selectedIndex]->setSelected(true);
-
 }
 
 void Lock::moveLockRolls(int direction)
 {
 	if (isUnlocked) return;
-	float rotationSpeed = 45.0f * direction; 
+	float rotationSpeed = 360.0f/7.0f * direction; 
 	LockRolls[selectedIndex]->setRotation(LockRolls[selectedIndex]->getRotation() + glm::vec3(rotationSpeed, 0.0f,0.0f));
 	AudioManager::GetInstance().Play3DSoundEffect(rollSound, getPosition(), 0.5f);
 }

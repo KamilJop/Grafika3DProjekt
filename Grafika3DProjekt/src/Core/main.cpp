@@ -420,10 +420,10 @@ Scene* createMainScene(Camera * camera) {
 
 	// Lock models
 	lockBaseModel.LoadModel("Models/lockcz1.obj");
-	lockRotatingModel1.LoadModel("Models/lockcz2.obj");
-	lockRotatingModel2.LoadModel("Models/lockcz3.obj");
-	lockRotatingModel3.LoadModel("Models/lockcz4.obj");
-	lockRotatingModel4.LoadModel("Models/lockcz5.obj");
+	lockRotatingModel1.LoadModel("Models/rol1.obj");
+	lockRotatingModel2.LoadModel("Models/rol2.obj");
+	lockRotatingModel3.LoadModel("Models/rol3.obj");
+	lockRotatingModel4.LoadModel("Models/rol4.obj");
 	lockRotatingModels.push_back(&lockRotatingModel1);
 	lockRotatingModels.push_back(&lockRotatingModel2);
 	lockRotatingModels.push_back(&lockRotatingModel3);
