@@ -331,6 +331,20 @@ int main()
 			player->setHeldEntityScale(player->getInventory()->GetCurrentItem()->itemScale);
 		}
 
+		if (gameState == STATE_MINIGAME && currentActiveLock != nullptr) {
+			if(currentActiveLock->getIsUnlocked()) {
+				// Restore camera position
+				camera.setPosition(savedCameraPosition);
+				camera.setYaw(savedCameraYaw);
+				camera.setPitch(savedCameraPitch);
+				// Close lock minigame and delete lock
+				currentActiveLock->cleanUpLock();
+				currentActiveLock = nullptr;
+				// Change game state back to playing
+				SetGameState(STATE_PLAYING);
+			}
+		}
+
 		
 		// Keyboard movement
 		HandleKeyboardInput(deltaTime, scene);
@@ -421,7 +435,7 @@ Scene* createMainScene(Camera * camera) {
 	// Lock models
 	lockBaseModel.LoadModel("Models/lockcz1.obj");
 	lockRotatingModel1.LoadModel("Models/rol1.obj");
-	lockRotatingModel2.LoadModel("Models/rol2.obj");
+	lockRotatingModel2.LoadModel("Models/rol1.obj");
 	lockRotatingModel3.LoadModel("Models/rol3.obj");
 	lockRotatingModel4.LoadModel("Models/rol4.obj");
 	lockRotatingModels.push_back(&lockRotatingModel1);

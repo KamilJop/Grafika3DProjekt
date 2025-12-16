@@ -31,6 +31,7 @@ Lock::Lock(Model* model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal,std::vecto
 	lockPuzzleYaw = 90.0f;
 	lockPuzzlePitch = 0.0f;
 	AudioManager::GetInstance().Load3DSoundEffect(rollSound, rollSound);
+	AudioManager::GetInstance().Load3DSoundEffect(unlockSound, unlockSound);
 }
 
 void Lock::changeSelectedIndex(int direction)
@@ -48,5 +49,39 @@ void Lock::moveLockRolls(int direction)
 	if (isUnlocked) return;
 	float rotationSpeed = 360.0f/7.0f * direction; 
 	LockRolls[selectedIndex]->setRotation(LockRolls[selectedIndex]->getRotation() + glm::vec3(rotationSpeed, 0.0f,0.0f));
+	currentAnswer[selectedIndex] += direction;
+	if (currentAnswer[selectedIndex] >= 8) currentAnswer[selectedIndex] = 1;
+	if (currentAnswer[selectedIndex] <= 0) currentAnswer[selectedIndex] = 7;
 	AudioManager::GetInstance().Play3DSoundEffect(rollSound, getPosition(), 0.5f);
+	bool correct = true;
+	for (size_t i = 0; i < correctAnswer.size(); i++)
+	{
+		if (correctAnswer[i] != currentAnswer[i])
+		{
+			correct = false;
+			break;
+		}
+	}
+	if (correct)
+	{
+		isUnlocked = true;
+		AudioManager::GetInstance().Play3DSoundEffect(unlockSound, getPosition(), 1.0f);
+	}
+}
+
+void Lock::cleanUpLock()
+{
+	for (auto* roll : LockRolls) {
+		roll->setShouldGetDestroyed(true);
+	}
+	metalPartModel->setShouldGetDestroyed(true);
+	shouldGetDestroyed = true;
+}
+
+Lock::~Lock()
+{
+	for (auto* roll : LockRolls) {
+		roll = nullptr;
+	}
+	metalPartModel = nullptr;
 }

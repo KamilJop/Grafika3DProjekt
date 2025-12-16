@@ -16,12 +16,16 @@ public:
 	float getLockPuzzleYaw() { return lockPuzzleYaw; };
 	float getLockPuzzlePitch() { return lockPuzzlePitch; };
 	int getSelectedIndex() { return selectedIndex; };
+	bool getIsUnlocked() { return isUnlocked; };
 	std::vector<Entity*> getLockRolls() { return LockRolls; };
 	void changeSelectedIndex(int direction);
 	void moveLockRolls(int direction);
+	void cleanUpLock();
 	~Lock();
 private:
 	std::vector<Entity*>LockRolls;
+	std::vector<int>correctAnswer = { 5,4,3,2 };
+	std::vector<int>currentAnswer = { 7,7,4,2 };
 	int selectedIndex = 0;
 	Entity* metalPartModel;
 	bool isUnlocked = false;
@@ -29,5 +33,6 @@ private:
 	float lockPuzzleYaw;
 	float lockPuzzlePitch;
 	std::string rollSound = "Audio/padlock_move.mp3";
+	std::string unlockSound = "Audio/padlock_unlock.mp3";
 };
 

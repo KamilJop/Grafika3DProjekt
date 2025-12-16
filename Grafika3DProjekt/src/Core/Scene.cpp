@@ -99,15 +99,17 @@ void Scene::Update(float deltaTime)
 
 
 
-	for (auto& entity : entities)
+	auto it = entities.begin();
+	while (it != entities.end())
 	{
-		entity->Update(deltaTime);
-		if (entity->getShouldGetDestroyed()) {
-			auto it = std::find(entities.begin(), entities.end(), entity);
-			if (it != entities.end()) {
-				delete* it;
-				entities.erase(it);
-			}
+		if ((*it)->getShouldGetDestroyed())
+		{
+			delete* it;              
+			it = entities.erase(it); 
+		}
+		else
+		{
+			++it;                   
 		}
 	}
 
