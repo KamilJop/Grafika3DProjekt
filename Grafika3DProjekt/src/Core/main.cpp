@@ -34,6 +34,7 @@
 #include "Entities/Book.h"
 #include "Entities/BookshelfPuzzle.h"
 #include "Entities/Lock.h"
+#include "Entities/Desk.h"
 
 enum ShaderTypes
 {
@@ -121,6 +122,7 @@ Entity* doorWallRoom1LeftEntity;
 Entity* doorWallRoom1UpEntity;
 Entity* ceilingRoom1Entity;
 Door* doorsRoom1Entity;
+Desk* deskEntity;
 
 // Room 1 interior objects
 BookshelfPuzzle* bookshelfEntity;
@@ -183,6 +185,16 @@ Model lockRotatingModel2;
 Model lockRotatingModel3;
 Model lockRotatingModel4;
 Model lockMetalPartModel;
+
+
+// Desk models
+std::vector<Model*> deskDrawerModels;
+Model deskModel;
+Model deskDoorModel;
+Model deskDrawerModelTop;
+Model deskDrawerModelBottom;
+Model deskDrawerModelMiddle;
+
 
 // Create player
 Player* player;
@@ -332,6 +344,7 @@ int main()
 			// Update held entity model
 			player->setHeldEntityModel(player->getInventory()->GetCurrentItem()->itemModel);
 			player->setHeldEntityScale(player->getInventory()->GetCurrentItem()->itemScale);
+
 		}
 
 		if (gameState == STATE_MINIGAME && currentActiveLock != nullptr) {
@@ -378,9 +391,12 @@ int main()
 			textRenderer->RenderText("FPS: " + std::to_string((int)fps), 10.0f, uiHeight - 20.0f, 1.0f, glm::vec4(0.5f, 0.8f, 0.2f, 1.0f));
 		}
 
-		// Render crosshair
-		float textWidth = tooltipRenderer->GetTextWidth("+");
-		tooltipRenderer->RenderText("+", (mainWindow.getBufferWidth() / 2.0f) - textWidth, (mainWindow.getBufferHeight() / 2.0f) - 10.0f, 1.0f, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		if (gameState == STATE_PLAYING) {
+			// Render crosshair
+			float textWidth = tooltipRenderer->GetTextWidth("+");
+			tooltipRenderer->RenderText("+", (mainWindow.getBufferWidth() / 2.0f) - textWidth, (mainWindow.getBufferHeight() / 2.0f) - 10.0f, 1.0f, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		}
+
 
 		if(gameState == STATE_PAUSED) {
 			UI::isPauseMenuOpen = true;
@@ -436,6 +452,17 @@ Scene* createMainScene(Camera * camera) {
 	yellowBookModel.LoadModel("Models/yellowBook.obj");
 	greyBookModel.LoadModel("Models/greyBook.obj");
 
+	// Desk models
+	deskModel.LoadModel("Models/desk.obj");
+	deskDoorModel.LoadModel("Models/deskDoors.obj");
+	deskDrawerModelTop.LoadModel("Models/drawerTop.obj");
+	deskDrawerModelMiddle.LoadModel("Models/drawerMiddle.obj");
+	deskDrawerModelBottom.LoadModel("Models/drawerBottom.obj");
+	deskDrawerModels.push_back(&deskDrawerModelTop);
+	deskDrawerModels.push_back(&deskDrawerModelMiddle);
+	deskDrawerModels.push_back(&deskDrawerModelBottom);
+
+
 
 	// Lock models
 	lockBaseModel.LoadModel("Models/lockcz1.obj");
@@ -465,7 +492,7 @@ Scene* createMainScene(Camera * camera) {
 	keyEntity = new Key(&keyModel, glm::vec3(1.0f, 0.0f, -2.0f), glm::vec3(90.0f,0.0f,0.0f), glm::vec3(0.75f), "mainKey", keySprite, true);
 	keyEntity->setTitle("Key");
 	keyEntity->setColissions(false);
-	radioEntity = new Radio(&radioModel, glm::vec3(-4.0f, 0.0f, -3.0f), glm::vec3(0.0f), glm::vec3(4.0f), true);
+	radioEntity = new Radio(&radioModel, glm::vec3(-5.25f, 1.1f, -7.5f), glm::vec3(0.0f,30.0f,0.0f), glm::vec3(2.0f), true);
 	radioEntity->setTitle("Radio");
 
 	floorRoom1Entity = new Entity(&floorRoom1Model, glm::vec3(2.5f, 0.0f, 1.0f), glm::vec3(0.0f), glm::vec3(1.5f));
@@ -542,9 +569,9 @@ Scene* createMainScene(Camera * camera) {
 
 	// Light
 	mainLight = new DirectionalLight(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(-1.0f, -5.0f, -5.5f), 0.3f, 0.22f, 2048.0f, 2048.0f);
-	pointLight = new PointLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.3f, 0.9f, glm::vec3(-10.0f, 1.0f, -3.0f), 1.0f, 0.09f, 0.032f, 0, 100.0f, 0.01f, 2048.0f, 2048.0f);
-	pointLight2 = new PointLight(glm::vec3(0.0f, 0.0f, 1.0f), 0.25f, 0.9f, glm::vec3(8.0f, 1.5f, -6.0f), 1.0f, 0.12f, 0.062f, 1, 100.0f, 0.01f, 2048.0f, 2048.0f);
-	pointLight3 = new PointLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.25f, 0.9f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.12f, 0.062f, 2, 100.0f, 0.01f, 2048.0f, 2048.0f);
+	pointLight = new PointLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.0f, 0.0f, glm::vec3(-10.0f, 1.0f, -3.0f), 1.0f, 0.09f, 0.032f, 0, 100.0f, 0.01f, 2048.0f, 2048.0f);
+	pointLight2 = new PointLight(glm::vec3(0.0f, 0.0f, 1.0f), 0.0f, 0.0f, glm::vec3(8.0f, 1.5f, -6.0f), 1.0f, 0.12f, 0.062f, 1, 100.0f, 0.01f, 2048.0f, 2048.0f);
+	pointLight3 = new PointLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.0f, 0.0f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.12f, 0.062f, 2, 100.0f, 0.01f, 2048.0f, 2048.0f);
 	flashlight = new Flashlight(glm::vec3(1.0f, 1.0f, 0.85f), 0.001f, 1.2f, camera->getCameraPosition(), 1.0f, 0.07f, 0.017f, camera->getCameraFront(), 25.0f, 32.5f, 2048.0f,2048.0f);
 
 	// Create scene
@@ -552,6 +579,7 @@ Scene* createMainScene(Camera * camera) {
 
 	lockEntity = new Lock(&lockBaseModel, glm::vec3(-2.0f, 0.5f, -1.5f), glm::vec3(0.0f), glm::vec3(4.0f), lockRotatingModels, &lockMetalPartModel, scene, true);
 	lockEntity->setTitle("Lock");
+	deskEntity = new Desk(&deskModel, glm::vec3(-4.5f, 0.0f, -7.4f), glm::vec3(0.0f), glm::vec3(1.2f), deskDrawerModels, &deskDoorModel, scene , false);
 
 	// Add entities and lights to scene
 	scene->AddPointLight(pointLight);
@@ -589,6 +617,7 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(radioEntity);
 	//scene->AddEntity(pageEntity);
 	scene->AddEntity(lockEntity);
+	scene->AddEntity(deskEntity);
 
 
 
@@ -714,7 +743,11 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 	glStencilMask(0xFF);
 	glCullFace(GL_BACK);
 	glDisable(GL_STENCIL_TEST);
+
 	if (player->getHeldEntity()) {
+		if (gameState == STATE_MINIGAME) {
+			return;
+		}
 		scene->RenderHeldEntity(shaderList[SHADER_DEFAULT], projectionMatrix);
 	}
 }

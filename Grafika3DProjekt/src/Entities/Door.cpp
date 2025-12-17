@@ -50,12 +50,16 @@ void Door::Interact(Inventory* playerInventory)
 
 	if (isOpen)
 	{
-		doorFrame->setColissions(false);
+		if (doorFrame != nullptr) {
+			doorFrame->setColissions(false);
+		}
 		AudioManager::GetInstance().Play3DSoundEffect(openingSoundName,position, config.sfxVolume * 2.0f);
 	}
 	else
-	{
-		doorFrame->setColissions(true);
+	{	
+		if (doorFrame != nullptr) {
+			doorFrame->setColissions(true);
+		}
 		AudioManager::GetInstance().Play3DSoundEffect(closingSoundName, position, config.sfxVolume * 2.0f);
 	}
 }
@@ -79,7 +83,7 @@ void Door::Update(float deltaTime)
 	isAnimating = false;
 	isTryingToOpen = false;
 	animCounter = 0;
-	float targetAngle = isOpen ? 90.0f : 0.0f;
+	float targetAngle = isOpen ? 90.0f * direction : 0.0f;
 	float currentAngle = rotation.y;
 	if (abs(currentAngle - targetAngle) > 0.8f)
 		isAnimating = true;

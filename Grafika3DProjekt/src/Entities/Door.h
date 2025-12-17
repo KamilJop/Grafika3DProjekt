@@ -15,11 +15,13 @@ public:
 	void setLocked(bool state) { isLocked = state; }
 	void Interact(Inventory* playerInventory) override ;
 	void Update(float deltaTime) override;
+	void setDirection(int dir) { direction = dir; }	
 private:
 	bool isOpen;
 	bool isAnimating;
 	bool isTryingToOpen;
 	bool isLocked = false;
+	int direction = 1;
 	std::string doorKeyTag;
 	Entity* doorFrame;
 	Config& config = Config::getInstance();

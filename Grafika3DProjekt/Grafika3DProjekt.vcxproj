@@ -143,6 +143,8 @@
     <ClCompile Include="..\External Libs\IMGUI\imgui_impl_opengl3.cpp" />
     <ClCompile Include="..\External Libs\IMGUI\imgui_tables.cpp" />
     <ClCompile Include="..\External Libs\IMGUI\imgui_widgets.cpp" />
+    <ClCompile Include="src\Entities\Desk.cpp" />
+    <ClCompile Include="src\Entities\Drawer.cpp" />
     <ClCompile Include="src\Entities\Lock.cpp" />
     <ClCompile Include="src\UI\MainMenu.cpp" />
     <ClCompile Include="src\Entities\BookshelfPuzzle.cpp" />
@@ -185,6 +187,8 @@
     <ClInclude Include="..\External Libs\IMGUI\imstb_rectpack.h" />
     <ClInclude Include="..\External Libs\IMGUI\imstb_textedit.h" />
     <ClInclude Include="..\External Libs\IMGUI\imstb_truetype.h" />
+    <ClInclude Include="src\Entities\Desk.h" />
+    <ClInclude Include="src\Entities\Drawer.h" />
     <ClInclude Include="src\Entities\Lock.h" />
     <ClInclude Include="src\UI\MainMenu.h" />
     <ClInclude Include="src\Entities\BookshelfPuzzle.h" />
