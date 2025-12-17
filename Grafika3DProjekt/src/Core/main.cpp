@@ -110,7 +110,7 @@ Entity* framuga;
 Entity* paintingEntity;
 Entity* keyEntity;
 Entity* radioEntity;
-
+Entity* pageEntity;
 // Room 1 walls and floor
 Entity* floorRoom1Entity;
 Entity* rightWallRoom1Entity;
@@ -119,6 +119,7 @@ Entity* backWallRoom1Entity;
 Entity* doorWallRoom1RightEntity;
 Entity* doorWallRoom1LeftEntity;
 Entity* doorWallRoom1UpEntity;
+Entity* ceilingRoom1Entity;
 Door* doorsRoom1Entity;
 
 // Room 1 interior objects
@@ -152,6 +153,7 @@ Model framugaModel;
 Model paintingModel;
 Model keyModel;
 Model radioModel;
+Model pageModel;
 
 // Room 1 walls and floor models
 Model floorRoom1Model;
@@ -160,6 +162,7 @@ Model doorWallRoom1RightModel;
 Model doorWallRoom1LeftModel;
 Model doorWallRoom1UpModel;
 Model doorsRoom1Model;
+Model ceilingRoom1Model;
 
 // Room 1 interior object models
 Model bookshelfModel;
@@ -411,6 +414,8 @@ Scene* createMainScene(Camera * camera) {
 	paintingModel.LoadModel("Models/V3TEST.obj");
 	keyModel.LoadModel("Models/Worn_Key.obj");
 	radioModel.LoadModel("Models/radio.obj");
+	//pageModel.LoadModel("Models/page.obj");
+	ceilingRoom1Model.LoadModel("Models/ceiling.obj");
 
 	// Room 1 walls and floor models
 	floorRoom1Model.LoadModel("Models/floorRoom1.obj");
@@ -470,8 +475,12 @@ Scene* createMainScene(Camera * camera) {
 	doorWallRoom1RightEntity = new Entity(&doorWallRoom1RightModel, glm::vec3(-7.0f, -0.10, 1.0f), glm::vec3(0.0f, -90.0f, 0.0f), glm::vec3(1.8f));
 	doorWallRoom1LeftEntity = new Entity(&doorWallRoom1LeftModel, glm::vec3(-7.0f, -0.0f, 1.0f), glm::vec3(0.0f, -90.0f, 0.0f), glm::vec3(1.8f));	
 	doorWallRoom1UpEntity = new Entity(&doorWallRoom1UpModel, glm::vec3(-7.0f, -0.0f, 1.0f), glm::vec3(0.0f, -90.0f, 0.0f), glm::vec3(1.8f));
+	ceilingRoom1Entity = new Entity(&ceilingRoom1Model, glm::vec3(-3.0f, -1.25f, -2.5f), glm::vec3(0.0f,0.0f,0.0f), glm::vec3(1.8f));
 	doorsRoom1Entity = new Door(&doorsRoom1Model, glm::vec3(-3.1f, 0.0f, 1.0f), glm::vec3(0.0f,0.0f,0.0f), glm::vec3(1.8f), "Doors", framuga, "finalExitKey");
 	doorsRoom1Entity->setLocked(false);
+	//pageEntity = new Entity(&pageModel, glm::vec3(-5.0f, 1.0f, -3.0f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(2.0f), true);
+	//pageEntity->setTitle("Page");
+	//pageEntity->setColissions(false);
 
 	bookshelfEntity = new BookshelfPuzzle(&bookshelfModel, glm::vec3(1.0f, 0.0f, -7.5f), glm::vec3(0.0f), glm::vec3(1.5f));
 
@@ -558,6 +567,7 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(doorWallRoom1RightEntity);
 	scene->AddEntity(doorWallRoom1LeftEntity);
 	scene->AddEntity(doorWallRoom1UpEntity);
+	scene->AddEntity(ceilingRoom1Entity);
 	scene->AddEntity(doorsRoom1Entity);
 	scene->AddEntity(bookshelfEntity);
 	scene->AddEntity(brownBookEntity);
@@ -577,7 +587,7 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(paintingEntity);
 	scene->AddEntity(keyEntity);
 	scene->AddEntity(radioEntity);
-
+	//scene->AddEntity(pageEntity);
 	scene->AddEntity(lockEntity);
 
 

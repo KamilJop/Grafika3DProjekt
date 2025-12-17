@@ -102,6 +102,7 @@ void Scene::Update(float deltaTime)
 	auto it = entities.begin();
 	while (it != entities.end())
 	{
+		(*it)->Update(deltaTime);
 		if ((*it)->getShouldGetDestroyed())
 		{
 			delete* it;              
