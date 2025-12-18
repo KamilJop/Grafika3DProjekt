@@ -1,10 +1,13 @@
 #include "UI.h"
 bool UI::wasPauseMenuOpen = false;
 bool UI::isPauseMenuOpen = false;
-
-UI::UI(GLFWwindow* window)
+std::string UI::currentSubtitle = "";
+float UI::subtitleTimer = 0.0f;
+UI::UI(GLFWwindow* window, TextRenderer* textRenderer)
 {
 	appWindow = window;
+	glfwGetFramebufferSize(appWindow, &width, &height);
+	subtitlesRenderer = textRenderer;
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -195,4 +198,23 @@ void UI::CenteredText(const char* text) {
 	float textWidth = ImGui::CalcTextSize(text).x;
 	ImGui::SetCursorPosX((windowWidth - textWidth) * 0.5f);
 	ImGui::Text("%s", text);
+}
+
+void UI::SetSubtitle(const std::string& subtitle, float duration) {
+	printf("Setting subtitle: %s for %.2f seconds\n", subtitle.c_str(), duration);
+	UI::currentSubtitle = subtitle;
+	UI::subtitleTimer = duration;
+}
+
+void UI::RenderSubtitle(float deltaTime) {
+	if (UI::subtitleTimer > 0.0f) {
+		float textWidth = subtitlesRenderer->GetTextWidth(UI::currentSubtitle);
+		float offsetY = 240.0f;
+		subtitlesRenderer->RenderText(UI::currentSubtitle, (float)(width/ 2) - (textWidth / 2),offsetY, 1.0f, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		UI::subtitleTimer -= deltaTime;
+		if (UI::subtitleTimer < 0.0f) {
+			UI::subtitleTimer = 0.0f;
+			UI::currentSubtitle = "";
+		}
+	}
 }

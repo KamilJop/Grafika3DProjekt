@@ -19,6 +19,7 @@ public:
 	Radio(Model* model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, bool interaction = true);
 	void Interact(Inventory* playerInventory) override;
 	void Update(float deltaTime) override {};
+	std::string GetActionText() override;
 	~Radio();
 private:
 	int currentState = BROKEN;

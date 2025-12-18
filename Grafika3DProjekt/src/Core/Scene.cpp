@@ -1,12 +1,13 @@
 #include "Scene.h"
 
-Scene::Scene(Camera* cam, Player* play, TextRenderer* renderer)
+Scene::Scene(Camera* cam, Player* play, TextRenderer* renderer, TextRenderer* secondRenderer)
 {
 	camera = cam;
 	player = play;
 	dirLight = nullptr;
 	flashLight = nullptr;
 	textRenderer = renderer;
+	smallerTextRenderer = secondRenderer;
 }
 Scene::~Scene()
 {
@@ -160,9 +161,13 @@ void Scene::RenderLogic(Shader* shader, glm::mat4 projection)
 
 void Scene::RenderTooltip(Entity* selectedEntity, int w, int h)
 {
+	std::string text = selectedEntity->getTitle();
 	float offset = textRenderer->GetTextWidth(selectedEntity->getTitle()) / 2.0f;
 
 	textRenderer->RenderText( selectedEntity->getTitle(), w / 2 - offset, h - 50.0f, 1.0f, glm::vec4(config.highlightColor[0], config.highlightColor[1], config.highlightColor[2], 1.0f));
+	std::string tooltipText = "[ " + selectedEntity->GetActionText() + " ]";
+	float tooltipOffset = smallerTextRenderer->GetTextWidth(tooltipText) / 2.0f;
+	smallerTextRenderer->RenderText(tooltipText, w / 2 - tooltipOffset, h - 80.0f, 1.0f, glm::vec4(config.highlightColor[0], config.highlightColor[1], config.highlightColor[2], 1.0f));
 }
 
 

@@ -13,6 +13,7 @@ class Drawer : public Entity
 	void Interact(Inventory* playerInventory) override;
 	void Update(float deltaTime) override;
 	void setLocked(bool state) { isLocked = state; }
+	std::string GetActionText() override;
 	~Drawer();
 private:
 	bool isLocked = true;
@@ -20,6 +21,7 @@ private:
 	bool isMoving = false;
 	bool isAnimating = false;
 	bool isTryingToOpen = false;
+	bool triedToOpen = false;
 	float animCounter = 0.0;
 	glm::vec3 originalPosition;
 	glm::vec3 movedPosition;

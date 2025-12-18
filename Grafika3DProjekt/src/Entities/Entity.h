@@ -9,6 +9,7 @@
 #include "Rendering/Model.h"
 #include "Rendering/Material.h"
 #include "../Core/Inventory.h"
+#include "../UI/UI.h"
 
 
 
@@ -50,7 +51,9 @@ public:
 	CollisionBox GetCollisions() { return collisions; }
 	void DrawEntity(Shader* shader);
 	void UpdateCollisionBox();
+	void setActionText(std::string text) { actionText = text; }	
 	virtual void Update(float deltaTime) {};
+	virtual std::string GetActionText() { return actionText; };
 	virtual void Interact(Inventory * playerInventory) {};
 
 protected:
@@ -70,6 +73,7 @@ protected:
 	bool selected = false;
 	glm::mat4 modelMatrix;
 	glm::mat4 CalculateModelMatrix();
+	std::string actionText = "Examine";
 	
 
 };

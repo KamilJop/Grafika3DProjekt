@@ -31,6 +31,7 @@ void Door::Interact(Inventory* playerInventory)
 
 	if (isLocked)
 	{
+
 		if(playerInventory->GetCurrentItem()->tag == doorKeyTag)
 		{
 			playerInventory->RemoveItem(doorKeyTag);
@@ -39,6 +40,12 @@ void Door::Interact(Inventory* playerInventory)
 			return;
 		}
 
+		if(!triedToOpen) {
+			triedToOpen = true;
+			printf("The door is locked. I probably need to find a key.\n");
+				
+			UI::SetSubtitle("The door is locked. I probably need to find a key.",3.0f);
+		}
 		isTryingToOpen = true;
 		animCounter = 0.0;
 		AudioManager::GetInstance().Play3DSoundEffect(lockedSoundName, position, config.sfxVolume * 2.0f);
@@ -94,3 +101,13 @@ void Door::Update(float deltaTime)
 	UpdateCollisionBox();
 }
 
+
+std::string Door::GetActionText()
+{
+	if (isOpen) {
+		return "Close Door";
+	}
+	else {
+		return "Open Door";
+	}
+}

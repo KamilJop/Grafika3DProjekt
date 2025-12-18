@@ -13,6 +13,7 @@ void Key::Interact(Inventory* playerInventory)
 {
 	AudioManager::GetInstance().Play3DSoundEffect(pickupSoundName, position, 1.0f);
 	isPickedUp = true;
+	UI::SetSubtitle("I wonder what this opens.", 2.0f);
 }
 
 void Key::Update(float deltaTime)

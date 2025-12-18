@@ -59,12 +59,11 @@ void Inventory::DrawNotification(float deltaTime)
 	{
 		notificationTimer -= deltaTime;
 		alpha -= deltaTime * 0.5f;
-		int screenWidth = Config::getInstance().screenWidth;
-		float offsetY = 120.0f;
+		float offsetY = 240.0f;
+		float offsetX = 40.0f;
 		float textWidth = textRenderer->GetTextWidth(notificationText);
-		float middleX = (screenWidth - textWidth) / 2.0f;
 
-		textRenderer->RenderText(notificationText, middleX, offsetY, 1.0 , glm::vec4(1.0f, 1.0f, 1.0f, alpha));
+		textRenderer->RenderText(notificationText, offsetX, offsetY, 1.0 , glm::vec4(1.0f, 1.0f, 1.0f, alpha));
 	}
 	
 }

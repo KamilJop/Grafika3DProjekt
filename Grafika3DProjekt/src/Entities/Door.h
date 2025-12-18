@@ -16,10 +16,12 @@ public:
 	void Interact(Inventory* playerInventory) override ;
 	void Update(float deltaTime) override;
 	void setDirection(int dir) { direction = dir; }	
+	std::string GetActionText() override;
 private:
 	bool isOpen;
 	bool isAnimating;
 	bool isTryingToOpen;
+	bool triedToOpen = false;
 	bool isLocked = false;
 	int direction = 1;
 	std::string doorKeyTag;

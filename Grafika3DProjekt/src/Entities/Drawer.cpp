@@ -25,6 +25,10 @@ void Drawer::Interact(Inventory* playerInventory)
 			return;
 		}
 
+		if(!triedToOpen) {
+			triedToOpen = true;
+			UI::SetSubtitle("The drawer is locked. I probably need to find a key.", 3.0f);
+		}
 		isTryingToOpen = true;
 		animCounter = 0.0;
 		AudioManager::GetInstance().Play3DSoundEffect(drawerLockedSoundPath, position, Config::getInstance().sfxVolume * 2.0f);
@@ -73,6 +77,26 @@ void Drawer::Update(float deltaTime)
 				isMoving = false;
 				isMoved = !isMoved;
 			}
+		}
+	}
+}
+
+
+std::string Drawer::GetActionText()
+{
+	if (isLocked)
+	{
+		return "Open";
+	}
+	else
+	{
+		if (isMoved)
+		{
+			return "Close";
+		}
+		else
+		{
+			return "Open";
 		}
 	}
 }

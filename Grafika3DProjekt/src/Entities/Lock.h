@@ -18,6 +18,7 @@ public:
 	int getSelectedIndex() { return selectedIndex; };
 	bool getIsUnlocked() { return isUnlocked; };
 	std::vector<Entity*> getLockRolls() { return LockRolls; };
+	std::string GetActionText() override { return "Use"; };
 	void changeSelectedIndex(int direction);
 	void moveLockRolls(int direction);
 	void cleanUpLock();

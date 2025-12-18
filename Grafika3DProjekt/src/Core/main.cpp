@@ -224,6 +224,8 @@ std::vector<std::string> skyboxFaces
 // Text Renderer
 TextRenderer* textRenderer;
 TextRenderer* tooltipRenderer;
+TextRenderer* smallerTooltipRenderer;
+TextRenderer* subtitlesRenderer;
 
 // Sprite Renderer
 SpriteRenderer* spriteRenderer;
@@ -262,8 +264,12 @@ int main()
 	uiWidth = mainWindow.getBufferWidth();
 	uiHeight = mainWindow.getBufferHeight();
 
+	subtitlesRenderer = new TextRenderer(uiWidth, uiHeight);
+	subtitlesRenderer->Load("Fonts/BitterPro-Medium.ttf", 24);
+
+
 	// Create UI
-	gameUI = new UI(mainWindow.getWindow());
+	gameUI = new UI(mainWindow.getWindow(), subtitlesRenderer);
 
 	UI::wasPauseMenuOpen = false;
 	UI::isPauseMenuOpen = false;
@@ -389,7 +395,11 @@ int main()
 		RenderScenePass(projection);
 
 		// Draw UI
+
+		gameUI->RenderSubtitle(deltaTime);
 		DrawInventory();
+
+
 
 		// Render FPS
 		if (config.showFPS) {
@@ -567,10 +577,12 @@ Scene* createMainScene(Camera * camera) {
 
 	// Text renderer
 	textRenderer = new TextRenderer(mainWindow.getBufferWidth(), mainWindow.getBufferHeight());
-	tooltipRenderer = new TextRenderer(mainWindow.getBufferWidth(), mainWindow.getBufferHeight());
+	tooltipRenderer = new TextRenderer(mainWindow.getBufferWidth(), mainWindow.getBufferHeight());\
+	smallerTooltipRenderer = new TextRenderer(mainWindow.getBufferWidth(), mainWindow.getBufferHeight());
 	// Load font
 	textRenderer->Load("Fonts/BitterPro-Medium.ttf", 12);
 	tooltipRenderer->Load("Fonts/BitterPro-Bold.ttf", 36);
+	smallerTooltipRenderer->Load("Fonts/BitterPro-Bold.ttf", 12);
 
 	// Skybox
 	skybox = new Skybox(skyboxFaces);
@@ -584,7 +596,7 @@ Scene* createMainScene(Camera * camera) {
 	flashlight = new Flashlight(glm::vec3(1.0f, 1.0f, 0.85f), 0.001f, 1.2f, camera->getCameraPosition(), 1.0f, 0.07f, 0.017f, camera->getCameraFront(), 25.0f, 32.5f, 2048.0f,2048.0f);
 
 	// Create scene
-	scene = new Scene(camera, player, tooltipRenderer);
+	scene = new Scene(camera, player, tooltipRenderer, smallerTooltipRenderer);
 
 	lockEntity = new Lock(&lockBaseModel, glm::vec3(-2.0f, 0.5f, -1.5f), glm::vec3(0.0f), glm::vec3(4.0f), lockRotatingModels, &lockMetalPartModel, scene, true);
 	lockEntity->setTitle("Lock");

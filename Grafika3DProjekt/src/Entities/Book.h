@@ -12,6 +12,7 @@ public:
 	~Book();
 	static std::vector<std::string> bookTags;
 	static bool solved;
+	std::string GetActionText() override;
 private:
 	bool isMoved = false;
 	bool isMoving = false;

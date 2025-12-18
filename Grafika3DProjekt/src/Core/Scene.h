@@ -15,7 +15,7 @@ class Scene
 {
 public:
 
-	Scene(Camera* cam, Player* play, TextRenderer* renderer);
+	Scene(Camera* cam, Player* play, TextRenderer* renderer, TextRenderer* secondRenderer);
 	~Scene();
 	void AddEntity(Entity* entity)
 	{
@@ -57,6 +57,7 @@ private:
 	Camera* camera;
 	Player* player;
 	TextRenderer* textRenderer;
+	TextRenderer* smallerTextRenderer;
 	Config& config = Config::getInstance();
 	void RenderLogic(Shader* shader, glm::mat4 projection);
 	Entity* getEntityByTitle(const std::string& title);

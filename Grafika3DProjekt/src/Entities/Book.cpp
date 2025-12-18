@@ -97,3 +97,17 @@ void Book::CheckSolved()
 		}
 	}
 }
+
+std::string Book::GetActionText()
+{
+	if(Book::solved) {
+		return "Examine";
+	}
+	if (isMoved) {
+		return "Put back";
+	}
+	else {
+		return "Pull out";
+	}
+
+}

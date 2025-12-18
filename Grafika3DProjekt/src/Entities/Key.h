@@ -10,6 +10,7 @@ public:
 	void Interact(Inventory* playerInventory) override;
 	void Update(float deltaTime) override;
 	Texture* getTexture()override { return itemTexture; }
+	std::string GetActionText() override { return "Pick Up"; };
 	~Key();
 private:
 	bool isPickedUp = false;

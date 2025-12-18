@@ -24,3 +24,18 @@ void Radio::Interact(Inventory* playerInventory)
 	}
 		
 }
+
+std::string Radio::GetActionText()
+{
+	switch (currentState)
+	{
+	case BROKEN:
+		return "Turn On";
+	case PLAYING:
+		return "Turn Off";
+	case OFF:
+		return "Turn On";
+	default:
+		return "Examine";
+	}
+}
