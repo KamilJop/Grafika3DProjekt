@@ -1,0 +1,26 @@
+# Blender 5.0.0 MTL File: 'gwno.blend'
+# www.blender.org
+
+newmtl Sofa_A
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:/Sofa_A_BaseColor.jpg
+map_Ns C:/Sofa_A_Roughness.jpg
+map_refl C:/Sofa_A_Metallic.jpg
+map_Bump -bm 1.000000 C:/Sofa_A_Normal.jpg
+
+newmtl Sofa_B
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:/Sofa_B_BaseColor.jpg
+map_Ns C:/Sofa_B_Roughness.jpg
+map_refl C:/Sofa_B_Metallic.jpg
+map_Bump -bm 1.000000 C:/Sofa_B_Normal.jpg

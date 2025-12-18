@@ -173,7 +173,7 @@ float CalculateOmniShadowFactor(PointLight pLight, int shadowIndex)
 	float current = length(fragToLight);
 	
 	// Avoid shadow acne
-	float bias = 0.05;
+	float bias = 0.01;
 	float shadow = 0.0;
 	int samples = 20;
 	float viewDistance = length(cameraPosition - FragPos);

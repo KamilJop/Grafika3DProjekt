@@ -35,6 +35,7 @@
 #include "Entities/BookshelfPuzzle.h"
 #include "Entities/Lock.h"
 #include "Entities/Desk.h"
+#include "Entities/Candle.h"
 
 enum ShaderTypes
 {
@@ -123,6 +124,8 @@ Entity* doorWallRoom1UpEntity;
 Entity* ceilingRoom1Entity;
 Door* doorsRoom1Entity;
 Desk* deskEntity;
+Entity* sofaEntity;
+Candle* candleEntity;
 
 // Room 1 interior objects
 BookshelfPuzzle* bookshelfEntity;
@@ -156,6 +159,7 @@ Model paintingModel;
 Model keyModel;
 Model radioModel;
 Model pageModel;
+Model candleModel;
 
 // Room 1 walls and floor models
 Model floorRoom1Model;
@@ -176,6 +180,7 @@ Model blueBookModel;
 Model redBookModel;
 Model yellowBookModel;
 Model greyBookModel;
+Model sofaModel;
 
 // Lock models
 std::vector<Model*> lockRotatingModels;
@@ -451,6 +456,8 @@ Scene* createMainScene(Camera * camera) {
 	redBookModel.LoadModel("Models/redBook.obj");
 	yellowBookModel.LoadModel("Models/yellowBook.obj");
 	greyBookModel.LoadModel("Models/greyBook.obj");
+	sofaModel.LoadModel("Models/sofa.obj");
+	candleModel.LoadModel("Models/candle.obj");
 
 	// Desk models
 	deskModel.LoadModel("Models/desk.obj");
@@ -461,6 +468,7 @@ Scene* createMainScene(Camera * camera) {
 	deskDrawerModels.push_back(&deskDrawerModelTop);
 	deskDrawerModels.push_back(&deskDrawerModelMiddle);
 	deskDrawerModels.push_back(&deskDrawerModelBottom);
+
 
 
 
@@ -571,7 +579,8 @@ Scene* createMainScene(Camera * camera) {
 	mainLight = new DirectionalLight(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(-1.0f, -5.0f, -5.5f), 0.3f, 0.22f, 2048.0f, 2048.0f);
 	pointLight = new PointLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.0f, 0.0f, glm::vec3(-10.0f, 1.0f, -3.0f), 1.0f, 0.09f, 0.032f, 0, 100.0f, 0.01f, 2048.0f, 2048.0f);
 	pointLight2 = new PointLight(glm::vec3(0.0f, 0.0f, 1.0f), 0.0f, 0.0f, glm::vec3(8.0f, 1.5f, -6.0f), 1.0f, 0.12f, 0.062f, 1, 100.0f, 0.01f, 2048.0f, 2048.0f);
-	pointLight3 = new PointLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.0f, 0.0f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.12f, 0.062f, 2, 100.0f, 0.01f, 2048.0f, 2048.0f);
+	// Candle test
+	pointLight3 = new PointLight(glm::vec3(0.93f, 0.64f, 0.28f), 0.1f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.12f, 0.062f, 2, 100.0f, 0.01f, 2048.0f, 2048.0f);
 	flashlight = new Flashlight(glm::vec3(1.0f, 1.0f, 0.85f), 0.001f, 1.2f, camera->getCameraPosition(), 1.0f, 0.07f, 0.017f, camera->getCameraFront(), 25.0f, 32.5f, 2048.0f,2048.0f);
 
 	// Create scene
@@ -581,6 +590,8 @@ Scene* createMainScene(Camera * camera) {
 	lockEntity->setTitle("Lock");
 	deskEntity = new Desk(&deskModel, glm::vec3(-4.5f, 0.0f, -7.4f), glm::vec3(0.0f), glm::vec3(1.2f), deskDrawerModels, &deskDoorModel, scene , false);
 
+	sofaEntity = new Entity(&sofaModel, glm::vec3(0.8f, 0.0f, 0.0f), glm::vec3(0.0f, -120.0f, 0.0f), glm::vec3(1.5f));
+	candleEntity = new Candle(&candleModel, glm::vec3(-4.5f, 1.2f, -7.4f), glm::vec3(0.0f), glm::vec3(1.5f),pointLight3,true);
 	// Add entities and lights to scene
 	scene->AddPointLight(pointLight);
 	scene->AddPointLight(pointLight2);
@@ -606,6 +617,7 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(redBookEntity);
 	scene->AddEntity(yellowBookEntity);
 	scene->AddEntity(greyBookEntity);
+	scene->AddEntity(candleEntity);
 
 
 
@@ -618,6 +630,7 @@ Scene* createMainScene(Camera * camera) {
 	//scene->AddEntity(pageEntity);
 	scene->AddEntity(lockEntity);
 	scene->AddEntity(deskEntity);
+	scene->AddEntity(sofaEntity);
 
 
 
@@ -630,7 +643,7 @@ Scene* createMainScene(Camera * camera) {
 void DirectionalLightShadowMapPass() {
 	shaderList[SHADER_DIRLIGHT_SHADOWMAP]->UseShader();
 	glViewport(0, 0, mainLight->getShadowMap()->getShadowWidth(), mainLight->getShadowMap()->getShadowHeight());
-	glCullFace(GL_FRONT);
+	glCullFace(GL_BACK);
 	mainLight->getShadowMap()->Write();
 	glClear(GL_DEPTH_BUFFER_BIT);
 
@@ -639,7 +652,6 @@ void DirectionalLightShadowMapPass() {
 
 	scene->RenderShadowMap(shaderList[SHADER_DIRLIGHT_SHADOWMAP]);
 
-	glCullFace(GL_BACK);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 }
@@ -648,7 +660,7 @@ void FlashlightShadowMapPass() {
 
 	shaderList[SHADER_DIRLIGHT_SHADOWMAP]->UseShader();
 	glViewport(0, 0, flashlight->getShadowMap()->getShadowWidth(), flashlight->getShadowMap()->getShadowHeight());
-	glCullFace(GL_FRONT);
+	glCullFace(GL_BACK);
 	flashlight->getShadowMap()->Write();
 	glClear(GL_DEPTH_BUFFER_BIT);
 
@@ -657,7 +669,6 @@ void FlashlightShadowMapPass() {
 	shaderList[SHADER_DIRLIGHT_SHADOWMAP]->setMat4("lightSpaceTransform", lightTransform);
 
 	scene->RenderShadowMap(shaderList[SHADER_DIRLIGHT_SHADOWMAP]);
-	glCullFace(GL_BACK);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
@@ -668,9 +679,7 @@ void OmniShadowMapPass(PointLight* pLight) {
 	shaderList[SHADER_OMNI_SHADOWMAP]->UseShader();
 	// Setup viewport
 	glViewport(0, 0, pLight->getShadowMap()->getShadowWidth(), pLight->getShadowMap()->getShadowHeight());
-
-	// Turn on front face culling
-	glCullFace(GL_FRONT);
+	glCullFace(GL_BACK);
 
 	// Bind the shadow map for writing
 	pLight->getShadowMap()->Write();
@@ -688,7 +697,7 @@ void OmniShadowMapPass(PointLight* pLight) {
 	shaderList[SHADER_OMNI_SHADOWMAP]->setFloat("farPlane", pLight->getFarPlane());
 	shaderList[SHADER_OMNI_SHADOWMAP]->setVec3("lightPos", pLight->getLightPosition());
 	scene->RenderShadowMap(shaderList[SHADER_OMNI_SHADOWMAP]);
-	glCullFace(GL_BACK);
+
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
