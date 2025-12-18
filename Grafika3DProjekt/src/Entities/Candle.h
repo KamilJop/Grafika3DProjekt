@@ -15,8 +15,11 @@ class Candle : public Entity
 private:
 	PointLight* candleLight;
 	bool isLit = false;
+	bool triedToLight = false;
 	float lightAmbientIntensity;
 	float lightDiffuseIntensity;
 	glm::vec3 lightColor;
+	static std::string lightingSoundPath;
+	static std::string extinguishSoundPath;
 };
 

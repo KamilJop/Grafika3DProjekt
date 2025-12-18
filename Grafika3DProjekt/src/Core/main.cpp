@@ -36,6 +36,7 @@
 #include "Entities/Lock.h"
 #include "Entities/Desk.h"
 #include "Entities/Candle.h"
+#include "Entities/Lighter.h"
 
 enum ShaderTypes
 {
@@ -126,6 +127,7 @@ Door* doorsRoom1Entity;
 Desk* deskEntity;
 Entity* sofaEntity;
 Candle* candleEntity;
+Lighter* lighterEntity;
 
 // Room 1 interior objects
 BookshelfPuzzle* bookshelfEntity;
@@ -160,6 +162,7 @@ Model keyModel;
 Model radioModel;
 Model pageModel;
 Model candleModel;
+Model lighterModel;
 
 // Room 1 walls and floor models
 Model floorRoom1Model;
@@ -236,6 +239,7 @@ Texture* keySprite;
 Texture* itemFrame;
 Texture* selectedItemFrame;
 Texture* flashlightSprite;
+Texture* lighterSprite;
 
 // Audio Manager
 AudioManager& audioManager = AudioManager::GetInstance();
@@ -297,6 +301,9 @@ int main()
 
 	keySprite = new Texture("Textures/Icons/door_key.png");
 	keySprite->LoadTextureAlpha();
+
+	lighterSprite = new Texture("Textures/Icons/lighter.png");
+	lighterSprite->LoadTextureAlpha();
 
 	itemFrame = new Texture("Textures/Icons/item_frame.png");
 	itemFrame->LoadTextureAlpha();
@@ -468,6 +475,7 @@ Scene* createMainScene(Camera * camera) {
 	greyBookModel.LoadModel("Models/greyBook.obj");
 	sofaModel.LoadModel("Models/sofa.obj");
 	candleModel.LoadModel("Models/candle.obj");
+	lighterModel.LoadModel("Models/lighter.obj");
 
 	// Desk models
 	deskModel.LoadModel("Models/desk.obj");
@@ -512,6 +520,11 @@ Scene* createMainScene(Camera * camera) {
 	keyEntity->setColissions(false);
 	radioEntity = new Radio(&radioModel, glm::vec3(-5.25f, 1.1f, -7.5f), glm::vec3(0.0f,30.0f,0.0f), glm::vec3(2.0f), true);
 	radioEntity->setTitle("Radio");
+	lighterEntity = new Lighter(&lighterModel, glm::vec3(-3.0f, 0.5f, -3.0f), glm::vec3(0.0f), glm::vec3(2.0f), lighterSprite, true);
+	lighterEntity->setTitle("Lighter");
+
+
+
 
 	floorRoom1Entity = new Entity(&floorRoom1Model, glm::vec3(2.5f, 0.0f, 1.0f), glm::vec3(0.0f), glm::vec3(1.5f));
 	rightWallRoom1Entity = new Entity(&fullWallRoom1Model, glm::vec3(2.0f, -0.0f, -8.0f), glm::vec3(0.0f), glm::vec3(1.8f));
@@ -643,6 +656,7 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(lockEntity);
 	scene->AddEntity(deskEntity);
 	scene->AddEntity(sofaEntity);
+	scene->AddEntity(lighterEntity);
 
 
 

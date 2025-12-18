@@ -1,0 +1,14 @@
+# Blender 5.0.0 MTL File: 'gwno.blend'
+# www.blender.org
+
+newmtl Cricket_lighter_red
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd C:/LP2_Cricket lighter red_BaseColor.png
+map_Ns C:/LP2_Cricket lighter_Roughness.jpg
+map_refl C:/LP2_Cricket lighter_Metallic.jpg
+map_Bump -bm 1.000000 C:/LP2_Cricket lighter_Normal.jpg
