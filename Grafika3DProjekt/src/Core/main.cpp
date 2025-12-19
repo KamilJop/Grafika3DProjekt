@@ -114,20 +114,46 @@ Entity* paintingEntity;
 Entity* keyEntity;
 Entity* radioEntity;
 Entity* pageEntity;
+
 // Room 1 walls and floor
-Entity* floorRoom1Entity;
-Entity* rightWallRoom1Entity;
-Entity* leftWallRoom1Entity;
-Entity* backWallRoom1Entity;
-Entity* doorWallRoom1RightEntity;
-Entity* doorWallRoom1LeftEntity;
-Entity* doorWallRoom1UpEntity;
-Entity* ceilingRoom1Entity;
 Door* doorsRoom1Entity;
 Desk* deskEntity;
 Entity* sofaEntity;
 Candle* candleEntity;
 Lighter* lighterEntity;
+
+// Room 1 collisions
+Entity* floorEntity;
+Entity* ceilingEntity;
+Entity* room1LeftWallEntity;
+Entity* room1RightWallRightEntity;
+Entity* room1RightWallLeftEntity;
+Entity* room1RightWallUpEntity;
+Entity* room1BackWallLeftSideEntity;
+Entity* room1BackWallRightSideEntity;
+Entity* room1BackWallUpSideEntity;
+Entity* room1FrontWallUpEntity;
+Entity* room1FrontWallLeftEntity;
+Entity* room1FrontWallRightEntity;
+
+// Hidden room collisions
+Entity* hiddenRoomBackWallEntity;
+Entity* hiddenRoomLeftWallEntity;
+Entity* hiddenRoomCeilingEntity;
+
+
+// Corridor collisions
+Entity* corridorLeftWallEntity;
+Entity* corridorRightWallEntity;
+Entity* corridorCeilingEntity;
+
+
+// Second room collisions
+Entity* secondRoomLeftWallEntity;
+Entity* secondRoomRightWallEntity;
+Entity* secondRoomBackWallEntity;
+Entity* secondRoomFrontWallLeftEntity;
+Entity* secondRoomFrontWallRightEntity;
 
 // Room 1 interior objects
 BookshelfPuzzle* bookshelfEntity;
@@ -165,13 +191,8 @@ Model candleModel;
 Model lighterModel;
 
 // Room 1 walls and floor models
-Model floorRoom1Model;
-Model fullWallRoom1Model;
-Model doorWallRoom1RightModel;
-Model doorWallRoom1LeftModel;
-Model doorWallRoom1UpModel;
 Model doorsRoom1Model;
-Model ceilingRoom1Model;
+Model colliderWallModel;
 
 // Room 1 interior object models
 Model bookshelfModel;
@@ -453,15 +474,11 @@ Scene* createMainScene(Camera * camera) {
 	keyModel.LoadModel("Models/Worn_Key.obj");
 	radioModel.LoadModel("Models/radio.obj");
 	//pageModel.LoadModel("Models/page.obj");
-	ceilingRoom1Model.LoadModel("Models/ceiling.obj");
 
-	// Room 1 walls and floor models
-	floorRoom1Model.LoadModel("Models/floorRoom1.obj");
-	fullWallRoom1Model.LoadModel("Models/fullWallRoom1.obj");
-	doorWallRoom1RightModel.LoadModel("Models/doorWallRoom1Right.obj");
-	doorWallRoom1LeftModel.LoadModel("Models/doorWallRoom1Left.obj");
-	doorWallRoom1UpModel.LoadModel("Models/doorWallRoom1Up.obj");
+
+
 	doorsRoom1Model.LoadModel("Models/exitDoorsRoom1.obj");
+	colliderWallModel.LoadModel("Models/invisibleWall.obj");
 
 	// Room 1 interior object models
 	bookshelfModel.LoadModel("Models/bookshelf.obj");
@@ -473,7 +490,7 @@ Scene* createMainScene(Camera * camera) {
 	redBookModel.LoadModel("Models/redBook.obj");
 	yellowBookModel.LoadModel("Models/yellowBook.obj");
 	greyBookModel.LoadModel("Models/greyBook.obj");
-	sofaModel.LoadModel("Models/sofa.obj");
+	//sofaModel.LoadModel("Models/sofa.obj");
 	candleModel.LoadModel("Models/candle.obj");
 	lighterModel.LoadModel("Models/lighter.obj");
 
@@ -507,8 +524,8 @@ Scene* createMainScene(Camera * camera) {
 
 
 	// Create Entities
-	framuga = new Entity(&framugaModel,glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f), glm::vec3(1.41f));
-	doorEntity = new Door(&door, glm::vec3(0.0f, 0.0f, -2.0f), glm::vec3(0.0f), glm::vec3(1.4f), "Doors", framuga, "mainKey");
+	framuga = new Entity(&framugaModel,glm::vec3(2.4f, -0.1f, -3.0f), glm::vec3(0.0f,-90.0f,0.0f), glm::vec3(1.41f));
+	doorEntity = new Door(&door, glm::vec3(2.4f, -0.1f, -3.0f), glm::vec3(0.0f,-90.0f,0.0f), glm::vec3(1.4f), "Doors", framuga, "mainKey");
 	doorEntity->setLocked(true);
 	flashlightEntity = new Entity(&flashlightModel, glm::vec3(5.0f,2.0f,-3.0f), glm::vec3(0.0f), glm::vec3(0.03f));
 	paintingEntity = new Entity(&paintingModel,  glm::vec3(-4.0f, 2.0f, -8.0f), glm::vec3(180.0f, 90.0f, 90.0f), glm::vec3(2.0f), true);
@@ -524,16 +541,6 @@ Scene* createMainScene(Camera * camera) {
 	lighterEntity->setTitle("Lighter");
 
 
-
-
-	floorRoom1Entity = new Entity(&floorRoom1Model, glm::vec3(2.5f, 0.0f, 1.0f), glm::vec3(0.0f), glm::vec3(1.5f));
-	rightWallRoom1Entity = new Entity(&fullWallRoom1Model, glm::vec3(2.0f, -0.0f, -8.0f), glm::vec3(0.0f), glm::vec3(1.8f));
-	backWallRoom1Entity = new Entity(&fullWallRoom1Model, glm::vec3(-6.5f, -0.0f, -8.0f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(1.8f));
-	leftWallRoom1Entity = new Entity(&fullWallRoom1Model, glm::vec3(-6.0f, -0.0f, 1.0f), glm::vec3(0.0f, 180.0f, 0.0f), glm::vec3(1.8f));
-	doorWallRoom1RightEntity = new Entity(&doorWallRoom1RightModel, glm::vec3(-7.0f, -0.10, 1.0f), glm::vec3(0.0f, -90.0f, 0.0f), glm::vec3(1.8f));
-	doorWallRoom1LeftEntity = new Entity(&doorWallRoom1LeftModel, glm::vec3(-7.0f, -0.0f, 1.0f), glm::vec3(0.0f, -90.0f, 0.0f), glm::vec3(1.8f));	
-	doorWallRoom1UpEntity = new Entity(&doorWallRoom1UpModel, glm::vec3(-7.0f, -0.0f, 1.0f), glm::vec3(0.0f, -90.0f, 0.0f), glm::vec3(1.8f));
-	ceilingRoom1Entity = new Entity(&ceilingRoom1Model, glm::vec3(-3.0f, -1.25f, -2.5f), glm::vec3(0.0f,0.0f,0.0f), glm::vec3(1.8f));
 	doorsRoom1Entity = new Door(&doorsRoom1Model, glm::vec3(-3.1f, 0.0f, 1.0f), glm::vec3(0.0f,0.0f,0.0f), glm::vec3(1.8f), "Doors", framuga, "finalExitKey");
 	doorsRoom1Entity->setLocked(false);
 	//pageEntity = new Entity(&pageModel, glm::vec3(-5.0f, 1.0f, -3.0f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(2.0f), true);
@@ -568,8 +575,57 @@ Scene* createMainScene(Camera * camera) {
 	blueBookEntity->setColissions(false);
 
 
+	// Room 1 collisions
+	floorEntity = new Entity(&colliderWallModel, glm::vec3(-9.0f, 0.0f, 13.0f), glm::vec3(-90.0f,0.0f,0.0f), glm::vec3(40.0f, 24.0f, 10.0f));
+	floorEntity->setCastsShadow(false);
+	ceilingEntity = new Entity(&colliderWallModel, glm::vec3(-9.0f, 4.0f, 13.0f), glm::vec3(-90.0f, 0.0f, 0.0f), glm::vec3(40.0f, 24.0f, 1.0f));
+	ceilingEntity->setCastsShadow(false);
+	room1BackWallLeftSideEntity = new Entity(&colliderWallModel, glm::vec3(-6.0f, -0.1f, -8.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(6.5f, 4.0f, 1.0f));
+	ceilingEntity->setCastsShadow(false);
+	room1BackWallRightSideEntity = new Entity(&colliderWallModel, glm::vec3(1.6f, -0.1f, -8.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 4.0f, 1.0f));
+	room1BackWallLeftSideEntity->setCastsShadow(false);
+	room1BackWallUpSideEntity = new Entity(&colliderWallModel, glm::vec3(0.5f, 1.6f, -8.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.2f, 3.0f, 1.0f));
+	room1BackWallLeftSideEntity->setCastsShadow(false);
+	room1LeftWallEntity = new Entity(&colliderWallModel, glm::vec3(-5.8f, -0.1f, 1.2f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(10.0f, 4.0f, 1.0f));
+	room1LeftWallEntity->setCastsShadow(false);
+	room1RightWallRightEntity = new Entity(&colliderWallModel, glm::vec3(2.5f, -0.1f, 1.2f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(4.0f, 4.0f, 1.0f));
+	room1RightWallRightEntity->setCastsShadow(false);
+	room1RightWallLeftEntity = new Entity(&colliderWallModel, glm::vec3(2.5f, -0.1f, -4.2f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(8.0f, 4.0f, 1.0f));
+	room1RightWallLeftEntity->setCastsShadow(false);
+	room1RightWallUpEntity = new Entity(&colliderWallModel, glm::vec3(2.5f, 2.8f, -2.8f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(2.0f, 1.5f, 1.0f));
+	room1RightWallUpEntity->setCastsShadow(false);
+	room1FrontWallUpEntity= new Entity(&colliderWallModel, glm::vec3(-6.0f, 3.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(8.5f, 1.0f, 1.0f));
+	room1FrontWallUpEntity->setCastsShadow(false);
+	room1FrontWallLeftEntity = new Entity(&colliderWallModel, glm::vec3(-6.0f, -0.1f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 4.0f, 1.0f));
+	room1FrontWallLeftEntity->setCastsShadow(false);
+	room1FrontWallRightEntity = new Entity(&colliderWallModel, glm::vec3(-3.0f, -0.1f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(6.0f, 4.0f, 1.0f));
+	room1FrontWallRightEntity->setCastsShadow(false);
 
+	// Hidden room collisions
+	hiddenRoomBackWallEntity = new Entity(&colliderWallModel, glm::vec3(-3.0f, -0.1f, -11.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(6.0f, 1.8f, 1.0f));
+	hiddenRoomBackWallEntity->setCastsShadow(false);
+	hiddenRoomLeftWallEntity = new Entity(&colliderWallModel, glm::vec3(-1.0f, -0.1f, -8.0f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(3.0f, 1.8f, 1.0f));
+	hiddenRoomLeftWallEntity->setCastsShadow(false);
+	hiddenRoomCeilingEntity = new Entity(&colliderWallModel, glm::vec3(-3.0f, 1.6f, -8.0f), glm::vec3(-90.0f, 0.0f, 0.0f), glm::vec3(6.0f, 3.0f, 1.0f));
+	hiddenRoomCeilingEntity->setCastsShadow(false);
 
+	// Corridor collisions
+	corridorLeftWallEntity = new Entity(&colliderWallModel, glm::vec3(2.5f, -0.1f, -6.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(15.0f, 4.0f, 1.0f));
+	corridorLeftWallEntity->setCastsShadow(false);
+	corridorRightWallEntity = new Entity(&colliderWallModel, glm::vec3(2.5f, -0.1f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(15.0f, 4.0f, 1.0f));
+	corridorRightWallEntity->setCastsShadow(false);
+
+	// Second room collisions
+	secondRoomLeftWallEntity = new Entity(&colliderWallModel, glm::vec3(17.0f, -0.1f, -9.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(10.0f, 4.0f, 1.0f));
+	secondRoomLeftWallEntity->setCastsShadow(false);
+	secondRoomRightWallEntity = new Entity(&colliderWallModel, glm::vec3(17.0f, -0.1f, 2.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(10.0f, 4.0f, 1.0f));
+	secondRoomRightWallEntity->setCastsShadow(false);
+	secondRoomBackWallEntity = new Entity(&colliderWallModel, glm::vec3(27.0f, -0.1f, 2.5f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(12.0f, 4.0f, 1.0f));
+	secondRoomBackWallEntity->setCastsShadow(false);
+	secondRoomFrontWallLeftEntity = new Entity(&colliderWallModel, glm::vec3(17.7f, -0.1f, -6.0f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(3.0f, 4.0f, 1.0f));
+	secondRoomFrontWallLeftEntity->setCastsShadow(false);
+	secondRoomFrontWallRightEntity = new Entity(&colliderWallModel, glm::vec3(17.7f, -0.1f, 2.0f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(3.0f, 4.0f, 1.0f));
+	secondRoomFrontWallRightEntity->setCastsShadow(false);
 
 
 
@@ -611,11 +667,14 @@ Scene* createMainScene(Camera * camera) {
 	// Create scene
 	scene = new Scene(camera, player, tooltipRenderer, smallerTooltipRenderer);
 
+
+
+
 	lockEntity = new Lock(&lockBaseModel, glm::vec3(-2.0f, 0.5f, -1.5f), glm::vec3(0.0f), glm::vec3(4.0f), lockRotatingModels, &lockMetalPartModel, scene, true);
 	lockEntity->setTitle("Lock");
 	deskEntity = new Desk(&deskModel, glm::vec3(-4.5f, 0.0f, -7.4f), glm::vec3(0.0f), glm::vec3(1.2f), deskDrawerModels, &deskDoorModel, scene , false);
 
-	sofaEntity = new Entity(&sofaModel, glm::vec3(0.8f, 0.0f, 0.0f), glm::vec3(0.0f, -120.0f, 0.0f), glm::vec3(1.5f));
+	//sofaEntity = new Entity(&sofaModel, glm::vec3(0.8f, 0.0f, 0.0f), glm::vec3(0.0f, -120.0f, 0.0f), glm::vec3(1.5f));
 	candleEntity = new Candle(&candleModel, glm::vec3(-4.5f, 1.2f, -7.4f), glm::vec3(0.0f), glm::vec3(1.5f),pointLight3,true);
 	// Add entities and lights to scene
 	scene->AddPointLight(pointLight);
@@ -623,15 +682,6 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddPointLight(pointLight3);
 	scene->SetDirectionalLight(mainLight);
 	scene->SetFlashlight(flashlight);
-
-	scene->AddEntity(floorRoom1Entity);
-	scene->AddEntity(rightWallRoom1Entity);
-	scene->AddEntity(backWallRoom1Entity);
-	scene->AddEntity(leftWallRoom1Entity);
-	scene->AddEntity(doorWallRoom1RightEntity);
-	scene->AddEntity(doorWallRoom1LeftEntity);
-	scene->AddEntity(doorWallRoom1UpEntity);
-	scene->AddEntity(ceilingRoom1Entity);
 	scene->AddEntity(doorsRoom1Entity);
 	scene->AddEntity(bookshelfEntity);
 	scene->AddEntity(brownBookEntity);
@@ -655,10 +705,39 @@ Scene* createMainScene(Camera * camera) {
 	//scene->AddEntity(pageEntity);
 	scene->AddEntity(lockEntity);
 	scene->AddEntity(deskEntity);
-	scene->AddEntity(sofaEntity);
+	//scene->AddEntity(sofaEntity);
 	scene->AddEntity(lighterEntity);
 
+	// Room 1 collisions
+	scene->AddEntity(floorEntity);
+	scene->AddEntity(ceilingEntity);
+	scene->AddEntity(room1BackWallLeftSideEntity);
+	scene->AddEntity(room1BackWallRightSideEntity);
+	scene->AddEntity(room1BackWallUpSideEntity);
+	scene->AddEntity(room1LeftWallEntity);
+	scene->AddEntity(room1RightWallRightEntity);
+	scene->AddEntity(room1RightWallLeftEntity);
+	scene->AddEntity(room1RightWallUpEntity);
+	scene->AddEntity(room1FrontWallUpEntity);
+	scene->AddEntity(room1FrontWallLeftEntity);
+	scene->AddEntity(room1FrontWallRightEntity);
 
+
+	// Hidden room collisions
+	scene->AddEntity(hiddenRoomBackWallEntity);
+	scene->AddEntity(hiddenRoomLeftWallEntity);
+	scene->AddEntity(hiddenRoomCeilingEntity);
+
+	// Corridor collisions
+	scene->AddEntity(corridorLeftWallEntity);
+	scene->AddEntity(corridorRightWallEntity);
+
+	// Second room collisions
+	scene->AddEntity(secondRoomLeftWallEntity);
+	scene->AddEntity(secondRoomRightWallEntity);
+	scene->AddEntity(secondRoomBackWallEntity);
+	scene->AddEntity(secondRoomFrontWallLeftEntity);
+	scene->AddEntity(secondRoomFrontWallRightEntity);
 
 
 	/*scene->AddEntity(sculptureEntity);*/

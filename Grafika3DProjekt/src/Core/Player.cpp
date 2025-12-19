@@ -165,7 +165,7 @@ void Player::updatePlayerCollisions() {
 	float width = 0.7f;
 	float height = 1.8f;
 
-	if (isCrouching) height = 1.8f; 
+	if (isCrouching) height = 1.4f; 
 
 	float halfWidth = width / 2.0f;
 

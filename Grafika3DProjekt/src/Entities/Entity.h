@@ -49,6 +49,8 @@ public:
 	void setSelected(bool state) { selected = state; }
 	bool isSelected() { return selected; }	
 	void setOutlined(bool state) { outlined = state; }
+	void setVisibility(bool state) { isVisible = state; }
+	bool getVisible() { return isVisible; }
 	CollisionBox GetCollisions() { return collisions; }
 	void DrawEntity(Shader* shader);
 	void UpdateCollisionBox();
@@ -68,6 +70,7 @@ protected:
 	bool interactable;
 	bool shouldGetDestroyed = false;
 	bool pickable = false;
+	bool isVisible = true;
 	std::string itemTag = "";
 	CollisionBox collisions;
 	std::string title = "Untitled object";

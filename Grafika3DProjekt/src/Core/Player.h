@@ -28,6 +28,7 @@ public:
 	void setWalkTimer(float time) { walkTimer = time; };	
 	float getWalkTimer() { return walkTimer; };
 	bool getCrouching() { return isCrouching; };
+
 	Entity* getHeldEntity() { return heldEntity; };
 	void updateHeldEntityPosition(const glm::vec3& finalPos);
 	void pickUpEntity(Entity* entity);

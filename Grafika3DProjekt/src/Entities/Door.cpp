@@ -8,6 +8,7 @@ Door::Door(Model* model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, std::stri
 	isAnimating = false;
 	isTryingToOpen = false;
 	title = name;
+	startRotationY = rot.y;
 	doorFrame = frame;
 	doorKeyTag = keyTag;
 	AudioManager::GetInstance().Load3DSoundEffect("door_opening", openingSoundPath);
@@ -78,10 +79,10 @@ void Door::Update(float deltaTime)
 		animCounter += deltaTime;
 		if (animCounter < 0.5f) {
 			float shakeOffset = sin(animCounter * 30.0f) * 2.0f;
-			rotation.y = shakeOffset;
+			rotation.y = startRotationY + shakeOffset;
 		}
 		else {
-			rotation.y = 0.0f; 
+			rotation.y = startRotationY; 
 			isTryingToOpen = false;
 			animCounter = 0.0f;
 		}
@@ -90,7 +91,7 @@ void Door::Update(float deltaTime)
 	isAnimating = false;
 	isTryingToOpen = false;
 	animCounter = 0;
-	float targetAngle = isOpen ? 90.0f * direction : 0.0f;
+	float targetAngle = isOpen ? (startRotationY + (90.0f * direction)) : startRotationY;
 	float currentAngle = rotation.y;
 	if (abs(currentAngle - targetAngle) > 0.8f)
 		isAnimating = true;

@@ -22,6 +22,7 @@ private:
 	bool isAnimating;
 	bool isTryingToOpen;
 	bool triedToOpen = false;
+	float startRotationY = 0.0f;
 	bool isLocked = false;
 	int direction = 1;
 	std::string doorKeyTag;

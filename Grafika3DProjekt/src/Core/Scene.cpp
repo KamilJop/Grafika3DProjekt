@@ -25,6 +25,7 @@ void Scene::RenderWithoutOutline(Shader* shader, glm::mat4 projection)
 	for (auto& entity : entities)
 	{
 		if (!entity->isOutlined()) {
+			if (!entity->getVisible()) continue;
 			if (entity->getTitle() == "Flashlight") continue;
 			if (entity->isSelected()) {
 				shader->setInt("isSelected", 1);
