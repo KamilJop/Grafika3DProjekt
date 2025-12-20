@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 #include "../Core/Scene.h"
-
+#include "Chest.h"
 
 class Lock : public Entity
 {
@@ -16,6 +16,7 @@ public:
 	float getLockPuzzleYaw() { return lockPuzzleYaw; };
 	float getLockPuzzlePitch() { return lockPuzzlePitch; };
 	int getSelectedIndex() { return selectedIndex; };
+	void setChestToUnlock(Chest* chest) { chestToUnlock = chest; };
 	bool getIsUnlocked() { return isUnlocked; };
 	std::vector<Entity*> getLockRolls() { return LockRolls; };
 	std::string GetActionText() override { return "Use"; };
@@ -27,6 +28,7 @@ private:
 	std::vector<Entity*>LockRolls;
 	std::vector<int>correctAnswer = { 5,4,3,2 };
 	std::vector<int>currentAnswer = { 7,7,4,2 };
+	Chest* chestToUnlock = nullptr;
 	int selectedIndex = 0;
 	Entity* metalPartModel;
 	bool isUnlocked = false;

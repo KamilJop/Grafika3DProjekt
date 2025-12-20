@@ -143,6 +143,7 @@
     <ClCompile Include="..\External Libs\IMGUI\imgui_impl_opengl3.cpp" />
     <ClCompile Include="..\External Libs\IMGUI\imgui_tables.cpp" />
     <ClCompile Include="..\External Libs\IMGUI\imgui_widgets.cpp" />
+    <ClCompile Include="src\Entities\Chest.cpp" />
     <ClCompile Include="src\Entities\Battery.cpp" />
     <ClCompile Include="src\Entities\Lighter.cpp" />
     <ClCompile Include="src\Entities\Candle.cpp" />
@@ -190,6 +191,7 @@
     <ClInclude Include="..\External Libs\IMGUI\imstb_rectpack.h" />
     <ClInclude Include="..\External Libs\IMGUI\imstb_textedit.h" />
     <ClInclude Include="..\External Libs\IMGUI\imstb_truetype.h" />
+    <ClInclude Include="src\Entities\Chest.h" />
     <ClInclude Include="src\Entities\Battery.h" />
     <ClInclude Include="src\Entities\Lighter.h" />
     <ClInclude Include="src\Entities\Candle.h" />

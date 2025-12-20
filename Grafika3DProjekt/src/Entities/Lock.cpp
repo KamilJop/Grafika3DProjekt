@@ -9,16 +9,16 @@ Lock::Lock(Model* model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal,std::vecto
     for (auto* m : models) {
 		switch (index) {
 			case 0:
-				posOffset = glm::vec3(0.0375f, 0.11725f, 0.0f);
+				posOffset = glm::vec3(0.0375f/2.0f, 0.11725f/2.0f, 0.0f);
 				break;
 			case 1:
-				posOffset = glm::vec3(0.0125f, 0.11725f, 0.0f);
+				posOffset = glm::vec3(0.0125f/2.0f, 0.11725f/2.0f, 0.0f);
 				break;
 			case 2:
-				posOffset = glm::vec3(-0.013f, 0.11725f, 0.0f);
+				posOffset = glm::vec3(-0.013f/2.0f, 0.11725f/2.0f, 0.0f);
 				break;
 			case 3:
-				posOffset = glm::vec3(-0.038f, 0.11725f, 0.0f);
+				posOffset = glm::vec3(-0.038f/2.0f, 0.11725f/2.0f, 0.0f);
 				break;
 		}
 		index++;
@@ -29,11 +29,11 @@ Lock::Lock(Model* model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal,std::vecto
 	scene->AddEntity(metalPartModel);
 	lockPuzzleYaw = 90.0f;
 	lockPuzzlePitch = 0.0f;
-	lockPuzzlePos = pos + glm::vec3(0.0f, 0.1f, -0.5f);
-	if (rot.y = 180.0) {
+	lockPuzzlePos = pos + glm::vec3(0.0f, 0.1f, -0.25f);
+	/*if (rot.y = 180.0) {
 		lockPuzzlePos = pos + glm::vec3(0.0f, 0.1f, 0.5f);
 		lockPuzzleYaw *= -1;
-	}
+	}*/
 
 	AudioManager::GetInstance().Load3DSoundEffect(rollSound, rollSound);
 	AudioManager::GetInstance().Load3DSoundEffect(unlockSound, unlockSound);
@@ -71,6 +71,10 @@ void Lock::moveLockRolls(int direction)
 	{
 		isUnlocked = true;
 		AudioManager::GetInstance().Play3DSoundEffect(unlockSound, getPosition(), 1.0f);
+		if(chestToUnlock != nullptr)
+		{
+			chestToUnlock->OpenChest();
+		}
 	}
 }
 

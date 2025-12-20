@@ -38,6 +38,7 @@
 #include "Entities/Candle.h"
 #include "Entities/Lighter.h"
 #include "Entities/Battery.h"
+#include "Entities/Chest.h"
 
 enum ShaderTypes
 {
@@ -168,6 +169,7 @@ Book* yellowBookEntity;
 Book* greyBookEntity;
 Battery* battery1Entity;
 Battery* battery2Entity;
+Chest* chestEntity;
 
 
 //Lock
@@ -193,6 +195,8 @@ Model pageModel;
 Model candleModel;
 Model lighterModel;
 Model batteryModel;
+Model lowerChestModel;
+Model upperChestModel;
 
 // Room 1 walls and floor models
 Model doorsRoom1Model;
@@ -502,6 +506,8 @@ Scene* createMainScene(Camera * camera) {
 	candleModel.LoadModel("Models/candle.obj");
 	lighterModel.LoadModel("Models/lighter.obj");
 	batteryModel.LoadModel("Models/battery.obj");
+	lowerChestModel.LoadModel("Models/lowerChest.obj");
+	upperChestModel.LoadModel("Models/upperChest.obj");
 
 	// Desk models
 	deskModel.LoadModel("Models/desk.obj");
@@ -554,8 +560,9 @@ Scene* createMainScene(Camera * camera) {
 	doorsRoom1Entity->setLocked(false);
 	battery1Entity = new Battery(&batteryModel, glm::vec3(-2.5f, 0.5f, -3.0f), glm::vec3(0.0f), glm::vec3(2.0f),"battery1", batterySprite, true);
 	battery1Entity->setTitle("Battery");
-	battery2Entity = new Battery(&batteryModel, glm::vec3(0.0f, 0.5f, -7.0f), glm::vec3(0.0f), glm::vec3(2.0f), "battery2",batterySprite, true);
+	battery2Entity = new Battery(&batteryModel, glm::vec3(-2.0f, 0.5f, 0.5f), glm::vec3(0.0f), glm::vec3(2.0f), "battery2",batterySprite, true);
 	battery2Entity->setTitle("Battery");
+
 	//pageEntity = new Entity(&pageModel, glm::vec3(-5.0f, 1.0f, -3.0f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(2.0f), true);
 	//pageEntity->setTitle("Page");
 	//pageEntity->setColissions(false);
@@ -683,9 +690,13 @@ Scene* createMainScene(Camera * camera) {
 
 
 
-	lockEntity = new Lock(&lockBaseModel, glm::vec3(-2.0f, 0.5f, -1.5f), glm::vec3(0.0f,180.0f,0.0f), glm::vec3(4.0f), lockRotatingModels, &lockMetalPartModel, scene, true);
-	lockEntity->setTitle("Lock");
+
 	deskEntity = new Desk(&deskModel, glm::vec3(-4.5f, 0.0f, -7.4f), glm::vec3(0.0f), glm::vec3(1.2f), deskDrawerModels, &deskDoorModel, scene , false);
+	chestEntity = new Chest(&lowerChestModel, &upperChestModel, glm::vec3(-2.0f, 0.0f, 0.15f), glm::vec3(0.0f), glm::vec3(1.0f), scene, true);
+	chestEntity->setTitle("Chest");
+	lockEntity = new Lock(&lockBaseModel, glm::vec3(-2.0f, 0.45f, -0.35f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(2.0f), lockRotatingModels, &lockMetalPartModel, scene, true);
+	lockEntity->setTitle("Lock");
+	lockEntity->setChestToUnlock(chestEntity);
 
 	//sofaEntity = new Entity(&sofaModel, glm::vec3(0.8f, 0.0f, 0.0f), glm::vec3(0.0f, -120.0f, 0.0f), glm::vec3(1.5f));
 	candleEntity = new Candle(&candleModel, glm::vec3(-4.5f, 1.2f, -7.4f), glm::vec3(0.0f), glm::vec3(1.5f),pointLight3,true);
@@ -708,6 +719,7 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(candleEntity);
 	scene->AddEntity(battery1Entity);
 	scene->AddEntity(battery2Entity);
+	scene->AddEntity(chestEntity);
 
 
 
