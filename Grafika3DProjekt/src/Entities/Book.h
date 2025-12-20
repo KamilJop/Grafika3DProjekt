@@ -29,6 +29,6 @@ private:
 	glm::vec3 movedPosition;
 	glm::vec3 solvedPosition;
 	int solveSize = 4;
-	std::string correctBooks[4] = { "redBook", "greenBook", "blueBook", "yellowBook" };
+	std::string correctBooks[4] = { "redBook", "yellowBook", "orangeBook", "purpleBook" };
 };
 

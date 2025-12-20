@@ -27,9 +27,14 @@ Lock::Lock(Model* model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal,std::vecto
     }
     metalPartModel = new Entity(metalPart, pos, rot, scal, false);
 	scene->AddEntity(metalPartModel);
-	lockPuzzlePos = pos + glm::vec3(0.0f, 0.1f, -0.5f);
 	lockPuzzleYaw = 90.0f;
 	lockPuzzlePitch = 0.0f;
+	lockPuzzlePos = pos + glm::vec3(0.0f, 0.1f, -0.5f);
+	if (rot.y = 180.0) {
+		lockPuzzlePos = pos + glm::vec3(0.0f, 0.1f, 0.5f);
+		lockPuzzleYaw *= -1;
+	}
+
 	AudioManager::GetInstance().Load3DSoundEffect(rollSound, rollSound);
 	AudioManager::GetInstance().Load3DSoundEffect(unlockSound, unlockSound);
 }

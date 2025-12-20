@@ -97,9 +97,19 @@ void Player::UpdatePhysics(float deltaTime, std::vector<Entity*>& entities)
 			playerCollisions.min.z < otherBox.max.z && playerCollisions.max.z > otherBox.min.z)
 		{
 			// Collision detected go back to previous Y
-			onObject = true;
-			position.y = previousY;
-			velocity.y = 0.0f;
+			if (velocity.y > 0)
+			{
+				// bumping head
+				position.y = previousY;
+				velocity.y = 0.0f;
+			}
+			else
+			{
+				// on ground
+				onObject = true;
+				position.y = previousY;
+				velocity.y = 0.0f;
+			}
 			updatePlayerCollisions(); 
 			break;
 		}

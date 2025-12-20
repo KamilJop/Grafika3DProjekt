@@ -37,6 +37,7 @@
 #include "Entities/Desk.h"
 #include "Entities/Candle.h"
 #include "Entities/Lighter.h"
+#include "Entities/Battery.h"
 
 enum ShaderTypes
 {
@@ -165,6 +166,8 @@ Book* blueBookEntity;
 Book* redBookEntity;
 Book* yellowBookEntity;
 Book* greyBookEntity;
+Battery* battery1Entity;
+Battery* battery2Entity;
 
 
 //Lock
@@ -189,6 +192,7 @@ Model radioModel;
 Model pageModel;
 Model candleModel;
 Model lighterModel;
+Model batteryModel;
 
 // Room 1 walls and floor models
 Model doorsRoom1Model;
@@ -261,6 +265,7 @@ Texture* itemFrame;
 Texture* selectedItemFrame;
 Texture* flashlightSprite;
 Texture* lighterSprite;
+Texture* batterySprite;
 
 // Audio Manager
 AudioManager& audioManager = AudioManager::GetInstance();
@@ -325,6 +330,9 @@ int main()
 
 	lighterSprite = new Texture("Textures/Icons/lighter.png");
 	lighterSprite->LoadTextureAlpha();
+
+	batterySprite = new Texture("Textures/Icons/battery.png");
+	batterySprite->LoadTextureAlpha();
 
 	itemFrame = new Texture("Textures/Icons/item_frame.png");
 	itemFrame->LoadTextureAlpha();
@@ -493,6 +501,7 @@ Scene* createMainScene(Camera * camera) {
 	//sofaModel.LoadModel("Models/sofa.obj");
 	candleModel.LoadModel("Models/candle.obj");
 	lighterModel.LoadModel("Models/lighter.obj");
+	batteryModel.LoadModel("Models/battery.obj");
 
 	// Desk models
 	deskModel.LoadModel("Models/desk.obj");
@@ -543,6 +552,10 @@ Scene* createMainScene(Camera * camera) {
 
 	doorsRoom1Entity = new Door(&doorsRoom1Model, glm::vec3(-3.1f, 0.0f, 1.0f), glm::vec3(0.0f,0.0f,0.0f), glm::vec3(1.8f), "Doors", framuga, "finalExitKey");
 	doorsRoom1Entity->setLocked(false);
+	battery1Entity = new Battery(&batteryModel, glm::vec3(-2.5f, 0.5f, -3.0f), glm::vec3(0.0f), glm::vec3(2.0f),"battery1", batterySprite, true);
+	battery1Entity->setTitle("Battery");
+	battery2Entity = new Battery(&batteryModel, glm::vec3(0.0f, 0.5f, -7.0f), glm::vec3(0.0f), glm::vec3(2.0f), "battery2",batterySprite, true);
+	battery2Entity->setTitle("Battery");
 	//pageEntity = new Entity(&pageModel, glm::vec3(-5.0f, 1.0f, -3.0f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(2.0f), true);
 	//pageEntity->setTitle("Page");
 	//pageEntity->setColissions(false);
@@ -670,7 +683,7 @@ Scene* createMainScene(Camera * camera) {
 
 
 
-	lockEntity = new Lock(&lockBaseModel, glm::vec3(-2.0f, 0.5f, -1.5f), glm::vec3(0.0f), glm::vec3(4.0f), lockRotatingModels, &lockMetalPartModel, scene, true);
+	lockEntity = new Lock(&lockBaseModel, glm::vec3(-2.0f, 0.5f, -1.5f), glm::vec3(0.0f,180.0f,0.0f), glm::vec3(4.0f), lockRotatingModels, &lockMetalPartModel, scene, true);
 	lockEntity->setTitle("Lock");
 	deskEntity = new Desk(&deskModel, glm::vec3(-4.5f, 0.0f, -7.4f), glm::vec3(0.0f), glm::vec3(1.2f), deskDrawerModels, &deskDoorModel, scene , false);
 
@@ -693,6 +706,8 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(yellowBookEntity);
 	scene->AddEntity(greyBookEntity);
 	scene->AddEntity(candleEntity);
+	scene->AddEntity(battery1Entity);
+	scene->AddEntity(battery2Entity);
 
 
 

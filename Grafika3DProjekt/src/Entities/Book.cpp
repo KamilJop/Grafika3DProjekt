@@ -11,7 +11,7 @@ Book::Book(Model* model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, std::stri
 	originalPosition = pos;
 	movedPosition = pos + glm::vec3(0.0f, 0.0f, 0.23f);
 	solvedPosition = pos + glm::vec3(-2.0f, 0.0f, 0.0f);
-	if (itemTag == "redBook" || itemTag == "blueBook" || itemTag == "yellowBook" || itemTag =="greenBook") {
+	if (itemTag == "redBook" || itemTag == "orangeBook" || itemTag == "yellowBook" || itemTag =="purpleBook") {
 		AudioManager::GetInstance().Load3DSoundEffect("bookshelf_solved", bookshelfSolvedSoundPath);
 	}
 	for(int i = 0; i < movingSoundPaths.size(); i++) {
@@ -91,7 +91,7 @@ void Book::CheckSolved()
 		}
 		if (allCorrect) {
 			Book::solved = true;
-			if (itemTag == "redBook" || itemTag == "blueBook" || itemTag == "yellowBook" || itemTag == "greenBook") {
+			if (itemTag == "redBook" || itemTag == "orangeBook" || itemTag == "yellowBook" || itemTag == "purpleBook") {
 				AudioManager::GetInstance().Play3DSoundEffect("bookshelf_solved", position, 1.0f);
 			}
 		}
