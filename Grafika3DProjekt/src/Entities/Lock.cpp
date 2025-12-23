@@ -30,10 +30,10 @@ Lock::Lock(Model* model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal,std::vecto
 	lockPuzzleYaw = 90.0f;
 	lockPuzzlePitch = 0.0f;
 	lockPuzzlePos = pos + glm::vec3(0.0f, 0.1f, -0.25f);
-	/*if (rot.y = 180.0) {
-		lockPuzzlePos = pos + glm::vec3(0.0f, 0.1f, 0.5f);
+	if (rot.y = 180.0) {
+		lockPuzzlePos = pos + glm::vec3(0.0f, 0.1f, 0.25f);
 		lockPuzzleYaw *= -1;
-	}*/
+	}
 
 	AudioManager::GetInstance().Load3DSoundEffect(rollSound, rollSound);
 	AudioManager::GetInstance().Load3DSoundEffect(unlockSound, unlockSound);
@@ -43,6 +43,7 @@ void Lock::changeSelectedIndex(int direction)
 {
 	if (isUnlocked) return;
 	LockRolls[selectedIndex]->setSelected(false);
+	if (rotation.y == 180.0f) direction *= -1;
 	selectedIndex += direction;
 	if (selectedIndex < 0) selectedIndex = LockRolls.size() - 1;
 	if (selectedIndex >= LockRolls.size()) selectedIndex = 0;

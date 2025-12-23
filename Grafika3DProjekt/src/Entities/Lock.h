@@ -17,6 +17,7 @@ public:
 	float getLockPuzzlePitch() { return lockPuzzlePitch; };
 	int getSelectedIndex() { return selectedIndex; };
 	void setChestToUnlock(Chest* chest) { chestToUnlock = chest; };
+	void setLockPassword(std::vector<int>password) { correctAnswer = password; };
 	bool getIsUnlocked() { return isUnlocked; };
 	std::vector<Entity*> getLockRolls() { return LockRolls; };
 	std::string GetActionText() override { return "Use"; };

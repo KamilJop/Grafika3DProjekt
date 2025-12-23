@@ -39,6 +39,7 @@
 #include "Entities/Lighter.h"
 #include "Entities/Battery.h"
 #include "Entities/Chest.h"
+#include "Entities/HauntedPainting.h"
 
 enum ShaderTypes
 {
@@ -112,7 +113,6 @@ Entity* xwingEntity;
 Entity* sculptureEntity;
 Entity* flashlightEntity;
 Entity* framuga;
-Entity* paintingEntity;
 Entity* keyEntity;
 Entity* radioEntity;
 Entity* pageEntity;
@@ -172,6 +172,16 @@ Battery* battery2Entity;
 Chest* chestEntity;
 
 
+// Hidden room interior objects
+Chest* hiddenRoomChestEntity;
+Lock* hiddenRoomLockEntity;
+
+// Corridor interior objects
+HauntedPainting* hauntedPaintingEntity1;
+HauntedPainting* hauntedPaintingEntity2;
+HauntedPainting* hauntedPaintingEntity3;
+HauntedPainting* hauntedPaintingEntity4;
+Entity* witchesPaintingEntity;
 //Lock
 Lock* lockEntity;
 
@@ -188,7 +198,15 @@ Model door;
 Model sculpture;
 Model flashlightModel;
 Model framugaModel;
-Model paintingModel;
+Model huntModel1;
+Model huntModel2;
+Model skullsModel1;
+Model skullsModel2;
+Model ravensModel1;
+Model ravensModel2;
+Model cultModel1;
+Model cultModel2;
+Model witchesModel;
 Model keyModel;
 Model radioModel;
 Model pageModel;
@@ -482,7 +500,15 @@ Scene* createMainScene(Camera * camera) {
 	door.LoadModel("Models/door.obj");
 	flashlightModel.LoadModel("Models/flashlight.obj");
 	framugaModel.LoadModel("Models/framuga.obj");
-	paintingModel.LoadModel("Models/V3TEST.obj");
+	huntModel1.LoadModel("Models/paintingHunt.obj");
+	huntModel2.LoadModel("Models/paintingHuntCursed.obj");
+	skullsModel1.LoadModel("Models/paintingSkulls.obj");
+	skullsModel2.LoadModel("Models/paintingSkullsCursed.obj");
+	ravensModel1.LoadModel("Models/paintingRavens.obj");
+	ravensModel2.LoadModel("Models/paintingRavensCursed.obj");
+	cultModel1.LoadModel("Models/paintingCult.obj");
+	cultModel2.LoadModel("Models/paintingCultCursed.obj");
+	witchesModel.LoadModel("Models/paintingWitches.obj");
 	keyModel.LoadModel("Models/Worn_Key.obj");
 	radioModel.LoadModel("Models/radio.obj");
 	//pageModel.LoadModel("Models/page.obj");
@@ -535,6 +561,34 @@ Scene* createMainScene(Camera * camera) {
 	lockMetalPartModel.LoadModel("Models/lockcz6.obj");
 
 
+
+	flashlightEntity = new Entity(&flashlightModel, glm::vec3(5.0f, 2.0f, -3.0f), glm::vec3(0.0f), glm::vec3(0.03f));
+	flashlightEntity->setCastsShadow(false);
+	flashlightEntity->setTitle("Flashlight");
+
+	// Create Player
+	player = new Player(camera, flashlightEntity);
+
+	// Create flashlight item
+	Item flashlightItem;
+	flashlightItem.tag = "flashlight";
+	flashlightItem.title = "Flashlight";
+	flashlightItem.imageTexture = flashlightSprite;
+	flashlightItem.itemModel = &flashlightModel;
+	player->getInventory()->AddItem(flashlightItem.tag, flashlightItem.title, flashlightItem.imageTexture, flashlightItem.itemModel, flashlightEntity->getScale());
+
+	// Text renderer
+	textRenderer = new TextRenderer(mainWindow.getBufferWidth(), mainWindow.getBufferHeight());
+	tooltipRenderer = new TextRenderer(mainWindow.getBufferWidth(), mainWindow.getBufferHeight()); \
+		smallerTooltipRenderer = new TextRenderer(mainWindow.getBufferWidth(), mainWindow.getBufferHeight());
+	// Load font
+	textRenderer->Load("Fonts/BitterPro-Medium.ttf", 12);
+	tooltipRenderer->Load("Fonts/BitterPro-Bold.ttf", 36);
+	smallerTooltipRenderer->Load("Fonts/BitterPro-Bold.ttf", 12);
+
+	// Create scene
+	scene = new Scene(camera, player, tooltipRenderer, smallerTooltipRenderer);
+
 	/*sculpture.LoadModel("Models/rzezba.obj");*/
 
 
@@ -542,11 +596,6 @@ Scene* createMainScene(Camera * camera) {
 	framuga = new Entity(&framugaModel,glm::vec3(2.4f, -0.1f, -3.0f), glm::vec3(0.0f,-90.0f,0.0f), glm::vec3(1.41f));
 	doorEntity = new Door(&door, glm::vec3(2.4f, -0.1f, -3.0f), glm::vec3(0.0f,-90.0f,0.0f), glm::vec3(1.4f), "Doors", framuga, "mainKey");
 	doorEntity->setLocked(true);
-	flashlightEntity = new Entity(&flashlightModel, glm::vec3(5.0f,2.0f,-3.0f), glm::vec3(0.0f), glm::vec3(0.03f));
-	paintingEntity = new Entity(&paintingModel,  glm::vec3(-4.0f, 2.0f, -8.0f), glm::vec3(180.0f, 90.0f, 90.0f), glm::vec3(2.0f), true);
-	paintingEntity->setTitle("Mieszko I");
-	flashlightEntity->setCastsShadow(false);
-	flashlightEntity->setTitle("Flashlight");
 	keyEntity = new Key(&keyModel, glm::vec3(1.0f, 0.0f, -2.0f), glm::vec3(90.0f,0.0f,0.0f), glm::vec3(0.75f), "mainKey", keySprite, true);
 	keyEntity->setTitle("Key");
 	keyEntity->setColissions(false);
@@ -622,56 +671,56 @@ Scene* createMainScene(Camera * camera) {
 	room1FrontWallRightEntity->setCastsShadow(false);
 
 	// Hidden room collisions
-	hiddenRoomBackWallEntity = new Entity(&colliderWallModel, glm::vec3(-3.0f, -0.1f, -11.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(6.0f, 1.8f, 1.0f));
+	hiddenRoomBackWallEntity = new Entity(&colliderWallModel, glm::vec3(-3.0f, -0.1f, -11.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(6.0f, 3.1f, 1.0f));
 	hiddenRoomBackWallEntity->setCastsShadow(false);
-	hiddenRoomLeftWallEntity = new Entity(&colliderWallModel, glm::vec3(-1.0f, -0.1f, -8.0f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(3.0f, 1.8f, 1.0f));
+	hiddenRoomLeftWallEntity = new Entity(&colliderWallModel, glm::vec3(-1.0f, -0.1f, -8.0f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(3.0f, 3.1f, 1.0f));
 	hiddenRoomLeftWallEntity->setCastsShadow(false);
-	hiddenRoomCeilingEntity = new Entity(&colliderWallModel, glm::vec3(-3.0f, 1.6f, -8.0f), glm::vec3(-90.0f, 0.0f, 0.0f), glm::vec3(6.0f, 3.0f, 1.0f));
+	hiddenRoomCeilingEntity = new Entity(&colliderWallModel, glm::vec3(-3.0f, 3.0f, -8.0f), glm::vec3(-90.0f, 0.0f, 0.0f), glm::vec3(6.0f, 3.0f, 1.0f));
 	hiddenRoomCeilingEntity->setCastsShadow(false);
 
+
+	// Hidden room interior objects
+	hiddenRoomChestEntity = new Chest(&lowerChestModel, &upperChestModel, glm::vec3(0.0f, 0.0f, -10.0f), glm::vec3(0.0f,180.0f,0.0f), glm::vec3(1.0f), scene, true);
+	hiddenRoomLockEntity = new Lock(&lockBaseModel, glm::vec3(0.0f, 0.45f, -9.5f), glm::vec3(0.0f, 180.0f, 0.0f), glm::vec3(2.0f), lockRotatingModels, &lockMetalPartModel, scene, true);
+	hiddenRoomLockEntity->setTitle("Lock");
+	hiddenRoomLockEntity->setLockPassword(std::vector<int>{3, 5, 2, 4});
+	hiddenRoomLockEntity->setChestToUnlock(hiddenRoomChestEntity);
 	// Corridor collisions
-	corridorLeftWallEntity = new Entity(&colliderWallModel, glm::vec3(2.5f, -0.1f, -6.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(15.0f, 4.0f, 1.0f));
+	corridorLeftWallEntity = new Entity(&colliderWallModel, glm::vec3(2.5f, -0.1f, -6.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(10.0f, 4.0f, 1.0f));
 	corridorLeftWallEntity->setCastsShadow(false);
-	corridorRightWallEntity = new Entity(&colliderWallModel, glm::vec3(2.5f, -0.1f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(15.0f, 4.0f, 1.0f));
+	corridorRightWallEntity = new Entity(&colliderWallModel, glm::vec3(2.5f, -0.1f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(10.0f, 4.0f, 1.0f));
 	corridorRightWallEntity->setCastsShadow(false);
 
 	// Second room collisions
-	secondRoomLeftWallEntity = new Entity(&colliderWallModel, glm::vec3(17.0f, -0.1f, -9.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(10.0f, 4.0f, 1.0f));
+	secondRoomLeftWallEntity = new Entity(&colliderWallModel, glm::vec3(12.0f, -0.1f, -9.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(10.0f, 4.0f, 1.0f));
 	secondRoomLeftWallEntity->setCastsShadow(false);
-	secondRoomRightWallEntity = new Entity(&colliderWallModel, glm::vec3(17.0f, -0.1f, 2.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(10.0f, 4.0f, 1.0f));
+	secondRoomRightWallEntity = new Entity(&colliderWallModel, glm::vec3(12.0f, -0.1f, 2.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(10.0f, 4.0f, 1.0f));
 	secondRoomRightWallEntity->setCastsShadow(false);
-	secondRoomBackWallEntity = new Entity(&colliderWallModel, glm::vec3(27.0f, -0.1f, 2.5f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(12.0f, 4.0f, 1.0f));
+	secondRoomBackWallEntity = new Entity(&colliderWallModel, glm::vec3(22.0f, -0.1f, 2.5f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(12.0f, 4.0f, 1.0f));
 	secondRoomBackWallEntity->setCastsShadow(false);
-	secondRoomFrontWallLeftEntity = new Entity(&colliderWallModel, glm::vec3(17.7f, -0.1f, -6.0f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(3.0f, 4.0f, 1.0f));
+	secondRoomFrontWallLeftEntity = new Entity(&colliderWallModel, glm::vec3(12.7f, -0.1f, -6.0f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(3.0f, 4.0f, 1.0f));
 	secondRoomFrontWallLeftEntity->setCastsShadow(false);
-	secondRoomFrontWallRightEntity = new Entity(&colliderWallModel, glm::vec3(17.7f, -0.1f, 2.0f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(3.0f, 4.0f, 1.0f));
+	secondRoomFrontWallRightEntity = new Entity(&colliderWallModel, glm::vec3(12.7f, -0.1f, 2.0f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(3.0f, 4.0f, 1.0f));
 	secondRoomFrontWallRightEntity->setCastsShadow(false);
 
 
-
-
+	// Corridor interior objects
+	hauntedPaintingEntity1 = new HauntedPainting(&huntModel1, &huntModel2, glm::vec3(5.5f, 2.0f, -6.0f), glm::vec3(180.0f, 90.0f, 90.0f), glm::vec3(2.0f));
+	hauntedPaintingEntity1->setTitle("The Royal Hunt (1840)");
+	hauntedPaintingEntity2 = new HauntedPainting(&skullsModel1, &skullsModel2, glm::vec3(10.0f, 2.0f, -6.0f), glm::vec3(180.0f, 90.0f, 90.0f), glm::vec3(2.0f));
+	hauntedPaintingEntity2->setTitle("Study of Mortality (1860)");
+	hauntedPaintingEntity3 = new HauntedPainting(&ravensModel1, &ravensModel2, glm::vec3(5.5f, 2.0f, -1.1f), glm::vec3(180.0f, -90.0f, 90.0f), glm::vec3(2.0f));
+	hauntedPaintingEntity3->setTitle("Harbingers of Doom (1880)");
+	hauntedPaintingEntity4 = new HauntedPainting(&cultModel1, &cultModel2, glm::vec3(10.0f, 2.0f, -1.1f), glm::vec3(180.0f, -90.0f, 90.0f), glm::vec3(2.0f));
+	hauntedPaintingEntity4->setTitle("The Gathering (1900)");
+	witchesPaintingEntity = new Entity(&witchesModel, glm::vec3(12.6f, 1.9f, -3.5f), glm::vec3(180.0f, 0.0f, 90.0f), glm::vec3(3.0f), true);
+	witchesPaintingEntity->setTitle("The Witches' Sabbath (1597)");
+	witchesPaintingEntity->setColissions(false);
 	/*sculptureEntity = new Entity(&sculpture, lessShinyMaterial, glm::vec3(-10.0f, -1.0f, -4.0f), glm::vec3(0.0f, 30.0f, 0.0f), glm::vec3(4.0f));
 	sculptureEntity->setTitle("Sculpture");*/
 
-	// Create Player
-	player = new Player(camera, flashlightEntity);
 
-	// Create flashlight item
-	Item flashlightItem;
-	flashlightItem.tag = "flashlight";
-	flashlightItem.title = "Flashlight";
-	flashlightItem.imageTexture = flashlightSprite;
-	flashlightItem.itemModel = &flashlightModel;
-	player->getInventory()->AddItem(flashlightItem.tag, flashlightItem.title, flashlightItem.imageTexture, flashlightItem.itemModel, flashlightEntity->getScale());
 
-	// Text renderer
-	textRenderer = new TextRenderer(mainWindow.getBufferWidth(), mainWindow.getBufferHeight());
-	tooltipRenderer = new TextRenderer(mainWindow.getBufferWidth(), mainWindow.getBufferHeight());\
-	smallerTooltipRenderer = new TextRenderer(mainWindow.getBufferWidth(), mainWindow.getBufferHeight());
-	// Load font
-	textRenderer->Load("Fonts/BitterPro-Medium.ttf", 12);
-	tooltipRenderer->Load("Fonts/BitterPro-Bold.ttf", 36);
-	smallerTooltipRenderer->Load("Fonts/BitterPro-Bold.ttf", 12);
 
 	// Skybox
 	skybox = new Skybox(skyboxFaces);
@@ -683,11 +732,6 @@ Scene* createMainScene(Camera * camera) {
 	// Candle test
 	pointLight3 = new PointLight(glm::vec3(0.93f, 0.64f, 0.28f), 0.1f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.12f, 0.062f, 2, 100.0f, 0.01f, 2048.0f, 2048.0f);
 	flashlight = new Flashlight(glm::vec3(1.0f, 1.0f, 0.85f), 0.001f, 1.2f, camera->getCameraPosition(), 1.0f, 0.07f, 0.017f, camera->getCameraFront(), 25.0f, 32.5f, 2048.0f,2048.0f);
-
-	// Create scene
-	scene = new Scene(camera, player, tooltipRenderer, smallerTooltipRenderer);
-
-
 
 
 
@@ -726,7 +770,6 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(doorEntity);
 	scene->AddEntity(flashlightEntity);
 	scene->AddEntity(framuga);
-	scene->AddEntity(paintingEntity);
 	scene->AddEntity(keyEntity);
 	scene->AddEntity(radioEntity);
 	//scene->AddEntity(pageEntity);
@@ -766,6 +809,17 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(secondRoomFrontWallLeftEntity);
 	scene->AddEntity(secondRoomFrontWallRightEntity);
 
+
+	// Corridor interior objects
+	scene->AddEntity(hauntedPaintingEntity1);
+	scene->AddEntity(hauntedPaintingEntity2);
+	scene->AddEntity(hauntedPaintingEntity3);
+	scene->AddEntity(hauntedPaintingEntity4);
+	scene->AddEntity(witchesPaintingEntity);
+
+	// Hidden room interior objects
+	scene->AddEntity(hiddenRoomChestEntity);
+	scene->AddEntity(hiddenRoomLockEntity);
 
 	/*scene->AddEntity(sculptureEntity);*/
 

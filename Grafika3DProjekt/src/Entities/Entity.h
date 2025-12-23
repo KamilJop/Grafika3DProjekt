@@ -55,15 +55,18 @@ public:
 	void DrawEntity(Shader* shader);
 	void UpdateCollisionBox();
 	void setActionText(std::string text) { actionText = text; }	
+	void setExamineText(std::string text) { examineText = text; }
 	virtual void Update(float deltaTime) {};
 	virtual std::string GetActionText() { return actionText; };
-	virtual void Interact(Inventory * playerInventory) {};
+	virtual void Interact(Inventory * playerInventory);
 
 protected:
 	Model* entityModel;
 	glm::vec3 position;
 	glm::vec3 rotation;
 	glm::vec3 scale;
+	bool hasExamined = false;
+	std::string examineText = "You see nothing special.";
 	bool castsShadow = true;
 	bool outlined = false;
 	bool hasCollisions = true;

@@ -146,3 +146,13 @@ void Entity::UpdateCollisionBox()
 	}
 
 }
+
+
+void Entity::Interact(Inventory* playerInventory)
+{
+	if(!hasExamined)
+	{
+		hasExamined = true;
+		UI::SetSubtitle(examineText, 5.0f);
+	}
+}

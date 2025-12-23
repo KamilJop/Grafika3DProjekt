@@ -3,9 +3,13 @@
 Chest::Chest(Model* lowerPart, Model* upperPartModel, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, Scene* scene, bool interaction)
 	: Entity(lowerPart, pos, rot, scal, interaction)
 {
-	upperPart = new Entity(upperPartModel, pos + glm::vec3(0.0f, 0.55f, 0.45f), rot, scal, false);
+	glm::vec3 upperOffset = glm::vec3(0.0f, 0.55f, 0.45f);
+	if(rot.y == 180.0f) {
+		upperOffset = glm::vec3(0.0f, 0.55f, -0.45f);
+	}
+	upperPart = new Entity(upperPartModel, pos + upperOffset, rot, scal, false);
 	scene->AddEntity(upperPart);
-	targetRotation = rot.x + 80.0f;
+	targetRotation = rot.x + 70.0f;
 	AudioManager::GetInstance().Load3DSoundEffect(chestOpenSound, chestOpenSound);
 }
 
@@ -27,7 +31,7 @@ void Chest::Update(float deltaTime)
 {
 	if (!isOpen) return;
 	if(upperPart->getRotation().x < targetRotation) {
-		float rotationSpeed = 20.0f;
+		float rotationSpeed = 17.5f;
 		float newRotationX = upperPart->getRotation().x + rotationSpeed * deltaTime;
 		if (newRotationX > targetRotation) {
 			newRotationX = targetRotation;
