@@ -40,6 +40,7 @@
 #include "Entities/Battery.h"
 #include "Entities/Chest.h"
 #include "Entities/HauntedPainting.h"
+#include "Entities/ClockMovingPart.h"
 
 enum ShaderTypes
 {
@@ -122,6 +123,9 @@ Door* doorsRoom1Entity;
 Desk* deskEntity;
 Entity* sofaEntity;
 Lighter* lighterEntity;
+Entity* calenderEntity;
+ClockMovingPart* clockElementEntity;
+Entity* clockEntity;
 
 // Room 1 collisions
 Entity* floorEntity;
@@ -169,6 +173,8 @@ Book* greyBookEntity;
 Battery* battery1Entity;
 Battery* battery2Entity;
 Chest* chestEntity;
+Entity* tableEntity;
+Entity* posterEntity;
 
 
 // Hidden room interior objects
@@ -225,6 +231,9 @@ Model lighterModel;
 Model batteryModel;
 Model lowerChestModel;
 Model upperChestModel;
+Model posterModel;
+Model clockElementModel;
+Model clockModel;
 
 // Room 1 walls and floor models
 Model doorsRoom1Model;
@@ -241,6 +250,8 @@ Model redBookModel;
 Model yellowBookModel;
 Model greyBookModel;
 Model sofaModel;
+Model calenderModel;
+Model tableModel;
 
 // Lock models
 std::vector<Model*> lockRotatingModels;
@@ -393,6 +404,10 @@ int main()
 	audioManager.LoadMusicTrack("background", "Audio/background_music.mp3");
 	int backgroundMusicHandle = audioManager.PlayMusicTrack("background", config.musicVolume, 1);
 	
+	float fpsTimer = 0.0f;
+	float fpsAccumulator = 0.0f;
+	int frameCount = 0;
+	int displayFPS = 0;
 	// Loop until window closed
 	while (!mainWindow.getShouldClose())
 	{
@@ -400,7 +415,14 @@ int main()
 		float currentFrame = static_cast<float>(glfwGetTime());
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
-		float fps = 1.0f / deltaTime;
+		fpsAccumulator += deltaTime;
+		frameCount++;
+		if (fpsAccumulator >= 0.5f) {
+			displayFPS = (int)(frameCount / fpsAccumulator);
+			fpsAccumulator = 0.0f;
+			frameCount = 0;
+		}
+
 
 		audioManager.SetListenerPosition(camera.getCameraPosition());
 		audioManager.Update3DAudio();
@@ -471,7 +493,7 @@ int main()
 
 		// Render FPS
 		if (config.showFPS) {
-			textRenderer->RenderText("x " + std::to_string(camera.getCameraPosition().x) + "y "+std::to_string(camera.getCameraPosition().y) + "z" + std::to_string(camera.getCameraPosition().z) + "FPS: " + std::to_string((int)fps), 10.0f, uiHeight - 20.0f, 1.0f, glm::vec4(0.5f, 0.8f, 0.2f, 1.0f));
+			textRenderer->RenderText("x " + std::to_string(camera.getCameraPosition().x) + "y "+std::to_string(camera.getCameraPosition().y) + "z" + std::to_string(camera.getCameraPosition().z) + "FPS: " + std::to_string((int)displayFPS), 10.0f, uiHeight - 20.0f, 1.0f, glm::vec4(0.5f, 0.8f, 0.2f, 1.0f));
 		}
 
 		if (gameState == STATE_PLAYING) {
@@ -521,6 +543,9 @@ Scene* createMainScene(Camera * camera) {
 	witchesModel.LoadModel("Models/paintingWitches.obj");
 	keyModel.LoadModel("Models/Worn_Key.obj");
 	radioModel.LoadModel("Models/radio.obj");
+	posterModel.LoadModel("Models/poster.obj");
+	clockElementModel.LoadModel("Models/clockPart.obj");
+	clockModel.LoadModel("Models/clock.obj");
 	//pageModel.LoadModel("Models/page.obj");
 
 
@@ -538,12 +563,14 @@ Scene* createMainScene(Camera * camera) {
 	redBookModel.LoadModel("Models/redBook.obj");
 	yellowBookModel.LoadModel("Models/yellowBook.obj");
 	greyBookModel.LoadModel("Models/greyBook.obj");
-	//sofaModel.LoadModel("Models/sofa.obj");
+	sofaModel.LoadModel("Models/sofa.obj");
 	candleModel.LoadModel("Models/candle.obj");
 	lighterModel.LoadModel("Models/lighter.obj");
 	batteryModel.LoadModel("Models/battery.obj");
 	lowerChestModel.LoadModel("Models/lowerChest.obj");
 	upperChestModel.LoadModel("Models/upperChest.obj");
+	calenderModel.LoadModel("Models/calender.obj");
+	tableModel.LoadModel("Models/table.obj");
 
 	// Desk models
 	deskModel.LoadModel("Models/desk.obj");
@@ -621,7 +648,17 @@ Scene* createMainScene(Camera * camera) {
 	battery1Entity->setTitle("Battery");
 	battery2Entity = new Battery(&batteryModel, glm::vec3(-2.0f, 0.5f, 0.5f), glm::vec3(0.0f), glm::vec3(2.0f), "battery2",batterySprite, true);
 	battery2Entity->setTitle("Battery");
-
+	calenderEntity = new Entity(&calenderModel, glm::vec3(-4.0f, 1.0f, -6.5f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(10.0f),true);
+	calenderEntity->setTitle("Calender");
+	calenderEntity->setExamineText("The date is December 26th.");
+	tableEntity = new Entity(&tableModel, glm::vec3(-2.0f, 0.0f, -5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.01f), true);
+	posterEntity = new Entity(&posterModel, glm::vec3(-5.8f, 1.5f, -5.49f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.6f), true);
+	posterEntity->setTitle("Poster");
+	posterEntity->setExamineText("A poster with morse code instruction. Maybe it will be useful");
+	clockElementEntity = new ClockMovingPart(&clockElementModel, glm::vec3(2.0f, 2.0f, -2.0f), glm::vec3(0.0f, 270.0f, 0.0f), glm::vec3(3.5f), true);
+	clockEntity = new Entity(&clockModel, glm::vec3(2.0f, 1.0f, -2.0f), glm::vec3(0.0f, 270.0f, 0.0f), glm::vec3(3.5f), true);
+	clockEntity->setTitle("Clock");
+	clockEntity->setExamineText("The clock is stuck at 8:15 PM. Thats weird...");
 	//pageEntity = new Entity(&pageModel, glm::vec3(-5.0f, 1.0f, -3.0f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(2.0f), true);
 	//pageEntity->setTitle("Page");
 	//pageEntity->setColissions(false);
@@ -679,6 +716,7 @@ Scene* createMainScene(Camera * camera) {
 	room1FrontWallLeftEntity->setCastsShadow(false);
 	room1FrontWallRightEntity = new Entity(&colliderWallModel, glm::vec3(-3.0f, -0.1f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(6.0f, 4.0f, 1.0f));
 	room1FrontWallRightEntity->setCastsShadow(false);
+	
 
 	// Hidden room collisions
 	hiddenRoomBackWallEntity = new Entity(&colliderWallModel, glm::vec3(-3.0f, -0.1f, -11.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(6.0f, 3.1f, 1.0f));
@@ -754,7 +792,7 @@ Scene* createMainScene(Camera * camera) {
 	lockEntity->setTitle("Lock");
 	lockEntity->setChestToUnlock(chestEntity);
 
-	//sofaEntity = new Entity(&sofaModel, glm::vec3(0.8f, 0.0f, 0.0f), glm::vec3(0.0f, -120.0f, 0.0f), glm::vec3(1.5f));
+	sofaEntity = new Entity(&sofaModel, glm::vec3(0.8f, 0.0f, 0.0f), glm::vec3(0.0f, -120.0f, 0.0f), glm::vec3(1.5f));
 	candleEntity = new Candle(&candleModel, glm::vec3(20.0f, 0.0f, -3.5f), glm::vec3(0.0f), glm::vec3(1.5f),candleLight,true);
 	candle2Entity = new Candle(&candleModel, glm::vec3(17.5f, 0.0f, -6.0f), glm::vec3(0.0f), glm::vec3(1.5f), candleLight2, true);
 	candle3Entity = new Candle(&candleModel, glm::vec3(17.5f, 0.0f, -1.0f), glm::vec3(0.0f), glm::vec3(1.5f), candleLight3, true);
@@ -786,6 +824,8 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(battery1Entity);
 	scene->AddEntity(battery2Entity);
 	scene->AddEntity(chestEntity);
+	scene->AddEntity(calenderEntity);
+	scene->AddEntity(tableEntity);
 
 
 
@@ -797,8 +837,11 @@ Scene* createMainScene(Camera * camera) {
 	//scene->AddEntity(pageEntity);
 	scene->AddEntity(lockEntity);
 	scene->AddEntity(deskEntity);
-	//scene->AddEntity(sofaEntity);
+	scene->AddEntity(sofaEntity);
 	scene->AddEntity(lighterEntity);
+	scene->AddEntity(posterEntity);
+	scene->AddEntity(clockElementEntity);
+	scene->AddEntity(clockEntity);
 
 	// Room 1 collisions
 	scene->AddEntity(floorEntity);

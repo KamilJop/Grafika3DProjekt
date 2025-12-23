@@ -1,4 +1,4 @@
-# Blender 5.0.0 MTL File: 'gwno.blend'
+# Blender 5.0.1 MTL File: 'table.blend'
 # www.blender.org
 
 newmtl Sofa_A
@@ -8,10 +8,10 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:/Sofa_A_BaseColor.jpg
-map_Ns C:/Sofa_A_Roughness.jpg
-map_refl C:/Sofa_A_Metallic.jpg
-map_Bump -bm 1.000000 C:/Sofa_A_Normal.jpg
+map_Kd C:/Users/yuris/source/repos/Grafika3DProjekt/Grafika3DProjekt/Models/C:/Sofa_A_BaseColor.jpg
+map_Ns C:/Users/yuris/source/repos/Grafika3DProjekt/Grafika3DProjekt/Models/C:/Sofa_A_Roughness.jpg
+map_refl C:/Users/yuris/source/repos/Grafika3DProjekt/Grafika3DProjekt/Models/C:/Sofa_A_Metallic.jpg
+map_Bump -bm 1.000000 C:/Users/yuris/source/repos/Grafika3DProjekt/Grafika3DProjekt/Models/C:/Sofa_A_Normal.jpg
 
 newmtl Sofa_B
 Ka 1.000000 1.000000 1.000000
@@ -20,7 +20,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:/Sofa_B_BaseColor.jpg
-map_Ns C:/Sofa_B_Roughness.jpg
-map_refl C:/Sofa_B_Metallic.jpg
-map_Bump -bm 1.000000 C:/Sofa_B_Normal.jpg
+map_Kd C:/Users/yuris/source/repos/Grafika3DProjekt/Grafika3DProjekt/Models/C:/Sofa_B_BaseColor.jpg
+map_Ns C:/Users/yuris/source/repos/Grafika3DProjekt/Grafika3DProjekt/Models/C:/Sofa_B_Roughness.jpg
+map_refl C:/Users/yuris/source/repos/Grafika3DProjekt/Grafika3DProjekt/Models/C:/Sofa_B_Metallic.jpg
+map_Bump -bm 1.000000 C:/Users/yuris/source/repos/Grafika3DProjekt/Grafika3DProjekt/Models/C:/Sofa_B_Normal.jpg

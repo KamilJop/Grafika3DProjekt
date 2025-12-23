@@ -30,7 +30,7 @@ Lock::Lock(Model* model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal,std::vecto
 	lockPuzzleYaw = 90.0f;
 	lockPuzzlePitch = 0.0f;
 	lockPuzzlePos = pos + glm::vec3(0.0f, 0.1f, -0.25f);
-	if (rot.y = 180.0) {
+	if (rot.y == 180.0) {
 		lockPuzzlePos = pos + glm::vec3(0.0f, 0.1f, 0.25f);
 		lockPuzzleYaw *= -1;
 	}
