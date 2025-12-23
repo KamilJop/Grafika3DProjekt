@@ -121,7 +121,6 @@ Entity* pageEntity;
 Door* doorsRoom1Entity;
 Desk* deskEntity;
 Entity* sofaEntity;
-Candle* candleEntity;
 Lighter* lighterEntity;
 
 // Room 1 collisions
@@ -182,15 +181,26 @@ HauntedPainting* hauntedPaintingEntity2;
 HauntedPainting* hauntedPaintingEntity3;
 HauntedPainting* hauntedPaintingEntity4;
 Entity* witchesPaintingEntity;
+
+
+// Second room interior objects
+Candle* candleEntity;
+Candle* candle2Entity;
+Candle* candle3Entity;
+Candle* candle4Entity;
+Candle* candle5Entity;
+
 //Lock
 Lock* lockEntity;
 
 
 // Light source
 DirectionalLight* mainLight;
-PointLight* pointLight;
-PointLight* pointLight2;
-PointLight* pointLight3;
+PointLight* candleLight;
+PointLight* candleLight2;
+PointLight* candleLight3;
+PointLight* candleLight4;
+PointLight* candleLight5;
 Flashlight* flashlight;
 
 // Create models
@@ -461,7 +471,7 @@ int main()
 
 		// Render FPS
 		if (config.showFPS) {
-			textRenderer->RenderText("FPS: " + std::to_string((int)fps), 10.0f, uiHeight - 20.0f, 1.0f, glm::vec4(0.5f, 0.8f, 0.2f, 1.0f));
+			textRenderer->RenderText("x " + std::to_string(camera.getCameraPosition().x) + "y "+std::to_string(camera.getCameraPosition().y) + "z" + std::to_string(camera.getCameraPosition().z) + "FPS: " + std::to_string((int)fps), 10.0f, uiHeight - 20.0f, 1.0f, glm::vec4(0.5f, 0.8f, 0.2f, 1.0f));
 		}
 
 		if (gameState == STATE_PLAYING) {
@@ -726,12 +736,14 @@ Scene* createMainScene(Camera * camera) {
 	skybox = new Skybox(skyboxFaces);
 
 	// Light
-	mainLight = new DirectionalLight(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(-1.0f, -5.0f, -5.5f), 0.3f, 0.22f, 2048.0f, 2048.0f);
-	pointLight = new PointLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.0f, 0.0f, glm::vec3(-10.0f, 1.0f, -3.0f), 1.0f, 0.09f, 0.032f, 0, 100.0f, 0.01f, 2048.0f, 2048.0f);
-	pointLight2 = new PointLight(glm::vec3(0.0f, 0.0f, 1.0f), 0.0f, 0.0f, glm::vec3(8.0f, 1.5f, -6.0f), 1.0f, 0.12f, 0.062f, 1, 100.0f, 0.01f, 2048.0f, 2048.0f);
-	// Candle test
-	pointLight3 = new PointLight(glm::vec3(0.93f, 0.64f, 0.28f), 0.1f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.12f, 0.062f, 2, 100.0f, 0.01f, 2048.0f, 2048.0f);
-	flashlight = new Flashlight(glm::vec3(1.0f, 1.0f, 0.85f), 0.001f, 1.2f, camera->getCameraPosition(), 1.0f, 0.07f, 0.017f, camera->getCameraFront(), 25.0f, 32.5f, 2048.0f,2048.0f);
+	mainLight = new DirectionalLight(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(-1.0f, -5.0f, -5.5f), 0.3f, 0.22f, 1024.0f, 1024.0f);
+	// Candle lights
+	candleLight = new PointLight(glm::vec3(0.93f, 0.64f, 0.28f), 0.1f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.12f, 0.062f, 0, 100.0f, 0.01f, 1024.0f, 1024.0f);
+	candleLight2 = new PointLight(glm::vec3(0.93f, 0.64f, 0.28f), 0.1f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.12f, 0.062f, 1, 100.0f, 0.01f, 1024.0f, 1024.0f);
+	candleLight3 = new PointLight(glm::vec3(0.93f, 0.64f, 0.28f), 0.1f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.12f, 0.062f, 2, 100.0f, 0.01f, 1024.0f, 1024.0f);
+	candleLight4 = new PointLight(glm::vec3(0.93f, 0.64f, 0.28f), 0.1f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.12f, 0.062f, 3, 100.0f, 0.01f, 1024.0f, 1024.0f);
+	candleLight5 = new PointLight(glm::vec3(0.93f, 0.64f, 0.28f), 0.1f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.12f, 0.062f, 4, 100.0f, 0.01f, 1024.0f, 1024.0f);
+	flashlight = new Flashlight(glm::vec3(1.0f, 1.0f, 0.85f), 0.001f, 1.2f, camera->getCameraPosition(), 1.0f, 0.07f, 0.017f, camera->getCameraFront(), 25.0f, 32.5f, 1024.0f,1024.0f);
 
 
 
@@ -743,11 +755,17 @@ Scene* createMainScene(Camera * camera) {
 	lockEntity->setChestToUnlock(chestEntity);
 
 	//sofaEntity = new Entity(&sofaModel, glm::vec3(0.8f, 0.0f, 0.0f), glm::vec3(0.0f, -120.0f, 0.0f), glm::vec3(1.5f));
-	candleEntity = new Candle(&candleModel, glm::vec3(-4.5f, 1.2f, -7.4f), glm::vec3(0.0f), glm::vec3(1.5f),pointLight3,true);
+	candleEntity = new Candle(&candleModel, glm::vec3(20.0f, 0.0f, -3.5f), glm::vec3(0.0f), glm::vec3(1.5f),candleLight,true);
+	candle2Entity = new Candle(&candleModel, glm::vec3(17.5f, 0.0f, -6.0f), glm::vec3(0.0f), glm::vec3(1.5f), candleLight2, true);
+	candle3Entity = new Candle(&candleModel, glm::vec3(17.5f, 0.0f, -1.0f), glm::vec3(0.0f), glm::vec3(1.5f), candleLight3, true);
+	candle4Entity = new Candle(&candleModel, glm::vec3(15.0f, 0.0f, -4.5f), glm::vec3(0.0f), glm::vec3(1.5f), candleLight4, true);
+	candle5Entity = new Candle(&candleModel, glm::vec3(15.0f, 0.0f, -2.5f), glm::vec3(0.0f), glm::vec3(1.5f), candleLight5, true);
 	// Add entities and lights to scene
-	scene->AddPointLight(pointLight);
-	scene->AddPointLight(pointLight2);
-	scene->AddPointLight(pointLight3);
+	scene->AddPointLight(candleLight);
+	scene->AddPointLight(candleLight2);
+	scene->AddPointLight(candleLight3);
+	scene->AddPointLight(candleLight4);
+	scene->AddPointLight(candleLight5);
 	scene->SetDirectionalLight(mainLight);
 	scene->SetFlashlight(flashlight);
 	scene->AddEntity(doorsRoom1Entity);
@@ -761,6 +779,10 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(yellowBookEntity);
 	scene->AddEntity(greyBookEntity);
 	scene->AddEntity(candleEntity);
+	scene->AddEntity(candle2Entity);
+	scene->AddEntity(candle3Entity);
+	scene->AddEntity(candle4Entity);
+	scene->AddEntity(candle5Entity);
 	scene->AddEntity(battery1Entity);
 	scene->AddEntity(battery2Entity);
 	scene->AddEntity(chestEntity);

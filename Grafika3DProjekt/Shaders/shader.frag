@@ -1,5 +1,5 @@
 #version 330
-#define NR_POINT_LIGHTS 3
+#define NR_POINT_LIGHTS 5
 in vec4 vCol;
 in vec3 Normal;
 in vec3 FragPos;
@@ -175,7 +175,7 @@ float CalculateOmniShadowFactor(PointLight pLight, int shadowIndex)
 	// Avoid shadow acne
 	float bias = 0.01;
 	float shadow = 0.0;
-	int samples = 20;
+	int samples = 4;
 	float viewDistance = length(cameraPosition - FragPos);
 	float diskRadius = (1.0 + (viewDistance/omniShadowMaps[shadowIndex].farPlane)) / 25.0;
 	
@@ -297,6 +297,12 @@ vec4 CalculateFlashLight(vec3 worldNormal){
 
 
 vec4 CalculatePointLight(PointLight pointLight, int shadowIndex, vec3 worldNormal){
+	float dist = length(pointLight.lightPosition - FragPos);
+    
+    if(dist > 10.0) 
+    {
+        return vec4(0.0);
+    }
 	// Calculate vector between point light source and current fragment
 	vec3 pointLightDistanceVector = pointLight.lightPosition - FragPos;
 	

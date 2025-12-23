@@ -19,8 +19,8 @@ Ni 1.450000
 d 1.000000
 illum 2
 map_Kd C:/Users/vezzu/Downloads/cult.png
-map_Ns C:/painting like Vincent van Gogh roughness.jpg
-map_Bump -bm 1.000000 C:/painting like Vincent van Gogh normal.png
+map_Ns C:/cult_disp.png
+map_Bump -bm 1.000000 C:/cult_normal.png
 
 newmtl Paiting_back
 Ns 250.000000
