@@ -143,6 +143,7 @@
     <ClCompile Include="..\External Libs\IMGUI\imgui_impl_opengl3.cpp" />
     <ClCompile Include="..\External Libs\IMGUI\imgui_tables.cpp" />
     <ClCompile Include="..\External Libs\IMGUI\imgui_widgets.cpp" />
+    <ClCompile Include="src\Entities\Pickable.cpp" />
     <ClCompile Include="src\Entities\Pedestal.cpp" />
     <ClCompile Include="src\Systems\CandlePuzzle.cpp" />
     <ClCompile Include="src\Entities\ClockMovingPart.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="..\External Libs\IMGUI\imstb_rectpack.h" />
     <ClInclude Include="..\External Libs\IMGUI\imstb_textedit.h" />
     <ClInclude Include="..\External Libs\IMGUI\imstb_truetype.h" />
+    <ClInclude Include="src\Entities\Pickable.h" />
     <ClInclude Include="src\Entities\Pedestal.h" />
     <ClInclude Include="src\Systems\CandlePuzzle.h" />
     <ClInclude Include="src\Entities\ClockMovingPart.h" />

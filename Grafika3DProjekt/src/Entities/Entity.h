@@ -32,7 +32,7 @@ public:
 	void setColissions(bool state) { hasCollisions = state; }
 	void setModel(Model* model) { entityModel = model; UpdateCollisionBox(); }
 	void setShouldGetDestroyed(bool state) { shouldGetDestroyed = state; }
-	
+	void setInteractable(bool state) { interactable = state; }
 	glm::vec3 getPosition();
 	glm::vec3 getRotation();
 	glm::vec3 getScale();

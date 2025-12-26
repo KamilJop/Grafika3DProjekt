@@ -2,8 +2,17 @@
 
 bool CandlePuzzle::isSolved = false;
 
-CandlePuzzle::CandlePuzzle(std::vector<Candle*> candles, Door* doors)
-	: candles(candles) , doorToLock(doors){}
+CandlePuzzle::CandlePuzzle(std::vector<Candle*> candles, std::vector<Pedestal*> ped, Door* doors)
+	: candles(candles) , doorToLock(doors), pedestals(ped) {
+
+	for (size_t i = 0; i < pedestals.size(); i++) {
+		pedestals[i]->setVisibility(false);
+		pedestals[i]->setColissions(false);
+		pedestals[i]->setCastsShadow(false);
+		pedestals[i]->setInteractable(false);
+	}
+
+}
 
 
 void CandlePuzzle::Update()
@@ -30,6 +39,12 @@ void CandlePuzzle::Update()
 				UI::SetSubtitle("GOOD.", 3.0f);
 				doorToLock->setLocked(true);
 				doorToLock->setIsOpen(false);
+				for (size_t i = 0; i < pedestals.size(); i++) {
+					pedestals[i]->setVisibility(true);
+					pedestals[i]->setColissions(true);
+					pedestals[i]->setCastsShadow(true);
+					pedestals[i]->setInteractable(true);
+				}
 			}
 			else {
 				solution.clear();
