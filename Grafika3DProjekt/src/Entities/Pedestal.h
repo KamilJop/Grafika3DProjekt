@@ -10,11 +10,14 @@ public:
 	void Interact(Inventory* playerInventory) override ;
 	void Update(float deltaTime) override ;
 	std::string GetActionText() override { return "Examine"; };
-
+	bool getHasCorrectItem() { return hasCorrectItem; }
+	void setCorrectItemTag(const std::string& tag) { correctItemTag = tag; }
 private:
 	Entity* pedestalEntity;
 	Item* storedItem;
 	Scene* currentScene;
 	bool isItemPlaced = false;
+	bool hasCorrectItem = false;
+	std::string correctItemTag = "";
 };
 

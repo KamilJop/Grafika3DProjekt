@@ -44,6 +44,7 @@
 #include "Systems/CandlePuzzle.h"	
 #include "Entities/Pedestal.h"
 #include "Entities/Pickable.h"
+#include "Systems/PedestalPuzzle.h"
 
 enum ShaderTypes
 {
@@ -291,6 +292,7 @@ Model deskDrawerModelBottom;
 Model deskDrawerModelMiddle;
 
 CandlePuzzle* candlePuzzle;
+PedestalPuzzle*	pedestalPuzzle;
 
 // Create player
 Player* player;
@@ -466,7 +468,7 @@ int main()
 			player->setHeldEntityModel(player->getInventory()->GetCurrentItem()->itemModel);
 			player->setHeldEntityScale(player->getInventory()->GetCurrentItem()->itemScale);
 			candlePuzzle->Update();
-
+			pedestalPuzzle->Update();
 		}
 
 		if (gameState == STATE_MINIGAME && currentActiveLock != nullptr) {
@@ -790,9 +792,17 @@ Scene* createMainScene(Camera * camera) {
 	hauntedPaintingEntity4 = new HauntedEntity(&cultModel1, &cultModel2, glm::vec3(10.0f, 2.0f, -1.1f), glm::vec3(180.0f, -90.0f, 90.0f), glm::vec3(2.0f));
 	hauntedPaintingEntity4->setTitle("The Gathering (1900)");
 	pedestalEntity1 = new Pedestal(&pedestalModel, glm::vec3(5.5f, 0.0f, -5.0f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(0.5f),scene, true);
+	pedestalEntity1->setTitle("Pedestal");
+	pedestalEntity1->setCorrectItemTag("pedestal_collar");
 	pedestalEntity2 = new Pedestal(&pedestalModel, glm::vec3(10.0f, 0.0f, -5.0f), glm::vec3(0.0f,90.0f,0.0f), glm::vec3(0.5f),scene, true);
+	pedestalEntity2->setTitle("Pedestal");
+	pedestalEntity2->setCorrectItemTag("pedestal_skull");
 	pedestalEntity3 = new Pedestal(&pedestalModel, glm::vec3(5.5f, 0.0f, -2.0f), glm::vec3(0.0f, -90.0f, 0.0f), glm::vec3(0.5f),scene, true);
+	pedestalEntity3->setTitle("Pedestal");
+	pedestalEntity3->setCorrectItemTag("pedestal_feather");
 	pedestalEntity4 = new Pedestal(&pedestalModel, glm::vec3(10.0f, 0.0f, -2.0f), glm::vec3(0.0f, -90.0f, 0.0f), glm::vec3(0.5f),scene, true);
+	pedestalEntity4->setTitle("Pedestal");
+	pedestalEntity4->setCorrectItemTag("pedestal_eye");
 	std::vector<Pedestal*> pedestals = { pedestalEntity1, pedestalEntity2, pedestalEntity3, pedestalEntity4 };
 
 	witchesPaintingEntity = new Entity(&witchesModel, glm::vec3(22.0f, 1.9f, -3.5f), glm::vec3(180.0f, 0.0f, 90.0f), glm::vec3(2.4f), true);
@@ -846,13 +856,14 @@ Scene* createMainScene(Camera * camera) {
 	collarEntity = new Pickable(&collarModel, glm::vec3(16.5f, 0.5f, -4.0f), glm::vec3(0.0f), glm::vec3(0.1f),"pedestal_collar", batterySprite, true);
 	collarEntity->setTitle("Collar");
 	featherEntity = new Pickable(&featherModel, glm::vec3(14.0f, 0.5f, -3.5f), glm::vec3(0.0f), glm::vec3(0.5f), "pedestal_feather", batterySprite, true);
-	featherEntity->setTitle("Crow Feather");
+	featherEntity->setTitle("Crow");
 	eyeEntity = new Pickable(&eyeModel, glm::vec3(18.5f, 0.5f, -5.5f), glm::vec3(0.0f), glm::vec3(0.125f), "pedestal_eye", batterySprite, true);
 	eyeEntity->setTitle("Human Eye");
 	skullEntity = new Pickable(&skullModel, glm::vec3(18.0f, 0.5f, -2.5f), glm::vec3(0.0f), glm::vec3(1.5f), "pedestal_skull", batterySprite, true);
 
 	std::vector<Candle*> pentagramCandles = { candleEntity, candle2Entity, candle3Entity, candle4Entity, candle5Entity };
 	candlePuzzle = new CandlePuzzle(pentagramCandles, pedestals, doorEntity);
+	pedestalPuzzle = new PedestalPuzzle(pedestals, doorEntity, doorsRoom1Entity);
 
 
 	pentagramEntity = new HauntedEntity(&pentagramModel,&pentagram2Model, glm::vec3(17.2f, -0.2f, -4.0f), glm::vec3(0.0f, -40.0f, 0.0f), glm::vec3(1.5f), false);

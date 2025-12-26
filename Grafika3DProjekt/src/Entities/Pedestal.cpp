@@ -17,6 +17,7 @@ void Pedestal::Interact(Inventory* playerInventory)
 		pedestalEntity->setShouldGetDestroyed(true);
 		pedestalEntity = nullptr;
 		storedItem = nullptr;
+		hasCorrectItem = false;
 		return;
 	}
 	if (playerInventory->GetCurrentItem() == nullptr) return;
@@ -44,5 +45,13 @@ void Pedestal::Update(float deltaTime)
 {
 	if(pedestalEntity != nullptr) {
 		pedestalEntity->setRotation(pedestalEntity->getRotation() + glm::vec3(0.0f,30.0f * deltaTime, 0.0f));
+
+		if (storedItem->tag == correctItemTag) {
+			hasCorrectItem = true;
+		}
+		else {
+			hasCorrectItem = false;
+		}
+
 	}
 }
