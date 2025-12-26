@@ -10,7 +10,9 @@ class Candle : public Entity
 	Candle(Model* model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal,PointLight* lightSource, bool interaction = true);
 	void Interact(Inventory* playerInventory) override;
 	void Update(float deltaTime) override {};
-	std::string GetActionText() override { return isLit ? "Extinguish" : "Light"; };
+	bool getIsLit() { return isLit; };
+	void blowOut();
+	std::string GetActionText() override { return isLit ? "Examine" : "Light"; };
 	~Candle();
 private:
 	PointLight* candleLight;

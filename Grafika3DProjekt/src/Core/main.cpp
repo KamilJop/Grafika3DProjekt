@@ -39,8 +39,10 @@
 #include "Entities/Lighter.h"
 #include "Entities/Battery.h"
 #include "Entities/Chest.h"
-#include "Entities/HauntedPainting.h"
+#include "Entities/HauntedEntity.h"
 #include "Entities/ClockMovingPart.h"
+#include "Systems/CandlePuzzle.h"	
+#include "Entities/Pedestal.h"
 
 enum ShaderTypes
 {
@@ -182,10 +184,14 @@ Chest* hiddenRoomChestEntity;
 Lock* hiddenRoomLockEntity;
 
 // Corridor interior objects
-HauntedPainting* hauntedPaintingEntity1;
-HauntedPainting* hauntedPaintingEntity2;
-HauntedPainting* hauntedPaintingEntity3;
-HauntedPainting* hauntedPaintingEntity4;
+HauntedEntity* hauntedPaintingEntity1;
+HauntedEntity* hauntedPaintingEntity2;
+HauntedEntity* hauntedPaintingEntity3;
+HauntedEntity* hauntedPaintingEntity4;
+Pedestal* pedestalEntity1;
+Pedestal* pedestalEntity2;
+Pedestal* pedestalEntity3;
+Pedestal* pedestalEntity4;
 Entity* witchesPaintingEntity;
 
 
@@ -195,6 +201,7 @@ Candle* candle2Entity;
 Candle* candle3Entity;
 Candle* candle4Entity;
 Candle* candle5Entity;
+HauntedEntity* pentagramEntity;
 
 //Lock
 Lock* lockEntity;
@@ -234,6 +241,9 @@ Model upperChestModel;
 Model posterModel;
 Model clockElementModel;
 Model clockModel;
+Model pentagramModel;
+Model pentagram2Model;
+Model pedestalModel;
 
 // Room 1 walls and floor models
 Model doorsRoom1Model;
@@ -271,6 +281,7 @@ Model deskDrawerModelTop;
 Model deskDrawerModelBottom;
 Model deskDrawerModelMiddle;
 
+CandlePuzzle* candlePuzzle;
 
 // Create player
 Player* player;
@@ -445,6 +456,7 @@ int main()
 			// Update held entity model
 			player->setHeldEntityModel(player->getInventory()->GetCurrentItem()->itemModel);
 			player->setHeldEntityScale(player->getInventory()->GetCurrentItem()->itemScale);
+			candlePuzzle->Update();
 
 		}
 
@@ -571,6 +583,9 @@ Scene* createMainScene(Camera * camera) {
 	upperChestModel.LoadModel("Models/upperChest.obj");
 	calenderModel.LoadModel("Models/calender.obj");
 	tableModel.LoadModel("Models/table.obj");
+	pentagramModel.LoadModel("Models/pentagram.obj");
+	pentagram2Model.LoadModel("Models/pentagram2.obj");
+	pedestalModel.LoadModel("Models/pedestal.obj");
 
 	// Desk models
 	deskModel.LoadModel("Models/desk.obj");
@@ -753,15 +768,20 @@ Scene* createMainScene(Camera * camera) {
 
 
 	// Corridor interior objects
-	hauntedPaintingEntity1 = new HauntedPainting(&huntModel1, &huntModel2, glm::vec3(5.5f, 2.0f, -6.0f), glm::vec3(180.0f, 90.0f, 90.0f), glm::vec3(2.0f));
+	hauntedPaintingEntity1 = new HauntedEntity(&huntModel1, &huntModel2, glm::vec3(5.5f, 2.0f, -6.0f), glm::vec3(180.0f, 90.0f, 90.0f), glm::vec3(2.0f));
 	hauntedPaintingEntity1->setTitle("The Royal Hunt (1840)");
-	hauntedPaintingEntity2 = new HauntedPainting(&skullsModel1, &skullsModel2, glm::vec3(10.0f, 2.0f, -6.0f), glm::vec3(180.0f, 90.0f, 90.0f), glm::vec3(2.0f));
+	hauntedPaintingEntity2 = new HauntedEntity(&skullsModel1, &skullsModel2, glm::vec3(10.0f, 2.0f, -6.0f), glm::vec3(180.0f, 90.0f, 90.0f), glm::vec3(2.0f));
 	hauntedPaintingEntity2->setTitle("Study of Mortality (1860)");
-	hauntedPaintingEntity3 = new HauntedPainting(&ravensModel1, &ravensModel2, glm::vec3(5.5f, 2.0f, -1.1f), glm::vec3(180.0f, -90.0f, 90.0f), glm::vec3(2.0f));
+	hauntedPaintingEntity3 = new HauntedEntity(&ravensModel1, &ravensModel2, glm::vec3(5.5f, 2.0f, -1.1f), glm::vec3(180.0f, -90.0f, 90.0f), glm::vec3(2.0f));
 	hauntedPaintingEntity3->setTitle("Harbingers of Doom (1880)");
-	hauntedPaintingEntity4 = new HauntedPainting(&cultModel1, &cultModel2, glm::vec3(10.0f, 2.0f, -1.1f), glm::vec3(180.0f, -90.0f, 90.0f), glm::vec3(2.0f));
+	hauntedPaintingEntity4 = new HauntedEntity(&cultModel1, &cultModel2, glm::vec3(10.0f, 2.0f, -1.1f), glm::vec3(180.0f, -90.0f, 90.0f), glm::vec3(2.0f));
 	hauntedPaintingEntity4->setTitle("The Gathering (1900)");
-	witchesPaintingEntity = new Entity(&witchesModel, glm::vec3(12.6f, 1.9f, -3.5f), glm::vec3(180.0f, 0.0f, 90.0f), glm::vec3(3.0f), true);
+	pedestalEntity1 = new Pedestal(&pedestalModel, glm::vec3(5.5f, 0.0f, -5.0f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(0.5f), true);
+	pedestalEntity2 = new Pedestal(&pedestalModel, glm::vec3(10.0f, 0.0f, -5.0f), glm::vec3(0.0f,90.0f,0.0f), glm::vec3(0.5f), true);
+	pedestalEntity3 = new Pedestal(&pedestalModel, glm::vec3(5.5f, 0.0f, -2.0f), glm::vec3(0.0f, -90.0f, 0.0f), glm::vec3(0.5f), true);
+	pedestalEntity4 = new Pedestal(&pedestalModel, glm::vec3(10.0f, 0.0f, -2.0f), glm::vec3(0.0f, -90.0f, 0.0f), glm::vec3(0.5f), true);
+
+	witchesPaintingEntity = new Entity(&witchesModel, glm::vec3(22.0f, 1.9f, -3.5f), glm::vec3(180.0f, 0.0f, 90.0f), glm::vec3(2.4f), true);
 	witchesPaintingEntity->setTitle("The Witches' Sabbath (1597)");
 	witchesPaintingEntity->setColissions(false);
 	/*sculptureEntity = new Entity(&sculpture, lessShinyMaterial, glm::vec3(-10.0f, -1.0f, -4.0f), glm::vec3(0.0f, 30.0f, 0.0f), glm::vec3(4.0f));
@@ -776,11 +796,11 @@ Scene* createMainScene(Camera * camera) {
 	// Light
 	mainLight = new DirectionalLight(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(-1.0f, -5.0f, -5.5f), 0.3f, 0.22f, 1024.0f, 1024.0f);
 	// Candle lights
-	candleLight = new PointLight(glm::vec3(0.93f, 0.64f, 0.28f), 0.1f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.12f, 0.062f, 0, 100.0f, 0.01f, 1024.0f, 1024.0f);
-	candleLight2 = new PointLight(glm::vec3(0.93f, 0.64f, 0.28f), 0.1f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.12f, 0.062f, 1, 100.0f, 0.01f, 1024.0f, 1024.0f);
-	candleLight3 = new PointLight(glm::vec3(0.93f, 0.64f, 0.28f), 0.1f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.12f, 0.062f, 2, 100.0f, 0.01f, 1024.0f, 1024.0f);
-	candleLight4 = new PointLight(glm::vec3(0.93f, 0.64f, 0.28f), 0.1f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.12f, 0.062f, 3, 100.0f, 0.01f, 1024.0f, 1024.0f);
-	candleLight5 = new PointLight(glm::vec3(0.93f, 0.64f, 0.28f), 0.1f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.12f, 0.062f, 4, 100.0f, 0.01f, 1024.0f, 1024.0f);
+	candleLight = new PointLight(glm::vec3(0.93f, 0.64f, 0.28f), 0.1f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.5f, 1.4f, 0, 100.0f, 0.01f, 1024.0f, 1024.0f);
+	candleLight2 = new PointLight(glm::vec3(0.93f, 0.64f, 0.28f), 0.1f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.5f, 1.4f, 1, 100.0f, 0.01f, 1024.0f, 1024.0f);
+	candleLight3 = new PointLight(glm::vec3(0.93f, 0.64f, 0.28f), 0.1f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.5f, 1.4f, 2, 100.0f, 0.01f, 1024.0f, 1024.0f);
+	candleLight4 = new PointLight(glm::vec3(0.93f, 0.64f, 0.28f), 0.1f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.5f, 1.4f, 3, 100.0f, 0.01f, 1024.0f, 1024.0f);
+	candleLight5 = new PointLight(glm::vec3(0.93f, 0.64f, 0.28f), 0.1f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.5f, 1.4f, 4, 100.0f, 0.01f, 1024.0f, 1024.0f);
 	flashlight = new Flashlight(glm::vec3(1.0f, 1.0f, 0.85f), 0.001f, 1.2f, camera->getCameraPosition(), 1.0f, 0.07f, 0.017f, camera->getCameraFront(), 25.0f, 32.5f, 1024.0f,1024.0f);
 
 
@@ -793,11 +813,28 @@ Scene* createMainScene(Camera * camera) {
 	lockEntity->setChestToUnlock(chestEntity);
 
 	sofaEntity = new Entity(&sofaModel, glm::vec3(0.8f, 0.0f, 0.0f), glm::vec3(0.0f, -120.0f, 0.0f), glm::vec3(1.5f));
-	candleEntity = new Candle(&candleModel, glm::vec3(20.0f, 0.0f, -3.5f), glm::vec3(0.0f), glm::vec3(1.5f),candleLight,true);
-	candle2Entity = new Candle(&candleModel, glm::vec3(17.5f, 0.0f, -6.0f), glm::vec3(0.0f), glm::vec3(1.5f), candleLight2, true);
-	candle3Entity = new Candle(&candleModel, glm::vec3(17.5f, 0.0f, -1.0f), glm::vec3(0.0f), glm::vec3(1.5f), candleLight3, true);
-	candle4Entity = new Candle(&candleModel, glm::vec3(15.0f, 0.0f, -4.5f), glm::vec3(0.0f), glm::vec3(1.5f), candleLight4, true);
-	candle5Entity = new Candle(&candleModel, glm::vec3(15.0f, 0.0f, -2.5f), glm::vec3(0.0f), glm::vec3(1.5f), candleLight5, true);
+	candleEntity = new Candle(&candleModel, glm::vec3(15.7f, 0.0f, -3.3f), glm::vec3(0.0f), glm::vec3(2.0f),candleLight,true);
+	candleEntity->setTitle("Candle");
+	candleEntity->setTag("B");
+	candle2Entity = new Candle(&candleModel, glm::vec3(17.6f, 0.0f, -5.5f), glm::vec3(0.0f), glm::vec3(2.0f), candleLight2, true);
+	candle2Entity->setTitle("Candle");
+	candle2Entity->setTag("A");
+	candle3Entity = new Candle(&candleModel, glm::vec3(17.3f, 0.0f, -2.3f), glm::vec3(0.0f), glm::vec3(2.0f), candleLight3, true);
+	candle3Entity->setTitle("Candle");
+	candle3Entity->setTag("E");
+	candle4Entity = new Candle(&candleModel, glm::vec3(15.7f, 0.0f, -5.1f), glm::vec3(0.0f), glm::vec3(2.0f), candleLight4, true);
+	candle4Entity->setTitle("Candle");
+	candle4Entity->setTag("L");
+	candle5Entity = new Candle(&candleModel, glm::vec3(18.8f, 0.0f, -4.2f), glm::vec3(0.0f), glm::vec3(2.0f), candleLight5, true);
+	candle5Entity->setTitle("Candle");
+
+	std::vector<Candle*> pentagramCandles = { candleEntity, candle2Entity, candle3Entity, candle4Entity, candle5Entity };
+	candlePuzzle = new CandlePuzzle(pentagramCandles, doorEntity);
+
+
+	pentagramEntity = new HauntedEntity(&pentagramModel,&pentagram2Model, glm::vec3(17.2f, -0.2f, -4.0f), glm::vec3(0.0f, -40.0f, 0.0f), glm::vec3(1.5f), false);
+	pentagramEntity->setTitle("Pentagram");
+	pentagramEntity->setColissions(false);
 	// Add entities and lights to scene
 	scene->AddPointLight(candleLight);
 	scene->AddPointLight(candleLight2);
@@ -875,12 +912,17 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(secondRoomFrontWallRightEntity);
 
 
+
 	// Corridor interior objects
 	scene->AddEntity(hauntedPaintingEntity1);
 	scene->AddEntity(hauntedPaintingEntity2);
 	scene->AddEntity(hauntedPaintingEntity3);
 	scene->AddEntity(hauntedPaintingEntity4);
 	scene->AddEntity(witchesPaintingEntity);
+	scene->AddEntity(pedestalEntity1);
+	scene->AddEntity(pedestalEntity2);
+	scene->AddEntity(pedestalEntity3);
+	scene->AddEntity(pedestalEntity4);
 
 	// Hidden room interior objects
 	scene->AddEntity(hiddenRoomChestEntity);
@@ -888,6 +930,7 @@ Scene* createMainScene(Camera * camera) {
 
 	/*scene->AddEntity(sculptureEntity);*/
 
+	scene->AddEntity(pentagramEntity);
 	return scene;
 }
 

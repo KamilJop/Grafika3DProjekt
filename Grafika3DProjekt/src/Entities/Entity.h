@@ -56,6 +56,7 @@ public:
 	void UpdateCollisionBox();
 	void setActionText(std::string text) { actionText = text; }	
 	void setExamineText(std::string text) { examineText = text; }
+	void setTag(std::string tag) { itemTag = tag; }
 	virtual void Update(float deltaTime) {};
 	virtual std::string GetActionText() { return actionText; };
 	virtual void Interact(Inventory * playerInventory);

@@ -25,15 +25,7 @@ Candle::~Candle()
 
 void Candle::Interact(Inventory* playerInventory)
 {	
-	if (isLit) {
-		AudioManager::GetInstance().Play3DSoundEffect("candle_blow", position);
-		candleLight->setAmbientIntensity(0.0f);
-		candleLight->setDiffuseIntensity(0.0f);
-		candleLight->setColor(glm::vec3(0.0f));
-		isLit = false;
-
-	}
-	else {
+	if (!isLit) {
 		if(playerInventory->GetCurrentItem()->tag != "Lighter") {
 			if(!triedToLight) {
 				triedToLight = true;
@@ -48,4 +40,13 @@ void Candle::Interact(Inventory* playerInventory)
 		isLit = true;
 
 	}
+}
+
+void Candle::blowOut()
+{
+	AudioManager::GetInstance().Play3DSoundEffect("candle_blow", position);
+	candleLight->setAmbientIntensity(0.0f);
+	candleLight->setDiffuseIntensity(0.0f);
+	candleLight->setColor(glm::vec3(0.0f));
+	isLit = false;
 }

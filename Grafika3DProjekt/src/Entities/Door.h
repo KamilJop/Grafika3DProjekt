@@ -13,6 +13,7 @@ public:
 	Door(Model* model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, std::string name, Entity* frame, std::string keyTag = "No needed",  bool interaction = true);
 	~Door();
 	void setLocked(bool state) { isLocked = state; }
+	void setIsOpen(bool state) { isOpen = state; }
 	void Interact(Inventory* playerInventory) override ;
 	void Update(float deltaTime) override;
 	void setDirection(int dir) { direction = dir; }	
