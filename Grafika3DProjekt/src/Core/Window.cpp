@@ -98,6 +98,9 @@ int Window::Initialise() {
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 
+	//Enable gamma correction
+	glEnable(GL_FRAMEBUFFER_SRGB);
+
 	// Set viewport size
 	glViewport(0, 0, bufferWidth, bufferHeight);
 

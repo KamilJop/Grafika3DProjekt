@@ -48,12 +48,12 @@ bool Texture::LoadTextureAlpha()
 	GLenum dataFormat = 0;
 
 	if (bitDepth == 4) {
-		internalFormat = GL_RGBA;
+		internalFormat = GL_SRGB_ALPHA;
 		dataFormat = GL_RGBA;
 		printf("Texture has alpha channel.\n");
 	}
 	else if (bitDepth == 3) {
-		internalFormat = GL_RGB;
+		internalFormat = GL_SRGB;
 		dataFormat = GL_RGB;
 	}
 	else {

@@ -220,6 +220,7 @@ PointLight* candleLight2;
 PointLight* candleLight3;
 PointLight* candleLight4;
 PointLight* candleLight5;
+PointLight* testLight;
 Flashlight* flashlight;
 
 // Create models
@@ -682,6 +683,7 @@ Scene* createMainScene(Camera * camera) {
 	calenderEntity->setTitle("Calender");
 	calenderEntity->setExamineText("The date is December 26th.");
 	tableEntity = new Entity(&tableModel, glm::vec3(-2.0f, 0.0f, -5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.01f), true);
+	testLight = new PointLight(glm::vec3(1.0f, 0.9f, 0.7f), 0.01f, 0.8f, glm::vec3(-2.0f, 1.0f, -5.0f), 1.0f, 0.35f, 0.44f, 5, 100.0f, 0.01f, 1024.0f, 1024.0f);
 	posterEntity = new Entity(&posterModel, glm::vec3(-5.8f, 1.5f, -5.49f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.6f), true);
 	posterEntity->setTitle("Poster");
 	posterEntity->setExamineText("A poster with morse code instruction. Maybe it will be useful");
@@ -817,15 +819,14 @@ Scene* createMainScene(Camera * camera) {
 	// Skybox
 	skybox = new Skybox(skyboxFaces);
 
-	// Light
-	mainLight = new DirectionalLight(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(-1.0f, -5.0f, -5.5f), 0.3f, 0.22f, 1024.0f, 1024.0f);
-	// Candle lights
-	candleLight = new PointLight(glm::vec3(0.93f, 0.64f, 0.28f), 0.1f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.5f, 1.4f, 0, 100.0f, 0.01f, 1024.0f, 1024.0f);
-	candleLight2 = new PointLight(glm::vec3(0.93f, 0.64f, 0.28f), 0.1f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.5f, 1.4f, 1, 100.0f, 0.01f, 1024.0f, 1024.0f);
-	candleLight3 = new PointLight(glm::vec3(0.93f, 0.64f, 0.28f), 0.1f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.5f, 1.4f, 2, 100.0f, 0.01f, 1024.0f, 1024.0f);
-	candleLight4 = new PointLight(glm::vec3(0.93f, 0.64f, 0.28f), 0.1f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.5f, 1.4f, 3, 100.0f, 0.01f, 1024.0f, 1024.0f);
-	candleLight5 = new PointLight(glm::vec3(0.93f, 0.64f, 0.28f), 0.1f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.5f, 1.4f, 4, 100.0f, 0.01f, 1024.0f, 1024.0f);
-	flashlight = new Flashlight(glm::vec3(1.0f, 1.0f, 0.85f), 0.001f, 1.2f, camera->getCameraPosition(), 1.0f, 0.07f, 0.017f, camera->getCameraFront(), 25.0f, 32.5f, 1024.0f,1024.0f);
+
+	mainLight = new DirectionalLight(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(-1.0f, -5.0f, -5.5f), 0.05f, 0.01f, 1024.0f, 1024.0f);
+	candleLight = new PointLight(glm::vec3(0.93f, 0.64f, 0.28f), 0.0f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.5f, 1.4f, 0, 100.0f, 0.01f, 1024.0f, 1024.0f);
+	candleLight2 = new PointLight(glm::vec3(0.93f, 0.64f, 0.28f), 0.0f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.5f, 1.4f, 1, 100.0f, 0.01f, 1024.0f, 1024.0f);
+	candleLight3 = new PointLight(glm::vec3(0.93f, 0.64f, 0.28f), 0.0f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.5f, 1.4f, 2, 100.0f, 0.01f, 1024.0f, 1024.0f);
+	candleLight4 = new PointLight(glm::vec3(0.93f, 0.64f, 0.28f), 0.0f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.5f, 1.4f, 3, 100.0f, 0.01f, 1024.0f, 1024.0f);
+	candleLight5 = new PointLight(glm::vec3(0.93f, 0.64f, 0.28f), 0.0f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.5f, 1.4f, 4, 100.0f, 0.01f, 1024.0f, 1024.0f);
+	flashlight = new Flashlight(glm::vec3(1.0f, 1.0f, 0.85f), 0.001f, 1.5f, camera->getCameraPosition(), 1.0f, 0.2f, 0.15f, camera->getCameraFront(), 25.0f, 32.5f, 1024.0f, 1024.0f);
 
 
 
@@ -875,6 +876,7 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddPointLight(candleLight3);
 	scene->AddPointLight(candleLight4);
 	scene->AddPointLight(candleLight5);
+	scene->AddPointLight(testLight);
 	scene->SetDirectionalLight(mainLight);
 	scene->SetFlashlight(flashlight);
 	scene->AddEntity(doorsRoom1Entity);
