@@ -45,6 +45,7 @@
 #include "Entities/Pedestal.h"
 #include "Entities/Pickable.h"
 #include "Systems/PedestalPuzzle.h"
+#include "Rendering/HDRBuffer.h"
 
 enum ShaderTypes
 {
@@ -52,7 +53,8 @@ enum ShaderTypes
 	SHADER_DIRLIGHT_SHADOWMAP,
 	SHADER_OMNI_SHADOWMAP,
 	SHADER_OUTLINE,
-	SHADER_SPRITES
+	SHADER_SPRITES,
+	SHADER_POST_PROCESSING
 };
 
 enum GameStates
@@ -63,6 +65,10 @@ enum GameStates
 	STATE_GAME_END,
 	STATE_MINIGAME
 };
+
+
+// TEST FLOAT
+float exposure = 1.0f;
 
 Config& config = Config::getInstance();
 
@@ -88,6 +94,8 @@ static const char* outlineVertexShader = "Shaders/outline.vert";
 static const char* outlineFragmentShader = "Shaders/outline.frag";
 static const char* spriteVertexShader = "Shaders/spriteShader.vert";
 static const char* spriteFragmentShader = "Shaders/spriteShader.frag";
+static const char* postProcessingVertexShader = "Shaders/hdr.vert";
+static const char* postProcessingFragmentShader = "Shaders/hdr.frag";
 // Texture file paths
 static const char* brickTexture = "Textures/brick.png";
 static const char* stoneTexture = "Textures/stone.png";
@@ -304,6 +312,9 @@ Scene* scene = nullptr;
 // Create skybox
 Skybox* skybox;
 
+// HDR Buffer
+HDRBuffer* hdrBuffer;
+
 // Skybox faces
 std::vector<std::string> skyboxFaces
 {
@@ -344,6 +355,7 @@ void DirectionalLightShadowMapPass();
 void FlashlightShadowMapPass();
 void OmniShadowMapPass(PointLight* pLight);
 void RenderScenePass(glm::mat4 projection);
+void PostProcessingPass();
 void HandleKeyboardInput(float deltaTime, Scene* currentScene);
 void SetGameState(GameStates newState);
 void DrawInventory();
@@ -390,6 +402,13 @@ int main()
 	Shader* spriteShader = new Shader();
 	spriteShader->CreateShader(spriteVertexShader, spriteFragmentShader);
 	shaderList.push_back(spriteShader);
+
+	Shader* postProcessingShader = new Shader();
+	postProcessingShader->CreateShader(postProcessingVertexShader, postProcessingFragmentShader);
+	shaderList.push_back(postProcessingShader);
+
+	hdrBuffer = new HDRBuffer(uiWidth, uiHeight);
+
 
 	keySprite = new Texture("Textures/Icons/door_key.png");
 	keySprite->LoadTextureAlpha();
@@ -507,6 +526,9 @@ int main()
 
 		// Render scene pass
 		RenderScenePass(projection);
+
+		// Post processing pass
+		PostProcessingPass();
 
 		// Draw UI
 
@@ -821,12 +843,12 @@ Scene* createMainScene(Camera * camera) {
 
 
 	mainLight = new DirectionalLight(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(-1.0f, -5.0f, -5.5f), 0.05f, 0.01f, 1024.0f, 1024.0f);
-	candleLight = new PointLight(glm::vec3(0.93f, 0.64f, 0.28f), 0.0f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.5f, 1.4f, 0, 100.0f, 0.01f, 1024.0f, 1024.0f);
-	candleLight2 = new PointLight(glm::vec3(0.93f, 0.64f, 0.28f), 0.0f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.5f, 1.4f, 1, 100.0f, 0.01f, 1024.0f, 1024.0f);
-	candleLight3 = new PointLight(glm::vec3(0.93f, 0.64f, 0.28f), 0.0f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.5f, 1.4f, 2, 100.0f, 0.01f, 1024.0f, 1024.0f);
-	candleLight4 = new PointLight(glm::vec3(0.93f, 0.64f, 0.28f), 0.0f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.5f, 1.4f, 3, 100.0f, 0.01f, 1024.0f, 1024.0f);
-	candleLight5 = new PointLight(glm::vec3(0.93f, 0.64f, 0.28f), 0.0f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.5f, 1.4f, 4, 100.0f, 0.01f, 1024.0f, 1024.0f);
-	flashlight = new Flashlight(glm::vec3(1.0f, 1.0f, 0.85f), 0.001f, 1.5f, camera->getCameraPosition(), 1.0f, 0.2f, 0.15f, camera->getCameraFront(), 25.0f, 32.5f, 1024.0f, 1024.0f);
+	candleLight = new PointLight(glm::vec3(2.8f, 1.9f, 0.8f), 0.0f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.5f, 1.4f, 0, 100.0f, 0.01f, 1024.0f, 1024.0f);
+	candleLight2 = new PointLight(glm::vec3(2.8f, 1.9f, 0.8f), 0.0f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.5f, 1.4f, 1, 100.0f, 0.01f, 1024.0f, 1024.0f);
+	candleLight3 = new PointLight(glm::vec3(2.8f, 1.9f, 0.8f), 0.0f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.5f, 1.4f, 2, 100.0f, 0.01f, 1024.0f, 1024.0f);
+	candleLight4 = new PointLight(glm::vec3(2.8f, 1.9f, 0.8f), 0.0f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.5f, 1.4f, 3, 100.0f, 0.01f, 1024.0f, 1024.0f);
+	candleLight5 = new PointLight(glm::vec3(2.8f, 1.9f, 0.8f), 0.0f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.5f, 1.4f, 4, 100.0f, 0.01f, 1024.0f, 1024.0f);
+	flashlight = new Flashlight(glm::vec3(10.0f, 10.0f, 8.5f), 0.001f, 1.5f, camera->getCameraPosition(), 1.0f, 0.2f, 0.15f, camera->getCameraFront(), 25.0f, 32.5f, 1024.0f, 1024.0f);
 
 
 
@@ -1037,6 +1059,7 @@ void OmniShadowMapPass(PointLight* pLight) {
 
 void RenderScenePass(glm::mat4 projectionMatrix)
 {
+	hdrBuffer->Bind();
 	// Setup viewport and clear buffers
 	glViewport(0, 0, mainWindow.getBufferWidth(), mainWindow.getBufferHeight());
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -1093,6 +1116,7 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 		}
 		scene->RenderHeldEntity(shaderList[SHADER_DEFAULT], projectionMatrix);
 	}
+	hdrBuffer->Unbind();
 }
 
 void HandleKeyboardInput(float deltaTime, Scene* currentScene) {
@@ -1281,6 +1305,16 @@ void HandleKeyboardInput(float deltaTime, Scene* currentScene) {
 	//	mainWindow.getKeys()[GLFW_KEY_9] = false;
 	//}
 
+	if(mainWindow.getKeys()[GLFW_KEY_KP_ADD]) {
+		exposure += 1.0f * deltaTime;
+	}
+	if(mainWindow.getKeys()[GLFW_KEY_KP_SUBTRACT]) {
+		exposure -= 1.0f * deltaTime;
+		if(exposure < 0.0f) {
+			exposure = 0.0f;
+		}
+	}
+
 
 	double currentScrollY = mainWindow.getScrollY();
 	if (currentScrollY != 0.0) {
@@ -1352,4 +1386,15 @@ void DrawInventory() {
 
 void DrawMainMenu() {
 	//gameUI->DrawMainMenu();
+}
+
+
+void PostProcessingPass() {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	shaderList[SHADER_POST_PROCESSING]->UseShader();
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, hdrBuffer->getColorBuffer());
+	shaderList[SHADER_POST_PROCESSING]->setInt("hdrBuffer", 0);
+	shaderList[SHADER_POST_PROCESSING]->setFloat("exposure", exposure);
+	hdrBuffer->RenderQuad();
 }
