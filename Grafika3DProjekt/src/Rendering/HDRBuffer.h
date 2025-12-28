@@ -10,7 +10,11 @@ public:
 	void Bind();
 	void Unbind();
 
-	unsigned int getColorBuffer() { return colorBuffer; }
+	unsigned int getColorBuffer() { return colorBuffers[0]; }
+	unsigned int getBrightTexture() { return colorBuffers[1]; }
+
+	unsigned int getPingPongFBO(int index) { return pingPongFBO[index]; }
+	unsigned int getPingPongColorBuffer(int index) { return pingPongColorbuffers[index]; }
 
 	void RenderQuad();
 
@@ -18,7 +22,11 @@ public:
 
 private:
 	unsigned int FBO;
-	unsigned int colorBuffer;
+	unsigned int colorBuffers[2];
+
+	unsigned int pingPongFBO[2];
+	unsigned int pingPongColorbuffers[2];
+
 	unsigned int RBO;
 
 	unsigned int quadVAO = 0;

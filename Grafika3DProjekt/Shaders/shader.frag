@@ -10,7 +10,9 @@ in mat3 TBN;
 in vec3 TangentViewPos;
 in vec3 TangentFragPos;
 
-out vec4 colour;
+layout (location = 0) out vec4 colour;   
+layout (location = 1) out vec4 BrightColor;
+
 
 struct DirectionalLight
 {
@@ -409,6 +411,15 @@ void main()
 	if(isSelected== 1){
 		colour.rgb += vec3(0.3, 0.3, 0.0);
 	}
+	
+	float brightness = dot(colour.rgb, vec3(0.2126, 0.7152, 0.0722));
+	if (brightness >= 1.0){
+		BrightColor  = colour;
+	}	
+	else{
+		BrightColor = vec4(0.0,0.0,0.0,1.0);
+	}
+	
 	
 
 }

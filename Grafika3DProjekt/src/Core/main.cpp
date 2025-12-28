@@ -54,7 +54,8 @@ enum ShaderTypes
 	SHADER_OMNI_SHADOWMAP,
 	SHADER_OUTLINE,
 	SHADER_SPRITES,
-	SHADER_POST_PROCESSING
+	SHADER_POST_PROCESSING,
+	SHADER_BLOOM
 };
 
 enum GameStates
@@ -96,6 +97,7 @@ static const char* spriteVertexShader = "Shaders/spriteShader.vert";
 static const char* spriteFragmentShader = "Shaders/spriteShader.frag";
 static const char* postProcessingVertexShader = "Shaders/hdr.vert";
 static const char* postProcessingFragmentShader = "Shaders/hdr.frag";
+static const char* bloomFragmentShader = "Shaders/bloom.frag";
 // Texture file paths
 static const char* brickTexture = "Textures/brick.png";
 static const char* stoneTexture = "Textures/stone.png";
@@ -407,6 +409,10 @@ int main()
 	postProcessingShader->CreateShader(postProcessingVertexShader, postProcessingFragmentShader);
 	shaderList.push_back(postProcessingShader);
 
+	Shader* bloomShader = new Shader();
+	bloomShader->CreateShader(postProcessingVertexShader, bloomFragmentShader);
+	shaderList.push_back(bloomShader);
+
 	hdrBuffer = new HDRBuffer(uiWidth, uiHeight);
 
 
@@ -705,7 +711,7 @@ Scene* createMainScene(Camera * camera) {
 	calenderEntity->setTitle("Calender");
 	calenderEntity->setExamineText("The date is December 26th.");
 	tableEntity = new Entity(&tableModel, glm::vec3(-2.0f, 0.0f, -5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.01f), true);
-	testLight = new PointLight(glm::vec3(1.0f, 0.9f, 0.7f), 0.01f, 0.8f, glm::vec3(-2.0f, 1.0f, -5.0f), 1.0f, 0.35f, 0.44f, 5, 100.0f, 0.01f, 1024.0f, 1024.0f);
+	testLight = new PointLight(glm::vec3(50.0f, 45.0f, 35.0f), 0.01f, 0.8f, glm::vec3(-2.0f, 1.0f, -5.0f), 1.0f, 0.35f, 0.44f, 5, 100.0f, 0.01f, 1024.0f, 1024.0f);
 	posterEntity = new Entity(&posterModel, glm::vec3(-5.8f, 1.5f, -5.49f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.6f), true);
 	posterEntity->setTitle("Poster");
 	posterEntity->setExamineText("A poster with morse code instruction. Maybe it will be useful");
@@ -1390,11 +1396,48 @@ void DrawMainMenu() {
 
 
 void PostProcessingPass() {
+	bool horizontal = true;
+	bool first_iteration = true;
+	int amount = 10;
+
+	shaderList[SHADER_BLOOM]->UseShader();
+
+	for (unsigned int i = 0; i < amount; i++)
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, hdrBuffer->getPingPongFBO(horizontal));
+
+		shaderList[SHADER_BLOOM]->setInt("horizontal", horizontal);
+
+		glActiveTexture(GL_TEXTURE0);
+
+		if (first_iteration)
+		{
+			glBindTexture(GL_TEXTURE_2D, hdrBuffer->getBrightTexture());
+		}
+		else
+		{
+			glBindTexture(GL_TEXTURE_2D, hdrBuffer->getPingPongColorBuffer(!horizontal));
+		}
+
+		shaderList[SHADER_BLOOM]->setInt("image", 0);
+
+		hdrBuffer->RenderQuad();
+		horizontal = !horizontal;
+		first_iteration = false;
+	}
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	shaderList[SHADER_POST_PROCESSING]->UseShader();
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, hdrBuffer->getColorBuffer());
 	shaderList[SHADER_POST_PROCESSING]->setInt("hdrBuffer", 0);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, hdrBuffer->getPingPongColorBuffer(!horizontal)); 
+	shaderList[SHADER_POST_PROCESSING]->setInt("bloomBlur", 1);
 	shaderList[SHADER_POST_PROCESSING]->setFloat("exposure", exposure);
 	hdrBuffer->RenderQuad();
 }
