@@ -301,7 +301,7 @@ vec4 CalculateFlashLight(vec3 worldNormal){
 vec4 CalculatePointLight(PointLight pointLight, int shadowIndex, vec3 worldNormal){
 	float dist = length(pointLight.lightPosition - FragPos);
     
-    if(dist > 20.0) 
+    if(dist > 10.0) 
     {
         return vec4(0.0);
     }

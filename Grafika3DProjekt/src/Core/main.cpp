@@ -46,6 +46,7 @@
 #include "Entities/Pickable.h"
 #include "Systems/PedestalPuzzle.h"
 #include "Rendering/HDRBuffer.h"
+#include "Systems/ParticleSystem.h"
 
 enum ShaderTypes
 {
@@ -55,7 +56,8 @@ enum ShaderTypes
 	SHADER_OUTLINE,
 	SHADER_SPRITES,
 	SHADER_POST_PROCESSING,
-	SHADER_BLOOM
+	SHADER_BLOOM,
+	SHADER_PARTICLE
 };
 
 enum GameStates
@@ -98,6 +100,8 @@ static const char* spriteFragmentShader = "Shaders/spriteShader.frag";
 static const char* postProcessingVertexShader = "Shaders/hdr.vert";
 static const char* postProcessingFragmentShader = "Shaders/hdr.frag";
 static const char* bloomFragmentShader = "Shaders/bloom.frag";
+static const char* particleVertexShader = "Shaders/particle.vert";
+static const char* particleFragmentShader = "Shaders/particle.frag";
 // Texture file paths
 static const char* brickTexture = "Textures/brick.png";
 static const char* stoneTexture = "Textures/stone.png";
@@ -158,6 +162,9 @@ Entity* room1BackWallUpSideEntity;
 Entity* room1FrontWallUpEntity;
 Entity* room1FrontWallLeftEntity;
 Entity* room1FrontWallRightEntity;
+Entity* houseWalls;
+Entity* houseFloor;
+Entity* houseCeiling;
 
 // Hidden room collisions
 Entity* hiddenRoomBackWallEntity;
@@ -265,6 +272,9 @@ Model collarModel;
 Model featherModel;
 Model skullModel;
 Model eyeModel;
+Model houseWallsModel;
+Model houseFloorModel;
+Model houseCeilingModel;
 
 // Room 1 walls and floor models
 Model doorsRoom1Model;
@@ -316,6 +326,9 @@ Skybox* skybox;
 
 // HDR Buffer
 HDRBuffer* hdrBuffer;
+
+// Particle System
+ParticleSystem* fireParticleSystem;
 
 // Skybox faces
 std::vector<std::string> skyboxFaces
@@ -413,8 +426,15 @@ int main()
 	bloomShader->CreateShader(postProcessingVertexShader, bloomFragmentShader);
 	shaderList.push_back(bloomShader);
 
+	Shader* particleShader = new Shader();
+	particleShader->CreateShader(particleVertexShader, particleFragmentShader);
+	shaderList.push_back(particleShader);
+
 	hdrBuffer = new HDRBuffer(uiWidth, uiHeight);
 
+	Texture fireParticleTexture("Textures/Particles/fire.png");
+	fireParticleTexture.LoadTextureAlpha();
+	fireParticleSystem = new ParticleSystem(shaderList[SHADER_PARTICLE], &fireParticleTexture, 500);
 
 	keySprite = new Texture("Textures/Icons/door_key.png");
 	keySprite->LoadTextureAlpha();
@@ -493,8 +513,15 @@ int main()
 			// Update held entity model
 			player->setHeldEntityModel(player->getInventory()->GetCurrentItem()->itemModel);
 			player->setHeldEntityScale(player->getInventory()->GetCurrentItem()->itemScale);
+
+			// Update puzzles
 			candlePuzzle->Update();
 			pedestalPuzzle->Update();
+
+			// Update particle systems
+			fireParticleSystem->Update(deltaTime);
+			fireParticleSystem->SpawnParticles(candleEntity->getPosition() + glm::vec3(0.0f, 0.5f, 0.0f), 1, glm::vec3(0.1f, 0.0f, 0.1f));
+
 		}
 
 		if (gameState == STATE_MINIGAME && currentActiveLock != nullptr) {
@@ -630,6 +657,9 @@ Scene* createMainScene(Camera * camera) {
 	pentagramModel.LoadModel("Models/pentagram.obj");
 	pentagram2Model.LoadModel("Models/pentagram2.obj");
 	pedestalModel.LoadModel("Models/pedestal.obj");
+	houseWallsModel.LoadModel("Models/projekt.obj");
+	houseFloorModel.LoadModel("Models/podloga.obj");
+	houseCeilingModel.LoadModel("Models/sufit.obj");
 
 	// Desk models
 	deskModel.LoadModel("Models/desk.obj");
@@ -689,8 +719,8 @@ Scene* createMainScene(Camera * camera) {
 
 
 	// Create Entities
-	framuga = new Entity(&framugaModel,glm::vec3(2.4f, -0.1f, -3.0f), glm::vec3(0.0f,-90.0f,0.0f), glm::vec3(1.41f));
-	doorEntity = new Door(&door, glm::vec3(2.4f, -0.1f, -3.0f), glm::vec3(0.0f,-90.0f,0.0f), glm::vec3(1.4f), "Doors", framuga, "mainKey");
+	framuga = new Entity(&framugaModel,glm::vec3(3.0f, -0.1f, -2.7f), glm::vec3(0.0f,-90.0f,0.0f), glm::vec3(1.41f));
+	doorEntity = new Door(&door, glm::vec3(3.0f, -0.1f, -2.7f), glm::vec3(0.0f,-90.0f,0.0f), glm::vec3(1.4f), "Doors", framuga, "mainKey");
 	doorEntity->setLocked(true);
 	keyEntity = new Key(&keyModel, glm::vec3(1.0f, 0.0f, -2.0f), glm::vec3(90.0f,0.0f,0.0f), glm::vec3(0.75f), "mainKey", keySprite, true);
 	keyEntity->setTitle("Key");
@@ -711,7 +741,7 @@ Scene* createMainScene(Camera * camera) {
 	calenderEntity->setTitle("Calender");
 	calenderEntity->setExamineText("The date is December 26th.");
 	tableEntity = new Entity(&tableModel, glm::vec3(-2.0f, 0.0f, -5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.01f), true);
-	testLight = new PointLight(glm::vec3(50.0f, 45.0f, 35.0f), 0.01f, 0.8f, glm::vec3(-2.0f, 1.0f, -5.0f), 1.0f, 0.35f, 0.44f, 5, 100.0f, 0.01f, 1024.0f, 1024.0f);
+	testLight = new PointLight(glm::vec3(50.0f, 45.0f, 35.0f), 0.01f, 0.8f, glm::vec3(-2.0f, 1.0f, -5.0f), 1.0f, 0.35f, 0.44f, 5, 100.0f, 0.01f, 512.0f, 512.0f);
 	posterEntity = new Entity(&posterModel, glm::vec3(-5.8f, 1.5f, -5.49f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.6f), true);
 	posterEntity->setTitle("Poster");
 	posterEntity->setExamineText("A poster with morse code instruction. Maybe it will be useful");
@@ -754,30 +784,45 @@ Scene* createMainScene(Camera * camera) {
 	// Room 1 collisions
 	floorEntity = new Entity(&colliderWallModel, glm::vec3(-9.0f, 0.0f, 13.0f), glm::vec3(-90.0f,0.0f,0.0f), glm::vec3(40.0f, 24.0f, 10.0f));
 	floorEntity->setCastsShadow(false);
+	floorEntity->setVisibility(false);
 	ceilingEntity = new Entity(&colliderWallModel, glm::vec3(-9.0f, 4.0f, 13.0f), glm::vec3(-90.0f, 0.0f, 0.0f), glm::vec3(40.0f, 24.0f, 1.0f));
 	ceilingEntity->setCastsShadow(false);
+	ceilingEntity->setVisibility(false);
 	room1BackWallLeftSideEntity = new Entity(&colliderWallModel, glm::vec3(-6.0f, -0.1f, -8.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(6.5f, 4.0f, 1.0f));
 	ceilingEntity->setCastsShadow(false);
 	room1BackWallRightSideEntity = new Entity(&colliderWallModel, glm::vec3(1.6f, -0.1f, -8.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 4.0f, 1.0f));
 	room1BackWallLeftSideEntity->setCastsShadow(false);
+	room1BackWallLeftSideEntity->setVisibility(false);
 	room1BackWallUpSideEntity = new Entity(&colliderWallModel, glm::vec3(0.5f, 1.6f, -8.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.2f, 3.0f, 1.0f));
 	room1BackWallLeftSideEntity->setCastsShadow(false);
 	room1LeftWallEntity = new Entity(&colliderWallModel, glm::vec3(-5.8f, -0.1f, 1.2f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(10.0f, 4.0f, 1.0f));
 	room1LeftWallEntity->setCastsShadow(false);
-	room1RightWallRightEntity = new Entity(&colliderWallModel, glm::vec3(2.5f, -0.1f, 1.2f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(4.0f, 4.0f, 1.0f));
+	room1LeftWallEntity->setVisibility(false);
+	room1RightWallRightEntity = new Entity(&colliderWallModel, glm::vec3(3.1f, -0.1f, 1.3f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(4.0f, 4.0f, 1.0f));
 	room1RightWallRightEntity->setCastsShadow(false);
-	room1RightWallLeftEntity = new Entity(&colliderWallModel, glm::vec3(2.5f, -0.1f, -4.2f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(8.0f, 4.0f, 1.0f));
+	room1RightWallRightEntity->setVisibility(false);
+	room1RightWallLeftEntity = new Entity(&colliderWallModel, glm::vec3(3.1f, -0.1f, -3.9f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(8.0f, 4.0f, 1.0f));
 	room1RightWallLeftEntity->setCastsShadow(false);
-	room1RightWallUpEntity = new Entity(&colliderWallModel, glm::vec3(2.5f, 2.8f, -2.8f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(2.0f, 1.5f, 1.0f));
+	room1RightWallLeftEntity->setVisibility(false);
+	room1RightWallUpEntity = new Entity(&colliderWallModel, glm::vec3(3.1f, 2.8f, -2.5f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(2.0f, 1.5f, 1.0f));
 	room1RightWallUpEntity->setCastsShadow(false);
+	room1RightWallUpEntity->setVisibility(false);
 	room1FrontWallUpEntity= new Entity(&colliderWallModel, glm::vec3(-6.0f, 3.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(8.5f, 1.0f, 1.0f));
 	room1FrontWallUpEntity->setCastsShadow(false);
+	room1FrontWallUpEntity->setVisibility(false);
 	room1FrontWallLeftEntity = new Entity(&colliderWallModel, glm::vec3(-6.0f, -0.1f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 4.0f, 1.0f));
 	room1FrontWallLeftEntity->setCastsShadow(false);
+	room1FrontWallLeftEntity->setVisibility(false);
 	room1FrontWallRightEntity = new Entity(&colliderWallModel, glm::vec3(-3.0f, -0.1f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(6.0f, 4.0f, 1.0f));
 	room1FrontWallRightEntity->setCastsShadow(false);
-	
+	room1FrontWallRightEntity->setVisibility(false);
 
+	houseWalls = new Entity(&houseWallsModel, glm::vec3(-6.0f, -0.1f, 1.0f), glm::vec3(180.0f, 0.0f, 0.0f), glm::vec3(1.0f), false);
+	houseWalls->setColissions(false);
+	houseFloor = new Entity(&houseFloorModel, glm::vec3(-6.0f, -0.1f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f), false);
+	houseFloor->setColissions(false);
+	houseCeiling = new Entity(&houseCeilingModel, glm::vec3(2.0f, 4.9f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f), false);
+	houseCeiling->setColissions(false);
 	// Hidden room collisions
 	hiddenRoomBackWallEntity = new Entity(&colliderWallModel, glm::vec3(-3.0f, -0.1f, -11.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(6.0f, 3.1f, 1.0f));
 	hiddenRoomBackWallEntity->setCastsShadow(false);
@@ -794,28 +839,34 @@ Scene* createMainScene(Camera * camera) {
 	hiddenRoomLockEntity->setLockPassword(std::vector<int>{3, 5, 2, 4});
 	hiddenRoomLockEntity->setChestToUnlock(hiddenRoomChestEntity);
 	// Corridor collisions
-	corridorLeftWallEntity = new Entity(&colliderWallModel, glm::vec3(2.5f, -0.1f, -6.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(10.0f, 4.0f, 1.0f));
+	corridorLeftWallEntity = new Entity(&colliderWallModel, glm::vec3(3.0f, -0.1f, -6.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(8.8f, 4.0f, 1.0f));
 	corridorLeftWallEntity->setCastsShadow(false);
-	corridorRightWallEntity = new Entity(&colliderWallModel, glm::vec3(2.5f, -0.1f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(10.0f, 4.0f, 1.0f));
+	corridorLeftWallEntity->setVisibility(false);
+	corridorRightWallEntity = new Entity(&colliderWallModel, glm::vec3(3.0f, -0.1f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(8.8f, 4.0f, 1.0f));
 	corridorRightWallEntity->setCastsShadow(false);
+	corridorRightWallEntity->setVisibility(false);
 
 	// Second room collisions
 	secondRoomLeftWallEntity = new Entity(&colliderWallModel, glm::vec3(12.0f, -0.1f, -9.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(10.0f, 4.0f, 1.0f));
 	secondRoomLeftWallEntity->setCastsShadow(false);
+	secondRoomLeftWallEntity->setVisibility(false);
 	secondRoomRightWallEntity = new Entity(&colliderWallModel, glm::vec3(12.0f, -0.1f, 2.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(10.0f, 4.0f, 1.0f));
 	secondRoomRightWallEntity->setCastsShadow(false);
+	secondRoomRightWallEntity->setVisibility(false);
 	secondRoomBackWallEntity = new Entity(&colliderWallModel, glm::vec3(22.0f, -0.1f, 2.5f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(12.0f, 4.0f, 1.0f));
 	secondRoomBackWallEntity->setCastsShadow(false);
-	secondRoomFrontWallLeftEntity = new Entity(&colliderWallModel, glm::vec3(12.7f, -0.1f, -6.0f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(3.0f, 4.0f, 1.0f));
+	secondRoomBackWallEntity->setVisibility(false);
+	secondRoomFrontWallLeftEntity = new Entity(&colliderWallModel, glm::vec3(12.0f, -0.1f, -4.0f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(6.0f, 4.0f, 1.0f));
 	secondRoomFrontWallLeftEntity->setCastsShadow(false);
-	secondRoomFrontWallRightEntity = new Entity(&colliderWallModel, glm::vec3(12.7f, -0.1f, 2.0f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(3.0f, 4.0f, 1.0f));
+	secondRoomFrontWallLeftEntity->setVisibility(false);
+	secondRoomFrontWallRightEntity = new Entity(&colliderWallModel, glm::vec3(12.0f, -0.1f, 2.0f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(4.7f, 4.0f, 1.0f));
 	secondRoomFrontWallRightEntity->setCastsShadow(false);
-
+	secondRoomFrontWallRightEntity->setVisibility(false);
 
 	// Corridor interior objects
-	hauntedPaintingEntity1 = new HauntedEntity(&huntModel1, &huntModel2, glm::vec3(5.5f, 2.0f, -6.0f), glm::vec3(180.0f, 90.0f, 90.0f), glm::vec3(2.0f));
+	hauntedPaintingEntity1 = new HauntedEntity(&huntModel1, &huntModel2, glm::vec3(5.5f, 2.0f, -5.9f), glm::vec3(180.0f, 90.0f, 90.0f), glm::vec3(2.0f));
 	hauntedPaintingEntity1->setTitle("The Royal Hunt (1840)");
-	hauntedPaintingEntity2 = new HauntedEntity(&skullsModel1, &skullsModel2, glm::vec3(10.0f, 2.0f, -6.0f), glm::vec3(180.0f, 90.0f, 90.0f), glm::vec3(2.0f));
+	hauntedPaintingEntity2 = new HauntedEntity(&skullsModel1, &skullsModel2, glm::vec3(10.0f, 2.0f, -5.9f), glm::vec3(180.0f, 90.0f, 90.0f), glm::vec3(2.0f));
 	hauntedPaintingEntity2->setTitle("Study of Mortality (1860)");
 	hauntedPaintingEntity3 = new HauntedEntity(&ravensModel1, &ravensModel2, glm::vec3(5.5f, 2.0f, -1.1f), glm::vec3(180.0f, -90.0f, 90.0f), glm::vec3(2.0f));
 	hauntedPaintingEntity3->setTitle("Harbingers of Doom (1880)");
@@ -999,6 +1050,9 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(featherEntity);
 	scene->AddEntity(eyeEntity);
 	scene->AddEntity(skullEntity);
+	scene->AddEntity(houseWalls);
+	scene->AddEntity(houseFloor);
+	scene->AddEntity(houseCeiling);
 	return scene;
 }
 
@@ -1122,6 +1176,13 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 		}
 		scene->RenderHeldEntity(shaderList[SHADER_DEFAULT], projectionMatrix);
 	}
+
+	// Render particles
+	shaderList[SHADER_PARTICLE]->UseShader();
+	shaderList[SHADER_PARTICLE]->setMat4("projection", projectionMatrix);
+	shaderList[SHADER_PARTICLE]->setMat4("view", camera.getViewMatrix());
+	fireParticleSystem->Draw();
+
 	hdrBuffer->Unbind();
 }
 
@@ -1398,7 +1459,7 @@ void DrawMainMenu() {
 void PostProcessingPass() {
 	bool horizontal = true;
 	bool first_iteration = true;
-	int amount = 10;
+	int amount = 5;
 
 	shaderList[SHADER_BLOOM]->UseShader();
 

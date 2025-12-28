@@ -1,0 +1,15 @@
+# Blender 5.0.1 MTL File: 'podloga.blend'
+# www.blender.org
+
+newmtl Poliigon_WoodVeneerOak_7760_2K
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd poligon/Poliigon_WoodVeneerOak_7760_BaseColor.jpg
+map_Ns poligon/Poliigon_WoodVeneerOak_7760/2K/Poliigon_WoodVeneerOak_7760_Roughness.jpg
+map_refl poligon/Poliigon_WoodVeneerOak_7760/2K/Poliigon_WoodVeneerOak_7760_Metallic.jpg
+map_Bump -bm 1.000000 poligon/Poliigon_WoodVeneerOak_7760/2K/Poliigon_WoodVeneerOak_7760_Normal.png
