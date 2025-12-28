@@ -9,9 +9,10 @@ struct Particle {
     glm::vec3 Position, Velocity;
     glm::vec4 Color;
     float     Life;
+	float	  Size;
 
     Particle()
-        : Position(0.0f), Velocity(0.0f), Color(1.0f), Life(0.0f) {
+        : Position(0.0f), Velocity(0.0f), Color(1.0f), Life(0.0f), Size(1.0f) {
     }
 };
 
@@ -29,7 +30,7 @@ struct ParticleProperties {
 class ParticleSystem
 {
 public:
-    ParticleSystem(Shader* shader, Texture* texture, unsigned int amount);
+    ParticleSystem(Shader* shader, Texture* texture, unsigned int amount, ParticleProperties props);
     void Update(float dt);
     void SpawnParticles(glm::vec3 position, unsigned int amount, glm::vec3 offset = glm::vec3(0.0f));
 	void Draw();

@@ -330,6 +330,19 @@ HDRBuffer* hdrBuffer;
 // Particle System
 ParticleSystem* fireParticleSystem;
 
+ParticleProperties fireParticleProperties{
+	glm::vec3(0.0f, 0.2f, 0.0f),
+	glm::vec4(10.0f, 4.0f, 0.4f, 1.0f),
+	glm::vec4(1.0f, 0.1f, 0.0f, 0.0f),
+	1.0f,
+	0.08f,
+	0.015f,
+	3000.0f,
+};
+
+std::vector<Candle*> candles;
+
+
 // Skybox faces
 std::vector<std::string> skyboxFaces
 {
@@ -434,7 +447,7 @@ int main()
 
 	Texture fireParticleTexture("Textures/Particles/fire.png");
 	fireParticleTexture.LoadTextureAlpha();
-	fireParticleSystem = new ParticleSystem(shaderList[SHADER_PARTICLE], &fireParticleTexture, 500);
+	fireParticleSystem = new ParticleSystem(shaderList[SHADER_PARTICLE], &fireParticleTexture, 800, fireParticleProperties);
 
 	keySprite = new Texture("Textures/Icons/door_key.png");
 	keySprite->LoadTextureAlpha();
@@ -520,7 +533,12 @@ int main()
 
 			// Update particle systems
 			fireParticleSystem->Update(deltaTime);
-			fireParticleSystem->SpawnParticles(candleEntity->getPosition() + glm::vec3(0.0f, 0.5f, 0.0f), 1, glm::vec3(0.1f, 0.0f, 0.1f));
+			for (auto& candle : candles) {
+				if (candle->getIsLit()) {
+					fireParticleSystem->SpawnParticles(candle->getPosition() + glm::vec3(-0.1f, 0.4f, -0.1f), 1, glm::vec3(0.1f, 0.0f, 0.1f));
+				}
+			}
+				
 
 		}
 
@@ -900,11 +918,11 @@ Scene* createMainScene(Camera * camera) {
 
 
 	mainLight = new DirectionalLight(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(-1.0f, -5.0f, -5.5f), 0.05f, 0.01f, 1024.0f, 1024.0f);
-	candleLight = new PointLight(glm::vec3(2.8f, 1.9f, 0.8f), 0.0f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.5f, 1.4f, 0, 100.0f, 0.01f, 1024.0f, 1024.0f);
-	candleLight2 = new PointLight(glm::vec3(2.8f, 1.9f, 0.8f), 0.0f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.5f, 1.4f, 1, 100.0f, 0.01f, 1024.0f, 1024.0f);
-	candleLight3 = new PointLight(glm::vec3(2.8f, 1.9f, 0.8f), 0.0f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.5f, 1.4f, 2, 100.0f, 0.01f, 1024.0f, 1024.0f);
-	candleLight4 = new PointLight(glm::vec3(2.8f, 1.9f, 0.8f), 0.0f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.5f, 1.4f, 3, 100.0f, 0.01f, 1024.0f, 1024.0f);
-	candleLight5 = new PointLight(glm::vec3(2.8f, 1.9f, 0.8f), 0.0f, 0.3f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.5f, 1.4f, 4, 100.0f, 0.01f, 1024.0f, 1024.0f);
+	candleLight = new PointLight(glm::vec3(10.0f, 6.0f, 1.0f), 0.0f, 1.0f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.7f, 1.8f, 0, 20.0f, 0.01f, 1024.0f, 1024.0f);
+	candleLight2 = new PointLight(glm::vec3(10.0f, 6.0f, 1.0f), 0.0f, 1.0f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.7f, 1.8f, 1, 20.0f, 0.01f, 1024.0f, 1024.0f);
+	candleLight3 = new PointLight(glm::vec3(10.0f, 6.0f, 1.0f), 0.0f, 1.0f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.7f, 1.8f, 2, 20.0f, 0.01f, 1024.0f, 1024.0f);
+	candleLight4 = new PointLight(glm::vec3(10.0f, 6.0f, 1.0f), 0.0f, 1.0f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.7f, 1.8f, 3, 20.0f, 0.01f, 1024.0f, 1024.0f);
+	candleLight5 = new PointLight(glm::vec3(10.0f, 6.0f, 1.0f), 0.0f, 1.0f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.7f, 1.8f, 4, 20.0f, 0.01f, 1024.0f, 1024.0f);
 	flashlight = new Flashlight(glm::vec3(10.0f, 10.0f, 8.5f), 0.001f, 1.5f, camera->getCameraPosition(), 1.0f, 0.2f, 0.15f, camera->getCameraFront(), 25.0f, 32.5f, 1024.0f, 1024.0f);
 
 
@@ -917,20 +935,26 @@ Scene* createMainScene(Camera * camera) {
 	lockEntity->setChestToUnlock(chestEntity);
 
 	sofaEntity = new Entity(&sofaModel, glm::vec3(0.8f, 0.0f, 0.0f), glm::vec3(0.0f, -120.0f, 0.0f), glm::vec3(1.5f));
-	candleEntity = new Candle(&candleModel, glm::vec3(15.7f, 0.0f, -3.3f), glm::vec3(0.0f), glm::vec3(2.0f),candleLight,true);
+	candleEntity = new Candle(&candleModel, glm::vec3(15.7f, 0.0f, -3.3f), glm::vec3(0.0f), glm::vec3(4.0f),candleLight,true);
 	candleEntity->setTitle("Candle");
 	candleEntity->setTag("B");
-	candle2Entity = new Candle(&candleModel, glm::vec3(17.6f, 0.0f, -5.5f), glm::vec3(0.0f), glm::vec3(2.0f), candleLight2, true);
+	candle2Entity = new Candle(&candleModel, glm::vec3(17.6f, 0.0f, -5.5f), glm::vec3(0.0f), glm::vec3(4.0f), candleLight2, true);
 	candle2Entity->setTitle("Candle");
 	candle2Entity->setTag("A");
-	candle3Entity = new Candle(&candleModel, glm::vec3(17.3f, 0.0f, -2.3f), glm::vec3(0.0f), glm::vec3(2.0f), candleLight3, true);
+	candle3Entity = new Candle(&candleModel, glm::vec3(17.3f, 0.0f, -2.3f), glm::vec3(0.0f), glm::vec3(4.0f), candleLight3, true);
 	candle3Entity->setTitle("Candle");
 	candle3Entity->setTag("E");
-	candle4Entity = new Candle(&candleModel, glm::vec3(15.7f, 0.0f, -5.1f), glm::vec3(0.0f), glm::vec3(2.0f), candleLight4, true);
+	candle4Entity = new Candle(&candleModel, glm::vec3(15.7f, 0.0f, -5.1f), glm::vec3(0.0f), glm::vec3(4.0f), candleLight4, true);
 	candle4Entity->setTitle("Candle");
 	candle4Entity->setTag("L");
-	candle5Entity = new Candle(&candleModel, glm::vec3(18.8f, 0.0f, -4.2f), glm::vec3(0.0f), glm::vec3(2.0f), candleLight5, true);
+	candle5Entity = new Candle(&candleModel, glm::vec3(18.8f, 0.0f, -4.2f), glm::vec3(0.0f), glm::vec3(4.0f), candleLight5, true);
 	candle5Entity->setTitle("Candle");
+	candles.push_back(candleEntity);
+	candles.push_back(candle2Entity);
+	candles.push_back(candle3Entity);
+	candles.push_back(candle4Entity);
+	candles.push_back(candle5Entity);
+
 
 
 	collarEntity = new Pickable(&collarModel, glm::vec3(16.5f, 0.5f, -4.0f), glm::vec3(0.0f), glm::vec3(0.1f),"pedestal_collar", batterySprite, true);

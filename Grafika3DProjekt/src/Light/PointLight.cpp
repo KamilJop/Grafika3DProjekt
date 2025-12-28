@@ -2,7 +2,7 @@
 #include <string>
 
 // Constructor
-PointLight::PointLight(glm::vec3 colors = glm::vec3(1.0f), GLfloat ambientIntensity = 0.1f, GLfloat diffuseIntensity = 0.1f, glm::vec3 lightPos = glm::vec3(0.0f, 5.0f, 0.0f), GLfloat con = 1.0f, GLfloat lin = 0.09f, GLfloat quad = 0.032f, int index = 0, GLfloat far = 100.0f, GLfloat near = 0.01f, GLfloat shadowH = 2048.0f, GLfloat shadowW = 2048.0f)
+PointLight::PointLight(glm::vec3 colors = glm::vec3(1.0f), GLfloat ambientIntensity = 0.1f, GLfloat diffuseIntensity = 0.1f, glm::vec3 lightPos = glm::vec3(0.0f, 5.0f, 0.0f), GLfloat con = 1.0f, GLfloat lin = 0.09f, GLfloat quad = 0.032f, int index = 0, GLfloat far = 20.0f, GLfloat near = 0.01f, GLfloat shadowH = 2048.0f, GLfloat shadowW = 2048.0f)
 	: Light(colors, ambientIntensity, diffuseIntensity)
 {
 	constant = con;

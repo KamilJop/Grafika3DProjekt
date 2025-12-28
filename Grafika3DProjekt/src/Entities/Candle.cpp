@@ -8,7 +8,7 @@ Candle::Candle(Model* model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal,PointL
 	: Entity(model, pos, rot, scal, interaction)
 {
 	candleLight = LightSource;
-	candleLight->setPosition(pos + glm::vec3(0.0f, 0.2f, 0.0f));
+	candleLight->setPosition(pos + glm::vec3(0.0f, 0.6f, 0.0f));
 	lightAmbientIntensity = candleLight->getAmbientIntensity();
 	lightDiffuseIntensity = candleLight->getDiffuseIntensity();
 	candleLight->setAmbientIntensity(0.0f);

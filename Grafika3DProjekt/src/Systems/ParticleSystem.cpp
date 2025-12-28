@@ -1,8 +1,8 @@
 #include "ParticleSystem.h"
 
 
-ParticleSystem::ParticleSystem(Shader* shader, Texture *texture, unsigned int amount)
-	: shader(shader), texture(texture), amount(amount)
+ParticleSystem::ParticleSystem(Shader* shader, Texture *texture, unsigned int amount, ParticleProperties props)
+	: shader(shader), texture(texture), amount(amount), properties(props)
 {
 	this->init();
 }
@@ -16,7 +16,9 @@ void ParticleSystem::Update(float dt)
 		if (p.Life > 0.0f)
 		{
 			p.Position += p.Velocity * dt;
-			p.Color.a = 1.0f;
+			float lifeRatio = p.Life / this->properties.Life;
+			p.Color = glm::mix(this->properties.ColorEnd, this->properties.ColorBegin, lifeRatio);
+			p.Size = glm::mix(this->properties.SizeEnd, this->properties.SizeBegin, lifeRatio);
 		}
 	}
 }
@@ -53,6 +55,7 @@ void ParticleSystem::Draw()
 		{
 			this->shader->setVec3("offset", particle.Position);
 			this->shader->setVec4("color", particle.Color);
+			this->shader->setFloat("scale", particle.Size);
 			glDrawArrays(GL_TRIANGLES, 0, 6);
 		}
 	}
@@ -129,4 +132,5 @@ void ParticleSystem::respawnParticle(Particle& particle, glm::vec3 position, glm
 	particle.Color = this->properties.ColorBegin;
 	particle.Life = this->properties.Life;
 	particle.Velocity = this->properties.Velocity;
+	particle.Size = this->properties.SizeBegin;
 }

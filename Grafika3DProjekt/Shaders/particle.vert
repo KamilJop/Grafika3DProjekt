@@ -9,10 +9,10 @@ uniform mat4 projection;
 uniform mat4 view;
 uniform vec3 offset; 
 uniform vec4 color;
+uniform float scale;
 
 void main()
 {
-    float scale = 0.05f; 
     
     TexCoords = aTexCoords;
     ParticleColor = color;
