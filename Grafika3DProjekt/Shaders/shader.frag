@@ -231,7 +231,7 @@ vec4 CalculateDirectionalLight(vec3 worldNormal)
 		
 		if(specularFactor > 0.0f)
 		{	
-			lightSpecularColor = vec4(directionalLight.lightColor * material.specularIntensity * specularFactor, 1.0f);
+			lightSpecularColor = vec4(directionalLight.lightColor * directionalLight.lightDiffuseIntensity * material.specularIntensity * specularFactor, 1.0f);
 		}
 	}
 	
@@ -301,7 +301,7 @@ vec4 CalculateFlashLight(vec3 worldNormal){
 vec4 CalculatePointLight(PointLight pointLight, int shadowIndex, vec3 worldNormal){
 	float dist = length(pointLight.lightPosition - FragPos);
     
-    if(dist > 10.0) 
+    if(dist > 15.0) 
     {
         return vec4(0.0);
     }

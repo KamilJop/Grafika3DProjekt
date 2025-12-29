@@ -143,6 +143,7 @@
     <ClCompile Include="..\External Libs\IMGUI\imgui_impl_opengl3.cpp" />
     <ClCompile Include="..\External Libs\IMGUI\imgui_tables.cpp" />
     <ClCompile Include="..\External Libs\IMGUI\imgui_widgets.cpp" />
+    <ClCompile Include="src\Entities\Lamp.cpp" />
     <ClCompile Include="src\Systems\ParticleSystem.cpp" />
     <ClCompile Include="src\Rendering\HDRBuffer.cpp" />
     <ClCompile Include="src\Systems\PedestalPuzzle.cpp" />
@@ -199,6 +200,7 @@
     <ClInclude Include="..\External Libs\IMGUI\imstb_rectpack.h" />
     <ClInclude Include="..\External Libs\IMGUI\imstb_textedit.h" />
     <ClInclude Include="..\External Libs\IMGUI\imstb_truetype.h" />
+    <ClInclude Include="src\Entities\Lamp.h" />
     <ClInclude Include="src\Systems\ParticleSystem.h" />
     <ClInclude Include="src\Rendering\HDRBuffer.h" />
     <ClInclude Include="src\Systems\PedestalPuzzle.h" />
