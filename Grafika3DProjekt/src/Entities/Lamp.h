@@ -15,6 +15,5 @@ private:
 	float targetAmbient; 
 	float targetDiffuse;
 	glm::vec3 targetColor;
-	bool triedToToggle = false;
 };
 

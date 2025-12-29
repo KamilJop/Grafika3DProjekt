@@ -48,6 +48,7 @@
 #include "Rendering/HDRBuffer.h"
 #include "Systems/ParticleSystem.h"
 #include "Entities/Lamp.h"
+#include "Entities/Readable.h"
 
 enum ShaderTypes
 {
@@ -67,7 +68,8 @@ enum GameStates
 	STATE_PLAYING,
 	STATE_PAUSED,
 	STATE_GAME_END,
-	STATE_MINIGAME
+	STATE_MINIGAME,
+	STATE_READING
 };
 
 
@@ -144,6 +146,12 @@ Entity* chessboardEntity;
 Entity* globeEntity;
 Entity* booksEntity;
 
+Entity* wineCabinetEntity;
+Model wineCabinetModel;
+Readable* paperEntity;
+Model paperModel;
+Texture* paperSprite;
+
 // Room 1 walls and floor
 Door* doorsRoom1Entity;
 Desk* deskEntity;
@@ -152,6 +160,7 @@ Lighter* lighterEntity;
 Entity* calenderEntity;
 ClockMovingPart* clockElementEntity;
 Entity* clockEntity;
+Readable* currentReadableEntity;
 
 // Room 1 collisions
 Entity* floorEntity;
@@ -473,6 +482,8 @@ int main()
 	flashlightSprite = new Texture("Textures/Icons/flashlight.png");
 	flashlightSprite->LoadTextureAlpha();
 
+	paperSprite = new Texture("Textures/paper_0.png");
+
 	spriteRenderer = new SpriteRenderer(*shaderList[SHADER_SPRITES]);
 	glm::mat4 projectionUI = glm::ortho(0.0f, (float)uiWidth, (float)uiHeight, 0.0f, -1.0f, 1.0f);
 
@@ -657,6 +668,8 @@ Scene* createMainScene(Camera * camera) {
 	lampModel.LoadModel("Models/lamp.obj");
 	chessboardModel.LoadModel("Models/chessboard.obj");
 	globeModel.LoadModel("Models/globe1.obj");
+	wineCabinetModel.LoadModel("Models/wine.obj");
+	paperModel.LoadModel("Models/paper.obj");
 	//pageModel.LoadModel("Models/page.obj");
 
 
@@ -786,6 +799,7 @@ Scene* createMainScene(Camera * camera) {
 	chessboardEntity = new Entity(&chessboardModel, glm::vec3(1.0f, 0.6f, -2.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.3f), true);
 	chessboardEntity->setTitle("Chessboard");
 	chessboardEntity->setExamineText("An old chessboard.");
+	paperEntity = new Readable(&paperModel, glm::vec3(-4.5f, 0.5f, -3.0f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(2.0f),spriteRenderer,keySprite, true);
 	//pageEntity = new Entity(&pageModel, glm::vec3(-5.0f, 1.0f, -3.0f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(2.0f), true);
 	//pageEntity->setTitle("Page");
 	//pageEntity->setColissions(false);
@@ -941,7 +955,7 @@ Scene* createMainScene(Camera * camera) {
 	candleLight3 = new PointLight(glm::vec3(10.0f, 6.0f, 1.0f), 0.0f, 1.0f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.7f, 1.8f, 2, 20.0f, 0.01f, 1024.0f, 1024.0f);
 	candleLight4 = new PointLight(glm::vec3(10.0f, 6.0f, 1.0f), 0.0f, 1.0f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.7f, 1.8f, 3, 20.0f, 0.01f, 1024.0f, 1024.0f);
 	candleLight5 = new PointLight(glm::vec3(10.0f, 6.0f, 1.0f), 0.0f, 1.0f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.7f, 1.8f, 4, 20.0f, 0.01f, 1024.0f, 1024.0f);
-	flashlight = new Flashlight(glm::vec3(3.6f, 3.4f, 3.0f), 0.0f, 3.5f, camera->getCameraPosition(), 1.0f, 0.22f, 0.20f, camera->getCameraFront(), 15.5f, 25.0f, 1024.0f, 1024.0f);
+	flashlight = new Flashlight(glm::vec3(7.2f, 6.8f, 6.0f), 0.0f, 3.5f, camera->getCameraPosition(), 1.0f, 0.22f, 0.20f, camera->getCameraFront(), 15.5f, 25.0f, 1024.0f, 1024.0f);
 	lampLight = new PointLight(glm::vec3(2.4f, 2.0f, 1.4f),0.05f, 2.0f,glm::vec3(-4.0f, 1.7f, -7.0f),1.0f, 0.15f, 0.032f,5, 20.0f, 0.01f, 1024.0f, 1024.0f);
 
 	lampEntity = new Lamp(&lampModel, glm::vec3(2.3f, 0.0f, -1.5f), glm::vec3(0.0f), glm::vec3(0.2f), lampLight, true);
@@ -972,6 +986,7 @@ Scene* createMainScene(Camera * camera) {
 	candle4Entity->setTag("L");
 	candle5Entity = new Candle(&candleModel, glm::vec3(18.8f, 0.0f, -4.2f), glm::vec3(0.0f), glm::vec3(4.0f), candleLight5, true);
 	candle5Entity->setTitle("Candle");
+	wineCabinetEntity = new Entity(&wineCabinetModel, glm::vec3(-5.5f, 0.0f, -3.5f), glm::vec3(0.0f,270.0f, 0.0f), glm::vec3(1.0f), false);
 	candles.push_back(candleEntity);
 	candles.push_back(candle2Entity);
 	candles.push_back(candle3Entity);
@@ -1029,6 +1044,7 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(globeEntity);
 	scene->AddEntity(chessboardEntity);
 	scene->AddEntity(booksEntity);
+	scene->AddEntity(paperEntity);
 
 
 	scene->AddEntity(doorEntity);
@@ -1103,6 +1119,7 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(houseWalls);
 	scene->AddEntity(houseFloor);
 	scene->AddEntity(houseCeiling);
+	scene->AddEntity(wineCabinetEntity);
 	return scene;
 }
 
@@ -1270,6 +1287,17 @@ void HandleKeyboardInput(float deltaTime, Scene* currentScene) {
 		}
 	}
 
+	if(gameState == STATE_READING) {
+		if(mainWindow.getKeys()[GLFW_KEY_E] || mainWindow.getKeys()[GLFW_KEY_ESCAPE]) {
+			mainWindow.getKeys()[GLFW_KEY_E] = false;
+			mainWindow.getKeys()[GLFW_KEY_ESCAPE] = false;
+			currentReadableEntity->setReadingState(false);
+			currentReadableEntity = nullptr;
+			SetGameState(STATE_PLAYING);
+		}
+		return;
+	}
+
 	if (mainWindow.getKeys()[GLFW_KEY_E])
 	{
 		mainWindow.getKeys()[GLFW_KEY_E] = false;
@@ -1292,6 +1320,12 @@ void HandleKeyboardInput(float deltaTime, Scene* currentScene) {
 			camera.updateCameraVectors();
 			
 			SetGameState(STATE_MINIGAME);
+		}
+		Readable* readableTarget = dynamic_cast<Readable*>(target);
+		if (readableTarget != nullptr) {
+			readableTarget->setOutlined(false);
+			currentReadableEntity = readableTarget;
+			SetGameState(STATE_READING);
 		}
 		if (!target->getPickable()) return;
 		player->pickUpEntity(target);
@@ -1459,6 +1493,12 @@ void DrawInventory() {
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_STENCIL_TEST);
 	glDepthMask(GL_FALSE);
+
+
+	if (gameState == STATE_READING) {
+		Texture* pageTexture = currentReadableEntity->getPageTexture();
+		spriteRenderer->DrawSprite(pageTexture, glm::vec2((uiWidth - 400.0f) / 2.0f, (uiHeight - 400.0f) / 2.0f), glm::vec2(400.0f, 400.0f));
+	}
 	std::vector<Item> inventory = player->getInventory()->GetItems();
 	float startingX = 30.0f ;
 	float offsetY = uiHeight - 100.0f;
@@ -1493,7 +1533,18 @@ void DrawInventory() {
 		textRenderer->RenderText(item.title, textStartX, textPosY, 1.0f, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 		i++;
 	}
+
+	if (gameState == STATE_READING) {
+
+		std::string message = "[E] / [ESC] Close";
+		float scale = 1.0f;
+		float textWidth = subtitlesRenderer->GetTextWidth(message) * scale;
+		float xPos = (uiWidth - textWidth) / 2.0f;
+		float yPos = uiHeight - 100.0f;
+		subtitlesRenderer->RenderText(message, xPos, yPos, scale, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	}
 	player->getInventory()->DrawNotification(deltaTime);
+
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_STENCIL_TEST);
 	glDepthMask(GL_TRUE);
