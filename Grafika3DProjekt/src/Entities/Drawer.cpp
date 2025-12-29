@@ -42,6 +42,10 @@ void Drawer::Interact(Inventory* playerInventory)
 	else
 	{
 		movedPosition = originalPosition + glm::vec3(0.0f, 0.0f, 0.3f);
+		if(containedEntity != nullptr) {
+			interactable = false;
+			outlined = false;
+		}
 		AudioManager::GetInstance().Play3DSoundEffect(drawerOpeningSoundPath, position, Config::getInstance().sfxVolume * 2.0f);
 	}
 	isMoving = true;
@@ -49,6 +53,15 @@ void Drawer::Interact(Inventory* playerInventory)
 
 void Drawer::Update(float deltaTime)
 {
+	if (containedEntity != nullptr) {
+		float distance = glm::length(containedEntity->getPosition() - position);
+		if (distance > 1.5f) {
+			containedEntity = nullptr;
+		}
+	}
+	if(containedEntity == nullptr) {
+		interactable = true;
+	}
 	if (isTryingToOpen) {
 		animCounter += deltaTime;
 		if (animCounter < 0.35f) {
@@ -69,7 +82,11 @@ void Drawer::Update(float deltaTime)
 	{
 		float moveSpeed = 3.0f; 
 		{
-			position = glm::mix(position, movedPosition, moveSpeed * deltaTime);
+			position = glm::mix(position, movedPosition, moveSpeed * deltaTime);\
+			if(containedEntity != nullptr) {
+				containedEntity->setPosition(position + glm::vec3(0.7f, 0.5f, 0.0f));
+				containedEntity->UpdateCollisionBox();
+			}
 			UpdateCollisionBox();
 			if (glm::length(position - movedPosition) < 0.03f)
 			{
@@ -100,3 +117,10 @@ std::string Drawer::GetActionText()
 		}
 	}
 }
+
+void Drawer::setContainedEntity(Entity* entity)
+{
+	containedEntity = entity;
+	containedEntity->setPosition(position + glm::vec3(0.7f, 0.5f, 0.0f));
+	containedEntity->UpdateCollisionBox();
+}	

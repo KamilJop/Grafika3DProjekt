@@ -13,6 +13,7 @@ public:
 	Desk(Model* model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, std::vector<Model*> drawerModels, Model* doorModel, Scene* scene, bool interaction);
 	~Desk();
 	void Interact(Inventory* playerInventory) override {};
+	void setDrawerContainedEntity(Entity* entity);
 
 
 

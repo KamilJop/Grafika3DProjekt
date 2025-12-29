@@ -13,6 +13,7 @@ class Drawer : public Entity
 	void Interact(Inventory* playerInventory) override;
 	void Update(float deltaTime) override;
 	void setLocked(bool state) { isLocked = state; }
+	void setContainedEntity(Entity* entity);
 	std::string GetActionText() override;
 	~Drawer();
 private:
@@ -26,6 +27,7 @@ private:
 	glm::vec3 originalPosition;
 	glm::vec3 movedPosition;
 	std::string drawerKeyTag;
+	Entity* containedEntity = nullptr;
 
 	std::string drawerOpeningSoundPath = "Audio/drawer_opening.mp3";
 	std::string drawerClosingSoundPath = "Audio/drawer_closing.mp3";

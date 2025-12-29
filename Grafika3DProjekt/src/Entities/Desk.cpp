@@ -18,3 +18,11 @@ Desk::Desk(Model* model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal,std::vecto
 	deskDoor->setDirection(-1);
 	scene->AddEntity(deskDoor);
 }
+
+void Desk::setDrawerContainedEntity(Entity* entity)
+{
+	if (drawers.size() > 0)
+	{
+		drawers[1]->setContainedEntity(entity);
+	}
+}

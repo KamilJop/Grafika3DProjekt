@@ -50,6 +50,7 @@
 #include "Entities/Lamp.h"
 #include "Entities/Readable.h"
 
+
 enum ShaderTypes
 {
 	SHADER_DEFAULT,
@@ -214,7 +215,8 @@ Chest* chestEntity;
 Entity* tableEntity;
 Entity* posterEntity;
 Lamp* lampEntity;
-
+Key* drawerKeyEntity;
+Model drawerKeyModel;
 // Hidden room interior objects
 Chest* hiddenRoomChestEntity;
 Lock* hiddenRoomLockEntity;
@@ -670,6 +672,7 @@ Scene* createMainScene(Camera * camera) {
 	globeModel.LoadModel("Models/globe1.obj");
 	wineCabinetModel.LoadModel("Models/wine.obj");
 	paperModel.LoadModel("Models/paper.obj");
+	drawerKeyModel.LoadModel("Models/drawerkey.obj");
 	//pageModel.LoadModel("Models/page.obj");
 
 
@@ -775,7 +778,7 @@ Scene* createMainScene(Camera * camera) {
 
 	doorsRoom1Entity = new Door(&doorsRoom1Model, glm::vec3(-2.9f, -0.1f, 1.0f), glm::vec3(0.0f,0.0f,0.0f), glm::vec3(2.0f), "Doors", framuga, "finalExitKey");
 	doorsRoom1Entity->setLocked(false);
-	battery1Entity = new Battery(&batteryModel, glm::vec3(-2.5f, 0.5f, -3.0f), glm::vec3(0.0f), glm::vec3(2.0f),"battery1", batterySprite, true);
+	battery1Entity = new Battery(&batteryModel, glm::vec3(-2.5f, 0.5f, -3.0f), glm::vec3(0.0f), glm::vec3(2.5f),"battery1", batterySprite, true);
 	battery1Entity->setTitle("Battery");
 	battery2Entity = new Battery(&batteryModel, glm::vec3(-2.0f, 0.5f, 0.5f), glm::vec3(0.0f), glm::vec3(2.0f), "battery2",batterySprite, true);
 	battery2Entity->setTitle("Battery");
@@ -965,6 +968,8 @@ Scene* createMainScene(Camera * camera) {
 
 
 	deskEntity = new Desk(&deskModel, glm::vec3(-4.5f, 0.0f, -7.4f), glm::vec3(0.0f), glm::vec3(1.2f), deskDrawerModels, &deskDoorModel, scene , false);
+	deskEntity->setDrawerContainedEntity(battery1Entity);
+	drawerKeyEntity = new Key(&drawerKeyModel, glm::vec3(-4.3f, 0.5f, -6.0f), glm::vec3(0.0f), glm::vec3(0.5f), "drawerKey2", keySprite, true);
 	chestEntity = new Chest(&lowerChestModel, &upperChestModel, glm::vec3(-2.0f, 0.0f, 0.15f), glm::vec3(0.0f), glm::vec3(1.0f), scene, true);
 	chestEntity->setTitle("Chest");
 	lockEntity = new Lock(&lockBaseModel, glm::vec3(-2.0f, 0.45f, -0.35f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(2.0f), lockRotatingModels, &lockMetalPartModel, scene, true);
@@ -1120,6 +1125,7 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(houseFloor);
 	scene->AddEntity(houseCeiling);
 	scene->AddEntity(wineCabinetEntity);
+	scene->AddEntity(drawerKeyEntity);
 	return scene;
 }
 
