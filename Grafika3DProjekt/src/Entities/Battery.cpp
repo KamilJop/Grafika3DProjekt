@@ -13,7 +13,7 @@ void Battery::Interact(Inventory* playerInventory)
 {
 	AudioManager::GetInstance().Play3DSoundEffect(pickupSoundName, position, 1.0f);
 	isPickedUp = true;
-	UI::SetSubtitle("I wonder what this opens.", 2.0f);
+	UI::SetSubtitle("A battery. Nice!", 2.0f);
 }
 
 void Battery::Update(float deltaTime)

@@ -1,0 +1,46 @@
+# Blender 5.0.1 MTL File: 'lectern.blend'
+# www.blender.org
+
+newmtl Book_Cover
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd textures/lectern_3.png
+map_Bump -bm 1.000000 textures/lectern_5.png
+
+newmtl Book_Page
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd textures/lectern_6.png
+map_Bump -bm 1.000000 textures/lectern_8.png
+
+newmtl Book_Sides
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd textures/lectern_0.png
+map_Bump -bm 1.000000 textures/lectern_2.png
+
+newmtl Book_Stand
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd textures/lectern_9.png
+map_Bump -bm 1.000000 textures/lectern_11.png

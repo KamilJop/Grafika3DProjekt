@@ -12,6 +12,7 @@ HauntedEntity::HauntedEntity(Model* model, Model* secondModel, glm::vec3 pos, gl
 
 void HauntedEntity::Update(float deltaTime)
 {
+	hasExamined = false;
 	if (hasSwitched) return;
 	if (CandlePuzzle::isSolved) {
 		entityModel = alternateModel;

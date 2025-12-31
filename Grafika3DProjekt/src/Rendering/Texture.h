@@ -16,6 +16,8 @@ public:
 	void UseTexture(GLenum textureUnit);
 	void ClearTexture();
 	GLuint getTextureID() { return textureID; }
+	int getWidth() { return width; }
+	int getHeight() { return height; }
 
 private:
 	GLuint textureID;

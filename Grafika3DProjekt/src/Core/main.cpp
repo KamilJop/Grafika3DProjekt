@@ -145,7 +145,15 @@ Pickable* skullEntity;
 Pickable* eyeEntity;
 Entity* chessboardEntity;
 Entity* globeEntity;
-Entity* booksEntity;
+Entity* notebookEntity;
+Model notebookModel;
+Readable* letterEntity;
+Model letterModel;
+Readable* lesserSalomonEntity;
+Model lesserSalomonModel;
+Readable* lecternEntity;
+Model lecternModel;
+Texture* lecternSprite;
 
 Entity* wineCabinetEntity;
 Model wineCabinetModel;
@@ -293,7 +301,6 @@ Model houseCeilingModel;
 Model lampModel;
 Model chessboardModel;
 Model globeModel;
-Model booksModel;
 
 // Room 1 walls and floor models
 Model doorsRoom1Model;
@@ -389,6 +396,8 @@ Texture* selectedItemFrame;
 Texture* flashlightSprite;
 Texture* lighterSprite;
 Texture* batterySprite;
+Texture* letterSprite;
+Texture* lesserSalomonSprite;
 
 // Audio Manager
 AudioManager& audioManager = AudioManager::GetInstance();
@@ -484,7 +493,17 @@ int main()
 	flashlightSprite = new Texture("Textures/Icons/flashlight.png");
 	flashlightSprite->LoadTextureAlpha();
 
-	paperSprite = new Texture("Textures/paper_0.png");
+	paperSprite = new Texture("Textures/timeisthekey.png");
+	paperSprite->LoadTextureAlpha();
+
+	letterSprite = new Texture("Textures/letter.png");
+	letterSprite->LoadTextureAlpha();
+
+	lesserSalomonSprite = new Texture("Textures/lesserSalomon.png");
+	lesserSalomonSprite->LoadTextureAlpha();
+
+	lecternSprite = new Texture("Textures/lectern.png");
+	lecternSprite->LoadTextureAlpha();
 
 	spriteRenderer = new SpriteRenderer(*shaderList[SHADER_SPRITES]);
 	glm::mat4 projectionUI = glm::ortho(0.0f, (float)uiWidth, (float)uiHeight, 0.0f, -1.0f, 1.0f);
@@ -673,6 +692,10 @@ Scene* createMainScene(Camera * camera) {
 	wineCabinetModel.LoadModel("Models/wine.obj");
 	paperModel.LoadModel("Models/paper.obj");
 	drawerKeyModel.LoadModel("Models/drawerkey.obj");
+	notebookModel.LoadModel("Models/notebook.obj");
+	letterModel.LoadModel("Models/letter.obj");
+	lesserSalomonModel.LoadModel("Models/lessersalomon.obj");
+	lecternModel.LoadModel("Models/lectern.obj");
 	//pageModel.LoadModel("Models/page.obj");
 
 
@@ -704,7 +727,6 @@ Scene* createMainScene(Camera * camera) {
 	houseWallsModel.LoadModel("Models/projekt.obj");
 	houseFloorModel.LoadModel("Models/podloga.obj");
 	houseCeilingModel.LoadModel("Models/sufit.obj");
-	booksModel.LoadModel("Models/books.obj");
 
 	// Desk models
 	deskModel.LoadModel("Models/desk.obj");
@@ -767,10 +789,10 @@ Scene* createMainScene(Camera * camera) {
 	framuga = new Entity(&framugaModel,glm::vec3(3.0f, -0.1f, -2.7f), glm::vec3(0.0f,-90.0f,0.0f), glm::vec3(1.41f));
 	doorEntity = new Door(&door, glm::vec3(3.0f, -0.1f, -2.7f), glm::vec3(0.0f,-90.0f,0.0f), glm::vec3(1.4f), "Doors", framuga, "mainKey");
 	doorEntity->setLocked(true);
-	keyEntity = new Key(&keyModel, glm::vec3(1.0f, 0.0f, -2.0f), glm::vec3(90.0f,0.0f,0.0f), glm::vec3(0.75f), "mainKey", keySprite, true);
+	keyEntity = new Key(&keyModel, glm::vec3(-2.0f, 0.2f, 0.0f), glm::vec3(90.0f,0.0f,0.0f), glm::vec3(0.75f), "mainKey", keySprite, true);
 	keyEntity->setTitle("Key");
 	keyEntity->setColissions(false);
-	radioEntity = new Radio(&radioModel, glm::vec3(-5.25f, 1.1f, -7.5f), glm::vec3(0.0f,30.0f,0.0f), glm::vec3(2.0f), true);
+	radioEntity = new Radio(&radioModel, glm::vec3(-5.25f, 0.9f, -7.5f), glm::vec3(0.0f,30.0f,0.0f), glm::vec3(2.0f), true);
 	radioEntity->setTitle("Radio");
 	lighterEntity = new Lighter(&lighterModel, glm::vec3(-3.0f, 0.5f, -3.0f), glm::vec3(0.0f), glm::vec3(2.0f), lighterSprite, true);
 	lighterEntity->setTitle("Lighter");
@@ -780,29 +802,33 @@ Scene* createMainScene(Camera * camera) {
 	doorsRoom1Entity->setLocked(false);
 	battery1Entity = new Battery(&batteryModel, glm::vec3(-2.5f, 0.5f, -3.0f), glm::vec3(0.0f), glm::vec3(2.5f),"battery1", batterySprite, true);
 	battery1Entity->setTitle("Battery");
-	battery2Entity = new Battery(&batteryModel, glm::vec3(-2.0f, 0.5f, 0.5f), glm::vec3(0.0f), glm::vec3(2.0f), "battery2",batterySprite, true);
+	battery2Entity = new Battery(&batteryModel, glm::vec3(1.0f, 0.9f, -7.4f), glm::vec3(0.0f), glm::vec3(3.0f), "battery2",batterySprite, true);
 	battery2Entity->setTitle("Battery");
 	calenderEntity = new Entity(&calenderModel, glm::vec3(-4.0f, 1.0f, -6.5f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(10.0f),true);
 	calenderEntity->setTitle("Calender");
 	calenderEntity->setExamineText("The date is December 26th.");
 	tableEntity = new Entity(&tableModel, glm::vec3(1.0f, -0.2f, -2.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.011f), false);
-	posterEntity = new Entity(&posterModel, glm::vec3(-5.8f, 1.5f, -5.49f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.6f), true);
+	posterEntity = new Entity(&posterModel, glm::vec3(-6.0f, 1.5f, -5.49f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.6f), true);
 	posterEntity->setTitle("Poster");
 	posterEntity->setExamineText("A poster with morse code instruction. Maybe it will be useful");
 	clockElementEntity = new ClockMovingPart(&clockElementModel, glm::vec3(2.5f, 2.0f, -5.0f), glm::vec3(0.0f, 270.0f, 0.0f), glm::vec3(3.5f), true);
 	clockEntity = new Entity(&clockModel, glm::vec3(2.5f, 1.0f, -5.0f), glm::vec3(0.0f, 270.0f, 0.0f), glm::vec3(3.5f), true);
 	clockEntity->setTitle("Clock");
 	clockEntity->setExamineText("The clock is stuck at 8:15 PM. Thats weird...");
-	globeEntity = new Entity(&globeModel, glm::vec3(1.0f, 1.0f, -7.3f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.5f), true);
+	globeEntity = new Entity(&globeModel, glm::vec3(-4.0f, 1.0f, -7.4f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.5f), true);
 	globeEntity->setTitle("Globe");
 	globeEntity->setExamineText("A globe showing the Earth.");
-	booksEntity = new Entity(&booksModel, glm::vec3(0.8f, 0.55f, -7.4f), glm::vec3(0.0f, -90.0f, 0.0f), glm::vec3(0.65f), true);
-	booksEntity->setTitle("Books");
-	booksEntity->setExamineText("A bunch of garbage books. I wonder if grandpa even read them.");
 	chessboardEntity = new Entity(&chessboardModel, glm::vec3(1.0f, 0.6f, -2.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.3f), true);
 	chessboardEntity->setTitle("Chessboard");
 	chessboardEntity->setExamineText("An old chessboard.");
-	paperEntity = new Readable(&paperModel, glm::vec3(-4.5f, 0.5f, -3.0f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(2.0f),spriteRenderer,keySprite, true);
+	paperEntity = new Readable(&paperModel, glm::vec3(-0.5f, 0.0f, 0.0f), glm::vec3(0.0f, 180.0f, 0.0f), glm::vec3(2.0f),spriteRenderer,paperSprite, true);
+	paperEntity->setTitle("Missing Notebook's Page");
+	letterEntity = new Readable(&paperModel, glm::vec3(-5.2f, 0.0f, -7.5f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.5f), spriteRenderer, letterSprite, true);
+	letterEntity->setTitle("Mysterious Letter");
+	lesserSalomonEntity = new Readable(&lesserSalomonModel, glm::vec3(1.5f, -1.3f, -9.5f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.1f), spriteRenderer, lesserSalomonSprite, true);
+	lesserSalomonEntity->setTitle("Lesser Key of Solomon");
+	lecternEntity = new Readable(&lecternModel, glm::vec3(17.0f, -0.1f, -0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.25f), spriteRenderer, lecternSprite, true);
+	lecternEntity->setTitle("Lectern with ritual instructions");
 	//pageEntity = new Entity(&pageModel, glm::vec3(-5.0f, 1.0f, -3.0f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(2.0f), true);
 	//pageEntity->setTitle("Page");
 	//pageEntity->setColissions(false);
@@ -919,12 +945,16 @@ Scene* createMainScene(Camera * camera) {
 	// Corridor interior objects
 	hauntedPaintingEntity1 = new HauntedEntity(&huntModel1, &huntModel2, glm::vec3(5.5f, 2.0f, -5.9f), glm::vec3(180.0f, 90.0f, 90.0f), glm::vec3(2.0f));
 	hauntedPaintingEntity1->setTitle("The Royal Hunt (1840)");
+	hauntedPaintingEntity1->setExamineText("An eerie painting depicting a royal hunt. There are exactly 4 hounds.");
 	hauntedPaintingEntity2 = new HauntedEntity(&skullsModel1, &skullsModel2, glm::vec3(10.0f, 2.0f, -5.9f), glm::vec3(180.0f, 90.0f, 90.0f), glm::vec3(2.0f));
 	hauntedPaintingEntity2->setTitle("Study of Mortality (1860)");
+	hauntedPaintingEntity2->setExamineText("A disturbing painting showing library with human skulls. There are exactly 2 skulls.");
 	hauntedPaintingEntity3 = new HauntedEntity(&ravensModel1, &ravensModel2, glm::vec3(5.5f, 2.0f, -1.1f), glm::vec3(180.0f, -90.0f, 90.0f), glm::vec3(2.0f));
 	hauntedPaintingEntity3->setTitle("Harbingers of Doom (1880)");
+	hauntedPaintingEntity3->setExamineText("A dark painting portraying a flock of ravens. There are exactly 5 ravens.");
 	hauntedPaintingEntity4 = new HauntedEntity(&cultModel1, &cultModel2, glm::vec3(10.0f, 2.0f, -1.1f), glm::vec3(180.0f, -90.0f, 90.0f), glm::vec3(2.0f));
 	hauntedPaintingEntity4->setTitle("The Gathering (1900)");
+	hauntedPaintingEntity4->setExamineText("A mysterious painting illustrating a cult gathering. There are exactly 3 cultits.");
 	pedestalEntity1 = new Pedestal(&pedestalModel, glm::vec3(5.5f, 0.0f, -5.0f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(0.5f),scene, true);
 	pedestalEntity1->setTitle("Pedestal");
 	pedestalEntity1->setCorrectItemTag("pedestal_collar");
@@ -938,6 +968,9 @@ Scene* createMainScene(Camera * camera) {
 	pedestalEntity4->setTitle("Pedestal");
 	pedestalEntity4->setCorrectItemTag("pedestal_eye");
 	std::vector<Pedestal*> pedestals = { pedestalEntity1, pedestalEntity2, pedestalEntity3, pedestalEntity4 };
+	notebookEntity = new Entity(&notebookModel, glm::vec3(-4.5f, 1.0f, -7.4f), glm::vec3(-90.0f, 0.0f, 0.0f), glm::vec3(0.05f), true);
+	notebookEntity->setTitle("Notebook");
+	notebookEntity->setExamineText("A notebook containing strange drawings. Seems like some pages are missing.");
 
 	witchesPaintingEntity = new Entity(&witchesModel, glm::vec3(22.0f, 1.9f, -3.5f), glm::vec3(180.0f, 0.0f, 90.0f), glm::vec3(2.4f), true);
 	witchesPaintingEntity->setTitle("The Witches' Sabbath (1597)");
@@ -967,9 +1000,10 @@ Scene* createMainScene(Camera * camera) {
 
 
 
-	deskEntity = new Desk(&deskModel, glm::vec3(-4.5f, 0.0f, -7.4f), glm::vec3(0.0f), glm::vec3(1.2f), deskDrawerModels, &deskDoorModel, scene , false);
+	deskEntity = new Desk(&deskModel, glm::vec3(-4.5f, -0.1f, -7.4f), glm::vec3(0.0f), glm::vec3(1.2f), deskDrawerModels, &deskDoorModel, scene , false);
 	deskEntity->setDrawerContainedEntity(battery1Entity);
-	drawerKeyEntity = new Key(&drawerKeyModel, glm::vec3(-4.3f, 0.5f, -6.0f), glm::vec3(0.0f), glm::vec3(0.5f), "drawerKey2", keySprite, true);
+	drawerKeyEntity = new Key(&drawerKeyModel, glm::vec3(-5.5f, 0.7f, -3.25f), glm::vec3(0.0f), glm::vec3(2.0f), "drawerKey2", keySprite, true);
+	drawerKeyEntity->setTitle("Key");
 	chestEntity = new Chest(&lowerChestModel, &upperChestModel, glm::vec3(-2.0f, 0.0f, 0.15f), glm::vec3(0.0f), glm::vec3(1.0f), scene, true);
 	chestEntity->setTitle("Chest");
 	lockEntity = new Lock(&lockBaseModel, glm::vec3(-2.0f, 0.45f, -0.35f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(2.0f), lockRotatingModels, &lockMetalPartModel, scene, true);
@@ -1048,8 +1082,11 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(lampEntity);
 	scene->AddEntity(globeEntity);
 	scene->AddEntity(chessboardEntity);
-	scene->AddEntity(booksEntity);
+
 	scene->AddEntity(paperEntity);
+	scene->AddEntity(letterEntity);
+	scene->AddEntity(lesserSalomonEntity);
+	scene->AddEntity(lecternEntity);
 
 
 	scene->AddEntity(doorEntity);
@@ -1065,6 +1102,7 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(posterEntity);
 	scene->AddEntity(clockElementEntity);
 	scene->AddEntity(clockEntity);
+	scene->AddEntity(notebookEntity);
 
 	// Room 1 collisions
 	scene->AddEntity(floorEntity);
@@ -1503,7 +1541,7 @@ void DrawInventory() {
 
 	if (gameState == STATE_READING) {
 		Texture* pageTexture = currentReadableEntity->getPageTexture();
-		spriteRenderer->DrawSprite(pageTexture, glm::vec2((uiWidth - 400.0f) / 2.0f, (uiHeight - 400.0f) / 2.0f), glm::vec2(400.0f, 400.0f));
+		spriteRenderer->DrawSprite(pageTexture, glm::vec2((uiWidth - pageTexture->getWidth()) / 2.0f, (uiHeight - pageTexture->getHeight()) / 2.0f), glm::vec2(pageTexture->getWidth(),pageTexture->getHeight()));
 	}
 	std::vector<Item> inventory = player->getInventory()->GetItems();
 	float startingX = 30.0f ;
