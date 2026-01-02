@@ -1023,7 +1023,7 @@ Scene* createMainScene(Camera * camera) {
 	doorsRoom1Entity->setLocked(true);
 	battery1Entity = new Battery(&batteryModel, glm::vec3(-2.5f, 0.6f, -3.0f), glm::vec3(0.0f), glm::vec3(2.5f),"battery", batterySprite, true);
 	battery1Entity->setTitle("Battery");
-	battery2Entity = new Battery(&batteryModel, glm::vec3(1.5f, 1.0f, -7.4f), glm::vec3(0.0f,0.0f,90.0f), glm::vec3(3.0f), "battery",batterySprite, true);
+	battery2Entity = new Battery(&batteryModel, glm::vec3(1.5f, 0.95f, -7.4f), glm::vec3(0.0f,0.0f,90.0f), glm::vec3(3.0f), "battery",batterySprite, true);
 	battery2Entity->setTitle("Battery");
 	calenderEntity = new Entity(&calenderModel, glm::vec3(-4.0f, 1.0f, -6.5f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(10.0f),true);
 	calenderEntity->setTitle("Calender");
