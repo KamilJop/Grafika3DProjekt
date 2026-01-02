@@ -757,7 +757,6 @@ Scene* createMainScene(Camera * camera) {
 	ravensModel2.LoadModel("Models/paintingRavensCursed.obj");
 	cultModel1.LoadModel("Models/paintingCult.obj");
 	cultModel2.LoadModel("Models/paintingCultCursed.obj");
-	witchesModel.LoadModel("Models/paintingWitches.obj");
 	keyModel.LoadModel("Models/Worn_Key.obj");
 	radioModel.LoadModel("Models/radio.obj");
 	posterModel.LoadModel("Models/poster.obj");
@@ -778,10 +777,6 @@ Scene* createMainScene(Camera * camera) {
 	lesserSalomonModel.LoadModel("Models/lessersalomon.obj");
 	lecternModel.LoadModel("Models/lectern.obj");
 	carpetModel.LoadModel("Models/carpet.obj");
-	//pageModel.LoadModel("Models/page.obj");
-
-
-
 	doorsRoom1Model.LoadModel("Models/exitDoorsRoom1.obj");
 	colliderWallModel.LoadModel("Models/invisibleWall.obj");
 
@@ -1099,7 +1094,7 @@ Scene* createMainScene(Camera * camera) {
 	candleLight8->setCastShadow(true);
 	candleLight9 = new PointLight(glm::vec3(10.0f, 6.0f, 1.0f), 0.0f, 1.0f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.7f, 1.8f, 8, 20.0f, 0.01f, 128.0f,128.0f);
 	candleLight9->setCastShadow(true);
-	flashlight = new Flashlight(glm::vec3(4.0f, 3.8f, 2.8f), 0.5f, 1.0f, camera->getCameraPosition(), 1.0f, 0.045f, 0.0075f, camera->getCameraFront(), 16.5f, 25.0f, 1024.0f, 1024.0f);
+	flashlight = new Flashlight(glm::vec3(2.0f, 1.9f, 1.4f), 0.5f, 1.5f, camera->getCameraPosition(), 1.0f, 0.045f, 0.0075f, camera->getCameraFront(), 16.5f, 25.0f, 1024.0f, 1024.0f);
 	lampLight = new PointLight(glm::vec3(2.4f, 2.0f, 1.4f),0.05f, 2.0f,glm::vec3(-4.0f, 1.7f, -7.0f),1.0f, 0.15f, 0.032f,9, 20.0f, 0.01f, 1024.0f, 1024.0f);
 	lampLight->setCastShadow(true);
 
@@ -1222,7 +1217,6 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(secondRoomDoorEntity);
 	scene->AddEntity(secondRoomDoorFramuga);
 	scene->AddEntity(secondKeyEntity);
-	//scene->AddEntity(carpetEntity);
 
 
 	scene->AddEntity(doorEntity);
@@ -1230,7 +1224,6 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(framuga);
 	scene->AddEntity(keyEntity);
 	scene->AddEntity(radioEntity);
-	//scene->AddEntity(pageEntity);
 	scene->AddEntity(lockEntity);
 	scene->AddEntity(deskEntity);
 	scene->AddEntity(sofaEntity);
