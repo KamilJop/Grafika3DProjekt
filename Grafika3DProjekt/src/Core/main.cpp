@@ -75,7 +75,7 @@ enum GameStates
 
 
 // TEST FLOAT
-float exposure = 0.3f;
+float exposure = 0.05f;
 
 Config& config = Config::getInstance();
 
@@ -225,6 +225,7 @@ Entity* posterEntity;
 Lamp* lampEntity;
 Key* drawerKeyEntity;
 Model drawerKeyModel;
+Key* secondKeyEntity;
 // Hidden room interior objects
 Chest* hiddenRoomChestEntity;
 Lock* hiddenRoomLockEntity;
@@ -239,6 +240,8 @@ Pedestal* pedestalEntity2;
 Pedestal* pedestalEntity3;
 Pedestal* pedestalEntity4;
 Entity* witchesPaintingEntity;
+Entity* carpetEntity;
+Model carpetModel;
 
 
 // Second room interior objects
@@ -248,6 +251,13 @@ Candle* candle3Entity;
 Candle* candle4Entity;
 Candle* candle5Entity;
 HauntedEntity* pentagramEntity;
+Door* secondRoomDoorEntity;
+Entity* secondRoomDoorFramuga;
+Candle* candle6Entity;
+Candle* candle7Entity;
+Candle* candle8Entity;
+Candle* candle9Entity;
+Model candleHolderModel;
 
 //Lock
 Lock* lockEntity;
@@ -260,7 +270,16 @@ PointLight* candleLight2;
 PointLight* candleLight3;
 PointLight* candleLight4;
 PointLight* candleLight5;
+PointLight* candleLight6;
+PointLight* candleLight7;
+PointLight* candleLight8;
+PointLight* candleLight9;
+PointLight* pedestalLight1;
+PointLight* pedestalLight2;
+PointLight* pedestalLight3;
+PointLight* pedestalLight4;
 PointLight* lampLight;
+PointLight* outsideLight;
 Flashlight* flashlight;
 
 // Create models
@@ -398,6 +417,17 @@ Texture* lighterSprite;
 Texture* batterySprite;
 Texture* letterSprite;
 Texture* lesserSalomonSprite;
+Texture* crowSprite;
+Texture* collarSprite;
+Texture* skullSprite;
+Texture* eyeSprite;
+
+std::vector<std::string> scarySounds = {
+	"Audio/horror_sound.mp3",
+	"Audio/horror_sound2.mp3",
+	"Audio/horror_sound3.mp3",
+	"Audio/horror_sound4.mp3",
+};
 
 // Audio Manager
 AudioManager& audioManager = AudioManager::GetInstance();
@@ -505,6 +535,18 @@ int main()
 	lecternSprite = new Texture("Textures/lectern.png");
 	lecternSprite->LoadTextureAlpha();
 
+	crowSprite = new Texture("Textures/Icons/crow.png");
+	crowSprite->LoadTextureAlpha();
+
+	collarSprite = new Texture("Textures/Icons/collar.png");
+	collarSprite->LoadTextureAlpha();
+
+	skullSprite = new Texture("Textures/Icons/skull.png");
+	skullSprite->LoadTextureAlpha();
+
+	eyeSprite = new Texture("Textures/Icons/eye.png");
+	eyeSprite->LoadTextureAlpha();
+
 	spriteRenderer = new SpriteRenderer(*shaderList[SHADER_SPRITES]);
 	glm::mat4 projectionUI = glm::ortho(0.0f, (float)uiWidth, (float)uiHeight, 0.0f, -1.0f, 1.0f);
 
@@ -523,11 +565,18 @@ int main()
 	audioManager.Init();
 	audioManager.LoadMusicTrack("background", "Audio/background_music.mp3");
 	int backgroundMusicHandle = audioManager.PlayMusicTrack("background", config.musicVolume, 1);
+
+	for(auto & sound : scarySounds) {
+		audioManager.Load2DSoundEffect(sound, sound);
+	}
 	
 	float fpsTimer = 0.0f;
 	float fpsAccumulator = 0.0f;
 	int frameCount = 0;
 	int displayFPS = 0;
+	int currentScarySoundIndex = 0;
+	float scarySoundTimer = 0.0f;
+	float scarySoundInterval = 70.0f; 
 	// Loop until window closed
 	while (!mainWindow.getShouldClose())
 	{
@@ -536,6 +585,7 @@ int main()
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 		fpsAccumulator += deltaTime;
+
 		frameCount++;
 		if (fpsAccumulator >= 0.5f) {
 			displayFPS = (int)(frameCount / fpsAccumulator);
@@ -567,17 +617,46 @@ int main()
 			player->setHeldEntityScale(player->getInventory()->GetCurrentItem()->itemScale);
 
 			// Update puzzles
-			candlePuzzle->Update();
+			candlePuzzle->Update(deltaTime);
 			pedestalPuzzle->Update();
 
 			// Update particle systems
 			fireParticleSystem->Update(deltaTime);
 			for (auto& candle : candles) {
 				if (candle->getIsLit()) {
-					fireParticleSystem->SpawnParticles(candle->getPosition() + glm::vec3(-0.1f, 0.4f, -0.1f), 1, glm::vec3(0.1f, 0.0f, 0.1f));
+					/*fireParticleSystem->SpawnParticles(candle->getPosition() + glm::vec3(-0.1f, 0.4f, -0.1f), 1, glm::vec3(0.1f, 0.0f, 0.1f));*/
+					fireParticleSystem->SpawnParticles(candle->getLightPosition() - glm::vec3(0.0f,0.1f,0.0f), 1, glm::vec3(0.1f, 0.0f, 0.1f));
 				}
 			}
-				
+
+			if(pedestalPuzzle->getSolved()) {
+				lampLight->setAmbientIntensity(0.0f);
+				lampLight->setDiffuseIntensity(0.0f);
+				pedestalLight1->setAmbientIntensity(0.0f);
+				pedestalLight1->setDiffuseIntensity(0.0f);
+				pedestalLight2->setAmbientIntensity(0.0f);
+				pedestalLight2->setDiffuseIntensity(0.0f);
+				pedestalLight3->setAmbientIntensity(0.0f);
+				pedestalLight3->setDiffuseIntensity(0.0f);
+				pedestalLight4->setAmbientIntensity(0.0f);
+				pedestalLight4->setDiffuseIntensity(0.0f);
+				outsideLight->setAmbientIntensity(1.0f);
+				outsideLight->setDiffuseIntensity(1.0f);
+				outsideLight->setColor(glm::vec3(100.0f, 100.0f, 100.0f));
+				exposure += 0.1f * deltaTime;
+				if(exposure > 3.0f) {
+					exposure = 1.5f;
+				}
+
+			}
+			scarySoundTimer += deltaTime;
+			if (scarySoundTimer >= scarySoundInterval) {
+				audioManager.Play2DSoundEffect(scarySounds[currentScarySoundIndex], config.sfxVolume * 2.0f);
+				printf("Playing scary sound: %s\n", scarySounds[currentScarySoundIndex].c_str());
+				currentScarySoundIndex = (currentScarySoundIndex + 1) % scarySounds.size();
+				scarySoundTimer = 0.0f;
+
+			}
 
 		}
 
@@ -611,7 +690,9 @@ int main()
 		// Shadow map for point lights
 		for (int i = 0; i < scene->getPointLights().size(); i++)
 		{
-			OmniShadowMapPass(scene->getPointLights()[i]);
+			if (scene->getPointLights()[i]->getCastShadow()) {
+				OmniShadowMapPass(scene->getPointLights()[i]);
+			}
 		}
 
 		// Render scene pass
@@ -696,6 +777,7 @@ Scene* createMainScene(Camera * camera) {
 	letterModel.LoadModel("Models/letter.obj");
 	lesserSalomonModel.LoadModel("Models/lessersalomon.obj");
 	lecternModel.LoadModel("Models/lectern.obj");
+	carpetModel.LoadModel("Models/carpet.obj");
 	//pageModel.LoadModel("Models/page.obj");
 
 
@@ -727,6 +809,7 @@ Scene* createMainScene(Camera * camera) {
 	houseWallsModel.LoadModel("Models/projekt.obj");
 	houseFloorModel.LoadModel("Models/podloga.obj");
 	houseCeilingModel.LoadModel("Models/sufit.obj");
+	candleHolderModel.LoadModel("Models/candleholder.obj");
 
 	// Desk models
 	deskModel.LoadModel("Models/desk.obj");
@@ -788,21 +871,22 @@ Scene* createMainScene(Camera * camera) {
 	// Create Entities
 	framuga = new Entity(&framugaModel,glm::vec3(3.0f, -0.1f, -2.7f), glm::vec3(0.0f,-90.0f,0.0f), glm::vec3(1.41f));
 	doorEntity = new Door(&door, glm::vec3(3.0f, -0.1f, -2.7f), glm::vec3(0.0f,-90.0f,0.0f), glm::vec3(1.4f), "Doors", framuga, "mainKey");
-	doorEntity->setLocked(true);
+	doorEntity->setLocked(false);
 	keyEntity = new Key(&keyModel, glm::vec3(-2.0f, 0.2f, 0.0f), glm::vec3(90.0f,0.0f,0.0f), glm::vec3(0.75f), "mainKey", keySprite, true);
 	keyEntity->setTitle("Key");
 	keyEntity->setColissions(false);
-	radioEntity = new Radio(&radioModel, glm::vec3(-5.25f, 0.9f, -7.5f), glm::vec3(0.0f,30.0f,0.0f), glm::vec3(2.0f), true);
+	radioEntity = new Radio(&radioModel, glm::vec3(-5.25f, 0.95f, -7.5f), glm::vec3(0.0f,30.0f,0.0f), glm::vec3(2.0f), true);
 	radioEntity->setTitle("Radio");
-	lighterEntity = new Lighter(&lighterModel, glm::vec3(-3.0f, 0.5f, -3.0f), glm::vec3(0.0f), glm::vec3(2.0f), lighterSprite, true);
+	lighterEntity = new Lighter(&lighterModel, glm::vec3(1.4f, 0.0f,-0.2f), glm::vec3(0.0f,0.0f,90.0f), glm::vec3(3.0f), lighterSprite, true);
 	lighterEntity->setTitle("Lighter");
+	lighterEntity->setColissions(false);
 
 
 	doorsRoom1Entity = new Door(&doorsRoom1Model, glm::vec3(-2.9f, -0.1f, 1.0f), glm::vec3(0.0f,0.0f,0.0f), glm::vec3(2.0f), "Doors", framuga, "finalExitKey");
-	doorsRoom1Entity->setLocked(false);
-	battery1Entity = new Battery(&batteryModel, glm::vec3(-2.5f, 0.5f, -3.0f), glm::vec3(0.0f), glm::vec3(2.5f),"battery1", batterySprite, true);
+	doorsRoom1Entity->setLocked(true);
+	battery1Entity = new Battery(&batteryModel, glm::vec3(-2.5f, 0.5f, -3.0f), glm::vec3(0.0f), glm::vec3(2.5f),"battery", batterySprite, true);
 	battery1Entity->setTitle("Battery");
-	battery2Entity = new Battery(&batteryModel, glm::vec3(1.0f, 0.9f, -7.4f), glm::vec3(0.0f), glm::vec3(3.0f), "battery2",batterySprite, true);
+	battery2Entity = new Battery(&batteryModel, glm::vec3(1.0f, 1.0f, -7.4f), glm::vec3(0.0f,0.0f,90.0f), glm::vec3(3.0f), "battery",batterySprite, true);
 	battery2Entity->setTitle("Battery");
 	calenderEntity = new Entity(&calenderModel, glm::vec3(-4.0f, 1.0f, -6.5f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(10.0f),true);
 	calenderEntity->setTitle("Calender");
@@ -821,14 +905,18 @@ Scene* createMainScene(Camera * camera) {
 	chessboardEntity = new Entity(&chessboardModel, glm::vec3(1.0f, 0.6f, -2.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.3f), true);
 	chessboardEntity->setTitle("Chessboard");
 	chessboardEntity->setExamineText("An old chessboard.");
-	paperEntity = new Readable(&paperModel, glm::vec3(-0.5f, 0.0f, 0.0f), glm::vec3(0.0f, 180.0f, 0.0f), glm::vec3(2.0f),spriteRenderer,paperSprite, true);
+	paperEntity = new Readable(&paperModel, glm::vec3(-0.5f, -0.1f, 0.0f), glm::vec3(0.0f, 180.0f, 0.0f), glm::vec3(2.0f),spriteRenderer,paperSprite, true);
 	paperEntity->setTitle("Missing Notebook's Page");
-	letterEntity = new Readable(&paperModel, glm::vec3(-5.2f, 0.0f, -7.5f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.5f), spriteRenderer, letterSprite, true);
+	letterEntity = new Readable(&paperModel, glm::vec3(-5.2f, 0.15f, -7.5f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.5f), spriteRenderer, letterSprite, true);
 	letterEntity->setTitle("Mysterious Letter");
 	lesserSalomonEntity = new Readable(&lesserSalomonModel, glm::vec3(1.5f, -1.3f, -9.5f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.1f), spriteRenderer, lesserSalomonSprite, true);
 	lesserSalomonEntity->setTitle("Lesser Key of Solomon");
 	lecternEntity = new Readable(&lecternModel, glm::vec3(17.0f, -0.1f, -0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.25f), spriteRenderer, lecternSprite, true);
 	lecternEntity->setTitle("Lectern with ritual instructions");
+	secondRoomDoorFramuga = new Entity(&framugaModel, glm::vec3(12.0f, -0.1f, -2.7f), glm::vec3(0.0f, -90.0f, 0.0f), glm::vec3(1.41f));
+	secondRoomDoorEntity = new Door(&door, glm::vec3(12.0f, -0.1f, -2.7f), glm::vec3(0.0f, -90.0f, 0.0f), glm::vec3(1.4f),"Locked Doors", secondRoomDoorFramuga, "secondDoorsKey");
+	secondRoomDoorEntity->setLocked(false);
+	secondKeyEntity = new Key(&keyModel, glm::vec3(0.0f, 0.3f, -9.6f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.75f), "secondDoorsKey", keySprite, true);
 	//pageEntity = new Entity(&pageModel, glm::vec3(-5.0f, 1.0f, -3.0f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(2.0f), true);
 	//pageEntity->setTitle("Page");
 	//pageEntity->setColissions(false);
@@ -898,9 +986,9 @@ Scene* createMainScene(Camera * camera) {
 
 	houseWalls = new Entity(&houseWallsModel, glm::vec3(-6.0f, -0.1f, 1.0f), glm::vec3(180.0f, 0.0f, 0.0f), glm::vec3(1.0f), false);
 	houseWalls->setColissions(false);
-	houseFloor = new Entity(&houseFloorModel, glm::vec3(-6.0f, -0.1f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f), false);
+	houseFloor = new Entity(&houseFloorModel, glm::vec3(-6.0f, -0.1f, -18.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f), false);
 	houseFloor->setColissions(false);
-	houseCeiling = new Entity(&houseCeilingModel, glm::vec3(2.0f, 4.9f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f), false);
+	houseCeiling = new Entity(&houseCeilingModel, glm::vec3(2.0f, 4.9f, -18.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f), false);
 	houseCeiling->setColissions(false);
 	// Hidden room collisions
 	hiddenRoomBackWallEntity = new Entity(&colliderWallModel, glm::vec3(-3.0f, -0.1f, -11.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(6.0f, 3.1f, 1.0f));
@@ -955,16 +1043,27 @@ Scene* createMainScene(Camera * camera) {
 	hauntedPaintingEntity4 = new HauntedEntity(&cultModel1, &cultModel2, glm::vec3(10.0f, 2.0f, -1.1f), glm::vec3(180.0f, -90.0f, 90.0f), glm::vec3(2.0f));
 	hauntedPaintingEntity4->setTitle("The Gathering (1900)");
 	hauntedPaintingEntity4->setExamineText("A mysterious painting illustrating a cult gathering. There are exactly 3 cultits.");
-	pedestalEntity1 = new Pedestal(&pedestalModel, glm::vec3(5.5f, 0.0f, -5.0f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(0.5f),scene, true);
+
+	pedestalLight1 = new PointLight(glm::vec3(1.0f, 0.0f, 0.0f), 0.0f, 1.0f, glm::vec3(5.5f, 1.5f, -5.0f), 0.5f, 0.7f, 1.8f, 10, 10.0f, 0.01f, 256.0f, 256.0f);
+	pedestalLight2 = new PointLight(glm::vec3(1.0f, 0.0f, 0.0f), 0.0f, 1.0f, glm::vec3(10.0f, 1.5f, -5.0f), 0.5f, 0.7f, 1.8f, 11, 10.0f, 0.01f, 256.0f, 256.0f);
+	pedestalLight3 = new PointLight(glm::vec3(1.0f, 0.0f, 0.0f), 0.0f, 1.0f, glm::vec3(5.5f, 1.5f, -2.0f), 0.5f, 0.7f, 1.8f, 12, 10.0f, 0.01f, 256.0f, 256.0f);
+	pedestalLight4 = new PointLight(glm::vec3(1.0f, 0.0f, 0.0f), 0.0f, 1.0f, glm::vec3(10.0f, 1.5f, -2.0f), 0.5f, 0.7f, 1.8f, 13, 10.0f, 0.01f, 256.0f, 256.0f);
+	outsideLight = new PointLight(glm::vec3(0.0f, 0.0f, 0.0f), 0.0f, 0.0f, glm::vec3(-4.0f, 3.0f, 2.0f), 2.0f, 0.7f, 1.8f, 14, 50.0f, 0.01f, 256.0f, 256.0f);
+
+
+
+
+
+	pedestalEntity1 = new Pedestal(&pedestalModel, glm::vec3(5.5f, 0.0f, -5.0f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(0.5f),scene, pedestalLight1,true);
 	pedestalEntity1->setTitle("Pedestal");
 	pedestalEntity1->setCorrectItemTag("pedestal_collar");
-	pedestalEntity2 = new Pedestal(&pedestalModel, glm::vec3(10.0f, 0.0f, -5.0f), glm::vec3(0.0f,90.0f,0.0f), glm::vec3(0.5f),scene, true);
+	pedestalEntity2 = new Pedestal(&pedestalModel, glm::vec3(10.0f, 0.0f, -5.0f), glm::vec3(0.0f,90.0f,0.0f), glm::vec3(0.5f),scene, pedestalLight2, true);
 	pedestalEntity2->setTitle("Pedestal");
 	pedestalEntity2->setCorrectItemTag("pedestal_skull");
-	pedestalEntity3 = new Pedestal(&pedestalModel, glm::vec3(5.5f, 0.0f, -2.0f), glm::vec3(0.0f, -90.0f, 0.0f), glm::vec3(0.5f),scene, true);
+	pedestalEntity3 = new Pedestal(&pedestalModel, glm::vec3(5.5f, 0.0f, -2.0f), glm::vec3(0.0f, -90.0f, 0.0f), glm::vec3(0.5f),scene, pedestalLight3, true);
 	pedestalEntity3->setTitle("Pedestal");
 	pedestalEntity3->setCorrectItemTag("pedestal_feather");
-	pedestalEntity4 = new Pedestal(&pedestalModel, glm::vec3(10.0f, 0.0f, -2.0f), glm::vec3(0.0f, -90.0f, 0.0f), glm::vec3(0.5f),scene, true);
+	pedestalEntity4 = new Pedestal(&pedestalModel, glm::vec3(10.0f, 0.0f, -2.0f), glm::vec3(0.0f, -90.0f, 0.0f), glm::vec3(0.5f),scene, pedestalLight4, true);
 	pedestalEntity4->setTitle("Pedestal");
 	pedestalEntity4->setCorrectItemTag("pedestal_eye");
 	std::vector<Pedestal*> pedestals = { pedestalEntity1, pedestalEntity2, pedestalEntity3, pedestalEntity4 };
@@ -985,14 +1084,23 @@ Scene* createMainScene(Camera * camera) {
 	skybox = new Skybox(skyboxFaces);
 
 
-	mainLight = new DirectionalLight(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(-1.0f, -5.0f, -5.5f), 0.0f, 0.0f, 1024.0f, 1024.0f);
-	candleLight = new PointLight(glm::vec3(10.0f, 6.0f, 1.0f), 0.0f, 1.0f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.7f, 1.8f, 0, 20.0f, 0.01f, 1024.0f, 1024.0f);
-	candleLight2 = new PointLight(glm::vec3(10.0f, 6.0f, 1.0f), 0.0f, 1.0f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.7f, 1.8f, 1, 20.0f, 0.01f, 1024.0f, 1024.0f);
-	candleLight3 = new PointLight(glm::vec3(10.0f, 6.0f, 1.0f), 0.0f, 1.0f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.7f, 1.8f, 2, 20.0f, 0.01f, 1024.0f, 1024.0f);
-	candleLight4 = new PointLight(glm::vec3(10.0f, 6.0f, 1.0f), 0.0f, 1.0f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.7f, 1.8f, 3, 20.0f, 0.01f, 1024.0f, 1024.0f);
-	candleLight5 = new PointLight(glm::vec3(10.0f, 6.0f, 1.0f), 0.0f, 1.0f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.7f, 1.8f, 4, 20.0f, 0.01f, 1024.0f, 1024.0f);
-	flashlight = new Flashlight(glm::vec3(7.2f, 6.8f, 6.0f), 0.0f, 3.5f, camera->getCameraPosition(), 1.0f, 0.22f, 0.20f, camera->getCameraFront(), 15.5f, 25.0f, 1024.0f, 1024.0f);
-	lampLight = new PointLight(glm::vec3(2.4f, 2.0f, 1.4f),0.05f, 2.0f,glm::vec3(-4.0f, 1.7f, -7.0f),1.0f, 0.15f, 0.032f,5, 20.0f, 0.01f, 1024.0f, 1024.0f);
+	mainLight = new DirectionalLight(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(-1.0f, -5.0f, -5.5f), 0.0f, 0.0f, 256.0f, 256.0f);
+	candleLight = new PointLight(glm::vec3(10.0f, 6.0f, 1.0f), 0.0f, 1.0f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.7f, 1.8f, 0, 20.0f, 0.01f, 256.0f, 256.0f);
+	candleLight2 = new PointLight(glm::vec3(10.0f, 6.0f, 1.0f), 0.0f, 1.0f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.7f, 1.8f, 1, 20.0f, 0.01f, 256.0f, 256.0f);
+	candleLight3 = new PointLight(glm::vec3(10.0f, 6.0f, 1.0f), 0.0f, 1.0f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.7f, 1.8f, 2, 20.0f, 0.01f, 256.0f, 256.0f);
+	candleLight4 = new PointLight(glm::vec3(10.0f, 6.0f, 1.0f), 0.0f, 1.0f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.7f, 1.8f, 3, 20.0f, 0.01f, 256.0f, 256.0f);
+	candleLight5 = new PointLight(glm::vec3(10.0f, 6.0f, 1.0f), 0.0f, 1.0f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.7f, 1.8f, 4, 20.0f, 0.01f, 256.0f, 256.0f);
+	candleLight6 = new PointLight(glm::vec3(10.0f, 6.0f, 1.0f), 0.0f, 1.0f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.7f, 1.8f, 5, 20.0f, 0.01f, 128.0f, 128.0f);
+	candleLight6->setCastShadow(true);
+	candleLight7 = new PointLight(glm::vec3(10.0f, 6.0f, 1.0f), 0.0f, 1.0f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.7f, 1.8f, 6, 20.0f, 0.01f, 128.0f, 128.0f);
+	candleLight7->setCastShadow(true);
+	candleLight8 = new PointLight(glm::vec3(10.0f, 6.0f, 1.0f), 0.0f, 1.0f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.7f, 1.8f, 7, 20.0f, 0.01f, 128.0f, 128.0f);
+	candleLight8->setCastShadow(true);
+	candleLight9 = new PointLight(glm::vec3(10.0f, 6.0f, 1.0f), 0.0f, 1.0f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.7f, 1.8f, 8, 20.0f, 0.01f, 128.0f,128.0f);
+	candleLight9->setCastShadow(true);
+	flashlight = new Flashlight(glm::vec3(8.5f, 8.0f, 6.0f), 0.3f, 1.0f, camera->getCameraPosition(), 1.0f, 0.045f, 0.0075f, camera->getCameraFront(), 16.5f, 28.0f, 1024.0f, 1024.0f);
+	lampLight = new PointLight(glm::vec3(2.4f, 2.0f, 1.4f),0.05f, 2.0f,glm::vec3(-4.0f, 1.7f, -7.0f),1.0f, 0.15f, 0.032f,9, 20.0f, 0.01f, 1024.0f, 1024.0f);
+	lampLight->setCastShadow(true);
 
 	lampEntity = new Lamp(&lampModel, glm::vec3(2.3f, 0.0f, -1.5f), glm::vec3(0.0f), glm::vec3(0.2f), lampLight, true);
 	lampEntity->setCastsShadow(false);
@@ -1031,19 +1139,35 @@ Scene* createMainScene(Camera * camera) {
 	candles.push_back(candle3Entity);
 	candles.push_back(candle4Entity);
 	candles.push_back(candle5Entity);
+	carpetEntity = new Entity(&carpetModel, glm::vec3(6.0f, 0.0f, -2.5f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.175f), false);
+	carpetEntity->setColissions(false);
+	
+	candle6Entity = new Candle(&candleHolderModel, glm::vec3(16.5f, 1.3f, -8.8f), glm::vec3(0.0f,0.0f,0.0f), glm::vec3(0.25f), candleLight6, true);
+	candle6Entity->setTitle("Candle6");
+	candle7Entity = new Candle(&candleHolderModel, glm::vec3(21.8f, 1.3f, -5.0f), glm::vec3(0.0f,-90.0f,0.0f), glm::vec3(0.25f), candleLight7, true);
+	candle7Entity->setTitle("Candle7");
+	candle8Entity = new Candle(&candleHolderModel, glm::vec3(21.8f, 1.3f, -1.0f), glm::vec3(0.0f, -90.0f, 0.0f), glm::vec3(0.25f), candleLight8, true);
+	candle8Entity->setTitle("Candle8");
+	candle9Entity = new Candle(&candleHolderModel, glm::vec3(16.5f, 1.3f, 1.9f), glm::vec3(0.0f, 180.0f, 0.0f), glm::vec3(0.25f), candleLight9, true);
+	candle9Entity->setTitle("Candle9");
+	candles.push_back(candle6Entity);
+	candles.push_back(candle7Entity);
+	candles.push_back(candle8Entity);
+	candles.push_back(candle9Entity);
 
 
 
-	collarEntity = new Pickable(&collarModel, glm::vec3(16.5f, 0.5f, -4.0f), glm::vec3(0.0f), glm::vec3(0.1f),"pedestal_collar", batterySprite, true);
+	collarEntity = new Pickable(&collarModel, glm::vec3(16.5f, 0.5f, -4.0f), glm::vec3(0.0f), glm::vec3(0.05f),"pedestal_collar", collarSprite, true);
 	collarEntity->setTitle("Collar");
-	featherEntity = new Pickable(&featherModel, glm::vec3(14.0f, 0.5f, -3.5f), glm::vec3(0.0f), glm::vec3(0.5f), "pedestal_feather", batterySprite, true);
+	featherEntity = new Pickable(&featherModel, glm::vec3(14.0f, 0.5f, -3.5f), glm::vec3(0.0f), glm::vec3(0.5f), "pedestal_feather", crowSprite, true);
 	featherEntity->setTitle("Crow");
-	eyeEntity = new Pickable(&eyeModel, glm::vec3(18.5f, 0.5f, -5.5f), glm::vec3(0.0f), glm::vec3(0.125f), "pedestal_eye", batterySprite, true);
+	eyeEntity = new Pickable(&eyeModel, glm::vec3(18.5f, 0.5f, -5.5f), glm::vec3(0.0f), glm::vec3(0.125f), "pedestal_eye", eyeSprite, true);
 	eyeEntity->setTitle("Human Eye");
-	skullEntity = new Pickable(&skullModel, glm::vec3(18.0f, 0.5f, -2.5f), glm::vec3(0.0f), glm::vec3(1.5f), "pedestal_skull", batterySprite, true);
+	skullEntity = new Pickable(&skullModel, glm::vec3(18.0f, 0.5f, -2.5f), glm::vec3(0.0f), glm::vec3(1.5f), "pedestal_skull", skullSprite, true);
 
 	std::vector<Candle*> pentagramCandles = { candleEntity, candle2Entity, candle3Entity, candle4Entity, candle5Entity };
-	candlePuzzle = new CandlePuzzle(pentagramCandles, pedestals, doorEntity);
+	std::vector<Candle*> wallCandles = { candle6Entity, candle7Entity, candle8Entity, candle9Entity };	
+	candlePuzzle = new CandlePuzzle(pentagramCandles,wallCandles, pedestals, doorEntity);
 	pedestalPuzzle = new PedestalPuzzle(pedestals, doorEntity, doorsRoom1Entity);
 
 
@@ -1056,7 +1180,16 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddPointLight(candleLight3);
 	scene->AddPointLight(candleLight4);
 	scene->AddPointLight(candleLight5);
+	scene->AddPointLight(candleLight6);
+	scene->AddPointLight(candleLight7);
+	scene->AddPointLight(candleLight8);
+	scene->AddPointLight(candleLight9);
 	scene->AddPointLight(lampLight);
+	scene->AddPointLight(pedestalLight1);
+	scene->AddPointLight(pedestalLight2);
+	scene->AddPointLight(pedestalLight3);
+	scene->AddPointLight(pedestalLight4);
+	scene->AddPointLight(outsideLight);
 	scene->SetDirectionalLight(mainLight);
 	scene->SetFlashlight(flashlight);
 	scene->AddEntity(doorsRoom1Entity);
@@ -1087,6 +1220,10 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(letterEntity);
 	scene->AddEntity(lesserSalomonEntity);
 	scene->AddEntity(lecternEntity);
+	scene->AddEntity(secondRoomDoorEntity);
+	scene->AddEntity(secondRoomDoorFramuga);
+	scene->AddEntity(secondKeyEntity);
+	//scene->AddEntity(carpetEntity);
 
 
 	scene->AddEntity(doorEntity);
@@ -1164,6 +1301,10 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(houseCeiling);
 	scene->AddEntity(wineCabinetEntity);
 	scene->AddEntity(drawerKeyEntity);
+	scene->AddEntity(candle6Entity);
+	scene->AddEntity(candle7Entity);
+	scene->AddEntity(candle8Entity);	
+	scene->AddEntity(candle9Entity);
 	return scene;
 }
 
@@ -1275,11 +1416,19 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 	scene->RenderWithOutline(shaderList[SHADER_OUTLINE], projectionMatrix, uiWidth, uiHeight);
 
 
+	// Render particles
+	shaderList[SHADER_PARTICLE]->UseShader();
+	shaderList[SHADER_PARTICLE]->setMat4("projection", projectionMatrix);
+	shaderList[SHADER_PARTICLE]->setMat4("view", camera.getViewMatrix());
+	fireParticleSystem->Draw();
+
 	// Render flashlight last (to be in front of all objects)
 	glDepthMask(GL_TRUE);
 	glStencilMask(0xFF);
 	glCullFace(GL_BACK);
 	glDisable(GL_STENCIL_TEST);
+
+
 
 	if (player->getHeldEntity()) {
 		if (gameState == STATE_MINIGAME) {
@@ -1288,11 +1437,7 @@ void RenderScenePass(glm::mat4 projectionMatrix)
 		scene->RenderHeldEntity(shaderList[SHADER_DEFAULT], projectionMatrix);
 	}
 
-	// Render particles
-	shaderList[SHADER_PARTICLE]->UseShader();
-	shaderList[SHADER_PARTICLE]->setMat4("projection", projectionMatrix);
-	shaderList[SHADER_PARTICLE]->setMat4("view", camera.getViewMatrix());
-	fireParticleSystem->Draw();
+
 	hdrBuffer->Unbind();
 }
 
@@ -1482,10 +1627,10 @@ void HandleKeyboardInput(float deltaTime, Scene* currentScene) {
 		player->getInventory()->SetCurrentItem(4);
 		mainWindow.getKeys()[GLFW_KEY_5] = false;
 	}
-	//if (mainWindow.getKeys()[GLFW_KEY_6]) {
-	//	player->getInventory()->SetCurrentItem(5);
-	//	mainWindow.getKeys()[GLFW_KEY_6] = false;
-	//}
+	if (mainWindow.getKeys()[GLFW_KEY_6]) {
+		player->getInventory()->SetCurrentItem(5);
+		mainWindow.getKeys()[GLFW_KEY_6] = false;
+	}
 	//if (mainWindow.getKeys()[GLFW_KEY_7]) {
 	//	player->getInventory()->SetCurrentItem(6);
 	//	mainWindow.getKeys()[GLFW_KEY_7] = false;
@@ -1498,16 +1643,6 @@ void HandleKeyboardInput(float deltaTime, Scene* currentScene) {
 	//	player->getInventory()->SetCurrentItem(8);
 	//	mainWindow.getKeys()[GLFW_KEY_9] = false;
 	//}
-
-	if(mainWindow.getKeys()[GLFW_KEY_KP_ADD]) {
-		exposure += 1.0f * deltaTime;
-	}
-	if(mainWindow.getKeys()[GLFW_KEY_KP_SUBTRACT]) {
-		exposure -= 1.0f * deltaTime;
-		if(exposure < 0.0f) {
-			exposure = 0.0f;
-		}
-	}
 
 
 	double currentScrollY = mainWindow.getScrollY();

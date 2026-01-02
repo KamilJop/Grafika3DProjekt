@@ -43,9 +43,8 @@ void Door::Interact(Inventory* playerInventory)
 
 		if(!triedToOpen) {
 			triedToOpen = true;
-			printf("The door is locked. I probably need to find a key.\n");
 				
-			UI::SetSubtitle("The door is locked. I probably need to find a key.",3.0f);
+			UI::SetSubtitle(examineText,3.0f);
 		}
 		isTryingToOpen = true;
 		animCounter = 0.0;

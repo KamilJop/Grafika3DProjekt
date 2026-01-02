@@ -93,7 +93,7 @@ void Scene::Update(float deltaTime)
 			finalPos += camera->getCameraUp() * bobY;
 		}
 
-		glm::vec3 lightSourcePos = finalPos + (camFront * 0.3f);
+		glm::vec3 lightSourcePos = finalPos + (camFront * 0.05f);
 		flashLight->setLightPosition(lightSourcePos);
 		flashLight->setLightDirection(camFront);
 	}

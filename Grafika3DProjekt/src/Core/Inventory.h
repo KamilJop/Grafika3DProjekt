@@ -37,7 +37,7 @@ public:
 	std::vector<Item> GetItems() { return items; }
 private:
 	int currentItemIndex = 0;
-	int maxItems = 5;
+	int maxItems = 6;
 	std::vector<Item> items;
 	TextRenderer* textRenderer;
 	Item emptyItem = Item{ "empty", "Empty", nullptr, nullptr };

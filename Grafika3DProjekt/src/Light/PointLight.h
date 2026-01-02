@@ -11,6 +11,8 @@ public:
 	void useLight(Shader* lightShader);
 	void setPosition(glm::vec3 pos) { lightPosition = pos; }
 	void setColor(glm::vec3 color) { lightColor = color; }
+	void setCastShadow(bool cast) { castShadow = cast; }
+	bool getCastShadow() { return castShadow; }
 	glm::vec3 getColor() { return lightColor; }
 	glm::vec3 getPosition() { return lightPosition; }
 	OmniShadowMap* getShadowMap() { return shadowMap; }
@@ -29,5 +31,6 @@ protected:
 	OmniShadowMap* shadowMap;
 	glm::mat4 lightProjection;
 	int lightIndex;
+	bool castShadow = false;
 };
 

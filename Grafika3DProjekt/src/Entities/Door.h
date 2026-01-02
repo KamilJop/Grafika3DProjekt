@@ -15,6 +15,8 @@ public:
 	void setLocked(bool state) { isLocked = state; }
 	void setIsOpen(bool state) { isOpen = state; }
 	void Interact(Inventory* playerInventory) override ;
+	void setTriedToOpen(bool state) { triedToOpen = state; }	
+	void setExamineText(const std::string& text) { examineText = text; }
 	void Update(float deltaTime) override;
 	void setDirection(int dir) { direction = dir; }	
 	std::string GetActionText() override;
@@ -36,6 +38,7 @@ private:
 	std::string openingSoundName = "door_opening";
 	std::string closingSoundName = "door_closing";
 	std::string lockedSoundName = "door_locked";
+	std::string examineText = "The door is locked.I probably need to find a key.";
 	std::string unlockingSoundName = "door_unlocking";
 	float animCounter = 0.0;
 };

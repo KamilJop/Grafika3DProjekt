@@ -12,7 +12,10 @@ class Candle : public Entity
 	void Update(float deltaTime) override {};
 	bool getIsLit() { return isLit; };
 	void blowOut();
+	void lightUp();
 	std::string GetActionText() override { return isLit ? "Examine" : "Light"; };
+	void setLightPosition(glm::vec3 newPos) { candleLight->setPosition(newPos); }
+	glm::vec3 getLightPosition() { return candleLight->getPosition(); }
 	~Candle();
 private:
 	PointLight* candleLight;

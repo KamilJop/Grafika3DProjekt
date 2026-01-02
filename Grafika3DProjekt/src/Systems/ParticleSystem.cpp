@@ -35,6 +35,7 @@ void ParticleSystem::SpawnParticles(glm::vec3 position, unsigned int newParticle
 
 void ParticleSystem::Draw()
 {
+	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 	glDepthMask(GL_FALSE); 

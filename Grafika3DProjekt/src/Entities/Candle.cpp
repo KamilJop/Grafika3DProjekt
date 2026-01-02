@@ -8,7 +8,7 @@ Candle::Candle(Model* model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal,PointL
 	: Entity(model, pos, rot, scal, interaction)
 {
 	candleLight = LightSource;
-	candleLight->setPosition(pos + glm::vec3(0.0f, 0.6f, 0.0f));
+	candleLight->setPosition(pos + glm::vec3(-0.1f, 0.5f, -0.1f));
 	lightAmbientIntensity = candleLight->getAmbientIntensity();
 	lightDiffuseIntensity = candleLight->getDiffuseIntensity();
 	candleLight->setAmbientIntensity(0.0f);
@@ -49,4 +49,14 @@ void Candle::blowOut()
 	candleLight->setDiffuseIntensity(0.0f);
 	candleLight->setColor(glm::vec3(0.0f));
 	isLit = false;
+}
+
+void Candle::lightUp()
+{	
+	if (isLit) return;
+	AudioManager::GetInstance().Play3DSoundEffect("candle_lighting", position, Config::getInstance().sfxVolume * 2.0f);
+	candleLight->setAmbientIntensity(lightAmbientIntensity);
+	candleLight->setDiffuseIntensity(lightDiffuseIntensity);
+	candleLight->setColor(lightColor);
+	isLit = true;
 }

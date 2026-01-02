@@ -8,6 +8,10 @@ class DirectionalLight : Light
 	~DirectionalLight();
 	void useLight(Shader* lightShader);
 	ShadowMap* getShadowMap() { return shadowMap; }
+	void setAmbientIntensity(GLfloat intensity) { lightAmbientIntensity = intensity; }
+	void setDiffuseIntensity(GLfloat intensity) { lightDiffuseIntensity = intensity; }
+	float getAmbientIntensity() { return lightAmbientIntensity; }
+	float getDiffuseIntensity() { return lightDiffuseIntensity; }
 	glm::mat4 CalculateLightTransform();
 private:
 	glm::vec3 lightDirection;

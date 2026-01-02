@@ -49,7 +49,7 @@ void PointLight::useLight(Shader* lightShader)
 {
 	std::string indexString = std::to_string(lightIndex);
 	std::string base = "pointLights[" + indexString + "].";
-
+	lightShader->setInt(base + "castsShadows", castShadow ? 1 : 0);
 	lightShader->setVec3(base + "lightColor", lightColor);
 	lightShader->setVec3(base + "lightPosition", lightPosition);
 	lightShader->setFloat(base + "lightAmbientIntensity", lightAmbientIntensity);

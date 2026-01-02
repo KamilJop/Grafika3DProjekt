@@ -20,9 +20,9 @@ void Radio::Interact(Inventory* playerInventory)
 	switch (currentState)
 	{
 	case BROKEN:
-		if(playerInventory->GetCurrentItem()->tag == "battery1") {
+		if(playerInventory->GetCurrentItem()->tag == "battery") {
 			currentState = ONE_BATTERY;
-			playerInventory->RemoveItem("battery1");
+			playerInventory->RemoveItem("battery");
 			AudioManager::GetInstance().Play3DSoundEffect(firstInsert, getPosition());
 			UI::SetSubtitle("I inserted a battery into the radio. Maybe it will work now.", 3.0f);
 		}
@@ -36,9 +36,9 @@ void Radio::Interact(Inventory* playerInventory)
 		break;
 
 	case ONE_BATTERY:
-		if(playerInventory->GetCurrentItem()->tag == "battery2") {
+		if(playerInventory->GetCurrentItem()->tag == "battery") {
 			currentState = WORKING;
-			playerInventory->RemoveItem("battery2");
+			playerInventory->RemoveItem("battery");
 			AudioManager::GetInstance().Play3DSoundEffect(secondInsert, getPosition());
 			UI::SetSubtitle("I inserted another battery into the radio. It's working now!", 3.0f);
 		}

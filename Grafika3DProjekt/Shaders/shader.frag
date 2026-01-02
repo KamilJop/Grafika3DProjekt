@@ -1,5 +1,5 @@
 #version 330
-#define NR_POINT_LIGHTS 6
+#define NR_POINT_LIGHTS 15
 in vec4 vCol;
 in vec3 Normal;
 in vec3 FragPos;
@@ -31,6 +31,7 @@ struct PointLight
 	float constant;
 	float linear;
 	float quadratic;
+	int castsShadows;
 };
 
 struct OmniShadowMap
@@ -166,11 +167,10 @@ float CalculateFlashLightShadowFactor()
 }
 
 float CalculateOmniShadowFactor(PointLight pLight, int shadowIndex)
-{
+{	
 	// Calculating vector going from Fragment to Light
 	vec3 fragToLight = FragPos - pLight.lightPosition;
-	
-	
+
 	// Calculate current depth point
 	float current = length(fragToLight);
 	
@@ -299,6 +299,10 @@ vec4 CalculateFlashLight(vec3 worldNormal){
 
 
 vec4 CalculatePointLight(PointLight pointLight, int shadowIndex, vec3 worldNormal){
+	if (pointLight.lightDiffuseIntensity == 0.0f && pointLight.lightAmbientIntensity == 0.0f)
+    {
+        return vec4(0.0);
+    }
 	float dist = length(pointLight.lightPosition - FragPos);
     
     if(dist > 15.0) 
@@ -315,7 +319,11 @@ vec4 CalculatePointLight(PointLight pointLight, int shadowIndex, vec3 worldNorma
 	vec3 pointLightDirection = normalize(pointLightDistanceVector);
 	
 	//Calculate shadow factor
-	float shadowFactor = CalculateOmniShadowFactor(pointLight, shadowIndex);
+	float shadowFactor = 0.0;
+	if (pointLight.castsShadows == 1) 
+    {
+        shadowFactor = CalculateOmniShadowFactor(pointLight, shadowIndex);
+    }
 	
 	// Calculate attenuation using formula
 	float attenuation = 1.0 / (pointLight.constant + pointLight.linear * distance + pointLight.quadratic * distance * distance);
