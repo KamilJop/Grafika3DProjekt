@@ -15,7 +15,6 @@ public:
 private:
 	bool isPickedUp = false;
 	Texture* itemTexture;
-	std::string pickupSoundPath = "Audio/key_pickup.mp3";
-	std::string pickupSoundName = "key_pickup";
+	std::string pickupSoundPath = "Audio/item_pick.mp3";
 };
 

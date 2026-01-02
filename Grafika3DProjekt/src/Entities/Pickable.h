@@ -13,7 +13,7 @@ class Pickable : public Entity
 private:
 	bool isPickedUp = false;
 	Texture* itemTexture;
-	std::string pickupSoundPath = "Audio/item_pickup.mp3";
+	std::string pickupSoundPath = "Audio/item_pick.mp3";
 
 };
 

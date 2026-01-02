@@ -13,5 +13,6 @@ private:
 	SpriteRenderer* renderer;
 	Texture* pageTexture;
 	bool isReading = false;
+	std::string readingSoundPath = "Audio/page_flip.mp3";
 };
 

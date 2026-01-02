@@ -6,12 +6,12 @@ Battery::Battery(Model* model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, std
 	itemTag = tag;
 	itemTexture = tex;
 	pickable = true;
-	AudioManager::GetInstance().Load3DSoundEffect(pickupSoundName, pickupSoundPath);
+	AudioManager::GetInstance().Load3DSoundEffect(pickupSoundPath, pickupSoundPath);
 }
 
 void Battery::Interact(Inventory* playerInventory)
 {
-	AudioManager::GetInstance().Play3DSoundEffect(pickupSoundName, position, 1.0f);
+	AudioManager::GetInstance().Play3DSoundEffect(pickupSoundPath, position, 1.0f);
 	isPickedUp = true;
 	UI::SetSubtitle("A battery. Nice!", 2.0f);
 }

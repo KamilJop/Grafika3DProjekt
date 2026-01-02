@@ -4,9 +4,11 @@ Readable::Readable(Model* model, glm::vec3 position, glm::vec3 rotation, glm::ve
 	: Entity(model, position, rotation, scale, interaction), renderer(spriteRenderer), pageTexture(texture)
 {
 	actionText = "Read";
+	AudioManager::GetInstance().Load2DSoundEffect("page_flip", readingSoundPath);
 }	
 void Readable::Interact(Inventory* playerInventory)
 {
 	isReading = true;
+	AudioManager::GetInstance().Play2DSoundEffect("page_flip", Config::getInstance().sfxVolume);
 }
 
