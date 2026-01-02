@@ -66,6 +66,7 @@ enum ShaderTypes
 enum GameStates
 {
 	STATE_MAIN_MENU,
+	STATE_INTRO,
 	STATE_PLAYING,
 	STATE_PAUSED,
 	STATE_GAME_END,
@@ -118,7 +119,7 @@ Lock* currentActiveLock = nullptr;
 
 
 // Game state
-GameStates gameState = STATE_PLAYING;
+GameStates gameState = STATE_MAIN_MENU;
 
 // Delta time
 float deltaTime = 0.0f;
@@ -403,6 +404,7 @@ TextRenderer* textRenderer;
 TextRenderer* tooltipRenderer;
 TextRenderer* smallerTooltipRenderer;
 TextRenderer* subtitlesRenderer;
+TextRenderer* menuRenderer;
 
 // Sprite Renderer
 SpriteRenderer* spriteRenderer;
@@ -559,12 +561,24 @@ int main()
 	glm::mat4 projection;
 	projection = glm::perspective(glm::radians(60.0f), (GLfloat)mainWindow.getBufferWidth() / (GLfloat)mainWindow.getBufferHeight(), 0.1f, 100.0f);
 
+	menuRenderer = new TextRenderer(uiWidth, uiHeight);
+	menuRenderer->Load("Fonts/bloodcrow.ttf", 48);
+
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+	std::string loadingText = "Loading assets...";
+	menuRenderer->RenderText(loadingText, (uiWidth - menuRenderer->GetTextWidth(loadingText)) / 2.0f, uiHeight / 2.0f, 1.0f, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	mainWindow.swapBuffers();
+
+
 	// Create main scene
 	scene = createMainScene(&camera);
 
 	audioManager.Init();
 	audioManager.LoadMusicTrack("background", "Audio/background_music.mp3");
-	int backgroundMusicHandle = audioManager.PlayMusicTrack("background", config.musicVolume, 1);
+
+	audioManager.LoadMusicTrack("background_menu", "Audio/menu_music.mp3");
+	int backgroundMusicHandle = audioManager.PlayMusicTrack("background_menu", config.musicVolume, 1);
 
 	for(auto & sound : scarySounds) {
 		audioManager.Load2DSoundEffect(sound, sound);
@@ -577,14 +591,39 @@ int main()
 	int currentScarySoundIndex = 0;
 	float scarySoundTimer = 0.0f;
 	float scarySoundInterval = 70.0f; 
+	float alpha = 0.0f;
+
+	// intro story lines
+	std::vector<std::string> lines = {
+		"The Blackwood Estate.",
+		"",
+		"I inherited this place from a grandfather I never met.",
+		"The locals whispered about him, called him a madman.",
+		"I ignored them.",
+		"I thought it was just an old house filled with dusty books.",
+		"I was wrong.",
+		"The heavy oak door has locked itself behind me.",
+		"There is no turning back.", 
+		"Silence hangs heavy here,",
+		"broken only by the ticking of a clock that feels... unnatural.",
+		"I am trapped. And I fear I am not alone."
+	};
+
 	// Loop until window closed
+
 	while (!mainWindow.getShouldClose())
 	{
+
 		// Calculate delta time
 		float currentFrame = static_cast<float>(glfwGetTime());
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 		fpsAccumulator += deltaTime;
+		// Disable lag collision bugs
+		if (deltaTime > 0.5f)
+		{
+			deltaTime = 0.5f;
+		}
 
 		frameCount++;
 		if (fpsAccumulator >= 0.5f) {
@@ -601,77 +640,164 @@ int main()
 		audioManager.UpdateMusicVolume(backgroundMusicHandle, config.musicVolume);
 		audioManager.UpdateSFXVolume(config.sfxVolume);
 
-		// Disable huge delta time while loading assets
-		if (deltaTime > 0.5f)
-		{
-			deltaTime = 0.5f;
-		}
-
-		if (gameState == STATE_PLAYING) {
-			// Camera movement
-			camera.ProcessMouseMovement(mainWindow.getXChange(), mainWindow.getYChange());
-			// Update the scene
-			scene->Update(deltaTime);
-			// Update held entity model
-			player->setHeldEntityModel(player->getInventory()->GetCurrentItem()->itemModel);
-			player->setHeldEntityScale(player->getInventory()->GetCurrentItem()->itemScale);
-
-			// Update puzzles
-			candlePuzzle->Update(deltaTime);
-			pedestalPuzzle->Update();
-
-			// Update particle systems
-			fireParticleSystem->Update(deltaTime);
-			for (auto& candle : candles) {
-				if (candle->getIsLit()) {
-					/*fireParticleSystem->SpawnParticles(candle->getPosition() + glm::vec3(-0.1f, 0.4f, -0.1f), 1, glm::vec3(0.1f, 0.0f, 0.1f));*/
-					fireParticleSystem->SpawnParticles(candle->getLightPosition() - glm::vec3(0.0f,0.1f,0.0f), 1, glm::vec3(0.1f, 0.0f, 0.1f));
+		switch(gameState) {
+			case STATE_MAIN_MENU:
+				glBindFramebuffer(GL_FRAMEBUFFER, 0);
+				glViewport(0, 0, uiWidth, uiHeight);
+				glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+				glEnable(GL_BLEND);
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+				glDisable(GL_DEPTH_TEST);
+				alpha = (sin(currentFrame * 3.0f) + 1.0f) / 2.0f; 
+				menuRenderer->RenderText("ESCAPE ROOM HORROR GAME", (uiWidth - menuRenderer->GetTextWidth("ESCAPE ROOM HORROR GAME") * 1.5) / 2.0f, uiHeight / 2.0f + 150.0f, 1.5f, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				menuRenderer->RenderText("Press SPACE to Start", (uiWidth - menuRenderer->GetTextWidth("Press SPACE to Start")) / 2.0f, uiHeight / 2.0f, 1.0f, glm::vec4(1.0f, 1.0f, 1.0f, alpha));
+				glEnable(GL_DEPTH_TEST);
+				glDisable(GL_BLEND);
+				if (mainWindow.getKeys()[GLFW_KEY_SPACE]) {
+					mainWindow.getKeys()[GLFW_KEY_SPACE] = false;
+					audioManager.StopMusic();
+					backgroundMusicHandle = audioManager.PlayMusicTrack("background", config.musicVolume, 1);
+					gameState = STATE_INTRO; 
 				}
-			}
+				break;
+			case STATE_PLAYING:
+				// Camera movement
+				camera.ProcessMouseMovement(mainWindow.getXChange(), mainWindow.getYChange());
+				// Update the scene
+				scene->Update(deltaTime);
+				// Update held entity model
+				player->setHeldEntityModel(player->getInventory()->GetCurrentItem()->itemModel);
+				player->setHeldEntityScale(player->getInventory()->GetCurrentItem()->itemScale);
 
-			if(pedestalPuzzle->getSolved()) {
-				lampLight->setAmbientIntensity(0.0f);
-				lampLight->setDiffuseIntensity(0.0f);
-				pedestalLight1->setAmbientIntensity(0.0f);
-				pedestalLight1->setDiffuseIntensity(0.0f);
-				pedestalLight2->setAmbientIntensity(0.0f);
-				pedestalLight2->setDiffuseIntensity(0.0f);
-				pedestalLight3->setAmbientIntensity(0.0f);
-				pedestalLight3->setDiffuseIntensity(0.0f);
-				pedestalLight4->setAmbientIntensity(0.0f);
-				pedestalLight4->setDiffuseIntensity(0.0f);
-				outsideLight->setAmbientIntensity(1.0f);
-				outsideLight->setDiffuseIntensity(1.0f);
-				outsideLight->setColor(glm::vec3(100.0f, 100.0f, 100.0f));
-				exposure += 0.1f * deltaTime;
-				if(exposure > 3.0f) {
-					exposure = 1.5f;
+				// Update puzzles
+				candlePuzzle->Update(deltaTime);
+				pedestalPuzzle->Update();
+
+				// Update particle systems
+				fireParticleSystem->Update(deltaTime);
+				for (auto& candle : candles) {
+					if (candle->getIsLit()) {
+						/*fireParticleSystem->SpawnParticles(candle->getPosition() + glm::vec3(-0.1f, 0.4f, -0.1f), 1, glm::vec3(0.1f, 0.0f, 0.1f));*/
+						fireParticleSystem->SpawnParticles(candle->getLightPosition() - glm::vec3(0.0f, 0.1f, 0.0f), 1, glm::vec3(0.1f, 0.0f, 0.1f));
+					}
 				}
 
-			}
-			scarySoundTimer += deltaTime;
-			if (scarySoundTimer >= scarySoundInterval) {
-				audioManager.Play2DSoundEffect(scarySounds[currentScarySoundIndex], config.sfxVolume * 2.0f);
-				printf("Playing scary sound: %s\n", scarySounds[currentScarySoundIndex].c_str());
-				currentScarySoundIndex = (currentScarySoundIndex + 1) % scarySounds.size();
-				scarySoundTimer = 0.0f;
+				// Handle pedestal puzzle completion
+				if (pedestalPuzzle->getSolved()) {
+					lampLight->setAmbientIntensity(0.0f);
+					lampLight->setDiffuseIntensity(0.0f);
+					pedestalLight1->setAmbientIntensity(0.0f);
+					pedestalLight1->setDiffuseIntensity(0.0f);
+					pedestalLight2->setAmbientIntensity(0.0f);
+					pedestalLight2->setDiffuseIntensity(0.0f);
+					pedestalLight3->setAmbientIntensity(0.0f);
+					pedestalLight3->setDiffuseIntensity(0.0f);
+					pedestalLight4->setAmbientIntensity(0.0f);
+					pedestalLight4->setDiffuseIntensity(0.0f);
+					outsideLight->setAmbientIntensity(1.0f);
+					outsideLight->setDiffuseIntensity(1.0f);
+					outsideLight->setColor(glm::vec3(100.0f, 100.0f, 100.0f));
+					exposure += 0.1f * deltaTime;
+					if (exposure > 3.0f) {
+						exposure = 1.5f;
+					}
+					if(camera.getCameraPosition().x <= -2.0f && camera.getCameraPosition().z <= 1.0f) {
+						audioManager.StopMusic();
+						audioManager.PlayMusicTrack("background_menu", config.musicVolume, 1);
+						gameState = STATE_GAME_END;
+						break;
+					}
+				}
+				scarySoundTimer += deltaTime;
 
-			}
+				// Play scary sounds at intervals
+				if (scarySoundTimer >= scarySoundInterval) {
+					audioManager.Play2DSoundEffect(scarySounds[currentScarySoundIndex], config.sfxVolume * 2.0f);
+					printf("Playing scary sound: %s\n", scarySounds[currentScarySoundIndex].c_str());
+					currentScarySoundIndex = (currentScarySoundIndex + 1) % scarySounds.size();
+					scarySoundTimer = 0.0f;
 
-		}
+				}
+				break;
+			case STATE_INTRO:
+			{
+				glBindFramebuffer(GL_FRAMEBUFFER, 0);
+				glViewport(0, 0, uiWidth, uiHeight);
+				glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		if (gameState == STATE_MINIGAME && currentActiveLock != nullptr) {
-			if(currentActiveLock->getIsUnlocked()) {
-				// Restore camera position
-				camera.setPosition(savedCameraPosition);
-				camera.setYaw(savedCameraYaw);
-				camera.setPitch(savedCameraPitch);
-				// Close lock minigame and delete lock
-				currentActiveLock->cleanUpLock();
-				currentActiveLock = nullptr;
-				// Change game state back to playing
-				SetGameState(STATE_PLAYING);
+				glEnable(GL_BLEND);
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+				glDisable(GL_DEPTH_TEST);
+
+				float lineHeight = 40.0f;
+				float scale = 0.8f;
+				glm::vec4 color(0.9f, 0.9f, 0.9f, 1.0f);
+
+				float totalTextHeight = lines.size() * lineHeight;
+
+				float startY = (uiHeight / 2.0f) + (totalTextHeight / 2.0f);
+
+				for (int i = 0; i < lines.size(); i++) {
+					float textW = menuRenderer->GetTextWidth(lines[i]) * scale;
+					menuRenderer->RenderText(lines[i], (uiWidth - textW) / 2.0f, startY - (i * lineHeight), scale, color);
+				}
+
+				alpha = (sin(currentFrame * 3.0f) + 1.0f) / 2.0f;
+				float contW = menuRenderer->GetTextWidth("Press SPACE to Continue") * 0.7f;
+
+				menuRenderer->RenderText("Press SPACE to Continue", (uiWidth - contW) / 2.0f, 100.0f, 0.7f, glm::vec4(1.0f, 0.0f, 0.0f, alpha));
+
+				glEnable(GL_DEPTH_TEST);
+				glDisable(GL_BLEND);
+
+				if (mainWindow.getKeys()[GLFW_KEY_SPACE]) {
+					mainWindow.getKeys()[GLFW_KEY_SPACE] = false;
+					gameState = STATE_PLAYING;
+				}
+				break;
 			}
+			case STATE_PAUSED:
+				break;
+			case STATE_GAME_END:
+				glBindFramebuffer(GL_FRAMEBUFFER, 0);
+				glViewport(0, 0, uiWidth, uiHeight);
+				glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+				glEnable(GL_BLEND);
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+				glDisable(GL_DEPTH_TEST);
+				menuRenderer->RenderText("Congratulations! You Escaped!", (uiWidth - menuRenderer->GetTextWidth("Congratulations! You Escaped!") * 1.5) / 2.0f, uiHeight / 2.0f + 50.0f, 1.5f, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				menuRenderer->RenderText("Press ESC to Exit", (uiWidth - menuRenderer->GetTextWidth("Press ESC to Exit")) / 2.0f, uiHeight / 2.0f - 50.0f, 1.0f, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				glEnable(GL_DEPTH_TEST);
+				glDisable(GL_BLEND);
+				if (mainWindow.getKeys()[GLFW_KEY_ESCAPE]) {
+					mainWindow.getKeys()[GLFW_KEY_ESCAPE] = false;
+					mainWindow.setShouldClose(true);
+				}
+				break;
+			case STATE_READING:
+				break;
+			case STATE_MINIGAME:
+				if(currentActiveLock != nullptr) {
+					if (currentActiveLock->getIsUnlocked()) {
+						// Restore camera position
+						camera.setPosition(savedCameraPosition);
+						camera.setYaw(savedCameraYaw);
+						camera.setPitch(savedCameraPitch);
+						// Close lock minigame and delete lock
+						currentActiveLock->cleanUpLock();
+						currentActiveLock = nullptr;
+						// Change game state back to playing
+						SetGameState(STATE_PLAYING);
+					}
+				}
+				break;
+			default:
+				float lineHeight, startY, contW, scale;
+
+				break;
 		}
 
 		
@@ -681,32 +807,32 @@ int main()
 		// Get + Handle user input events
 		glfwPollEvents();
 		
-		// Shadow map for dirlight pass
-		DirectionalLightShadowMapPass();
+		if (gameState != STATE_MAIN_MENU && gameState != STATE_GAME_END && gameState != STATE_INTRO	) {
 
-		// Shadow map for flashlight pass
-		FlashlightShadowMapPass();
+			// Shadow map for dirlight pass
+			DirectionalLightShadowMapPass();
 
-		// Shadow map for point lights
-		for (int i = 0; i < scene->getPointLights().size(); i++)
-		{
-			if (scene->getPointLights()[i]->getCastShadow()) {
-				OmniShadowMapPass(scene->getPointLights()[i]);
+			// Shadow map for flashlight pass
+			FlashlightShadowMapPass();
+
+			// Shadow map for point lights
+			for (int i = 0; i < scene->getPointLights().size(); i++)
+			{
+				if (scene->getPointLights()[i]->getCastShadow()) {
+					OmniShadowMapPass(scene->getPointLights()[i]);
+				}
 			}
+
+			// Render scene pass
+			RenderScenePass(projection);
+
+			// Post processing pass
+			PostProcessingPass();
+
+			// Draw UI
+			gameUI->RenderSubtitle(deltaTime);
+			DrawInventory();
 		}
-
-		// Render scene pass
-		RenderScenePass(projection);
-
-		// Post processing pass
-		PostProcessingPass();
-
-		// Draw UI
-
-		gameUI->RenderSubtitle(deltaTime);
-		DrawInventory();
-
-
 
 		// Render FPS
 		if (config.showFPS) {
@@ -881,7 +1007,7 @@ Scene* createMainScene(Camera * camera) {
 	doorsRoom1Entity->setLocked(true);
 	battery1Entity = new Battery(&batteryModel, glm::vec3(-2.5f, 0.5f, -3.0f), glm::vec3(0.0f), glm::vec3(2.5f),"battery", batterySprite, true);
 	battery1Entity->setTitle("Battery");
-	battery2Entity = new Battery(&batteryModel, glm::vec3(1.0f, 1.0f, -7.4f), glm::vec3(0.0f,0.0f,90.0f), glm::vec3(3.0f), "battery",batterySprite, true);
+	battery2Entity = new Battery(&batteryModel, glm::vec3(1.5f, 1.0f, -7.4f), glm::vec3(0.0f,0.0f,90.0f), glm::vec3(3.0f), "battery",batterySprite, true);
 	battery2Entity->setTitle("Battery");
 	calenderEntity = new Entity(&calenderModel, glm::vec3(-4.0f, 1.0f, -6.5f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(10.0f),true);
 	calenderEntity->setTitle("Calender");
@@ -917,30 +1043,30 @@ Scene* createMainScene(Camera * camera) {
 	//pageEntity->setTitle("Page");
 	//pageEntity->setColissions(false);
 
-	bookshelfEntity = new BookshelfPuzzle(&bookshelfModel, glm::vec3(1.0f, 0.0f, -7.5f), glm::vec3(0.0f), glm::vec3(1.5f));
+	bookshelfEntity = new BookshelfPuzzle(&bookshelfModel, glm::vec3(1.5f, 0.0f, -7.5f), glm::vec3(0.0f), glm::vec3(1.5f));
 
-	redBookEntity = new Book(&redBookModel, glm::vec3(0.42f, 1.54f, -7.3f), glm::vec3(0.0f, 0.0f, 90.0f), glm::vec3(1.4f), "redBook", true);
+	redBookEntity = new Book(&redBookModel, glm::vec3(0.92f, 1.54f, -7.3f), glm::vec3(0.0f, 0.0f, 90.0f), glm::vec3(1.4f), "redBook", true);
 	redBookEntity->setTitle("Red Book");
 	redBookEntity->setColissions(false);
-	greyBookEntity = new Book(&greyBookModel, glm::vec3(0.48f, 1.54f, -7.3f), glm::vec3(0.0f, 0.0f, 90.0f), glm::vec3(1.4f), "greyBook", true);
+	greyBookEntity = new Book(&greyBookModel, glm::vec3(0.98f, 1.54f, -7.3f), glm::vec3(0.0f, 0.0f, 90.0f), glm::vec3(1.4f), "greyBook", true);
 	greyBookEntity->setTitle("Grey Book");
 	greyBookEntity->setColissions(false);
-	yellowBookEntity = new Book(&yellowBookModel, glm::vec3(0.54f, 1.54f, -7.3f), glm::vec3(0.0f, 0.0f, 90.0f), glm::vec3(1.4f), "yellowBook", true);
+	yellowBookEntity = new Book(&yellowBookModel, glm::vec3(1.04f, 1.54f, -7.3f), glm::vec3(0.0f, 0.0f, 90.0f), glm::vec3(1.4f), "yellowBook", true);
 	yellowBookEntity->setTitle("Yellow Book");
 	yellowBookEntity->setColissions(false);
-	brownBookEntity = new Book(&brownBookModel, glm::vec3(0.6f, 1.54f, -7.3f), glm::vec3(0.0f, 0.0f, 90.0f), glm::vec3(1.4f), "brownBook", true);
+	brownBookEntity = new Book(&brownBookModel, glm::vec3(1.1f, 1.54f, -7.3f), glm::vec3(0.0f, 0.0f, 90.0f), glm::vec3(1.4f), "brownBook", true);
 	brownBookEntity->setTitle("Brown Book");
 	brownBookEntity->setColissions(false);
-	greenBookEntity = new Book(&greenBookModel, glm::vec3(0.66f, 1.54f, -7.3f), glm::vec3(0.0f, 0.0f, 90.0f), glm::vec3(1.4f), "greenBook", true);
+	greenBookEntity = new Book(&greenBookModel, glm::vec3(1.16f, 1.54f, -7.3f), glm::vec3(0.0f, 0.0f, 90.0f), glm::vec3(1.4f), "greenBook", true);
 	greenBookEntity->setTitle("Green Book");
 	greenBookEntity->setColissions(false);
-	orangeBookEntity = new Book(&orangeBookModel, glm::vec3(0.72f, 1.54f, -7.3f), glm::vec3(0.0f, 0.0f, 90.0f), glm::vec3(1.4f), "orangeBook", true);
+	orangeBookEntity = new Book(&orangeBookModel, glm::vec3(1.22f, 1.54f, -7.3f), glm::vec3(0.0f, 0.0f, 90.0f), glm::vec3(1.4f), "orangeBook", true);
 	orangeBookEntity->setTitle("Orange Book");
 	orangeBookEntity->setColissions(false);
-	purpleBookEntity = new Book(&purpleBookModel, glm::vec3(0.78f, 1.54f, -7.3f), glm::vec3(0.0f, 0.0f, 90.0f), glm::vec3(1.4f), "purpleBook", true);
+	purpleBookEntity = new Book(&purpleBookModel, glm::vec3(1.28f, 1.54f, -7.3f), glm::vec3(0.0f, 0.0f, 90.0f), glm::vec3(1.4f), "purpleBook", true);
 	purpleBookEntity->setTitle("Purple Book");
 	purpleBookEntity->setColissions(false);
-	blueBookEntity = new Book(&blueBookModel, glm::vec3(0.84f, 1.54f, -7.3f), glm::vec3(0.0f, 0.0f, 90.0f), glm::vec3(1.4f), "blueBook", true);
+	blueBookEntity = new Book(&blueBookModel, glm::vec3(1.34f, 1.54f, -7.3f), glm::vec3(0.0f, 0.0f, 90.0f), glm::vec3(1.4f), "blueBook", true);
 	blueBookEntity->setTitle("Blue Book");
 	blueBookEntity->setColissions(false);
 
@@ -1094,7 +1220,7 @@ Scene* createMainScene(Camera * camera) {
 	candleLight8->setCastShadow(true);
 	candleLight9 = new PointLight(glm::vec3(10.0f, 6.0f, 1.0f), 0.0f, 1.0f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.7f, 1.8f, 8, 20.0f, 0.01f, 128.0f,128.0f);
 	candleLight9->setCastShadow(true);
-	flashlight = new Flashlight(glm::vec3(2.0f, 1.9f, 1.4f), 0.5f, 1.5f, camera->getCameraPosition(), 1.0f, 0.045f, 0.0075f, camera->getCameraFront(), 16.5f, 25.0f, 1024.0f, 1024.0f);
+	flashlight = new Flashlight(glm::vec3(2.0f, 1.9f, 1.4f), 0.7f, 2.5f, camera->getCameraPosition(), 1.0f, 0.045f, 0.0075f, camera->getCameraFront(), 16.5f, 25.0f, 1024.0f, 1024.0f);
 	lampLight = new PointLight(glm::vec3(2.4f, 2.0f, 1.4f),0.05f, 2.0f,glm::vec3(-4.0f, 1.7f, -7.0f),1.0f, 0.15f, 0.032f,9, 20.0f, 0.01f, 1024.0f, 1024.0f);
 	lampLight->setCastShadow(true);
 
