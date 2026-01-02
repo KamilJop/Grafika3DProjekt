@@ -41,11 +41,7 @@ void Door::Interact(Inventory* playerInventory)
 			return;
 		}
 
-		if(!triedToOpen) {
-			triedToOpen = true;
-				
-			UI::SetSubtitle(examineText,3.0f);
-		}
+		UI::SetSubtitle(examineText,3.0f);
 		isTryingToOpen = true;
 		animCounter = 0.0;
 		AudioManager::GetInstance().Play3DSoundEffect(lockedSoundName, position, config.sfxVolume * 2.0f);

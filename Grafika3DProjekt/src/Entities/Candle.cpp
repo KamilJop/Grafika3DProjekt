@@ -27,10 +27,7 @@ void Candle::Interact(Inventory* playerInventory)
 {	
 	if (!isLit) {
 		if(playerInventory->GetCurrentItem()->tag != "Lighter") {
-			if(!triedToLight) {
-				triedToLight = true;
-				UI::SetSubtitle("I need something to light it with.", 3.0f);
-			}
+			UI::SetSubtitle("I need something to light it with.", 3.0f);
 			return;
 		}
 		AudioManager::GetInstance().Play3DSoundEffect("candle_lighting", position, Config::getInstance().sfxVolume * 2.0f);

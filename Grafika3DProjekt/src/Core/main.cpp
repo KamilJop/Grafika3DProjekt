@@ -76,7 +76,7 @@ enum GameStates
 
 
 // TEST FLOAT
-float exposure = 0.05f;
+float exposure = 0.075f;
 
 Config& config = Config::getInstance();
 
@@ -119,7 +119,7 @@ Lock* currentActiveLock = nullptr;
 
 
 // Game state
-GameStates gameState = STATE_MAIN_MENU;
+GameStates gameState = STATE_INTRO;
 
 // Delta time
 float deltaTime = 0.0f;
@@ -188,11 +188,16 @@ Entity* room1FrontWallRightEntity;
 Entity* houseWalls;
 Entity* houseFloor;
 Entity* houseCeiling;
+Entity* chairEntity;
+Model chairModel;
+Readable* corridorPaperEntity;
 
 // Hidden room collisions
 Entity* hiddenRoomBackWallEntity;
 Entity* hiddenRoomLeftWallEntity;
 Entity* hiddenRoomCeilingEntity;
+Entity* hiddenRoomWalls;
+Model hiddenRoomWallsModel;
 
 
 // Corridor collisions
@@ -423,6 +428,7 @@ Texture* crowSprite;
 Texture* collarSprite;
 Texture* skullSprite;
 Texture* eyeSprite;
+Texture* corridorSprite;
 
 std::vector<std::string> scarySounds = {
 	"Audio/horror_sound.mp3",
@@ -549,6 +555,10 @@ int main()
 	eyeSprite = new Texture("Textures/Icons/eye.png");
 	eyeSprite->LoadTextureAlpha();
 
+	corridorSprite = new Texture("Textures/corridor_order.png");	
+	corridorSprite->LoadTextureAlpha();
+
+
 	spriteRenderer = new SpriteRenderer(*shaderList[SHADER_SPRITES]);
 	glm::mat4 projectionUI = glm::ortho(0.0f, (float)uiWidth, (float)uiHeight, 0.0f, -1.0f, 1.0f);
 
@@ -592,6 +602,7 @@ int main()
 	float scarySoundTimer = 0.0f;
 	float scarySoundInterval = 70.0f; 
 	float alpha = 0.0f;
+	bool changeMusic = false;
 
 	// intro story lines
 	std::vector<std::string> lines = {
@@ -656,12 +667,15 @@ int main()
 				glDisable(GL_BLEND);
 				if (mainWindow.getKeys()[GLFW_KEY_SPACE]) {
 					mainWindow.getKeys()[GLFW_KEY_SPACE] = false;
-					audioManager.StopMusic();
-					backgroundMusicHandle = audioManager.PlayMusicTrack("background", config.musicVolume, 1);
 					gameState = STATE_INTRO; 
 				}
 				break;
 			case STATE_PLAYING:
+				if(changeMusic) {
+					audioManager.StopMusic();
+					backgroundMusicHandle = audioManager.PlayMusicTrack("background", config.musicVolume, 1);
+					changeMusic = false;
+				}
 				// Camera movement
 				camera.ProcessMouseMovement(mainWindow.getXChange(), mainWindow.getYChange());
 				// Update the scene
@@ -754,6 +768,7 @@ int main()
 
 				if (mainWindow.getKeys()[GLFW_KEY_SPACE]) {
 					mainWindow.getKeys()[GLFW_KEY_SPACE] = false;
+					changeMusic = true;
 					gameState = STATE_PLAYING;
 				}
 				break;
@@ -834,9 +849,8 @@ int main()
 			DrawInventory();
 		}
 
-		// Render FPS
 		if (config.showFPS) {
-			textRenderer->RenderText("x " + std::to_string(camera.getCameraPosition().x) + "y "+std::to_string(camera.getCameraPosition().y) + "z" + std::to_string(camera.getCameraPosition().z) + "FPS: " + std::to_string((int)displayFPS), 10.0f, uiHeight - 20.0f, 1.0f, glm::vec4(0.5f, 0.8f, 0.2f, 1.0f));
+			textRenderer->RenderText("FPS: " + std::to_string((int)displayFPS), 10.0f, uiHeight - 20.0f, 1.0f, glm::vec4(0.5f, 0.8f, 0.2f, 1.0f));
 		}
 
 		if (gameState == STATE_PLAYING) {
@@ -905,6 +919,8 @@ Scene* createMainScene(Camera * camera) {
 	carpetModel.LoadModel("Models/carpet.obj");
 	doorsRoom1Model.LoadModel("Models/exitDoorsRoom1.obj");
 	colliderWallModel.LoadModel("Models/invisibleWall.obj");
+	hiddenRoomWallsModel.LoadModel("Models/malypokoj.obj");
+	chairModel.LoadModel("Models/krzeslo.obj");
 
 	// Room 1 interior object models
 	bookshelfModel.LoadModel("Models/bookshelf.obj");
@@ -977,7 +993,7 @@ Scene* createMainScene(Camera * camera) {
 	// Text renderer
 	textRenderer = new TextRenderer(mainWindow.getBufferWidth(), mainWindow.getBufferHeight());
 	tooltipRenderer = new TextRenderer(mainWindow.getBufferWidth(), mainWindow.getBufferHeight()); \
-		smallerTooltipRenderer = new TextRenderer(mainWindow.getBufferWidth(), mainWindow.getBufferHeight());
+	smallerTooltipRenderer = new TextRenderer(mainWindow.getBufferWidth(), mainWindow.getBufferHeight());
 	// Load font
 	textRenderer->Load("Fonts/BitterPro-Medium.ttf", 12);
 	tooltipRenderer->Load("Fonts/BitterPro-Bold.ttf", 36);
@@ -993,7 +1009,7 @@ Scene* createMainScene(Camera * camera) {
 	framuga = new Entity(&framugaModel,glm::vec3(3.0f, -0.1f, -2.7f), glm::vec3(0.0f,-90.0f,0.0f), glm::vec3(1.41f));
 	doorEntity = new Door(&door, glm::vec3(3.0f, -0.1f, -2.7f), glm::vec3(0.0f,-90.0f,0.0f), glm::vec3(1.4f), "Doors", framuga, "mainKey");
 	doorEntity->setLocked(true);
-	keyEntity = new Key(&keyModel, glm::vec3(-2.0f, 0.2f, 0.0f), glm::vec3(90.0f,0.0f,0.0f), glm::vec3(0.75f), "mainKey", keySprite, true);
+	keyEntity = new Key(&keyModel, glm::vec3(-2.0f, 0.55f, 0.0f), glm::vec3(90.0f,0.0f,0.0f), glm::vec3(0.75f), "mainKey", keySprite, true);
 	keyEntity->setTitle("Key");
 	keyEntity->setColissions(false);
 	radioEntity = new Radio(&radioModel, glm::vec3(-5.25f, 0.95f, -7.5f), glm::vec3(0.0f,30.0f,0.0f), glm::vec3(2.0f), true);
@@ -1005,7 +1021,7 @@ Scene* createMainScene(Camera * camera) {
 
 	doorsRoom1Entity = new Door(&doorsRoom1Model, glm::vec3(-2.9f, -0.1f, 1.0f), glm::vec3(0.0f,0.0f,0.0f), glm::vec3(2.0f), "Doors", framuga, "finalExitKey");
 	doorsRoom1Entity->setLocked(true);
-	battery1Entity = new Battery(&batteryModel, glm::vec3(-2.5f, 0.5f, -3.0f), glm::vec3(0.0f), glm::vec3(2.5f),"battery", batterySprite, true);
+	battery1Entity = new Battery(&batteryModel, glm::vec3(-2.5f, 0.6f, -3.0f), glm::vec3(0.0f), glm::vec3(2.5f),"battery", batterySprite, true);
 	battery1Entity->setTitle("Battery");
 	battery2Entity = new Battery(&batteryModel, glm::vec3(1.5f, 1.0f, -7.4f), glm::vec3(0.0f,0.0f,90.0f), glm::vec3(3.0f), "battery",batterySprite, true);
 	battery2Entity->setTitle("Battery");
@@ -1019,7 +1035,7 @@ Scene* createMainScene(Camera * camera) {
 	clockElementEntity = new ClockMovingPart(&clockElementModel, glm::vec3(2.5f, 2.0f, -5.0f), glm::vec3(0.0f, 270.0f, 0.0f), glm::vec3(3.5f), true);
 	clockEntity = new Entity(&clockModel, glm::vec3(2.5f, 1.0f, -5.0f), glm::vec3(0.0f, 270.0f, 0.0f), glm::vec3(3.5f), true);
 	clockEntity->setTitle("Clock");
-	clockEntity->setExamineText("The clock is stuck at 8:15 PM. Thats weird...");
+	clockEntity->setExamineText("The clock is stuck at 4:15 PM. Thats weird...");
 	globeEntity = new Entity(&globeModel, glm::vec3(-4.0f, 1.0f, -7.4f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.5f), true);
 	globeEntity->setTitle("Globe");
 	globeEntity->setExamineText("A globe showing the Earth.");
@@ -1030,20 +1046,20 @@ Scene* createMainScene(Camera * camera) {
 	paperEntity->setTitle("Missing Notebook's Page");
 	letterEntity = new Readable(&paperModel, glm::vec3(-5.2f, 0.15f, -7.5f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.5f), spriteRenderer, letterSprite, true);
 	letterEntity->setTitle("Mysterious Letter");
-	lesserSalomonEntity = new Readable(&lesserSalomonModel, glm::vec3(1.5f, -1.3f, -9.5f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.1f), spriteRenderer, lesserSalomonSprite, true);
+	lesserSalomonEntity = new Readable(&lesserSalomonModel, glm::vec3(1.5f, -1.3f, -11.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.1f), spriteRenderer, lesserSalomonSprite, true);
 	lesserSalomonEntity->setTitle("Lesser Key of Solomon");
 	lecternEntity = new Readable(&lecternModel, glm::vec3(17.0f, -0.1f, -0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.25f), spriteRenderer, lecternSprite, true);
 	lecternEntity->setTitle("Lectern with ritual instructions");
 	secondRoomDoorFramuga = new Entity(&framugaModel, glm::vec3(12.0f, -0.1f, -2.7f), glm::vec3(0.0f, -90.0f, 0.0f), glm::vec3(1.41f));
 	secondRoomDoorEntity = new Door(&door, glm::vec3(12.0f, -0.1f, -2.7f), glm::vec3(0.0f, -90.0f, 0.0f), glm::vec3(1.4f),"Locked Doors", secondRoomDoorFramuga, "secondDoorsKey");
 	secondRoomDoorEntity->setLocked(true);
-	secondKeyEntity = new Key(&keyModel, glm::vec3(0.0f, 0.3f, -9.8f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.75f), "secondDoorsKey", keySprite, true);
+	secondKeyEntity = new Key(&keyModel, glm::vec3(0.0f, 0.55f, -9.8f), glm::vec3(90.0f, 0.0f, 0.0f), glm::vec3(0.75f), "secondDoorsKey", keySprite, true);
 	secondKeyEntity->setTitle("Key");
-	//pageEntity = new Entity(&pageModel, glm::vec3(-5.0f, 1.0f, -3.0f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(2.0f), true);
-	//pageEntity->setTitle("Page");
-	//pageEntity->setColissions(false);
+	chairEntity = new Entity(&chairModel, glm::vec3(-2.7f, -0.1f, -7.4f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.3f), true);
+	chairEntity->setTitle("Chair");
+	chairEntity->setExamineText("An old wooden chair.");
 
-	bookshelfEntity = new BookshelfPuzzle(&bookshelfModel, glm::vec3(1.5f, 0.0f, -7.5f), glm::vec3(0.0f), glm::vec3(1.5f));
+	bookshelfEntity = new BookshelfPuzzle(&bookshelfModel, glm::vec3(1.4f, -0.2f, -7.5f), glm::vec3(0.0f), glm::vec3(1.7f));
 
 	redBookEntity = new Book(&redBookModel, glm::vec3(0.92f, 1.54f, -7.3f), glm::vec3(0.0f, 0.0f, 90.0f), glm::vec3(1.4f), "redBook", true);
 	redBookEntity->setTitle("Red Book");
@@ -1069,6 +1085,8 @@ Scene* createMainScene(Camera * camera) {
 	blueBookEntity = new Book(&blueBookModel, glm::vec3(1.34f, 1.54f, -7.3f), glm::vec3(0.0f, 0.0f, 90.0f), glm::vec3(1.4f), "blueBook", true);
 	blueBookEntity->setTitle("Blue Book");
 	blueBookEntity->setColissions(false);
+	corridorPaperEntity = new Readable(&paperModel, glm::vec3(7.0f,0.0f, -2.0f), glm::vec3(0.0f, 0.1f, 0.0f), glm::vec3(2.0f), spriteRenderer, corridorSprite, true);
+	corridorPaperEntity->setTitle("Corridor Note");
 
 
 	// Room 1 collisions
@@ -1079,11 +1097,14 @@ Scene* createMainScene(Camera * camera) {
 	ceilingEntity->setVisibility(false);
 	room1BackWallLeftSideEntity = new Entity(&colliderWallModel, glm::vec3(-6.0f, -0.1f, -8.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(6.5f, 4.0f, 1.0f));
 	ceilingEntity->setCastsShadow(false);
-	room1BackWallRightSideEntity = new Entity(&colliderWallModel, glm::vec3(1.6f, -0.1f, -8.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 4.0f, 1.0f));
-	room1BackWallLeftSideEntity->setCastsShadow(false);
 	room1BackWallLeftSideEntity->setVisibility(false);
+	room1BackWallRightSideEntity = new Entity(&colliderWallModel, glm::vec3(2.1f, -0.1f, -8.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 4.0f, 1.0f));
+	room1BackWallRightSideEntity->setCastsShadow(false);
+	room1BackWallRightSideEntity->setVisibility(false);
+	
 	room1BackWallUpSideEntity = new Entity(&colliderWallModel, glm::vec3(0.5f, 1.6f, -8.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.2f, 3.0f, 1.0f));
-	room1BackWallLeftSideEntity->setCastsShadow(false);
+	room1BackWallUpSideEntity->setCastsShadow(false);
+	room1BackWallUpSideEntity->setVisibility(false);
 	room1LeftWallEntity = new Entity(&colliderWallModel, glm::vec3(-5.8f, -0.1f, 1.2f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(10.0f, 4.0f, 1.0f));
 	room1LeftWallEntity->setCastsShadow(false);
 	room1LeftWallEntity->setVisibility(false);
@@ -1108,6 +1129,10 @@ Scene* createMainScene(Camera * camera) {
 
 	houseWalls = new Entity(&houseWallsModel, glm::vec3(-6.0f, -0.1f, 1.0f), glm::vec3(180.0f, 0.0f, 0.0f), glm::vec3(1.0f), false);
 	houseWalls->setColissions(false);
+	houseWalls->setVisibility(true);
+	hiddenRoomWalls = new Entity(&hiddenRoomWallsModel, glm::vec3(1.0f, -0.1f, -8.0f), glm::vec3(0.0f, -90.0f, 0.0f), glm::vec3(1.0f), false);
+	hiddenRoomWalls->setColissions(false);
+
 	houseFloor = new Entity(&houseFloorModel, glm::vec3(-6.0f, -0.1f, -18.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f), false);
 	houseFloor->setColissions(false);
 	houseCeiling = new Entity(&houseCeilingModel, glm::vec3(2.0f, 4.9f, -18.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f), false);
@@ -1115,10 +1140,11 @@ Scene* createMainScene(Camera * camera) {
 	// Hidden room collisions
 	hiddenRoomBackWallEntity = new Entity(&colliderWallModel, glm::vec3(-3.0f, -0.1f, -11.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(6.0f, 3.1f, 1.0f));
 	hiddenRoomBackWallEntity->setCastsShadow(false);
+	hiddenRoomBackWallEntity->setVisibility(false);
 	hiddenRoomLeftWallEntity = new Entity(&colliderWallModel, glm::vec3(-1.0f, -0.1f, -8.0f), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(3.0f, 3.1f, 1.0f));
 	hiddenRoomLeftWallEntity->setCastsShadow(false);
-	hiddenRoomCeilingEntity = new Entity(&colliderWallModel, glm::vec3(-3.0f, 3.0f, -8.0f), glm::vec3(-90.0f, 0.0f, 0.0f), glm::vec3(6.0f, 3.0f, 1.0f));
-	hiddenRoomCeilingEntity->setCastsShadow(false);
+	hiddenRoomLeftWallEntity->setVisibility(false);
+
 
 
 	// Hidden room interior objects
@@ -1241,7 +1267,7 @@ Scene* createMainScene(Camera * camera) {
 	lockEntity->setTitle("Lock");
 	lockEntity->setChestToUnlock(chestEntity);
 
-	sofaEntity = new Entity(&sofaModel, glm::vec3(1.8f, 0.0f, -0.5f), glm::vec3(0.0f, -130.0f, 0.0f), glm::vec3(1.5f));
+	sofaEntity = new Entity(&sofaModel, glm::vec3(1.8f, -0.1f, -0.5f), glm::vec3(0.0f, -130.0f, 0.0f), glm::vec3(1.5f));
 	candleEntity = new Candle(&candleModel, glm::vec3(15.7f, 0.0f, -3.3f), glm::vec3(0.0f), glm::vec3(4.0f),candleLight,true);
 	candleEntity->setTitle("Candle");
 	candleEntity->setTag("B");
@@ -1262,7 +1288,7 @@ Scene* createMainScene(Camera * camera) {
 	candles.push_back(candle3Entity);
 	candles.push_back(candle4Entity);
 	candles.push_back(candle5Entity);
-	carpetEntity = new Entity(&carpetModel, glm::vec3(6.0f, 0.0f, -2.5f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.175f), false);
+	carpetEntity = new Entity(&carpetModel, glm::vec3(6.5f, 0.0f, -2.5f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.175f), false);
 	carpetEntity->setColissions(false);
 	
 	candle6Entity = new Candle(&candleHolderModel, glm::vec3(16.5f, 1.3f, -8.8f), glm::vec3(0.0f,0.0f,0.0f), glm::vec3(0.25f), candleLight6, false);
@@ -1334,7 +1360,9 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(tableEntity);
 	scene->AddEntity(lampEntity);
 	scene->AddEntity(globeEntity);
+	scene->AddEntity(chairEntity);
 	scene->AddEntity(chessboardEntity);
+	scene->AddEntity(carpetEntity);
 
 	scene->AddEntity(paperEntity);
 	scene->AddEntity(letterEntity);
@@ -1343,6 +1371,7 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(secondRoomDoorEntity);
 	scene->AddEntity(secondRoomDoorFramuga);
 	scene->AddEntity(secondKeyEntity);
+	scene->AddEntity(corridorPaperEntity);
 
 
 	scene->AddEntity(doorEntity);
@@ -1377,7 +1406,6 @@ Scene* createMainScene(Camera * camera) {
 	// Hidden room collisions
 	scene->AddEntity(hiddenRoomBackWallEntity);
 	scene->AddEntity(hiddenRoomLeftWallEntity);
-	scene->AddEntity(hiddenRoomCeilingEntity);
 
 	// Corridor collisions
 	scene->AddEntity(corridorLeftWallEntity);
@@ -1423,6 +1451,7 @@ Scene* createMainScene(Camera * camera) {
 	scene->AddEntity(candle7Entity);
 	scene->AddEntity(candle8Entity);	
 	scene->AddEntity(candle9Entity);
+	scene->AddEntity(hiddenRoomWalls);
 	return scene;
 }
 
@@ -1843,7 +1872,7 @@ void DrawInventory() {
 		subtitlesRenderer->RenderText(message, xPos, yPos, scale, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 	}
 	if (gameState == STATE_MINIGAME) {
-		std::string message = "[W]/[S] Rotate   [Q]/[S] Select   [ESC] Exit";
+		std::string message = "[W]/[S] Rotate   [Q]/[E] Select   [ESC] Exit";
 		float scale = 1.0f;
 		float textWidth = subtitlesRenderer->GetTextWidth(message) * scale;
 		float xPos = (uiWidth - textWidth) / 2.0f;

@@ -22,9 +22,6 @@ public:
 	~Radio();
 private:
 	int currentState = BROKEN;
-	bool triedToTurnOn = false;
-	bool triedToTurnOnAfterOneBattery = false;
-	bool playedMorse = false;
 	float soundTimer = 0.0f;
 	std::string brokenRadioSound = "Audio/broken_radio.mp3";
 	std::string firstInsert = "Audio/insert_first_battery.mp3";

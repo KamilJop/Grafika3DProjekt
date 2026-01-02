@@ -28,10 +28,8 @@ void Radio::Interact(Inventory* playerInventory)
 		}
 		else {
 			AudioManager::GetInstance().Play3DSoundEffect(brokenRadioSound, getPosition());
-			if(!triedToTurnOn) {
-				triedToTurnOn = true;
-				UI::SetSubtitle("It's dead. I need to find some batteries.", 3.0f);
-			}
+			UI::SetSubtitle("It's dead. I need to find some batteries.", 3.0f);
+
 		}
 		break;
 
@@ -43,10 +41,7 @@ void Radio::Interact(Inventory* playerInventory)
 			UI::SetSubtitle("I inserted another battery into the radio. It's working now!", 3.0f);
 		}
 		else {
-			if (!triedToTurnOnAfterOneBattery) {
-				triedToTurnOnAfterOneBattery = true;
-				UI::SetSubtitle("It has one battery, but it still won't turn on. I need another one.", 3.0f);
-			}
+			UI::SetSubtitle("It has one battery, but it still won't turn on. I need another one.", 3.0f);
 			if (soundTimer <= 0.0f) {
 				soundTimer = 5.5f;
 				AudioManager::GetInstance().Play3DSoundEffect(radioNoises, getPosition());
@@ -60,10 +55,7 @@ void Radio::Interact(Inventory* playerInventory)
 			soundTimer = 10.0f;
 			AudioManager::GetInstance().Play3DSoundEffect(morseCodeSound, getPosition());
 		}
-		if(!playedMorse) {
-			playedMorse = true;
-			UI::SetSubtitle("Beeps and pauses... Is something trying to communicate through the noise?", 4.0f);
-		}
+		UI::SetSubtitle("Beeps and pauses... Is something trying to communicate through the noise?", 4.0f);
 		break;
 	}
 

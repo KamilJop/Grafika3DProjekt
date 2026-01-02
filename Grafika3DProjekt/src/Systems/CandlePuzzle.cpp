@@ -58,9 +58,6 @@ void CandlePuzzle::Update(float dt)
 				whooshSoundPlayed[3] = true;
 				AudioManager::GetInstance().Play3DSoundEffect(whooshSoundPath, secondCandles[3]->getPosition(), Config::getInstance().sfxVolume * 10.0f);
 			}
-
-		}
-		if (timer >= 5.0f) {
 			if (!doorSoundPlayed) {
 				doorSoundPlayed = true;
 				AudioManager::GetInstance().Play3DSoundEffect(doorSlamSoundPath, doorToLock->getPosition(), Config::getInstance().sfxVolume * 5.0f);

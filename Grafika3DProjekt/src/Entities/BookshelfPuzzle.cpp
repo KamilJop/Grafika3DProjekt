@@ -25,7 +25,7 @@ void BookshelfPuzzle::Update(float deltaTime)
 	if (!isMoving) return;
 	position = glm::mix(position, solvedPosition, deltaTime * 0.5f);
 	UpdateCollisionBox();
-	if (glm::length(position - solvedPosition) < 0.01f) {
+	if (glm::length(position - solvedPosition) < 0.05f) {
 		isMoving = false;
 		ended = true;
 	}

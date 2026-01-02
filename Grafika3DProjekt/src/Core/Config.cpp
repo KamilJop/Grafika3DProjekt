@@ -31,12 +31,12 @@ void Config::Save() {
 }
 
 void Config::CreateDefaultConfig() {
-	screenWidth = 1280;
-	screenHeight = 720;
+	screenWidth = 2560;
+	screenHeight = 1440;
 	musicVolume = 0.5f;
 	sfxVolume = 0.5f;
 	fullscreen = false;
-	showFPS = true;
+	showFPS = false;
 	antiAliasing = true;
 	outlineColor[0] = 1.0f; outlineColor[1] = 0.0f; outlineColor[2] = 0.0f;
 	highlightColor[0] = 0.0f; highlightColor[1] = 1.0f; highlightColor[2] = 0.0f;
