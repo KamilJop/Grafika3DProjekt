@@ -1,134 +1,130 @@
-# 3D Horror Escape Room
+# Custom 3D Game Engine (OpenGL/C++)
 
-[![Language](https://img.shields.io/badge/language-C%2B%2B-blue.svg)]()
-[![Graphics](https://img.shields.io/badge/graphics-OpenGL%203.3-red.svg)]()
-[![License](https://img.shields.io/badge/license-MIT-green.svg)]()
+A custom 3D game engine and first-person horror demonstration developed from scratch using C++17 and OpenGL 3.3. The project focuses on implementing a low-level graphics pipeline, physics, and game logic without relying on pre-made engines.
 
-**3D Horror Escape Room** is a first-person puzzle and exploration game built on a custom 3D rendering engine.
-The player navigates a dark environment, solves environmental puzzles, and manages an inventory system to escape.
-The project focuses on atmospheric rendering, advanced lighting, 3D spatial audio, and interactive gameplay systems.
-
-Author: **Kamil Jop**
+![Status](https://img.shields.io/badge/Status-Active-success)
+![Platform](https://img.shields.io/badge/Platform-Windows-blue)
+![License](https://img.shields.io/badge/License-MIT-green)
 
 ---
 
-## Important Notice
-
-This project is currently a **Work in Progress**.
-While assets (models, textures, shaders, audio) are included in the repository, external libraries
-(**GLFW**, **GLAD**, **GLM**, **Assimp**, **FreeType**, **Dear ImGui**, **SoLoud**) must be installed and linked manually
-(CMake or Visual Studio project configuration).
-
----
-
-## Table of Contents
-
-- [Gameplay Preview](#gameplay-preview)
-- [Features](#features)
-- [Controls](#controls)
-- [Setup](#setup)
-- [License](#license)
-
----
 ## Gameplay Preview
-A glimpse into the puzzle mechanics and interaction system.
+
 <p align="center">
-  <img src="Footage/gif_bookshelf.gif" width="40%" title="Gameplay Demo">
-  &emsp; &emsp; <img src="Footage/gif_doors.gif" width="40%" title="Gameplay Demo2">
+  <img src="Footage/gif_gameplay.gif" width="30%" title="Gameplay & Atmosphere">
+  &emsp;
+  <img src="Footage/gif_mechanics.gif" width="30%" title="Interaction System">
+  &emsp;
+  <img src="Footage/gif_particles.gif" width="30%" title="Particle System">
 </p>
-<p align="center">Note: GIF quality reduced.</p>
-
-## Features
-
-## Core Engine & Rendering
-- **Blinn–Phong Lighting Model**:
-  - Directional lights (Sun/Moon)
-  - Point lights (Lamps, Candles)
-  - Dynamic Spotlights (Flashlight)
-- **Advanced Shadows**:
-  - Orthographic shadow maps for directional lights
-  - **Omni-directional cube-map shadows** for point lights (Geometry Shaders)
-- **Surface Detail**:
-  - Normal Mapping for realistic texture details
-  - Steep Parallax Mapping for depth simulation
-- **Post-Processing**:
-  - Object outlining using Stencil Buffer operations
-- **Skybox** using cubemap rendering
-
-## Gameplay & Mechanics
-- **Interaction System**:
-  - Raycasting-based detection for items and interactive objects
-  - Physics-based pick-up system involving "Held Entity" logic
-- **Inventory System**:
-  - Visual HUD with item sprites and active slot selection
-  - **3D Held Items**: Items selected in the inventory are rendered in the player's hand in 3D space
-  - Dynamic notification system for gameplay events
-- **Puzzles**:
-  - Logic-based obstacles (e.g., Door & Key mechanics)
-  - **Bookshelf Puzzle**: Interactive sequencing puzzle requiring specific object manipulation
-- **Physics**:
-  - FPS controller (gravity, jump, crouch)
-  - Real-time AABB collision detection
-
-## Audio System
-- **3D Spatial Audio** (powered by **SoLoud**):
-  - Sounds attenuate based on distance and position (e.g., door creaks, object movements)
-- **2D UI Sounds**:
-  - Feedback for inventory management and menu interactions
-
-## System & UI
-- **Configuration Manager**:
-  - Loads resolution, volume (SFX/Music), and graphics settings from `config.txt`
-- **UI System**:
-  - **Dear ImGui** for pause menu, settings, and debug options
-  - **FreeType** for in-game text rendering (crosshair, subtitles, notifications)
-- **Resource Handling**:
-  - Model loading via Assimp (.obj, .fbx)
-  - Texture loading via stb_image
 
 ---
 
-# Controls
+## Quick Start (Pre-built)
 
-| Key              | Action                   |
-|------------------|--------------------------|
-| **W, A, S, D** | Movement                 |
-| **Mouse** | Look Around              |
-| **SPACE** | Jump                     |
-| **Left SHIFT** | Crouch                   |
-| **F** | Toggle Flashlight        |
-| **E** | Interact / Pick Up Item  |
-| **1-9 / Scroll** | Change Active Item       |
-| **ESC** | Pause Menu               |
+A compiled version of the engine is available for immediate testing.
+1. Download **`Release_Build.zip`** from the **Releases** tab.
+2. Extract the archive.
+3. Run `Grafika3DProjekt.exe`.
+   *(Note: Ensure all `.dll` files and the `Assets` folder are in the same directory as the executable).*
 
 ---
 
-# Setup
+## Technical Features
 
-## 1. Dependencies
+### Rendering Pipeline
+* **Post-Processing Stack:**
+  * **HDR (High Dynamic Range):** Floating-point framebuffers with exposure tone mapping.
+  * **Bloom:** Two-pass Gaussian blur using ping-pong framebuffers.
+  * **Gamma Correction:** Linear lighting pipeline.
+* **Lighting & Shadows:**
+  * **Omni-directional Shadow Mapping:** Point lights render depth to Cubemaps using Geometry Shaders.
+  * **Directional Shadows:** Orthographic projection shadow mapping for global light sources.
+  * **Dynamic Lighting:** Blinn-Phong model supporting point lights, directional lights, and spotlights (flashlight) with attenuation.
+* **Surface Detail:**
+  * **Parallax Mapping:** Steep Parallax Mapping implementation for depth simulation.
+  * **Normal Mapping:** Tangent-space lighting calculations.
+* **Visual Effects:**
+  * **Particle System:** Billboard-based particle rendering with transparency and lifecycle management (used for fire).
+  * **Stencil Outline:** Object highlighting mechanism using Stencil Buffer operations.
 
-Ensure the following libraries are installed and linked in your IDE (e.g., Visual Studio):
-
-- **GLFW** (Windowing and Input)
-- **GLAD** (OpenGL Loader)
-- **GLM** (Mathematics)
-- **Assimp** (Model Loading)
-- **FreeType** (Font Rendering)
-- **Dear ImGui** (UI Interface)
-- **SoLoud** (Audio Engine)
-
-## 2. Project Structure
-
-Ensure your working directory contains these folders next to the executable:
-
-- `Shaders/` - GLSL source files (.vert, .frag, .geom)
-- `Models/` - 3D models (.obj, .fbx)
-- `Textures/` - Diffuse, normal, height maps, and UI icons
-- `Audio/` - Sound effects and music files
-- `Fonts/` - .ttf font files
+### Engine Systems
+* **Physics & Collision:** Custom AABB (Axis-Aligned Bounding Box) collision detection with dynamic recalculation for moving entities.
+* **Audio Engine:** Integration of **SoLoud** library handling 3D spatial audio, attenuation, and multi-channel sound management.
+* **Interaction System:** Raycasting-based detection for interactive objects, items, and puzzles.
+* **Game Logic:**
+  * Multi-stage interaction states (e.g., Radio repair sequence).
+  * Logic puzzles (Rotating cylinder locks, Pedestal item verification).
+* **GUI & Tools:**
+  * Custom 2D rendering subsystem (Text via FreeType & Sprites).
+  * Debug menus and options via **Dear ImGui**.
+  * Configuration Manager (Singleton) for serializing settings to `config.txt`.
 
 ---
 
-# License
+## Controls
 
-This project is released under the **MIT License**.
+| Input | Action |
+| :--- | :--- |
+| **W, A, S, D** | Movement |
+| **Mouse** | Camera Control |
+| **Space** | Jump |
+| **L-Shift** | Crouch |
+| **F** | Flashlight Toggle |
+| **E** | Interact / Pick Up |
+| **1-6 / Scroll** | Inventory Selection |
+| **Q / E** | Puzzle Manipulation (Rotate Left/Right) |
+| **ESC** | Pause / Settings Menu |
+
+---
+
+## Build Instructions
+
+This project is configured for **Visual Studio 2019/2022**.
+
+### Dependencies
+The following libraries are required to build from source. Ensure headers and binaries (`.lib`, `.dll`) are linked correctly.
+
+* **GLFW** (Windowing & Input)
+* **GLAD** (OpenGL Loader Generator)
+* **GLM** (OpenGL Mathematics)
+* **Assimp** (Open Asset Import Library)
+* **FreeType** (Font Rendering)
+* **SoLoud** (Audio Engine)
+* **Dear ImGui** (Immediate Mode GUI)
+
+### Compilation Steps
+1.  Open the solution file (`.sln`) in Visual Studio.
+2.  Navigate to **Project Properties**:
+    * **C/C++ > General > Additional Include Directories**: Add paths to `include/` folders for all dependencies.
+    * **Linker > General > Additional Library Directories**: Add paths to `lib/` folders.
+    * **Linker > Input**: Ensure the following are listed:
+        `opengl32.lib`, `glfw3.lib`, `assimp-vc143-mt.lib`, `freetype.lib`, `soloud.lib`.
+3.  Build the solution (Target: **Release x64** recommended).
+4.  **Crucial Step:** Copy the `Shaders`, `Models`, `Textures`, `Audio`, and `Fonts` directories to the output folder (where the `.exe` is generated).
+
+---
+
+## Project Structure
+
+```text
+├── src/
+│   ├── Core/           # Window, Camera, Config, Input handling
+│   ├── Entities/       # Game objects, Player, Physics logic
+│   ├── Rendering/      # Shader, Model, Mesh, Lighting classes
+│   ├── Systems/        # Audio, Particles, GUI implementations
+│   └── main.cpp        # Entry point and Game Loop
+├── Shaders/            # GLSL Source Code (.vert, .frag, .geom)
+└── Assets/             # Models, Textures, Audio resources
+```
+
+## Contributors
+
+* **Kamil Jop**
+* **Maciej Mika**
+* **Jakub Jurczyk**
+
+---
+
+## License
+This project is licensed under the MIT License.
