@@ -1,5 +1,6 @@
 /**
  * @file particle.vert
+ * @ingroup Shaders
  * @brief Vertex shader for rendering particles
  */
 

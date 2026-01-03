@@ -1,6 +1,7 @@
 /**
- * @file model.vert
- * @brief Vertex shader for transforming vertices by the model matrix
+ * @file omni_shadow_map.vert
+ * @ingroup Shaders
+ * @brief Vertex shader for point light shadow mapping
  */
 
 #version 330

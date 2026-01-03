@@ -17,6 +17,7 @@ var annotated_dup =
     [ "Door", "class_door.html", "class_door" ],
     [ "Drawer", "class_drawer.html", "class_drawer" ],
     [ "Entity", "class_entity.html", "class_entity" ],
+    [ "FlashLight", "struct_flash_light.html", "struct_flash_light" ],
     [ "Flashlight", "class_flashlight.html", "class_flashlight" ],
     [ "HauntedEntity", "class_haunted_entity.html", "class_haunted_entity" ],
     [ "HDRBuffer", "class_h_d_r_buffer.html", "class_h_d_r_buffer" ],

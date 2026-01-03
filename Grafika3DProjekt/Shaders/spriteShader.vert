@@ -1,5 +1,6 @@
 /**
- * @file sprite.vert
+ * @file spriteShader.vert
+ * @ingroup Shaders
  * @brief Vertex shader for rendering 2D sprites.
  *
  * Takes a quad vertex (pos + UV packed into a vec4),

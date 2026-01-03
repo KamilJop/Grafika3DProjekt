@@ -1,5 +1,6 @@
 /**
- * @file point_shadow.geom
+ * @file omni_shadow_map.geom
+ * @ingroup Shaders
  * @brief Geometry shader for point light shadow mapping
  */
 

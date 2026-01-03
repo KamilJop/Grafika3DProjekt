@@ -1,5 +1,6 @@
 /**
- * @file sprite.frag
+ * @file spriteShader.frag
+ * @ingroup Shaders
  * @brief Fragment shader for rendering 2D sprites.
  *
  * Multiplies the sprite texture by a tint color.

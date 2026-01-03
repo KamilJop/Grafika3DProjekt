@@ -4,5 +4,7 @@ var class_omni_shadow_map =
     [ "~OmniShadowMap", "class_omni_shadow_map.html#ab5227c9c15b94a7b6abd652573876ed3", null ],
     [ "Init", "class_omni_shadow_map.html#ab9b998050e839a22f0a187fe522fe72f", null ],
     [ "Read", "class_omni_shadow_map.html#a96c89659b7ff92fcd376fbbd22e52be1", null ],
-    [ "Write", "class_omni_shadow_map.html#aafd4e0d6b4cf265b59c67585c35622de", null ]
+    [ "Write", "class_omni_shadow_map.html#aafd4e0d6b4cf265b59c67585c35622de", null ],
+    [ "farPlane", "class_omni_shadow_map.html#a2314ce9b47dc71cb61e3add599035462", null ],
+    [ "shadowMap", "class_omni_shadow_map.html#a0aba1e0b5b5695b97183c6fe300d90df", null ]
 ];

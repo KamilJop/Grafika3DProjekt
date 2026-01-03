@@ -1,5 +1,6 @@
 /**
- * @file lighting.frag
+ * @file shader.frag
+ * @ingroup Shaders
  * @brief Main fragment shader for lighting, shadows, normal mapping, and parallax mapping.
  *
  * Handles:

@@ -1,5 +1,6 @@
 /**
- * @file blur.frag
+ * @file bloom.frag
+ * @ingroup Shaders
  * @brief Gaussian blur fragment shader
  */
 

@@ -1,5 +1,6 @@
 /**
  * @file hdr.frag
+ * @ingroup Shaders
  * @brief HDR tone mapping fragment shader
  */
 

@@ -26,6 +26,7 @@ var hierarchy =
       [ "Radio", "class_radio.html", null ],
       [ "Readable", "class_readable.html", null ]
     ] ],
+    [ "FlashLight", "struct_flash_light.html", null ],
     [ "HDRBuffer", "class_h_d_r_buffer.html", null ],
     [ "Inventory", "class_inventory.html", null ],
     [ "Item", "struct_item.html", null ],

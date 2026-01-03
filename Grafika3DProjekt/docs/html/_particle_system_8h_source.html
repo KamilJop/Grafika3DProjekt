@@ -136,7 +136,7 @@ $(function(){initNavTree('_particle_system_8h_source.html','',''); });
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="class_particle_system.html#a730777ebdb0874afe7ade36b2e150bb3">Update</a>(<span class="keywordtype">float</span> dt);</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span></div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="class_particle_system.html#a7eaee262ba61a7604ad7393948258ee0">SpawnParticles</a>(glm::vec3 position, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> amount,</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>                        glm::vec3 offset = glm::vec3(0.0f));</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>                        glm::vec3 <a class="code hl_variable" href="particle_8vert.html#a59eaa05592ef1eee48b653da15590a7b">offset</a> = glm::vec3(0.0f));</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span></div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="class_particle_system.html#a295c20302ae7d821f03c4fe005ae82fb">Draw</a>();</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span></div>
@@ -158,7 +158,7 @@ $(function(){initNavTree('_particle_system_8h_source.html','',''); });
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> firstUnusedParticle();</div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span></div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    <span class="keywordtype">void</span> respawnParticle(<a class="code hl_struct" href="struct_particle.html">Particle</a>&amp; particle, glm::vec3 position,</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>                         glm::vec3 offset = glm::vec3(0.0f));</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>                         glm::vec3 <a class="code hl_variable" href="particle_8vert.html#a59eaa05592ef1eee48b653da15590a7b">offset</a> = glm::vec3(0.0f));</div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>};</div>
 </div>
 <div class="ttc" id="a_shader_8h_html"><div class="ttname"><a href="_shader_8h.html">Shader.h</a></div></div>
@@ -170,6 +170,7 @@ $(function(){initNavTree('_particle_system_8h_source.html','',''); });
 <div class="ttc" id="aclass_particle_system_html_a7eaee262ba61a7604ad7393948258ee0"><div class="ttname"><a href="class_particle_system.html#a7eaee262ba61a7604ad7393948258ee0">ParticleSystem::SpawnParticles</a></div><div class="ttdeci">void SpawnParticles(glm::vec3 position, unsigned int amount, glm::vec3 offset=glm::vec3(0.0f))</div><div class="ttdoc">Spawns new particles at a position.</div><div class="ttdef"><b>Definition</b> ParticleSystem.cpp:53</div></div>
 <div class="ttc" id="aclass_shader_html"><div class="ttname"><a href="class_shader.html">Shader</a></div><div class="ttdoc">Handles loading, compiling, linking, and using GLSL shader programs.</div><div class="ttdef"><b>Definition</b> Shader.h:23</div></div>
 <div class="ttc" id="aclass_texture_html"><div class="ttname"><a href="class_texture.html">Texture</a></div><div class="ttdoc">Loads and manages 2D textures, normal maps, and height maps.</div><div class="ttdef"><b>Definition</b> Texture.h:17</div></div>
+<div class="ttc" id="aparticle_8vert_html_a59eaa05592ef1eee48b653da15590a7b"><div class="ttname"><a href="particle_8vert.html#a59eaa05592ef1eee48b653da15590a7b">offset</a></div><div class="ttdeci">uniform vec3 offset</div><div class="ttdef"><b>Definition</b> particle.vert:28</div></div>
 <div class="ttc" id="astruct_particle_html"><div class="ttname"><a href="struct_particle.html">Particle</a></div><div class="ttdoc">Single particle instance.</div><div class="ttdef"><b>Definition</b> ParticleSystem.h:12</div></div>
 <div class="ttc" id="astruct_particle_html_a2453080a7d5676cc481d12375061bbc3"><div class="ttname"><a href="struct_particle.html#a2453080a7d5676cc481d12375061bbc3">Particle::Velocity</a></div><div class="ttdeci">glm::vec3 Velocity</div><div class="ttdef"><b>Definition</b> ParticleSystem.h:13</div></div>
 <div class="ttc" id="astruct_particle_html_a40f4c7e248029d72e7714b7802d5e5e1"><div class="ttname"><a href="struct_particle.html#a40f4c7e248029d72e7714b7802d5e5e1">Particle::Particle</a></div><div class="ttdeci">Particle()</div><div class="ttdef"><b>Definition</b> ParticleSystem.h:18</div></div>

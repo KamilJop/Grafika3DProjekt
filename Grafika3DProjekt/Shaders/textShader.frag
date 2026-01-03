@@ -1,5 +1,6 @@
 /**
- * @file text.frag
+ * @file textShader.frag
+ * @ingroup Shaders
  * @brief Fragment shader for rendering bitmap text.
  *
  * Samples the glyph texture (stored in the red channel)

@@ -1,5 +1,6 @@
 /**
- * @file lighting.vert
+ * @file shader.vert
+ * @ingroup Shaders
  * @brief Vertex shader for transforming geometry and preparing data for lighting.
  *
  * Outputs:

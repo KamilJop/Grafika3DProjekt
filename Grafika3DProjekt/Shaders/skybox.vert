@@ -1,5 +1,6 @@
 /**
  * @file skybox.vert
+ * @ingroup Shaders
  * @brief Vertex shader for rendering the skybox cube.
  *
  * Passes cube vertex direction to the fragment shader

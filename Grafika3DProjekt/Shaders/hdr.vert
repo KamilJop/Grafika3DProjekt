@@ -1,6 +1,7 @@
 /**
- * @file screen.vert
- * @brief Screen-space vertex shader
+ * @file hdr.vert
+ * @ingroup Shaders
+ * @brief Screen-space vertex shader for HDR rendering
  */
 
 #version 330 core

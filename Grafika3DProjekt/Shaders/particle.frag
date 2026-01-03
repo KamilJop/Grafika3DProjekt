@@ -1,5 +1,6 @@
 /**
  * @file particle.frag
+ * @ingroup Shaders
  * @brief Fragment shader for rendering particles with bloom
  */
 

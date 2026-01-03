@@ -1,5 +1,6 @@
 /**
  * @file outline.frag
+ * @ingroup Shaders
  * @brief Fragment shader for rendering an outline color
  */
 

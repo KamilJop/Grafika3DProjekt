@@ -53,10 +53,11 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_audio_manager_8cpp.html",
-"class_directional_light.html#a1940cb55740d586de51f3b8d00eb11e5",
-"class_point_light.html#a0b7c731af3921223492e5d3564529b55",
-"main_8cpp.html#a094d67fef1392de96a8fb1e62d4bcfbd",
-"main_8cpp.html#af6e0f58d3725fcc564332c358e0d6134a640752a0b46d0103a604f44cb85ed6ce"
+"class_config.html#aee93d0e11ff54300068b1dfdedc40b5f",
+"class_player.html#a562438044eba54f832d206b1a7f139bc",
+"globals_vars_d.html",
+"main_8cpp.html#ad4b8e33c40280923a80110c79faccd5f",
+"struct_particle.html#a2453080a7d5676cc481d12375061bbc3"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

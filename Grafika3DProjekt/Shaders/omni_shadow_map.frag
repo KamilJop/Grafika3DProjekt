@@ -1,5 +1,6 @@
 /**
- * @file depth.frag
+ * @file omni_shadow_map.frag
+ * @ingroup Shaders
  * @brief Depth fragment shader for point light shadow mapping
  */
 

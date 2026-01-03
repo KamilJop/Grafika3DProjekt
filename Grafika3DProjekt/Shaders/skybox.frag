@@ -1,5 +1,6 @@
 /**
  * @file skybox.frag
+ * @ingroup Shaders
  * @brief Fragment shader for rendering the skybox.
  *
  * Samples a cubemap texture using the incoming direction vector.

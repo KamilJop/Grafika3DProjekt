@@ -1,6 +1,7 @@
 /**
- * @file depth.vert
- * @brief Depth vertex shader
+ * @file directional_shadow_map.vert
+ * @ingroup Shaders
+ * @brief Depth vertex shader for directional light shadow mapping
  */
 
 #version 330

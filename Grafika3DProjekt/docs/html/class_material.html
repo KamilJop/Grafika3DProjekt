@@ -105,6 +105,14 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a2c19452d71f54075df8f5405b03129f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <br /></td></tr>
 <tr class="memitem:a70763db45822ee26fcf0bd8cf971f1a7" id="r_a70763db45822ee26fcf0bd8cf971f1a7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a70763db45822ee26fcf0bd8cf971f1a7">useMaterial</a> (<a class="el" href="class_shader.html">Shader</a> *shader)</td></tr>
 <tr class="memdesc:a70763db45822ee26fcf0bd8cf971f1a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends material properties to the shader.  <br /></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:acec02940a2b6ae79fb90c866ddae8fe5" id="r_acec02940a2b6ae79fb90c866ddae8fe5"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acec02940a2b6ae79fb90c866ddae8fe5">specularIntensity</a></td></tr>
+<tr class="memitem:a9dc184c883ec135ace28c1917af3fe84" id="r_a9dc184c883ec135ace28c1917af3fe84"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9dc184c883ec135ace28c1917af3fe84">shininess</a></td></tr>
+<tr class="memitem:a7c7b4f278a34acdcbec6ad8be5df5c68" id="r_a7c7b4f278a34acdcbec6ad8be5df5c68"><td class="memItemLeft" align="right" valign="top">sampler2D&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7c7b4f278a34acdcbec6ad8be5df5c68">textureMap</a></td></tr>
+<tr class="memitem:a9307d6bac45a7502ad4378dffdabb6b7" id="r_a9307d6bac45a7502ad4378dffdabb6b7"><td class="memItemLeft" align="right" valign="top">sampler2D&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9307d6bac45a7502ad4378dffdabb6b7">normalMap</a></td></tr>
+<tr class="memitem:a55d3c0486ed06c312936795eaaca7875" id="r_a55d3c0486ed06c312936795eaaca7875"><td class="memItemLeft" align="right" valign="top">sampler2D&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a55d3c0486ed06c312936795eaaca7875">heightMap</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Stores specular properties used in lighting calculations. </p>
@@ -194,8 +202,80 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
+<a id="a55d3c0486ed06c312936795eaaca7875" name="a55d3c0486ed06c312936795eaaca7875"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55d3c0486ed06c312936795eaaca7875">&#9670;&#160;</a></span>heightMap</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">sampler2D Material::heightMap</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9307d6bac45a7502ad4378dffdabb6b7" name="a9307d6bac45a7502ad4378dffdabb6b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9307d6bac45a7502ad4378dffdabb6b7">&#9670;&#160;</a></span>normalMap</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">sampler2D Material::normalMap</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9dc184c883ec135ace28c1917af3fe84" name="a9dc184c883ec135ace28c1917af3fe84"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9dc184c883ec135ace28c1917af3fe84">&#9670;&#160;</a></span>shininess</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Material::shininess</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acec02940a2b6ae79fb90c866ddae8fe5" name="acec02940a2b6ae79fb90c866ddae8fe5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acec02940a2b6ae79fb90c866ddae8fe5">&#9670;&#160;</a></span>specularIntensity</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Material::specularIntensity</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7c7b4f278a34acdcbec6ad8be5df5c68" name="a7c7b4f278a34acdcbec6ad8be5df5c68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c7b4f278a34acdcbec6ad8be5df5c68">&#9670;&#160;</a></span>textureMap</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">sampler2D Material::textureMap</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/Rendering/<a class="el" href="_material_8h_source.html">Material.h</a></li>
+<li>Shaders/<a class="el" href="shader_8frag.html">shader.frag</a></li>
 <li>src/Rendering/<a class="el" href="_material_8cpp.html">Material.cpp</a></li>
 </ul>
 </div><!-- contents -->

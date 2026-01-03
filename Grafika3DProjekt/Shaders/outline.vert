@@ -1,5 +1,6 @@
 /**
  * @file outline.vert
+ * @ingroup Shaders
  * @brief Vertex shader for rendering object outlines
  */
 

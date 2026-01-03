@@ -126,6 +126,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a7122036c8b2b58e0ebaf4afe4bcc151e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets diffuse intensity.  <br /></td></tr>
 <tr class="memitem:a9b1b2bd76bebc68eb71e9dd466504033" id="r_a9b1b2bd76bebc68eb71e9dd466504033"><td class="memItemLeft" align="right" valign="top">glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9b1b2bd76bebc68eb71e9dd466504033">CalculateLightTransform</a> ()</td></tr>
 <tr class="memdesc:a9b1b2bd76bebc68eb71e9dd466504033"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the light's projection * view matrix (used for shadows).  <br /></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a6d6fa8a992e118d8d75bbbd2d847c15f" id="r_a6d6fa8a992e118d8d75bbbd2d847c15f"><td class="memItemLeft" align="right" valign="top">vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6d6fa8a992e118d8d75bbbd2d847c15f">lightColor</a></td></tr>
+<tr class="memitem:a759b1a121bc66143c0ab5b0c04a8c4a7" id="r_a759b1a121bc66143c0ab5b0c04a8c4a7"><td class="memItemLeft" align="right" valign="top">vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a759b1a121bc66143c0ab5b0c04a8c4a7">lightDirection</a></td></tr>
+<tr class="memitem:a87e702bac1629ccc0291b3ea886f0861" id="r_a87e702bac1629ccc0291b3ea886f0861"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a87e702bac1629ccc0291b3ea886f0861">lightAmbientIntensity</a></td></tr>
+<tr class="memitem:a46f873f2babb89b10ec51cf3ae0fa4a4" id="r_a46f873f2babb89b10ec51cf3ae0fa4a4"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a46f873f2babb89b10ec51cf3ae0fa4a4">lightDiffuseIntensity</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A light source that shines in a single direction, used for sun/moon lighting. </p>
@@ -395,8 +402,66 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
+<a id="a87e702bac1629ccc0291b3ea886f0861" name="a87e702bac1629ccc0291b3ea886f0861"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87e702bac1629ccc0291b3ea886f0861">&#9670;&#160;</a></span>lightAmbientIntensity</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float DirectionalLight::lightAmbientIntensity</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6d6fa8a992e118d8d75bbbd2d847c15f" name="a6d6fa8a992e118d8d75bbbd2d847c15f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d6fa8a992e118d8d75bbbd2d847c15f">&#9670;&#160;</a></span>lightColor</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">vec3 DirectionalLight::lightColor</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a46f873f2babb89b10ec51cf3ae0fa4a4" name="a46f873f2babb89b10ec51cf3ae0fa4a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46f873f2babb89b10ec51cf3ae0fa4a4">&#9670;&#160;</a></span>lightDiffuseIntensity</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float DirectionalLight::lightDiffuseIntensity</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a759b1a121bc66143c0ab5b0c04a8c4a7" name="a759b1a121bc66143c0ab5b0c04a8c4a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a759b1a121bc66143c0ab5b0c04a8c4a7">&#9670;&#160;</a></span>lightDirection</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">vec3 DirectionalLight::lightDirection</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/Light/<a class="el" href="_directional_light_8h_source.html">DirectionalLight.h</a></li>
+<li>Shaders/<a class="el" href="shader_8frag.html">shader.frag</a></li>
 <li>src/Light/<a class="el" href="_directional_light_8cpp.html">DirectionalLight.cpp</a></li>
 </ul>
 </div><!-- contents -->

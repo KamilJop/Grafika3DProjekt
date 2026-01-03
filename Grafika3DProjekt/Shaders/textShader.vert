@@ -1,5 +1,6 @@
 /**
- * @file text.vert
+ * @file textShader.vert
+ * @ingroup Shaders
  * @brief Vertex shader for rendering bitmap text.
  *
  * Transforms 2D text quad vertices using a projection matrix
