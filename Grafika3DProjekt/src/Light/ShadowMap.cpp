@@ -1,87 +1,96 @@
 #include "ShadowMap.h"
 
-
-// Constructor
+/**
+ * @brief Creates an empty shadow map object.
+ *
+ * Initializes all OpenGL handles and dimensions to zero.
+ */
 ShadowMap::ShadowMap()
 {
-	FBO = 0;
-	shadowMap = 0;
-	shadowWidth = 0;
-	shadowHeight = 0;
+    FBO = 0;
+    shadowMap = 0;
+    shadowWidth = 0;
+    shadowHeight = 0;
 }
 
-// Destructor
+/**
+ * @brief Destructor cleans up framebuffer and texture resources.
+ */
 ShadowMap::~ShadowMap()
 {
-	if (FBO)
-	{
-		glDeleteFramebuffers(1, &FBO);
-	}
-	if (shadowMap)
-	{
-		glDeleteTextures(1, &shadowMap);
-	}
+    if (FBO)
+        glDeleteFramebuffers(1, &FBO);
+
+    if (shadowMap)
+        glDeleteTextures(1, &shadowMap);
 }
 
-// Initialize Shadow Map
+/**
+ * @brief Initializes a 2D depth texture and framebuffer for shadow mapping.
+ *
+ * Creates:
+ * - A framebuffer object
+ * - A depth-only texture
+ *
+ * @param width Shadow map width.
+ * @param height Shadow map height.
+ * @return True if initialization succeeded.
+ */
 bool ShadowMap::Init(GLuint width, GLuint height)
-{	
-	// Set shadow map dimensions
-	shadowWidth = width;
-	shadowHeight = height;
-	
-	// Generate Framebuffer
-	glGenFramebuffers(1, &FBO);
+{
+    shadowWidth = width;
+    shadowHeight = height;
 
-	// Generate and bind the depth texture
-	glGenTextures(1, &shadowMap);
-	glBindTexture(GL_TEXTURE_2D, shadowMap);
+    glGenFramebuffers(1, &FBO);
 
-	// Configure depth texture
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, shadowWidth, shadowHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, new float[4] { 1.0f, 1.0f, 1.0f, 1.0f });
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glGenTextures(1, &shadowMap);
+    glBindTexture(GL_TEXTURE_2D, shadowMap);
 
-	// Attach depth texture to FBO
-	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, shadowMap, 0);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
+                 shadowWidth, shadowHeight, 0,
+                 GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
 
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 
-	// Disable color buffer writes
-	glDrawBuffer(GL_NONE);
-	glReadBuffer(GL_NONE);
+    glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR,
+                     new float[4]{1.0f, 1.0f, 1.0f, 1.0f});
 
-	// Check for errors
-	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	if(status != GL_FRAMEBUFFER_COMPLETE)
-	{
-		printf("Framebuffer error: %d\n", status);
-		return false;
-	}
+    glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
+                           GL_TEXTURE_2D, shadowMap, 0);
 
-	// Unbind FBO
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glDrawBuffer(GL_NONE);
+    glReadBuffer(GL_NONE);
 
-	// Return true if successful
-	return true;
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+    {
+        printf("Framebuffer error\n");
+        return false;
+    }
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    return true;
 }
 
-// Bind the shadow map for writing
+/**
+ * @brief Binds the framebuffer for writing depth values.
+ */
 void ShadowMap::Write()
 {
-	// Bind the FBO
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, FBO);
-}	
-
-// Bind the shadow map for reading
-void ShadowMap::Read(GLenum textureUnit)
-{
-	// Activate texture unit and bind the shadow map
-	glActiveTexture(textureUnit);
-	glBindTexture(GL_TEXTURE_2D, shadowMap);
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, FBO);
 }
 
+/**
+ * @brief Binds the shadow map texture for reading in shaders.
+ *
+ * @param textureUnit Texture unit to bind to.
+ */
+void ShadowMap::Read(GLenum textureUnit)
+{
+    glActiveTexture(textureUnit);
+    glBindTexture(GL_TEXTURE_2D, shadowMap);
+}

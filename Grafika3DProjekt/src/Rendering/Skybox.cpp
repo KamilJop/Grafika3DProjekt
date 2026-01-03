@@ -1,109 +1,121 @@
 #include "Skybox.h"
-Skybox::Skybox(std::vector<std::string> faces) {
-	// Initialize skybox shader
-	skyboxShader = new Shader();
-	skyboxShader->CreateShader("Shaders/skybox.vert", "Shaders/skybox.frag");
 
-	// Initialize and setup textures
-	glGenTextures(1, &skyboxTextureID);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, skyboxTextureID);
-
-	int width, height, bitDepth;
-
-	// Load each face of the skybox
-	for (size_t i = 0; i < 6; i++)
-	{
-		unsigned char* texData = stbi_load(faces[i].c_str(), &width, &height, &bitDepth, 0);
-		if (texData)
-		{
-			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, texData);
-			stbi_image_free(texData);
-		}
-		else
-		{
-			std::cout << "Failed to load skybox texture at path: " << faces[i] << std::endl;
-			stbi_image_free(texData);
-		}
-	}
-
-	// Set texture parameters
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
-	// Define skybox vertices and indices
-	unsigned int skyboxIndices[] = {
-		// front
-		0, 1, 2,
-		2, 1, 3,
-		// right
-		2, 3, 5,
-		5, 3, 7,
-		// back
-		5, 7, 4,
-		4, 7, 6,
-		// left
-		4, 6, 0,
-		0, 6, 1,
-		// top
-		4, 0, 5,
-		5, 0, 2,
-		// bottom
-		1, 6, 3,
-		3, 6, 7
-	};
-	float skyboxVertices[] = {
-		-1.0f, 1.0f, -1.0f,		0.0f, 0.0f,		0.0f, 0.0f, 0.0f,
-		-1.0f, -1.0f, -1.0f,	0.0f, 0.0f,		0.0f, 0.0f, 0.0f,
-		1.0f, 1.0f, -1.0f,		0.0f, 0.0f,		0.0f, 0.0f, 0.0f,
-		1.0f, -1.0f, -1.0f,		0.0f, 0.0f,		0.0f, 0.0f, 0.0f,
-
-		-1.0f, 1.0f, 1.0f,		0.0f, 0.0f,		0.0f, 0.0f, 0.0f,
-		1.0f, 1.0f, 1.0f,		0.0f, 0.0f,		0.0f, 0.0f, 0.0f,
-		-1.0f, -1.0f, 1.0f,		0.0f, 0.0f,		0.0f, 0.0f, 0.0f,
-		1.0f, -1.0f, 1.0f,		0.0f, 0.0f,		0.0f, 0.0f, 0.0f
-	};
-
-	// Create skybox mesh
-	skyboxMesh = new Mesh();
-	skyboxMesh->CreateMesh(skyboxVertices, skyboxIndices, 64, 36, 8);
-
-}
-
-void Skybox::DrawSkybox(glm::mat4 viewMatrix, glm::mat4 projectionMatrix) 
+/**
+ * @brief Creates a skybox from 6 texture faces.
+ *
+ * Steps:
+ * - Loads skybox shader
+ * - Loads 6 cube‑map textures
+ * - Creates a cube mesh for rendering
+ *
+ * @param faces Vector of 6 file paths (order: +X, -X, +Y, -Y, +Z, -Z).
+ */
+Skybox::Skybox(std::vector<std::string> faces)
 {
-	// Disable depth mask
-	glDepthMask(GL_FALSE);
+    // Initialize skybox shader
+    skyboxShader = new Shader();
+    skyboxShader->CreateShader("Shaders/skybox.vert", "Shaders/skybox.frag");
 
-	// Use skybox shader
-	skyboxShader->UseShader();
+    // Create cube map texture
+    glGenTextures(1, &skyboxTextureID);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, skyboxTextureID);
 
-	// Bind skybox texture
-	// Convert view matrix to remove translation component
-	skyboxShader->setMat4("view", glm::mat4(glm::mat3(viewMatrix)));
-	skyboxShader->setMat4("projection", projectionMatrix);
+    int width, height, bitDepth;
 
-	// Set skybox texture to texture unit 0
-	glActiveTexture(GL_TEXTURE0);
+    // Load each face of the cube map
+    for (size_t i = 0; i < 6; i++)
+    {
+        unsigned char* texData = stbi_load(faces[i].c_str(), &width, &height, &bitDepth, 0);
+        if (texData)
+        {
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0,
+                         GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, texData);
+            stbi_image_free(texData);
+        }
+        else
+        {
+            std::cout << "Failed to load skybox texture at path: " << faces[i] << std::endl;
+            stbi_image_free(texData);
+        }
+    }
 
-	// Bind the skybox texture
-	glBindTexture(GL_TEXTURE_CUBE_MAP, skyboxTextureID);
+    // Texture parameters
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-	// Render the skybox mesh
-	skyboxMesh->RenderMesh();
+    // Cube vertices and indices
+    unsigned int skyboxIndices[] = {
+        // front
+        0, 1, 2, 2, 1, 3,
+        // right
+        2, 3, 5, 5, 3, 7,
+        // back
+        5, 7, 4, 4, 7, 6,
+        // left
+        4, 6, 0, 0, 6, 1,
+        // top
+        4, 0, 5, 5, 0, 2,
+        // bottom
+        1, 6, 3, 3, 6, 7
+    };
 
-	// Enable back depth mask
-	glDepthMask(GL_TRUE);
+    float skyboxVertices[] = {
+        // 8 vertices, each with dummy attributes (unused)
+        -1.0f,  1.0f, -1.0f, 0,0, 0,0,0,
+        -1.0f, -1.0f, -1.0f, 0,0, 0,0,0,
+         1.0f,  1.0f, -1.0f, 0,0, 0,0,0,
+         1.0f, -1.0f, -1.0f, 0,0, 0,0,0,
+
+        -1.0f,  1.0f,  1.0f, 0,0, 0,0,0,
+         1.0f,  1.0f,  1.0f, 0,0, 0,0,0,
+        -1.0f, -1.0f,  1.0f, 0,0, 0,0,0,
+         1.0f, -1.0f,  1.0f, 0,0, 0,0,0
+    };
+
+    // Create skybox mesh
+    skyboxMesh = new Mesh();
+    skyboxMesh->CreateMesh(skyboxVertices, skyboxIndices, 64, 36, 8);
 }
 
-Skybox::~Skybox() {
-	// Clear skybox mesh
-	skyboxMesh->ClearMesh();
-	delete skyboxMesh;
-	skyboxShader->ClearShader();
-	delete skyboxShader;
-	// Delete skybox texture
-	glDeleteTextures(1, &skyboxTextureID);
+/**
+ * @brief Renders the skybox behind all scene geometry.
+ *
+ * Removes translation from the view matrix so the skybox appears infinitely far.
+ *
+ * @param viewMatrix Camera view matrix.
+ * @param projectionMatrix Camera projection matrix.
+ */
+void Skybox::DrawSkybox(glm::mat4 viewMatrix, glm::mat4 projectionMatrix)
+{
+    glDepthMask(GL_FALSE);
+
+    skyboxShader->UseShader();
+
+    // Remove translation from view matrix
+    skyboxShader->setMat4("view", glm::mat4(glm::mat3(viewMatrix)));
+    skyboxShader->setMat4("projection", projectionMatrix);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, skyboxTextureID);
+
+    skyboxMesh->RenderMesh();
+
+    glDepthMask(GL_TRUE);
+}
+
+/**
+ * @brief Destructor cleans up mesh, shader, and cube map texture.
+ */
+Skybox::~Skybox()
+{
+    skyboxMesh->ClearMesh();
+    delete skyboxMesh;
+
+    skyboxShader->ClearShader();
+    delete skyboxShader;
+
+    glDeleteTextures(1, &skyboxTextureID);
 }

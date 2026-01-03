@@ -1,60 +1,85 @@
 #include "OmniShadowMap.h"
 
-OmniShadowMap::OmniShadowMap() : ShadowMap() {};
+/**
+ * @brief Creates an omni-directional shadow map (cube map).
+ *
+ * Inherits from ShadowMap and prepares a cube-map depth texture
+ * used for point light shadows.
+ */
+OmniShadowMap::OmniShadowMap() : ShadowMap() {}
 
+/**
+ * @brief Initializes the cube-map shadow framebuffer and textures.
+ *
+ * Creates:
+ * - A framebuffer object
+ * - A depth-only cube map (6 faces)
+ *
+ * @param width Shadow map width.
+ * @param height Shadow map height.
+ * @return True if initialization succeeded.
+ */
 bool OmniShadowMap::Init(GLuint width, GLuint height) {
-	// Set shadow map dimensions
-	shadowWidth = width;
-	shadowHeight = height;
+    shadowWidth = width;
+    shadowHeight = height;
 
-	// Generate Framebuffer
-	glGenFramebuffers(1, &FBO);
+    glGenFramebuffers(1, &FBO);
 
-	// Generate and bind the depth texture as cube map
-	glGenTextures(1, &shadowMap);
-	
-	glBindTexture(GL_TEXTURE_CUBE_MAP, shadowMap);
+    glGenTextures(1, &shadowMap);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, shadowMap);
 
-	// Configure depth texture for each face of the cube map (positive x, negative x, positive y, negative y, positive z, negative z)
-	for(size_t i = 0; i < 6; ++i) {
-		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_DEPTH_COMPONENT, shadowWidth, shadowHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
-	}
+    // Allocate depth texture for all 6 cube faces
+    for (size_t i = 0; i < 6; ++i) {
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0,
+                     GL_DEPTH_COMPONENT, shadowWidth, shadowHeight,
+                     0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+    }
 
-	// Set texture parameters
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    // Texture parameters
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	// Attach depth texture to FBO
-	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
-	glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, shadowMap, 0);
+    // Attach cube map to framebuffer
+    glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+    glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, shadowMap, 0);
 
-	// Disable color buffer writes
-	glDrawBuffer(GL_NONE);
-	glReadBuffer(GL_NONE);
+    glDrawBuffer(GL_NONE);
+    glReadBuffer(GL_NONE);
 
-	// Check for errors
-	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-	if (status != GL_FRAMEBUFFER_COMPLETE)
-	{
-		printf("Framebuffer not complete!\n");
-		return false;
-	}
+    // Validate framebuffer
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+        printf("Framebuffer not complete!\n");
+        return false;
+    }
 
-	return true;
+    return true;
 }
 
+/**
+ * @brief Binds the cube-map texture for reading in shaders.
+ *
+ * @param textureUnit Texture unit to bind to.
+ */
 void OmniShadowMap::Read(GLenum textureUnit) {
-	glActiveTexture(textureUnit);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, shadowMap);
+    glActiveTexture(textureUnit);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, shadowMap);
 }
 
+/**
+ * @brief Binds the framebuffer for writing depth values.
+ */
 void OmniShadowMap::Write() {
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, FBO);
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, FBO);
 }
 
+/**
+ * @brief Destructor.
+ *
+ * Calls base ShadowMap destructor.
+ */
 OmniShadowMap::~OmniShadowMap() {
-	ShadowMap::~ShadowMap();
+    ShadowMap::~ShadowMap();
 }
