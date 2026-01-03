@@ -1,6 +1,6 @@
 var class_lock =
 [
-    [ "Lock", "class_lock.html#a44f3bbc86834cc08ca2a7100565f9d93", null ],
+    [ "Lock", "class_lock.html#a9281be2a19e8a03db5294b8bf73a8d33", null ],
     [ "~Lock", "class_lock.html#a7ab6d9485c8665bb3643710432882971", null ],
     [ "changeSelectedIndex", "class_lock.html#ab228213618daf9817130187cc1c97fcb", null ],
     [ "cleanUpLock", "class_lock.html#ab62ae09a4ed43467c4dadc6e872e728c", null ],
@@ -14,5 +14,5 @@ var class_lock =
     [ "Interact", "class_lock.html#ad394fb68c2370014259ca6ddbf59d272", null ],
     [ "moveLockRolls", "class_lock.html#aede31c86d57034caede0ac31da85098b", null ],
     [ "setChestToUnlock", "class_lock.html#a4358edbb40d65a9157791680d12b3fcc", null ],
-    [ "setLockPassword", "class_lock.html#a8ab36a2016d5ac574c07ba2f51f8f607", null ]
+    [ "setLockPassword", "class_lock.html#a3071f5547b5ec335e00862c3664014af", null ]
 ];

@@ -92,44 +92,67 @@ $(function(){initNavTree('_radio_8h_source.html','',''); });
 </div><!--header-->
 <div class="contents">
 <a href="_radio_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;<a class="code" href="_entity_8h.html">Entity.h</a>&quot;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;<a class="code" href="_audio_manager_8h.html">../Systems/AudioManager.h</a>&quot;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="_texture_8h.html">../Rendering/Texture.h</a>&quot;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">enum</span> RadioState</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>{</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    BROKEN,</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    ONE_BATTERY,</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    WORKING</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>};</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">class </span>Radio : <span class="keyword">public</span> <a class="code hl_class" href="class_entity.html">Entity</a></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &quot;<a class="code" href="_entity_8h.html">Entity.h</a>&quot;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;<a class="code" href="_audio_manager_8h.html">../Systems/AudioManager.h</a>&quot;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="_texture_8h.html">../Rendering/Texture.h</a>&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span></div>
+<div class="foldopen" id="foldopen00015" data-start="{" data-end="};">
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="_radio_8h.html#a8bf7bc59f2fe9597bd2552e2cf783996">   15</a></span><span class="keyword">enum</span> <a class="code hl_enumeration" href="_radio_8h.html#a8bf7bc59f2fe9597bd2552e2cf783996">RadioState</a></div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>{</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    Radio(Model* model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, <span class="keywordtype">bool</span> interaction = <span class="keyword">true</span>);</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="class_entity.html#ab5df5212c49c989b67d5ea4de25707c8">Interact</a>(Inventory* playerInventory) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="class_entity.html#a2e1cc2d447fd31fc9bc396d2489abd17">Update</a>(<span class="keywordtype">float</span> <a class="code hl_variable" href="main_8cpp.html#a1a61318ed6aa02b4ff346e7eb8f68891">deltaTime</a>) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    std::string <a class="code hl_function" href="class_entity.html#a0c030bb89fa1e71775673458a286e3bc">GetActionText</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    ~Radio();</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="keywordtype">int</span> currentState = BROKEN;</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="keywordtype">float</span> soundTimer = 0.0f;</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    std::string brokenRadioSound = <span class="stringliteral">&quot;Audio/broken_radio.mp3&quot;</span>;</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    std::string firstInsert = <span class="stringliteral">&quot;Audio/insert_first_battery.mp3&quot;</span>;</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    std::string secondInsert = <span class="stringliteral">&quot;Audio/insert_second_battery.mp3&quot;</span>;</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    std::string radioNoises = <span class="stringliteral">&quot;Audio/radio_noises.mp3&quot;</span>;</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    std::string morseCodeSound = <span class="stringliteral">&quot;Audio/morse.mp3&quot;</span>;</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>};</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="_radio_8h.html#a8bf7bc59f2fe9597bd2552e2cf783996aeb30bf699a39ea2cb5819381461ee54d">   17</a></span>    <a class="code hl_enumvalue" href="_radio_8h.html#a8bf7bc59f2fe9597bd2552e2cf783996aeb30bf699a39ea2cb5819381461ee54d">BROKEN</a>,</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="_radio_8h.html#a8bf7bc59f2fe9597bd2552e2cf783996aeacce95652aa3f10fc5302aa9de5017a">   18</a></span>    <a class="code hl_enumvalue" href="_radio_8h.html#a8bf7bc59f2fe9597bd2552e2cf783996aeacce95652aa3f10fc5302aa9de5017a">ONE_BATTERY</a>,</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="_radio_8h.html#a8bf7bc59f2fe9597bd2552e2cf783996aeec647e1b2530912b349b96c8e74bb64">   19</a></span>    <a class="code hl_enumvalue" href="_radio_8h.html#a8bf7bc59f2fe9597bd2552e2cf783996aeec647e1b2530912b349b96c8e74bb64">WORKING</a></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>};</div>
+</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span></div>
+<div class="foldopen" id="foldopen00033" data-start="{" data-end="};">
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="class_radio.html">   33</a></span><span class="keyword">class </span><a class="code hl_function" href="class_radio.html#a494bac873e56ffcd73e4086459dd0849">Radio</a> : <span class="keyword">public</span> <a class="code hl_function" href="class_entity.html#a5ba784c86bfeb152d3013be78c29db39">Entity</a></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>{</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <a class="code hl_function" href="class_radio.html#a494bac873e56ffcd73e4086459dd0849">Radio</a>(<a class="code hl_class" href="class_model.html">Model</a>* model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, <span class="keywordtype">bool</span> interaction = <span class="keyword">true</span>);</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="class_radio.html#ab7545203eceddfbe151d3e1a7a8e3d60">Interact</a>(<a class="code hl_class" href="class_inventory.html">Inventory</a>* playerInventory) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="class_radio.html#a2c99be0e78706017c9e417951ae47282">Update</a>(<span class="keywordtype">float</span> <a class="code hl_variable" href="main_8cpp.html#a1a61318ed6aa02b4ff346e7eb8f68891">deltaTime</a>) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    std::string <a class="code hl_function" href="class_radio.html#a049e8ee545dd605aba2228cd08e0dedc">GetActionText</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <a class="code hl_function" href="class_radio.html#a9fb63e8ebc78c18b4eb5a8040d684174">~Radio</a>();</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <span class="keywordtype">int</span> currentState = <a class="code hl_enumvalue" href="_radio_8h.html#a8bf7bc59f2fe9597bd2552e2cf783996aeb30bf699a39ea2cb5819381461ee54d">BROKEN</a>;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="keywordtype">float</span> soundTimer = 0.0f;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    std::string brokenRadioSound = <span class="stringliteral">&quot;Audio/broken_radio.mp3&quot;</span>;</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    std::string firstInsert = <span class="stringliteral">&quot;Audio/insert_first_battery.mp3&quot;</span>;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    std::string secondInsert = <span class="stringliteral">&quot;Audio/insert_second_battery.mp3&quot;</span>;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span></div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    std::string radioNoises = <span class="stringliteral">&quot;Audio/radio_noises.mp3&quot;</span>;</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    std::string morseCodeSound = <span class="stringliteral">&quot;Audio/morse.mp3&quot;</span>;</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>};</div>
+</div>
 <div class="ttc" id="a_audio_manager_8h_html"><div class="ttname"><a href="_audio_manager_8h.html">AudioManager.h</a></div></div>
 <div class="ttc" id="a_entity_8h_html"><div class="ttname"><a href="_entity_8h.html">Entity.h</a></div></div>
+<div class="ttc" id="a_radio_8h_html_a8bf7bc59f2fe9597bd2552e2cf783996"><div class="ttname"><a href="_radio_8h.html#a8bf7bc59f2fe9597bd2552e2cf783996">RadioState</a></div><div class="ttdeci">RadioState</div><div class="ttdoc">Represents the different operational states of the radio.</div><div class="ttdef"><b>Definition</b> Radio.h:16</div></div>
+<div class="ttc" id="a_radio_8h_html_a8bf7bc59f2fe9597bd2552e2cf783996aeacce95652aa3f10fc5302aa9de5017a"><div class="ttname"><a href="_radio_8h.html#a8bf7bc59f2fe9597bd2552e2cf783996aeacce95652aa3f10fc5302aa9de5017a">ONE_BATTERY</a></div><div class="ttdeci">@ ONE_BATTERY</div><div class="ttdef"><b>Definition</b> Radio.h:18</div></div>
+<div class="ttc" id="a_radio_8h_html_a8bf7bc59f2fe9597bd2552e2cf783996aeb30bf699a39ea2cb5819381461ee54d"><div class="ttname"><a href="_radio_8h.html#a8bf7bc59f2fe9597bd2552e2cf783996aeb30bf699a39ea2cb5819381461ee54d">BROKEN</a></div><div class="ttdeci">@ BROKEN</div><div class="ttdef"><b>Definition</b> Radio.h:17</div></div>
+<div class="ttc" id="a_radio_8h_html_a8bf7bc59f2fe9597bd2552e2cf783996aeec647e1b2530912b349b96c8e74bb64"><div class="ttname"><a href="_radio_8h.html#a8bf7bc59f2fe9597bd2552e2cf783996aeec647e1b2530912b349b96c8e74bb64">WORKING</a></div><div class="ttdeci">@ WORKING</div><div class="ttdef"><b>Definition</b> Radio.h:19</div></div>
 <div class="ttc" id="a_texture_8h_html"><div class="ttname"><a href="_texture_8h.html">Texture.h</a></div></div>
-<div class="ttc" id="aclass_entity_html"><div class="ttname"><a href="class_entity.html">Entity</a></div><div class="ttdef"><b>Definition</b> Entity.h:18</div></div>
-<div class="ttc" id="aclass_entity_html_a0c030bb89fa1e71775673458a286e3bc"><div class="ttname"><a href="class_entity.html#a0c030bb89fa1e71775673458a286e3bc">Entity::GetActionText</a></div><div class="ttdeci">virtual std::string GetActionText()</div><div class="ttdef"><b>Definition</b> Entity.h:61</div></div>
-<div class="ttc" id="aclass_entity_html_a2e1cc2d447fd31fc9bc396d2489abd17"><div class="ttname"><a href="class_entity.html#a2e1cc2d447fd31fc9bc396d2489abd17">Entity::Update</a></div><div class="ttdeci">virtual void Update(float deltaTime)</div><div class="ttdef"><b>Definition</b> Entity.h:60</div></div>
-<div class="ttc" id="aclass_entity_html_ab5df5212c49c989b67d5ea4de25707c8"><div class="ttname"><a href="class_entity.html#ab5df5212c49c989b67d5ea4de25707c8">Entity::Interact</a></div><div class="ttdeci">virtual void Interact(Inventory *playerInventory)</div><div class="ttdef"><b>Definition</b> Entity.cpp:151</div></div>
+<div class="ttc" id="aclass_entity_html_a5ba784c86bfeb152d3013be78c29db39"><div class="ttname"><a href="class_entity.html#a5ba784c86bfeb152d3013be78c29db39">Entity::Entity</a></div><div class="ttdeci">Entity(Model *model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, bool interaction=false)</div><div class="ttdoc">Constructs a new Entity.</div><div class="ttdef"><b>Definition</b> Entity.cpp:19</div></div>
+<div class="ttc" id="aclass_inventory_html"><div class="ttname"><a href="class_inventory.html">Inventory</a></div><div class="ttdoc">Manages the player&#39;s inventory.</div><div class="ttdef"><b>Definition</b> Inventory.h:30</div></div>
+<div class="ttc" id="aclass_model_html"><div class="ttname"><a href="class_model.html">Model</a></div><div class="ttdoc">Loads and renders 3D models using Assimp.</div><div class="ttdef"><b>Definition</b> Model.h:27</div></div>
+<div class="ttc" id="aclass_radio_html_a049e8ee545dd605aba2228cd08e0dedc"><div class="ttname"><a href="class_radio.html#a049e8ee545dd605aba2228cd08e0dedc">Radio::GetActionText</a></div><div class="ttdeci">std::string GetActionText() override</div><div class="ttdoc">Gets the action text displayed when targeting the radio.</div><div class="ttdef"><b>Definition</b> Radio.cpp:115</div></div>
+<div class="ttc" id="aclass_radio_html_a2c99be0e78706017c9e417951ae47282"><div class="ttname"><a href="class_radio.html#a2c99be0e78706017c9e417951ae47282">Radio::Update</a></div><div class="ttdeci">void Update(float deltaTime) override</div><div class="ttdoc">Updates the radio each frame.</div><div class="ttdef"><b>Definition</b> Radio.cpp:137</div></div>
+<div class="ttc" id="aclass_radio_html_a494bac873e56ffcd73e4086459dd0849"><div class="ttname"><a href="class_radio.html#a494bac873e56ffcd73e4086459dd0849">Radio::Radio</a></div><div class="ttdeci">Radio(Model *model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, bool interaction=true)</div><div class="ttdoc">Constructs a new Radio entity.</div><div class="ttdef"><b>Definition</b> Radio.cpp:21</div></div>
+<div class="ttc" id="aclass_radio_html_a9fb63e8ebc78c18b4eb5a8040d684174"><div class="ttname"><a href="class_radio.html#a9fb63e8ebc78c18b4eb5a8040d684174">Radio::~Radio</a></div><div class="ttdeci">~Radio()</div><div class="ttdoc">Radio destructor.</div><div class="ttdef"><b>Definition</b> Radio.cpp:36</div></div>
+<div class="ttc" id="aclass_radio_html_ab7545203eceddfbe151d3e1a7a8e3d60"><div class="ttname"><a href="class_radio.html#ab7545203eceddfbe151d3e1a7a8e3d60">Radio::Interact</a></div><div class="ttdeci">void Interact(Inventory *playerInventory) override</div><div class="ttdoc">Handles interaction with the radio.</div><div class="ttdef"><b>Definition</b> Radio.cpp:59</div></div>
 <div class="ttc" id="amain_8cpp_html_a1a61318ed6aa02b4ff346e7eb8f68891"><div class="ttname"><a href="main_8cpp.html#a1a61318ed6aa02b4ff346e7eb8f68891">deltaTime</a></div><div class="ttdeci">float deltaTime</div><div class="ttdef"><b>Definition</b> main.cpp:125</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

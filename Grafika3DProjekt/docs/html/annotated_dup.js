@@ -40,6 +40,7 @@ var annotated_dup =
     [ "Pickable", "class_pickable.html", "class_pickable" ],
     [ "Player", "class_player.html", "class_player" ],
     [ "PointLight", "class_point_light.html", "class_point_light" ],
+    [ "Radio", "class_radio.html", "class_radio" ],
     [ "Readable", "class_readable.html", "class_readable" ],
     [ "Scene", "class_scene.html", "class_scene" ],
     [ "Shader", "class_shader.html", "class_shader" ],

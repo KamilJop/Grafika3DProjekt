@@ -92,6 +92,9 @@ $(function(){initNavTree('class_directional_light.html','','class_directional_li
 </div><!--header-->
 <div class="contents">
 
+<p>A light source that shines in a single direction, used for sun/moon lighting.  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_directional_light_8h_source.html">DirectionalLight.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for DirectionalLight:</div>
@@ -99,23 +102,39 @@ Inheritance diagram for DirectionalLight:</div>
  <div class="center">
   <img src="class_directional_light.png" usemap="#DirectionalLight_map" alt=""/>
   <map id="DirectionalLight_map" name="DirectionalLight_map">
-<area href="class_light.html" alt="Light" shape="rect" coords="0,0,100,24"/>
+<area href="class_light.html" title="Base class for all light types." alt="Light" shape="rect" coords="0,0,100,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ac1e5e5a95e87a43cc734640f761da083" id="r_ac1e5e5a95e87a43cc734640f761da083"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac1e5e5a95e87a43cc734640f761da083">DirectionalLight</a> (glm::vec3 colors, glm::vec3 dir, GLfloat ambientIntensity, GLfloat diffuseIntensity, GLfloat shadowWidth, GLfloat shadowHeight)</td></tr>
+<tr class="memdesc:ac1e5e5a95e87a43cc734640f761da083"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a directional light.  <br /></td></tr>
 <tr class="memitem:ac4aca6c806e752c65ffea9b2f237b245" id="r_ac4aca6c806e752c65ffea9b2f237b245"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac4aca6c806e752c65ffea9b2f237b245">~DirectionalLight</a> ()</td></tr>
+<tr class="memdesc:ac4aca6c806e752c65ffea9b2f237b245"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <br /></td></tr>
 <tr class="memitem:a1940cb55740d586de51f3b8d00eb11e5" id="r_a1940cb55740d586de51f3b8d00eb11e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1940cb55740d586de51f3b8d00eb11e5">useLight</a> (<a class="el" href="class_shader.html">Shader</a> *lightShader)</td></tr>
+<tr class="memdesc:a1940cb55740d586de51f3b8d00eb11e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends light data to the shader.  <br /></td></tr>
 <tr class="memitem:ac77dd636a2ec2a9c90685c0a81e9a915" id="r_ac77dd636a2ec2a9c90685c0a81e9a915"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_shadow_map.html">ShadowMap</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac77dd636a2ec2a9c90685c0a81e9a915">getShadowMap</a> ()</td></tr>
+<tr class="memdesc:ac77dd636a2ec2a9c90685c0a81e9a915"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the shadow map used by this light.  <br /></td></tr>
 <tr class="memitem:ac9085a2dd5f537cc6edd3dbf23f1f12b" id="r_ac9085a2dd5f537cc6edd3dbf23f1f12b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac9085a2dd5f537cc6edd3dbf23f1f12b">setAmbientIntensity</a> (GLfloat intensity)</td></tr>
+<tr class="memdesc:ac9085a2dd5f537cc6edd3dbf23f1f12b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets ambient intensity.  <br /></td></tr>
 <tr class="memitem:a7eab5808969879cf85acb18abcdaf782" id="r_a7eab5808969879cf85acb18abcdaf782"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7eab5808969879cf85acb18abcdaf782">setDiffuseIntensity</a> (GLfloat intensity)</td></tr>
+<tr class="memdesc:a7eab5808969879cf85acb18abcdaf782"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets diffuse intensity.  <br /></td></tr>
 <tr class="memitem:a3b6a2c0ddba88868e6a469feb3362960" id="r_a3b6a2c0ddba88868e6a469feb3362960"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3b6a2c0ddba88868e6a469feb3362960">getAmbientIntensity</a> ()</td></tr>
+<tr class="memdesc:a3b6a2c0ddba88868e6a469feb3362960"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets ambient intensity.  <br /></td></tr>
 <tr class="memitem:a7122036c8b2b58e0ebaf4afe4bcc151e" id="r_a7122036c8b2b58e0ebaf4afe4bcc151e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7122036c8b2b58e0ebaf4afe4bcc151e">getDiffuseIntensity</a> ()</td></tr>
+<tr class="memdesc:a7122036c8b2b58e0ebaf4afe4bcc151e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets diffuse intensity.  <br /></td></tr>
 <tr class="memitem:a9b1b2bd76bebc68eb71e9dd466504033" id="r_a9b1b2bd76bebc68eb71e9dd466504033"><td class="memItemLeft" align="right" valign="top">glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9b1b2bd76bebc68eb71e9dd466504033">CalculateLightTransform</a> ()</td></tr>
+<tr class="memdesc:a9b1b2bd76bebc68eb71e9dd466504033"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the light's projection * view matrix (used for shadows).  <br /></td></tr>
 </table>
-<a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>A light source that shines in a single direction, used for sun/moon lighting. </p>
+<p>Supports:</p><ul>
+<li>Ambient and diffuse intensity</li>
+<li>Shadow mapping</li>
+<li>Light‑space transform calculation </li>
+</ul>
+</div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ac1e5e5a95e87a43cc734640f761da083" name="ac1e5e5a95e87a43cc734640f761da083"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac1e5e5a95e87a43cc734640f761da083">&#9670;&#160;</a></span>DirectionalLight()</h2>
 
@@ -125,35 +144,49 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">DirectionalLight::DirectionalLight </td>
           <td>(</td>
-          <td class="paramtype">glm::vec3</td>          <td class="paramname"><span class="paramname"><em>colors</em></span><span class="paramdefsep"> = </span><span class="paramdefval">glm::vec3(1.0f)</span>, </td>
+          <td class="paramtype">glm::vec3</td>          <td class="paramname"><span class="paramname"><em>colors</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">glm::vec3</td>          <td class="paramname"><span class="paramname"><em>dir</em></span><span class="paramdefsep"> = </span><span class="paramdefval">glm::vec3(0.0f,&#160;1.0f,&#160;0.0f)</span>, </td>
+          <td class="paramtype">glm::vec3</td>          <td class="paramname"><span class="paramname"><em>dir</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">GLfloat</td>          <td class="paramname"><span class="paramname"><em>ambientIntensity</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0.1f</span>, </td>
+          <td class="paramtype">GLfloat</td>          <td class="paramname"><span class="paramname"><em>ambientIntensity</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">GLfloat</td>          <td class="paramname"><span class="paramname"><em>diffuseIntensity</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0.1f</span>, </td>
+          <td class="paramtype">GLfloat</td>          <td class="paramname"><span class="paramname"><em>diffuseIntensity</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">GLfloat</td>          <td class="paramname"><span class="paramname"><em>shadowWidth</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0.0f</span>, </td>
+          <td class="paramtype">GLfloat</td>          <td class="paramname"><span class="paramname"><em>shadowWidth</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">GLfloat</td>          <td class="paramname"><span class="paramname"><em>shadowHeight</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0.0f</span>&#160;)</td>
+          <td class="paramtype">GLfloat</td>          <td class="paramname"><span class="paramname"><em>shadowHeight</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Creates a directional light. </p>
+<p>Creates a directional light with optional shadow mapping.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">colors</td><td><a class="el" href="class_light.html" title="Base class for all light types.">Light</a> color. </td></tr>
+    <tr><td class="paramname">dir</td><td>Direction the light shines toward. </td></tr>
+    <tr><td class="paramname">ambientIntensity</td><td>Ambient light strength. </td></tr>
+    <tr><td class="paramname">diffuseIntensity</td><td>Diffuse light strength. </td></tr>
+    <tr><td class="paramname">shadowWidth</td><td>Shadow map width. </td></tr>
+    <tr><td class="paramname">shadowHeight</td><td>Shadow map height. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -172,6 +205,9 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Destructor. </p>
+<p>Destructor resets light values. </p>
+
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
@@ -189,6 +225,12 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Computes the light's projection * view matrix (used for shadows). </p>
+<p>Computes the light's projection * view matrix.</p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="class_light.html" title="Base class for all light types.">Light</a> space transform matrix.</dd></dl>
+<p>Used for shadow mapping.</p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="class_light.html" title="Base class for all light types.">Light</a> space transform matrix. </dd></dl>
 
 </div>
 </div>
@@ -215,6 +257,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Gets ambient intensity. </p>
+
 </div>
 </div>
 <a id="a7122036c8b2b58e0ebaf4afe4bcc151e" name="a7122036c8b2b58e0ebaf4afe4bcc151e"></a>
@@ -239,6 +283,8 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Gets diffuse intensity. </p>
 
 </div>
 </div>
@@ -265,6 +311,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Returns the shadow map used by this light. </p>
+
 </div>
 </div>
 <a id="ac9085a2dd5f537cc6edd3dbf23f1f12b" name="ac9085a2dd5f537cc6edd3dbf23f1f12b"></a>
@@ -289,6 +337,8 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Sets ambient intensity. </p>
 
 </div>
 </div>
@@ -315,6 +365,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Sets diffuse intensity. </p>
+
 </div>
 </div>
 <a id="a1940cb55740d586de51f3b8d00eb11e5" name="a1940cb55740d586de51f3b8d00eb11e5"></a>
@@ -331,6 +383,15 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Sends light data to the shader. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lightShader</td><td><a class="el" href="class_shader.html" title="Handles loading, compiling, linking, and using GLSL shader programs.">Shader</a> receiving the light uniforms.</td></tr>
+    <tr><td class="paramname">lightShader</td><td><a class="el" href="class_shader.html" title="Handles loading, compiling, linking, and using GLSL shader programs.">Shader</a> that receives the light uniforms. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

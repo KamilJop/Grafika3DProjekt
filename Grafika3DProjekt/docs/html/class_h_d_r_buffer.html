@@ -92,21 +92,41 @@ $(function(){initNavTree('class_h_d_r_buffer.html','','class_h_d_r_buffer-member
 </div><!--header-->
 <div class="contents">
 
+<p>High‑dynamic‑range framebuffer with bloom support.  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_h_d_r_buffer_8h_source.html">HDRBuffer.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a05aa27e6ee65ba2b428bbaa25bb3a982" id="r_a05aa27e6ee65ba2b428bbaa25bb3a982"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a05aa27e6ee65ba2b428bbaa25bb3a982">HDRBuffer</a> (int width, int height)</td></tr>
+<tr class="memdesc:a05aa27e6ee65ba2b428bbaa25bb3a982"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an HDR framebuffer and initializes all attachments.  <br /></td></tr>
 <tr class="memitem:a7ff8a2efe9dee104cb179f28022f8f65" id="r_a7ff8a2efe9dee104cb179f28022f8f65"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7ff8a2efe9dee104cb179f28022f8f65">~HDRBuffer</a> ()</td></tr>
+<tr class="memdesc:a7ff8a2efe9dee104cb179f28022f8f65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor cleans up all OpenGL resources.  <br /></td></tr>
 <tr class="memitem:aacb8d55d76d71e3c07f6c1a6548886b6" id="r_aacb8d55d76d71e3c07f6c1a6548886b6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aacb8d55d76d71e3c07f6c1a6548886b6">Bind</a> ()</td></tr>
+<tr class="memdesc:aacb8d55d76d71e3c07f6c1a6548886b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binds the HDR framebuffer for rendering.  <br /></td></tr>
 <tr class="memitem:aa0dcb030b35ddf3012d1743c542d1839" id="r_aa0dcb030b35ddf3012d1743c542d1839"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa0dcb030b35ddf3012d1743c542d1839">Unbind</a> ()</td></tr>
+<tr class="memdesc:aa0dcb030b35ddf3012d1743c542d1839"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unbinds the framebuffer (returns to default).  <br /></td></tr>
 <tr class="memitem:a87301c4f588261937ad2a429ac89a8e9" id="r_a87301c4f588261937ad2a429ac89a8e9"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a87301c4f588261937ad2a429ac89a8e9">getColorBuffer</a> ()</td></tr>
+<tr class="memdesc:a87301c4f588261937ad2a429ac89a8e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the main HDR color buffer.  <br /></td></tr>
 <tr class="memitem:a0a0c3fb21aba993b6ec8cfe28562b106" id="r_a0a0c3fb21aba993b6ec8cfe28562b106"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0a0c3fb21aba993b6ec8cfe28562b106">getBrightTexture</a> ()</td></tr>
+<tr class="memdesc:a0a0c3fb21aba993b6ec8cfe28562b106"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the bright-pass texture used for bloom.  <br /></td></tr>
 <tr class="memitem:ac8ad2cfe7c71e251750376e8b3d0e98e" id="r_ac8ad2cfe7c71e251750376e8b3d0e98e"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac8ad2cfe7c71e251750376e8b3d0e98e">getPingPongFBO</a> (int index)</td></tr>
+<tr class="memdesc:ac8ad2cfe7c71e251750376e8b3d0e98e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns one of the ping‑pong framebuffers.  <br /></td></tr>
 <tr class="memitem:a962e1449c0ccc9d39f5ffa8b6eef4e50" id="r_a962e1449c0ccc9d39f5ffa8b6eef4e50"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a962e1449c0ccc9d39f5ffa8b6eef4e50">getPingPongColorBuffer</a> (int index)</td></tr>
+<tr class="memdesc:a962e1449c0ccc9d39f5ffa8b6eef4e50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns one of the ping‑pong color buffers.  <br /></td></tr>
 <tr class="memitem:ae69cd2ebcdc6564b5bf3353cfdfb0bd0" id="r_ae69cd2ebcdc6564b5bf3353cfdfb0bd0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae69cd2ebcdc6564b5bf3353cfdfb0bd0">RenderQuad</a> ()</td></tr>
+<tr class="memdesc:ae69cd2ebcdc6564b5bf3353cfdfb0bd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders the fullscreen quad (used for tone mapping and blur).  <br /></td></tr>
 </table>
-<a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>High‑dynamic‑range framebuffer with bloom support. </p>
+<p>Provides:</p><ul>
+<li>Two floating‑point color buffers (scene + bright pass)</li>
+<li>Depth/stencil renderbuffer</li>
+<li>Ping‑pong framebuffers for Gaussian blur</li>
+<li>A fullscreen quad for post‑processing </li>
+</ul>
+</div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a05aa27e6ee65ba2b428bbaa25bb3a982" name="a05aa27e6ee65ba2b428bbaa25bb3a982"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a05aa27e6ee65ba2b428bbaa25bb3a982">&#9670;&#160;</a></span>HDRBuffer()</h2>
 
@@ -126,6 +146,28 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Creates an HDR framebuffer and initializes all attachments. </p>
+<p>Creates an HDR framebuffer with two floating‑point color attachments.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">width</td><td>Framebuffer width. </td></tr>
+    <tr><td class="paramname">height</td><td>Framebuffer height.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Also sets up:</p><ul>
+<li>A depth/stencil renderbuffer</li>
+<li>Two ping‑pong framebuffers for Gaussian blur</li>
+<li>A fullscreen quad for post‑processing</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">width</td><td>Framebuffer width. </td></tr>
+    <tr><td class="paramname">height</td><td>Framebuffer height. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a7ff8a2efe9dee104cb179f28022f8f65" name="a7ff8a2efe9dee104cb179f28022f8f65"></a>
@@ -142,6 +184,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Destructor cleans up all OpenGL resources. </p>
+<p>Cleans up all framebuffer, texture, and quad resources. </p>
 
 </div>
 </div>
@@ -160,6 +205,8 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Binds the HDR framebuffer for rendering. </p>
 
 </div>
 </div>
@@ -186,6 +233,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Returns the bright-pass texture used for bloom. </p>
+
 </div>
 </div>
 <a id="a87301c4f588261937ad2a429ac89a8e9" name="a87301c4f588261937ad2a429ac89a8e9"></a>
@@ -210,6 +259,8 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Returns the main HDR color buffer. </p>
 
 </div>
 </div>
@@ -236,6 +287,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Returns one of the ping‑pong color buffers. </p>
+
 </div>
 </div>
 <a id="ac8ad2cfe7c71e251750376e8b3d0e98e" name="ac8ad2cfe7c71e251750376e8b3d0e98e"></a>
@@ -261,6 +314,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Returns one of the ping‑pong framebuffers. </p>
+
 </div>
 </div>
 <a id="ae69cd2ebcdc6564b5bf3353cfdfb0bd0" name="ae69cd2ebcdc6564b5bf3353cfdfb0bd0"></a>
@@ -278,6 +333,9 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Renders the fullscreen quad (used for tone mapping and blur). </p>
+<p>Renders the fullscreen quad (used for tone mapping and blur passes). </p>
+
 </div>
 </div>
 <a id="aa0dcb030b35ddf3012d1743c542d1839" name="aa0dcb030b35ddf3012d1743c542d1839"></a>
@@ -294,6 +352,8 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Unbinds the framebuffer (returns to default). </p>
 
 </div>
 </div>

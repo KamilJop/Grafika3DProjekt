@@ -92,22 +92,43 @@ $(function(){initNavTree('class_texture.html','','class_texture-members'); });
 </div><!--header-->
 <div class="contents">
 
+<p>Loads and manages 2D textures, normal maps, and height maps.  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_texture_8h_source.html">Texture.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a8c924539fdb5f0813de81ce1c68df578" id="r_a8c924539fdb5f0813de81ce1c68df578"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8c924539fdb5f0813de81ce1c68df578">Texture</a> (const char *fileLoc)</td></tr>
+<tr class="memdesc:a8c924539fdb5f0813de81ce1c68df578"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a texture object with a file path.  <br /></td></tr>
 <tr class="memitem:a09c4bcb7462f64c1d20fa69dba3cee8a" id="r_a09c4bcb7462f64c1d20fa69dba3cee8a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a09c4bcb7462f64c1d20fa69dba3cee8a">~Texture</a> ()</td></tr>
+<tr class="memdesc:a09c4bcb7462f64c1d20fa69dba3cee8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor clears the texture.  <br /></td></tr>
 <tr class="memitem:a903ad3f9fa0cde61863bc1feba419dc1" id="r_a903ad3f9fa0cde61863bc1feba419dc1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a903ad3f9fa0cde61863bc1feba419dc1">LoadTexture</a> ()</td></tr>
+<tr class="memdesc:a903ad3f9fa0cde61863bc1feba419dc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a texture (RGB or RGBA).  <br /></td></tr>
 <tr class="memitem:a11fbcbee517f5b7ed89ad1a84fcc5f2b" id="r_a11fbcbee517f5b7ed89ad1a84fcc5f2b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a11fbcbee517f5b7ed89ad1a84fcc5f2b">LoadTextureAlpha</a> ()</td></tr>
+<tr class="memdesc:a11fbcbee517f5b7ed89ad1a84fcc5f2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a texture with support for alpha channels.  <br /></td></tr>
 <tr class="memitem:a8cfc14162eac2c854f2973e2f4aa6d90" id="r_a8cfc14162eac2c854f2973e2f4aa6d90"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8cfc14162eac2c854f2973e2f4aa6d90">LoadMaps</a> ()</td></tr>
+<tr class="memdesc:a8cfc14162eac2c854f2973e2f4aa6d90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads normal maps or height/parallax maps.  <br /></td></tr>
 <tr class="memitem:a9adbf1a47320fdb19193284241572ec2" id="r_a9adbf1a47320fdb19193284241572ec2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9adbf1a47320fdb19193284241572ec2">UseTexture</a> (GLenum textureUnit)</td></tr>
+<tr class="memdesc:a9adbf1a47320fdb19193284241572ec2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binds the texture to a given texture unit.  <br /></td></tr>
 <tr class="memitem:a8993ef7966161dd2e61e62a593bcdc80" id="r_a8993ef7966161dd2e61e62a593bcdc80"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8993ef7966161dd2e61e62a593bcdc80">ClearTexture</a> ()</td></tr>
+<tr class="memdesc:a8993ef7966161dd2e61e62a593bcdc80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the texture and resets data.  <br /></td></tr>
 <tr class="memitem:a2329d37c89bb29a6bd244ac66b6bc408" id="r_a2329d37c89bb29a6bd244ac66b6bc408"><td class="memItemLeft" align="right" valign="top">GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2329d37c89bb29a6bd244ac66b6bc408">getTextureID</a> ()</td></tr>
+<tr class="memdesc:a2329d37c89bb29a6bd244ac66b6bc408"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the OpenGL texture ID.  <br /></td></tr>
 <tr class="memitem:a91a6fd3355bc870194851514194daaab" id="r_a91a6fd3355bc870194851514194daaab"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a91a6fd3355bc870194851514194daaab">getWidth</a> ()</td></tr>
+<tr class="memdesc:a91a6fd3355bc870194851514194daaab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns texture width in pixels.  <br /></td></tr>
 <tr class="memitem:a80e143905655b173df5994300088ce35" id="r_a80e143905655b173df5994300088ce35"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a80e143905655b173df5994300088ce35">getHeight</a> ()</td></tr>
+<tr class="memdesc:a80e143905655b173df5994300088ce35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns texture height in pixels.  <br /></td></tr>
 </table>
-<a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Loads and manages 2D textures, normal maps, and height maps. </p>
+<p>Supports:</p><ul>
+<li>Standard textures (RGB / RGBA)</li>
+<li>sRGB color space for correct lighting</li>
+<li>Normal maps and parallax/height maps</li>
+<li>Binding to any texture unit </li>
+</ul>
+</div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a8c924539fdb5f0813de81ce1c68df578" name="a8c924539fdb5f0813de81ce1c68df578"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8c924539fdb5f0813de81ce1c68df578">&#9670;&#160;</a></span>Texture()</h2>
 
@@ -122,6 +143,26 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Creates a texture object with a file path. </p>
+<p>Creates a texture object with an assigned file path.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fileLoc</td><td>Path to the texture file.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Initializes:</p><ul>
+<li>textureID = 0</li>
+<li>width/height/bitDepth = 0</li>
+<li>fileLocation = fileLoc</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fileLoc</td><td>Path to the texture file. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -140,6 +181,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Destructor clears the texture. </p>
+
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
@@ -157,6 +200,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Deletes the texture and resets data. </p>
+<p>Deletes the OpenGL texture and resets texture data. </p>
 
 </div>
 </div>
@@ -183,6 +229,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Returns texture height in pixels. </p>
+
 </div>
 </div>
 <a id="a2329d37c89bb29a6bd244ac66b6bc408" name="a2329d37c89bb29a6bd244ac66b6bc408"></a>
@@ -207,6 +255,8 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Returns the OpenGL texture ID. </p>
 
 </div>
 </div>
@@ -233,6 +283,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Returns texture width in pixels. </p>
+
 </div>
 </div>
 <a id="a8cfc14162eac2c854f2973e2f4aa6d90" name="a8cfc14162eac2c854f2973e2f4aa6d90"></a>
@@ -249,6 +301,16 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Loads normal maps or height/parallax maps. </p>
+<p>Supports RGB, RGBA, and RED channel formats.</p>
+<dl class="section return"><dt>Returns</dt><dd>True if loaded successfully.</dd></dl>
+<p>Supports:</p><ul>
+<li>RGB (3 channels)</li>
+<li>RGBA (4 channels)</li>
+<li>RED (1 channel)</li>
+</ul>
+<dl class="section return"><dt>Returns</dt><dd>True if loaded successfully. </dd></dl>
 
 </div>
 </div>
@@ -267,6 +329,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Loads a texture (RGB or RGBA). </p>
+<p>Internally calls <a class="el" href="#a11fbcbee517f5b7ed89ad1a84fcc5f2b" title="Loads a texture with support for alpha channels.">LoadTextureAlpha()</a>.</p>
+<dl class="section return"><dt>Returns</dt><dd>True if loaded successfully. </dd></dl>
+
 </div>
 </div>
 <a id="a11fbcbee517f5b7ed89ad1a84fcc5f2b" name="a11fbcbee517f5b7ed89ad1a84fcc5f2b"></a>
@@ -284,6 +350,16 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Loads a texture with support for alpha channels. </p>
+<p>Uses sRGB formats for correct lighting.</p>
+<dl class="section return"><dt>Returns</dt><dd>True if loaded successfully.</dd></dl>
+<p>Supports:</p><ul>
+<li>RGB (3 channels)</li>
+<li>RGBA (4 channels)</li>
+</ul>
+<p>Uses sRGB formats for correct lighting.</p>
+<dl class="section return"><dt>Returns</dt><dd>True if loaded successfully. </dd></dl>
+
 </div>
 </div>
 <a id="a9adbf1a47320fdb19193284241572ec2" name="a9adbf1a47320fdb19193284241572ec2"></a>
@@ -300,6 +376,14 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Binds the texture to a given texture unit. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">textureUnit</td><td>GL texture unit (e.g., GL_TEXTURE0). </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

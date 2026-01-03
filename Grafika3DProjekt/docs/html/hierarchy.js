@@ -23,6 +23,7 @@ var hierarchy =
       [ "Lock", "class_lock.html", null ],
       [ "Pedestal", "class_pedestal.html", null ],
       [ "Pickable", "class_pickable.html", null ],
+      [ "Radio", "class_radio.html", null ],
       [ "Readable", "class_readable.html", null ]
     ] ],
     [ "HDRBuffer", "class_h_d_r_buffer.html", null ],

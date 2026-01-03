@@ -92,17 +92,32 @@ $(function(){initNavTree('class_mesh.html','','class_mesh-members'); });
 </div><!--header-->
 <div class="contents">
 
+<p>Represents a drawable mesh stored in GPU buffers.  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_mesh_8h_source.html">Mesh.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a2af137f1571af89172b9c102302c416b" id="r_a2af137f1571af89172b9c102302c416b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2af137f1571af89172b9c102302c416b">Mesh</a> ()</td></tr>
+<tr class="memdesc:a2af137f1571af89172b9c102302c416b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an empty mesh with uninitialized buffers.  <br /></td></tr>
 <tr class="memitem:abcdf5ab42d41e3139d1b8221ef68697c" id="r_abcdf5ab42d41e3139d1b8221ef68697c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abcdf5ab42d41e3139d1b8221ef68697c">CreateMesh</a> (GLfloat *vertices, unsigned int *indices, unsigned int numOfVertices, unsigned int numOfIndices, unsigned int floatsPerVertex)</td></tr>
+<tr class="memdesc:abcdf5ab42d41e3139d1b8221ef68697c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates the mesh from vertex and index data.  <br /></td></tr>
 <tr class="memitem:a75ccdfd3c16df862abb90d6046abcdb4" id="r_a75ccdfd3c16df862abb90d6046abcdb4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a75ccdfd3c16df862abb90d6046abcdb4">RenderMesh</a> ()</td></tr>
+<tr class="memdesc:a75ccdfd3c16df862abb90d6046abcdb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders the mesh using glDrawElements.  <br /></td></tr>
 <tr class="memitem:afa7292342a61bc1cca667be6c00d73d2" id="r_afa7292342a61bc1cca667be6c00d73d2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afa7292342a61bc1cca667be6c00d73d2">ClearMesh</a> ()</td></tr>
+<tr class="memdesc:afa7292342a61bc1cca667be6c00d73d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes VAO, VBO, and EBO buffers.  <br /></td></tr>
 <tr class="memitem:a5efe4da1a4c0971cfb037bd70304c303" id="r_a5efe4da1a4c0971cfb037bd70304c303"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5efe4da1a4c0971cfb037bd70304c303">~Mesh</a> ()</td></tr>
+<tr class="memdesc:a5efe4da1a4c0971cfb037bd70304c303"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor cleans up GPU resources.  <br /></td></tr>
 </table>
-<a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Represents a drawable mesh stored in GPU buffers. </p>
+<p>Provides:</p><ul>
+<li>VAO, VBO, and EBO management</li>
+<li>Creation from vertex/index data</li>
+<li>Rendering via glDrawElements </li>
+</ul>
+</div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a2af137f1571af89172b9c102302c416b" name="a2af137f1571af89172b9c102302c416b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2af137f1571af89172b9c102302c416b">&#9670;&#160;</a></span>Mesh()</h2>
 
@@ -117,6 +132,8 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Creates an empty mesh with uninitialized buffers. </p>
 
 </div>
 </div>
@@ -135,6 +152,9 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Destructor cleans up GPU resources. </p>
+<p>Destructor cleans up all mesh buffers. </p>
+
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
@@ -152,6 +172,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Deletes VAO, VBO, and EBO buffers. </p>
+<p>Called by the destructor to clean up GPU resources. </p>
 
 </div>
 </div>
@@ -184,10 +207,40 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>floatsPerVertex</em></span><span class="paramdefsep"> = </span><span class="paramdefval">8</span>&#160;)</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>floatsPerVertex</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Creates the mesh from vertex and index data. </p>
+<p>Creates a mesh from vertex and index data.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">vertices</td><td>Pointer to vertex data. </td></tr>
+    <tr><td class="paramname">indices</td><td>Pointer to index data. </td></tr>
+    <tr><td class="paramname">numOfVertices</td><td>Number of vertices. </td></tr>
+    <tr><td class="paramname">numOfIndices</td><td>Number of indices. </td></tr>
+    <tr><td class="paramname">floatsPerVertex</td><td>Number of floats per vertex (stride).</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Layout (default floatsPerVertex = 8):</p><ul>
+<li>Position: 3 floats</li>
+<li>Normal: 3 floats</li>
+<li>UV: 2 floats</li>
+<li>Tangent: 3 floats (optional)</li>
+<li>Bitangent:3 floats (optional)</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">vertices</td><td>Pointer to vertex data. </td></tr>
+    <tr><td class="paramname">indices</td><td>Pointer to index data. </td></tr>
+    <tr><td class="paramname">numOfVertices</td><td>Number of vertices. </td></tr>
+    <tr><td class="paramname">numOfIndices</td><td>Number of indices. </td></tr>
+    <tr><td class="paramname">floatsPerVertex</td><td>Number of floats per vertex. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -205,6 +258,8 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Renders the mesh using glDrawElements. </p>
 
 </div>
 </div>

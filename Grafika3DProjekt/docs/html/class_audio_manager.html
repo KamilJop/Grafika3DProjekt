@@ -92,23 +92,39 @@ $(function(){initNavTree('class_audio_manager.html','','class_audio_manager-memb
 </div><!--header-->
 <div class="contents">
 
+<p>Handles loading and playing 2D/3D sounds and music.  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_audio_manager_8h_source.html">AudioManager.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a1755f7f197b7a0dd0a3083d7cf6b423a" id="r_a1755f7f197b7a0dd0a3083d7cf6b423a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1755f7f197b7a0dd0a3083d7cf6b423a">Init</a> ()</td></tr>
+<tr class="memdesc:a1755f7f197b7a0dd0a3083d7cf6b423a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the audio engine.  <br /></td></tr>
 <tr class="memitem:a2aa2a95808b74cf38880794d377b879b" id="r_a2aa2a95808b74cf38880794d377b879b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2aa2a95808b74cf38880794d377b879b">LoadMusicTrack</a> (const std::string &amp;name, const std::string &amp;filepath)</td></tr>
+<tr class="memdesc:a2aa2a95808b74cf38880794d377b879b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a streamed music track.  <br /></td></tr>
 <tr class="memitem:a9591a1731722cff1946c3964538e5a51" id="r_a9591a1731722cff1946c3964538e5a51"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9591a1731722cff1946c3964538e5a51">Load3DSoundEffect</a> (const std::string &amp;name, const std::string &amp;filepath)</td></tr>
+<tr class="memdesc:a9591a1731722cff1946c3964538e5a51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a 3D sound effect.  <br /></td></tr>
 <tr class="memitem:abafa6d7b2de24f1f9aa3319abdb48649" id="r_abafa6d7b2de24f1f9aa3319abdb48649"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abafa6d7b2de24f1f9aa3319abdb48649">Load2DSoundEffect</a> (const std::string &amp;name, const std::string &amp;filepath)</td></tr>
+<tr class="memdesc:abafa6d7b2de24f1f9aa3319abdb48649"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a 2D sound effect.  <br /></td></tr>
 <tr class="memitem:af483c7c2baf8268b892e3fed791d53c9" id="r_af483c7c2baf8268b892e3fed791d53c9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af483c7c2baf8268b892e3fed791d53c9">PlayMusicTrack</a> (const std::string &amp;name, float volume=1.0f, bool loop=true)</td></tr>
+<tr class="memdesc:af483c7c2baf8268b892e3fed791d53c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plays a music track.  <br /></td></tr>
 <tr class="memitem:a2593fa5cf1d1bc4c49499bd1d88802a9" id="r_a2593fa5cf1d1bc4c49499bd1d88802a9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2593fa5cf1d1bc4c49499bd1d88802a9">Play3DSoundEffect</a> (const std::string &amp;name, const glm::vec3 &amp;position, float volume=1.0f)</td></tr>
+<tr class="memdesc:a2593fa5cf1d1bc4c49499bd1d88802a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plays a 3D sound at a position.  <br /></td></tr>
 <tr class="memitem:af54d4a29550af8287dbcba9572c10789" id="r_af54d4a29550af8287dbcba9572c10789"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af54d4a29550af8287dbcba9572c10789">Play2DSoundEffect</a> (const std::string &amp;name, float volume=1.0f)</td></tr>
+<tr class="memdesc:af54d4a29550af8287dbcba9572c10789"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plays a 2D sound.  <br /></td></tr>
 <tr class="memitem:a25e0e74ebd95a58c711d478321f541b5" id="r_a25e0e74ebd95a58c711d478321f541b5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a25e0e74ebd95a58c711d478321f541b5">SetListenerPosition</a> (const glm::vec3 &amp;position)</td></tr>
+<tr class="memdesc:a25e0e74ebd95a58c711d478321f541b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the listener's world position.  <br /></td></tr>
 <tr class="memitem:ae5f16a4081b937d62f55dc59ae8b10e8" id="r_ae5f16a4081b937d62f55dc59ae8b10e8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae5f16a4081b937d62f55dc59ae8b10e8">UpdateMusicVolume</a> (int handle, float volume)</td></tr>
+<tr class="memdesc:ae5f16a4081b937d62f55dc59ae8b10e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes volume of a playing music track.  <br /></td></tr>
 <tr class="memitem:adcc3134cb53011f687f71256bd44a2cd" id="r_adcc3134cb53011f687f71256bd44a2cd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adcc3134cb53011f687f71256bd44a2cd">UpdateSFXVolume</a> (float volume)</td></tr>
+<tr class="memdesc:adcc3134cb53011f687f71256bd44a2cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets volume for all sound effects.  <br /></td></tr>
 <tr class="memitem:a5f88ddad62795dcc5d5873fe2e16da1e" id="r_a5f88ddad62795dcc5d5873fe2e16da1e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5f88ddad62795dcc5d5873fe2e16da1e">Update3DAudio</a> ()</td></tr>
+<tr class="memdesc:a5f88ddad62795dcc5d5873fe2e16da1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates 3D audio (call every frame).  <br /></td></tr>
 <tr class="memitem:a20641eaa258f8958b2e603b2bd556240" id="r_a20641eaa258f8958b2e603b2bd556240"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a20641eaa258f8958b2e603b2bd556240">StopMusic</a> ()</td></tr>
+<tr class="memdesc:a20641eaa258f8958b2e603b2bd556240"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops currently playing music.  <br /></td></tr>
 <tr class="memitem:a31b077a84bbe097cab68d21cf8f5fec6" id="r_a31b077a84bbe097cab68d21cf8f5fec6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a31b077a84bbe097cab68d21cf8f5fec6">Cleanup</a> ()</td></tr>
+<tr class="memdesc:a31b077a84bbe097cab68d21cf8f5fec6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees all loaded audio and shuts down engine.  <br /></td></tr>
 <tr class="memitem:a23ac9d3bd6f2b3e178de3279fb32f417" id="r_a23ac9d3bd6f2b3e178de3279fb32f417"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a23ac9d3bd6f2b3e178de3279fb32f417">AudioManager</a> (const <a class="el" href="class_audio_manager.html">AudioManager</a> &amp;)=delete</td></tr>
 <tr class="memitem:ab4c306f1e391f99e9cfcf33af107cb66" id="r_ab4c306f1e391f99e9cfcf33af107cb66"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab4c306f1e391f99e9cfcf33af107cb66">AudioManager</a> (<a class="el" href="class_audio_manager.html">AudioManager</a> &amp;&amp;)=delete</td></tr>
 <tr class="memitem:ac5492219646ac6298c58250ef39a218e" id="r_ac5492219646ac6298c58250ef39a218e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_audio_manager.html">AudioManager</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac5492219646ac6298c58250ef39a218e">operator=</a> (const <a class="el" href="class_audio_manager.html">AudioManager</a> &amp;)=delete</td></tr>
@@ -117,8 +133,12 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 id="header-pub-static-methods" class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ac3ac4333dbf24a65cba51fd584b3a45d" id="r_ac3ac4333dbf24a65cba51fd584b3a45d"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_audio_manager.html">AudioManager</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac3ac4333dbf24a65cba51fd584b3a45d">GetInstance</a> ()</td></tr>
+<tr class="memdesc:ac3ac4333dbf24a65cba51fd584b3a45d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the global audio manager instance.  <br /></td></tr>
 </table>
-<a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Handles loading and playing 2D/3D sounds and music. </p>
+<p>Singleton class using SoLoud for audio playback. </p>
+</div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a23ac9d3bd6f2b3e178de3279fb32f417" name="a23ac9d3bd6f2b3e178de3279fb32f417"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a23ac9d3bd6f2b3e178de3279fb32f417">&#9670;&#160;</a></span>AudioManager() <span class="overload">[1/2]</span></h2>
 
@@ -185,6 +205,9 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Frees all loaded audio and shuts down engine. </p>
+<p>Frees all loaded audio resources and shuts down SoLoud. </p>
+
 </div>
 </div>
 <a id="ac3ac4333dbf24a65cba51fd584b3a45d" name="ac3ac4333dbf24a65cba51fd584b3a45d"></a>
@@ -210,6 +233,9 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Returns the global audio manager instance. </p>
+<p>Returns the global <a class="el" href="class_audio_manager.html" title="Handles loading and playing 2D/3D sounds and music.">AudioManager</a> singleton instance. </p>
+
 </div>
 </div>
 <a id="a1755f7f197b7a0dd0a3083d7cf6b423a" name="a1755f7f197b7a0dd0a3083d7cf6b423a"></a>
@@ -226,6 +252,9 @@ Static Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Initializes the audio engine. </p>
+<p>Initializes the SoLoud audio engine. </p>
 
 </div>
 </div>
@@ -248,6 +277,16 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Loads a 2D sound effect. </p>
+<p>Loads a 2D (non-positional) sound effect.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>Identifier for the sound. </td></tr>
+    <tr><td class="paramname">filepath</td><td>Path to the audio file. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a9591a1731722cff1946c3964538e5a51" name="a9591a1731722cff1946c3964538e5a51"></a>
@@ -269,6 +308,16 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Loads a 3D sound effect. </p>
+<p>Loads a 3D positional sound effect.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>Identifier for the sound. </td></tr>
+    <tr><td class="paramname">filepath</td><td>Path to the audio file. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a2aa2a95808b74cf38880794d377b879b" name="a2aa2a95808b74cf38880794d377b879b"></a>
@@ -289,6 +338,16 @@ Static Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Loads a streamed music track. </p>
+<p>Loads a streamed music track (WAV/OGG/MP3).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>Identifier used to reference the track. </td></tr>
+    <tr><td class="paramname">filepath</td><td>Path to the audio file. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -361,6 +420,18 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Plays a 2D sound. </p>
+<p>Plays a 2D sound effect.</p>
+<p>If the sound is already playing, the previous instance is stopped.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>Sound identifier. </td></tr>
+    <tr><td class="paramname">volume</td><td>Playback volume. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Handle to the playing instance, or -1 on failure. </dd></dl>
+
 </div>
 </div>
 <a id="a2593fa5cf1d1bc4c49499bd1d88802a9" name="a2593fa5cf1d1bc4c49499bd1d88802a9"></a>
@@ -386,6 +457,18 @@ Static Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Plays a 3D sound at a position. </p>
+<p>Plays a 3D sound effect at a world position.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>Sound identifier. </td></tr>
+    <tr><td class="paramname">position</td><td>3D world position. </td></tr>
+    <tr><td class="paramname">volume</td><td>Playback volume. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Handle to the playing instance, or -1 on failure. </dd></dl>
 
 </div>
 </div>
@@ -413,6 +496,18 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Plays a music track. </p>
+<p>Plays a music track, stopping any currently playing track.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>Track identifier. </td></tr>
+    <tr><td class="paramname">volume</td><td>Playback volume. </td></tr>
+    <tr><td class="paramname">loop</td><td>Whether the track should loop. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Handle to the playing instance, or -1 on failure. </dd></dl>
+
 </div>
 </div>
 <a id="a25e0e74ebd95a58c711d478321f541b5" name="a25e0e74ebd95a58c711d478321f541b5"></a>
@@ -429,6 +524,15 @@ Static Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Sets the listener's world position. </p>
+<p>Sets the listener's 3D world position.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">position</td><td>Listener position. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -447,6 +551,9 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Stops currently playing music. </p>
+<p>Stops the currently playing music track. </p>
+
 </div>
 </div>
 <a id="a5f88ddad62795dcc5d5873fe2e16da1e" name="a5f88ddad62795dcc5d5873fe2e16da1e"></a>
@@ -463,6 +570,9 @@ Static Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Updates 3D audio (call every frame). </p>
+<p>Updates 3D audio calculations (must be called each frame). </p>
 
 </div>
 </div>
@@ -485,6 +595,16 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Changes volume of a playing music track. </p>
+<p>Updates the volume of a playing music track.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">handle</td><td>Audio handle. </td></tr>
+    <tr><td class="paramname">volume</td><td>New volume. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="adcc3134cb53011f687f71256bd44a2cd" name="adcc3134cb53011f687f71256bd44a2cd"></a>
@@ -501,6 +621,15 @@ Static Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Sets volume for all sound effects. </p>
+<p>Updates the volume of all sound effects.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">volume</td><td>New volume. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

@@ -92,6 +92,9 @@ $(function(){initNavTree('class_point_light.html','','class_point_light-members'
 </div><!--header-->
 <div class="contents">
 
+<p>A light that emits in all directions from a single point.  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_point_light_8h_source.html">PointLight.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for PointLight:</div>
@@ -99,55 +102,97 @@ Inheritance diagram for PointLight:</div>
  <div class="center">
   <img src="class_point_light.png" usemap="#PointLight_map" alt=""/>
   <map id="PointLight_map" name="PointLight_map">
-<area href="class_light.html" alt="Light" shape="rect" coords="0,0,67,24"/>
-<area href="class_flashlight.html" alt="Flashlight" shape="rect" coords="0,112,67,136"/>
+<area href="class_light.html" title="Base class for all light types." alt="Light" shape="rect" coords="0,0,67,24"/>
+<area href="class_flashlight.html" title="A spotlight-style light used as a player flashlight." alt="Flashlight" shape="rect" coords="0,112,67,136"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:adb9dc9db2efbfaa2c29b8b109b086f16" id="r_adb9dc9db2efbfaa2c29b8b109b086f16"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adb9dc9db2efbfaa2c29b8b109b086f16">PointLight</a> (glm::vec3 colors, GLfloat ambientIntensity, GLfloat diffuseIntensit, glm::vec3 lightPos, GLfloat con, GLfloat lin, GLfloat quad, int index, GLfloat far, GLfloat near, GLfloat shadowH, GLfloat shadowW)</td></tr>
+<tr class="memdesc:adb9dc9db2efbfaa2c29b8b109b086f16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a point light with shadow mapping enabled.  <br /></td></tr>
 <tr class="memitem:ac8551f8f9b6024ff2061ea244a9ba8f4" id="r_ac8551f8f9b6024ff2061ea244a9ba8f4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac8551f8f9b6024ff2061ea244a9ba8f4">PointLight</a> (glm::vec3 colors, GLfloat ambientIntensity, GLfloat diffuseIntensit, glm::vec3 lightPos, GLfloat con, GLfloat lin, GLfloat quad, int index=0)</td></tr>
+<tr class="memdesc:ac8551f8f9b6024ff2061ea244a9ba8f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor used when inherited by <a class="el" href="class_flashlight.html" title="A spotlight-style light used as a player flashlight.">Flashlight</a> (no shadow setup).  <br /></td></tr>
 <tr class="memitem:aa12d9005d5372dbbe655a82231634341" id="r_aa12d9005d5372dbbe655a82231634341"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa12d9005d5372dbbe655a82231634341">~PointLight</a> ()</td></tr>
+<tr class="memdesc:aa12d9005d5372dbbe655a82231634341"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <br /></td></tr>
 <tr class="memitem:af75e4e027f014ecd7cca79f94eabbf3e" id="r_af75e4e027f014ecd7cca79f94eabbf3e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af75e4e027f014ecd7cca79f94eabbf3e">useLight</a> (<a class="el" href="class_shader.html">Shader</a> *lightShader)</td></tr>
+<tr class="memdesc:af75e4e027f014ecd7cca79f94eabbf3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends point light data to the shader.  <br /></td></tr>
 <tr class="memitem:a8202cf81dd4f2f8a4f96f8631f8855f6" id="r_a8202cf81dd4f2f8a4f96f8631f8855f6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8202cf81dd4f2f8a4f96f8631f8855f6">setPosition</a> (glm::vec3 pos)</td></tr>
+<tr class="memdesc:a8202cf81dd4f2f8a4f96f8631f8855f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the light position.  <br /></td></tr>
 <tr class="memitem:a8a1a73a288688fff0ab95bb9714460bc" id="r_a8a1a73a288688fff0ab95bb9714460bc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8a1a73a288688fff0ab95bb9714460bc">setColor</a> (glm::vec3 color)</td></tr>
+<tr class="memdesc:a8a1a73a288688fff0ab95bb9714460bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the light color.  <br /></td></tr>
 <tr class="memitem:a88535f061ef61ce4996ae00fc7d3c4b7" id="r_a88535f061ef61ce4996ae00fc7d3c4b7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a88535f061ef61ce4996ae00fc7d3c4b7">setCastShadow</a> (bool cast)</td></tr>
+<tr class="memdesc:a88535f061ef61ce4996ae00fc7d3c4b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables or disables shadow casting.  <br /></td></tr>
 <tr class="memitem:afd2e244d3a29cfdbbc1363018c5a3ffa" id="r_afd2e244d3a29cfdbbc1363018c5a3ffa"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afd2e244d3a29cfdbbc1363018c5a3ffa">getCastShadow</a> ()</td></tr>
+<tr class="memdesc:afd2e244d3a29cfdbbc1363018c5a3ffa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether the light casts shadows.  <br /></td></tr>
 <tr class="memitem:a8486a8311e9654f05f35a442067d29b3" id="r_a8486a8311e9654f05f35a442067d29b3"><td class="memItemLeft" align="right" valign="top">glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8486a8311e9654f05f35a442067d29b3">getColor</a> ()</td></tr>
+<tr class="memdesc:a8486a8311e9654f05f35a442067d29b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the light color.  <br /></td></tr>
 <tr class="memitem:a0b7c731af3921223492e5d3564529b55" id="r_a0b7c731af3921223492e5d3564529b55"><td class="memItemLeft" align="right" valign="top">glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0b7c731af3921223492e5d3564529b55">getPosition</a> ()</td></tr>
+<tr class="memdesc:a0b7c731af3921223492e5d3564529b55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the light position.  <br /></td></tr>
 <tr class="memitem:ababcec837b6e81cec7f1be3d806f3fa0" id="r_ababcec837b6e81cec7f1be3d806f3fa0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_omni_shadow_map.html">OmniShadowMap</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ababcec837b6e81cec7f1be3d806f3fa0">getShadowMap</a> ()</td></tr>
+<tr class="memdesc:ababcec837b6e81cec7f1be3d806f3fa0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the shadow map used by this point light.  <br /></td></tr>
 <tr class="memitem:a60298db4e378ac0f3bad7192509d8aa7" id="r_a60298db4e378ac0f3bad7192509d8aa7"><td class="memItemLeft" align="right" valign="top">glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a60298db4e378ac0f3bad7192509d8aa7">getLightPosition</a> ()</td></tr>
+<tr class="memdesc:a60298db4e378ac0f3bad7192509d8aa7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the light position (duplicate accessor).  <br /></td></tr>
 <tr class="memitem:a334b613b738dc5be42b6cccfb6303096" id="r_a334b613b738dc5be42b6cccfb6303096"><td class="memItemLeft" align="right" valign="top">GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a334b613b738dc5be42b6cccfb6303096">getFarPlane</a> ()</td></tr>
+<tr class="memdesc:a334b613b738dc5be42b6cccfb6303096"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the far plane distance used for shadows.  <br /></td></tr>
 <tr class="memitem:a9f15e97e20fcbce3ceb6aeec77d3cc57" id="r_a9f15e97e20fcbce3ceb6aeec77d3cc57"><td class="memItemLeft" align="right" valign="top">std::vector&lt; glm::mat4 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9f15e97e20fcbce3ceb6aeec77d3cc57">calculateLightTransform</a> ()</td></tr>
+<tr class="memdesc:a9f15e97e20fcbce3ceb6aeec77d3cc57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the 6 projection-view matrices for cube‑map shadow rendering.  <br /></td></tr>
 <tr class="inherit_header pub_methods_class_light"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_class_light')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Member Functions inherited from <a class="el" href="class_light.html">Light</a></td></tr>
 <tr class="memitem:a235d9e5f32976bbde81bce9543205bec inherit pub_methods_class_light" id="r_a235d9e5f32976bbde81bce9543205bec"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_light.html#a235d9e5f32976bbde81bce9543205bec">Light</a> (glm::vec3 colors, GLfloat ambientIntensity, GLfloat diffuseIntensity)</td></tr>
+<tr class="memdesc:a235d9e5f32976bbde81bce9543205bec inherit pub_methods_class_light"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a basic light.  <br /></td></tr>
 <tr class="memitem:ad0e59fad13bb6cfadc25b2c477e9ddc7 inherit pub_methods_class_light" id="r_ad0e59fad13bb6cfadc25b2c477e9ddc7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_light.html#ad0e59fad13bb6cfadc25b2c477e9ddc7">~Light</a> ()</td></tr>
+<tr class="memdesc:ad0e59fad13bb6cfadc25b2c477e9ddc7 inherit pub_methods_class_light"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <br /></td></tr>
 <tr class="memitem:aa896f06f624e774271b8d523f6122dc6 inherit pub_methods_class_light" id="r_aa896f06f624e774271b8d523f6122dc6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_light.html#aa896f06f624e774271b8d523f6122dc6">setAmbientIntensity</a> (GLfloat intensity)</td></tr>
+<tr class="memdesc:aa896f06f624e774271b8d523f6122dc6 inherit pub_methods_class_light"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets ambient intensity.  <br /></td></tr>
 <tr class="memitem:a48a65c71333cece596dd2d8a211a2b94 inherit pub_methods_class_light" id="r_a48a65c71333cece596dd2d8a211a2b94"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_light.html#a48a65c71333cece596dd2d8a211a2b94">setDiffuseIntensity</a> (GLfloat intensity)</td></tr>
+<tr class="memdesc:a48a65c71333cece596dd2d8a211a2b94 inherit pub_methods_class_light"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets diffuse intensity.  <br /></td></tr>
 <tr class="memitem:a7bb441327f9e02b09292d3634789ad73 inherit pub_methods_class_light" id="r_a7bb441327f9e02b09292d3634789ad73"><td class="memItemLeft" align="right" valign="top">GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_light.html#a7bb441327f9e02b09292d3634789ad73">getAmbientIntensity</a> () const</td></tr>
+<tr class="memdesc:a7bb441327f9e02b09292d3634789ad73 inherit pub_methods_class_light"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets ambient intensity.  <br /></td></tr>
 <tr class="memitem:a2cf8130d783b1b217ba3b93ccba39e92 inherit pub_methods_class_light" id="r_a2cf8130d783b1b217ba3b93ccba39e92"><td class="memItemLeft" align="right" valign="top">GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_light.html#a2cf8130d783b1b217ba3b93ccba39e92">getDiffuseIntensity</a> () const</td></tr>
+<tr class="memdesc:a2cf8130d783b1b217ba3b93ccba39e92 inherit pub_methods_class_light"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets diffuse intensity.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pro-attribs" class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:afd27cd6748d800602edbd0e4cae2cd4f" id="r_afd27cd6748d800602edbd0e4cae2cd4f"><td class="memItemLeft" align="right" valign="top">glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afd27cd6748d800602edbd0e4cae2cd4f">lightPosition</a></td></tr>
+<tr class="memdesc:afd27cd6748d800602edbd0e4cae2cd4f"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_light.html" title="Base class for all light types.">Light</a> world position.  <br /></td></tr>
 <tr class="memitem:a72cb039b9584e827a392626819352884" id="r_a72cb039b9584e827a392626819352884"><td class="memItemLeft" align="right" valign="top">GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a72cb039b9584e827a392626819352884">constant</a></td></tr>
+<tr class="memdesc:a72cb039b9584e827a392626819352884"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constant attenuation.  <br /></td></tr>
 <tr class="memitem:ab28020d15cddb3db3ca0bac4f58e4185" id="r_ab28020d15cddb3db3ca0bac4f58e4185"><td class="memItemLeft" align="right" valign="top">GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab28020d15cddb3db3ca0bac4f58e4185">linear</a></td></tr>
+<tr class="memdesc:ab28020d15cddb3db3ca0bac4f58e4185"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linear attenuation.  <br /></td></tr>
 <tr class="memitem:abc757960fadc22cbb971758e12a135d1" id="r_abc757960fadc22cbb971758e12a135d1"><td class="memItemLeft" align="right" valign="top">GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abc757960fadc22cbb971758e12a135d1">quadratic</a></td></tr>
+<tr class="memdesc:abc757960fadc22cbb971758e12a135d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Quadratic attenuation.  <br /></td></tr>
 <tr class="memitem:a94f51b9c08dee8a25a3040604334003e" id="r_a94f51b9c08dee8a25a3040604334003e"><td class="memItemLeft" align="right" valign="top">GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a94f51b9c08dee8a25a3040604334003e">farPlane</a></td></tr>
+<tr class="memdesc:a94f51b9c08dee8a25a3040604334003e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Far plane for shadow projection.  <br /></td></tr>
 <tr class="memitem:afabd4082a977c95ebef749773460873c" id="r_afabd4082a977c95ebef749773460873c"><td class="memItemLeft" align="right" valign="top">GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afabd4082a977c95ebef749773460873c">nearPlane</a></td></tr>
+<tr class="memdesc:afabd4082a977c95ebef749773460873c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Near plane for shadow projection.  <br /></td></tr>
 <tr class="memitem:acf34b700e4c9f6cb02af8e67ed833b3a" id="r_acf34b700e4c9f6cb02af8e67ed833b3a"><td class="memItemLeft" align="right" valign="top">GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acf34b700e4c9f6cb02af8e67ed833b3a">shadowHeight</a></td></tr>
+<tr class="memdesc:acf34b700e4c9f6cb02af8e67ed833b3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shadow map height.  <br /></td></tr>
 <tr class="memitem:a341d7c3c1d133a6010da8423e44f6a60" id="r_a341d7c3c1d133a6010da8423e44f6a60"><td class="memItemLeft" align="right" valign="top">GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a341d7c3c1d133a6010da8423e44f6a60">shadowWidth</a></td></tr>
+<tr class="memdesc:a341d7c3c1d133a6010da8423e44f6a60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shadow map width.  <br /></td></tr>
 <tr class="memitem:a82c88ed4da78fd453a4936abb91cb796" id="r_a82c88ed4da78fd453a4936abb91cb796"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_omni_shadow_map.html">OmniShadowMap</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a82c88ed4da78fd453a4936abb91cb796">shadowMap</a></td></tr>
+<tr class="memdesc:a82c88ed4da78fd453a4936abb91cb796"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cube‑map shadow map.  <br /></td></tr>
 <tr class="memitem:a008c6b90f50c36b327e94c88d6b4ea4b" id="r_a008c6b90f50c36b327e94c88d6b4ea4b"><td class="memItemLeft" align="right" valign="top">glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a008c6b90f50c36b327e94c88d6b4ea4b">lightProjection</a></td></tr>
+<tr class="memdesc:a008c6b90f50c36b327e94c88d6b4ea4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Projection matrix for shadow mapping.  <br /></td></tr>
 <tr class="memitem:a80f4d41ca429d1392be550dd24c54754" id="r_a80f4d41ca429d1392be550dd24c54754"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a80f4d41ca429d1392be550dd24c54754">lightIndex</a></td></tr>
+<tr class="memdesc:a80f4d41ca429d1392be550dd24c54754"><td class="mdescLeft">&#160;</td><td class="mdescRight">Index in shader array.  <br /></td></tr>
 <tr class="memitem:a4df991ca7acabc4958be6ea2c2f21334" id="r_a4df991ca7acabc4958be6ea2c2f21334"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4df991ca7acabc4958be6ea2c2f21334">castShadow</a> = false</td></tr>
+<tr class="memdesc:a4df991ca7acabc4958be6ea2c2f21334"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether this light casts shadows.  <br /></td></tr>
 <tr class="inherit_header pro_attribs_class_light"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_class_light')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Protected Attributes inherited from <a class="el" href="class_light.html">Light</a></td></tr>
 <tr class="memitem:a767bf75619a6e5e16262f4542c166e57 inherit pro_attribs_class_light" id="r_a767bf75619a6e5e16262f4542c166e57"><td class="memItemLeft" align="right" valign="top">glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_light.html#a767bf75619a6e5e16262f4542c166e57">lightColor</a></td></tr>
+<tr class="memdesc:a767bf75619a6e5e16262f4542c166e57 inherit pro_attribs_class_light"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_light.html" title="Base class for all light types.">Light</a> color.  <br /></td></tr>
 <tr class="memitem:a2f80d400b2ca6420f8f7433a04404e80 inherit pro_attribs_class_light" id="r_a2f80d400b2ca6420f8f7433a04404e80"><td class="memItemLeft" align="right" valign="top">GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_light.html#a2f80d400b2ca6420f8f7433a04404e80">lightAmbientIntensity</a></td></tr>
+<tr class="memdesc:a2f80d400b2ca6420f8f7433a04404e80 inherit pro_attribs_class_light"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ambient strength.  <br /></td></tr>
 <tr class="memitem:acd061c068265da0e9cbb2b9a10612651 inherit pro_attribs_class_light" id="r_acd061c068265da0e9cbb2b9a10612651"><td class="memItemLeft" align="right" valign="top">GLfloat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_light.html#acd061c068265da0e9cbb2b9a10612651">lightDiffuseIntensity</a></td></tr>
+<tr class="memdesc:acd061c068265da0e9cbb2b9a10612651 inherit pro_attribs_class_light"><td class="mdescLeft">&#160;</td><td class="mdescRight">Diffuse strength.  <br /></td></tr>
 </table>
-<a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>A light that emits in all directions from a single point. </p>
+<p>Supports:</p><ul>
+<li>Attenuation (constant, linear, quadratic)</li>
+<li>Cube‑map shadow mapping (<a class="el" href="class_omni_shadow_map.html" title="Cube‑map shadow map used for point lights.">OmniShadowMap</a>)</li>
+<li>Multiple point lights via index </li>
+</ul>
+</div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="adb9dc9db2efbfaa2c29b8b109b086f16" name="adb9dc9db2efbfaa2c29b8b109b086f16"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adb9dc9db2efbfaa2c29b8b109b086f16">&#9670;&#160;</a></span>PointLight() <span class="overload">[1/2]</span></h2>
 
@@ -157,65 +202,107 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname">PointLight::PointLight </td>
           <td>(</td>
-          <td class="paramtype">glm::vec3</td>          <td class="paramname"><span class="paramname"><em>colors</em></span><span class="paramdefsep"> = </span><span class="paramdefval">glm::vec3(1.0f)</span>, </td>
+          <td class="paramtype">glm::vec3</td>          <td class="paramname"><span class="paramname"><em>colors</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">GLfloat</td>          <td class="paramname"><span class="paramname"><em>ambientIntensity</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0.1f</span>, </td>
+          <td class="paramtype">GLfloat</td>          <td class="paramname"><span class="paramname"><em>ambientIntensity</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">GLfloat</td>          <td class="paramname"><span class="paramname"><em>diffuseIntensit</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0.1f</span>, </td>
+          <td class="paramtype">GLfloat</td>          <td class="paramname"><span class="paramname"><em>diffuseIntensity</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">glm::vec3</td>          <td class="paramname"><span class="paramname"><em>lightPos</em></span><span class="paramdefsep"> = </span><span class="paramdefval">glm::vec3(0.0f,&#160;5.0f,&#160;0.0f)</span>, </td>
+          <td class="paramtype">glm::vec3</td>          <td class="paramname"><span class="paramname"><em>lightPos</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">GLfloat</td>          <td class="paramname"><span class="paramname"><em>con</em></span><span class="paramdefsep"> = </span><span class="paramdefval">1.0f</span>, </td>
+          <td class="paramtype">GLfloat</td>          <td class="paramname"><span class="paramname"><em>con</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">GLfloat</td>          <td class="paramname"><span class="paramname"><em>lin</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0.09f</span>, </td>
+          <td class="paramtype">GLfloat</td>          <td class="paramname"><span class="paramname"><em>lin</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">GLfloat</td>          <td class="paramname"><span class="paramname"><em>quad</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0.032f</span>, </td>
+          <td class="paramtype">GLfloat</td>          <td class="paramname"><span class="paramname"><em>quad</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>index</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span>, </td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>index</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">GLfloat</td>          <td class="paramname"><span class="paramname"><em>far</em></span><span class="paramdefsep"> = </span><span class="paramdefval">20.0f</span>, </td>
+          <td class="paramtype">GLfloat</td>          <td class="paramname"><span class="paramname"><em>far</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">GLfloat</td>          <td class="paramname"><span class="paramname"><em>near</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0.01f</span>, </td>
+          <td class="paramtype">GLfloat</td>          <td class="paramname"><span class="paramname"><em>near</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">GLfloat</td>          <td class="paramname"><span class="paramname"><em>shadowH</em></span><span class="paramdefsep"> = </span><span class="paramdefval">2048.0f</span>, </td>
+          <td class="paramtype">GLfloat</td>          <td class="paramname"><span class="paramname"><em>shadowH</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">GLfloat</td>          <td class="paramname"><span class="paramname"><em>shadowW</em></span><span class="paramdefsep"> = </span><span class="paramdefval">2048.0f</span>&#160;)</td>
+          <td class="paramtype">GLfloat</td>          <td class="paramname"><span class="paramname"><em>shadowW</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Creates a point light with shadow mapping enabled. </p>
+<p>Creates a point light with shadow mapping support.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">colors</td><td><a class="el" href="class_light.html" title="Base class for all light types.">Light</a> color. </td></tr>
+    <tr><td class="paramname">ambientIntensity</td><td>Ambient strength. </td></tr>
+    <tr><td class="paramname">diffuseIntensit</td><td>Diffuse strength. </td></tr>
+    <tr><td class="paramname">lightPos</td><td><a class="el" href="class_light.html" title="Base class for all light types.">Light</a> position. </td></tr>
+    <tr><td class="paramname">con</td><td>Constant attenuation. </td></tr>
+    <tr><td class="paramname">lin</td><td>Linear attenuation. </td></tr>
+    <tr><td class="paramname">quad</td><td>Quadratic attenuation. </td></tr>
+    <tr><td class="paramname">index</td><td>Index in shader array. </td></tr>
+    <tr><td class="paramname">far</td><td>Far plane for shadow projection. </td></tr>
+    <tr><td class="paramname">near</td><td>Near plane for shadow projection. </td></tr>
+    <tr><td class="paramname">shadowH</td><td>Shadow map height. </td></tr>
+    <tr><td class="paramname">shadowW</td><td>Shadow map width.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Includes:</p><ul>
+<li><a class="el" href="class_light.html" title="Base class for all light types.">Light</a> color and intensity</li>
+<li>Position and attenuation factors</li>
+<li>Cube‑map shadow map (<a class="el" href="class_omni_shadow_map.html" title="Cube‑map shadow map used for point lights.">OmniShadowMap</a>)</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">colors</td><td><a class="el" href="class_light.html" title="Base class for all light types.">Light</a> color. </td></tr>
+    <tr><td class="paramname">ambientIntensity</td><td>Ambient strength. </td></tr>
+    <tr><td class="paramname">diffuseIntensity</td><td>Diffuse strength. </td></tr>
+    <tr><td class="paramname">lightPos</td><td><a class="el" href="class_light.html" title="Base class for all light types.">Light</a> position. </td></tr>
+    <tr><td class="paramname">con</td><td>Constant attenuation. </td></tr>
+    <tr><td class="paramname">lin</td><td>Linear attenuation. </td></tr>
+    <tr><td class="paramname">quad</td><td>Quadratic attenuation. </td></tr>
+    <tr><td class="paramname">index</td><td>Index in shader array. </td></tr>
+    <tr><td class="paramname">far</td><td>Far plane for shadow projection. </td></tr>
+    <tr><td class="paramname">near</td><td>Near plane for shadow projection. </td></tr>
+    <tr><td class="paramname">shadowH</td><td>Shadow map height. </td></tr>
+    <tr><td class="paramname">shadowW</td><td>Shadow map width. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -268,6 +355,8 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Constructor used when inherited by <a class="el" href="class_flashlight.html" title="A spotlight-style light used as a player flashlight.">Flashlight</a> (no shadow setup). </p>
+
 </div>
 </div>
 <a id="aa12d9005d5372dbbe655a82231634341" name="aa12d9005d5372dbbe655a82231634341"></a>
@@ -284,6 +373,9 @@ Protected Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Destructor. </p>
+<p>Destructor resets values. </p>
 
 </div>
 </div>
@@ -302,6 +394,11 @@ Protected Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Computes the 6 projection-view matrices for cube‑map shadow rendering. </p>
+<dl class="section return"><dt>Returns</dt><dd>A vector of 6 matrices.</dd>
+<dd>
+A vector of 6 matrices (one for each cube face). </dd></dl>
 
 </div>
 </div>
@@ -328,6 +425,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Returns whether the light casts shadows. </p>
+
 </div>
 </div>
 <a id="a8486a8311e9654f05f35a442067d29b3" name="a8486a8311e9654f05f35a442067d29b3"></a>
@@ -352,6 +451,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Returns the light color. </p>
 
 </div>
 </div>
@@ -378,6 +479,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Returns the far plane distance used for shadows. </p>
+
 </div>
 </div>
 <a id="a60298db4e378ac0f3bad7192509d8aa7" name="a60298db4e378ac0f3bad7192509d8aa7"></a>
@@ -402,6 +505,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Returns the light position (duplicate accessor). </p>
 
 </div>
 </div>
@@ -428,6 +533,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Returns the light position. </p>
+
 </div>
 </div>
 <a id="ababcec837b6e81cec7f1be3d806f3fa0" name="ababcec837b6e81cec7f1be3d806f3fa0"></a>
@@ -452,6 +559,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Returns the shadow map used by this point light. </p>
 
 </div>
 </div>
@@ -478,6 +587,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Enables or disables shadow casting. </p>
+
 </div>
 </div>
 <a id="a8a1a73a288688fff0ab95bb9714460bc" name="a8a1a73a288688fff0ab95bb9714460bc"></a>
@@ -502,6 +613,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Sets the light color. </p>
 
 </div>
 </div>
@@ -528,6 +641,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Sets the light position. </p>
+
 </div>
 </div>
 <a id="af75e4e027f014ecd7cca79f94eabbf3e" name="af75e4e027f014ecd7cca79f94eabbf3e"></a>
@@ -544,6 +659,19 @@ Protected Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Sends point light data to the shader. </p>
+<p>Includes:</p><ul>
+<li>Color, position, intensities</li>
+<li>Attenuation factors</li>
+<li>Shadow map binding</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lightShader</td><td><a class="el" href="class_shader.html" title="Handles loading, compiling, linking, and using GLSL shader programs.">Shader</a> receiving the uniforms. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -568,6 +696,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Whether this light casts shadows. </p>
+
 </div>
 </div>
 <a id="a72cb039b9584e827a392626819352884" name="a72cb039b9584e827a392626819352884"></a>
@@ -589,6 +719,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Constant attenuation. </p>
 
 </div>
 </div>
@@ -612,6 +744,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Far plane for shadow projection. </p>
+
 </div>
 </div>
 <a id="a80f4d41ca429d1392be550dd24c54754" name="a80f4d41ca429d1392be550dd24c54754"></a>
@@ -633,6 +767,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Index in shader array. </p>
 
 </div>
 </div>
@@ -656,6 +792,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p><a class="el" href="class_light.html" title="Base class for all light types.">Light</a> world position. </p>
+
 </div>
 </div>
 <a id="a008c6b90f50c36b327e94c88d6b4ea4b" name="a008c6b90f50c36b327e94c88d6b4ea4b"></a>
@@ -677,6 +815,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Projection matrix for shadow mapping. </p>
 
 </div>
 </div>
@@ -700,6 +840,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Linear attenuation. </p>
+
 </div>
 </div>
 <a id="afabd4082a977c95ebef749773460873c" name="afabd4082a977c95ebef749773460873c"></a>
@@ -721,6 +863,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Near plane for shadow projection. </p>
 
 </div>
 </div>
@@ -744,6 +888,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Quadratic attenuation. </p>
+
 </div>
 </div>
 <a id="acf34b700e4c9f6cb02af8e67ed833b3a" name="acf34b700e4c9f6cb02af8e67ed833b3a"></a>
@@ -765,6 +911,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Shadow map height. </p>
 
 </div>
 </div>
@@ -788,6 +936,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Cube‑map shadow map. </p>
+
 </div>
 </div>
 <a id="a341d7c3c1d133a6010da8423e44f6a60" name="a341d7c3c1d133a6010da8423e44f6a60"></a>
@@ -809,6 +959,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Shadow map width. </p>
 
 </div>
 </div>

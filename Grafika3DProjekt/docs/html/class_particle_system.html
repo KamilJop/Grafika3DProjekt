@@ -92,17 +92,28 @@ $(function(){initNavTree('class_particle_system.html','','class_particle_system-
 </div><!--header-->
 <div class="contents">
 
+<p>GPU‑based particle system using instanced quads.  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_particle_system_8h_source.html">ParticleSystem.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a1c95721f7135cabb1a264cdd54b8104b" id="r_a1c95721f7135cabb1a264cdd54b8104b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1c95721f7135cabb1a264cdd54b8104b">ParticleSystem</a> (<a class="el" href="class_shader.html">Shader</a> *shader, <a class="el" href="class_texture.html">Texture</a> *texture, unsigned int amount, <a class="el" href="struct_particle_properties.html">ParticleProperties</a> props)</td></tr>
+<tr class="memdesc:a1c95721f7135cabb1a264cdd54b8104b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a particle system.  <br /></td></tr>
 <tr class="memitem:a730777ebdb0874afe7ade36b2e150bb3" id="r_a730777ebdb0874afe7ade36b2e150bb3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a730777ebdb0874afe7ade36b2e150bb3">Update</a> (float dt)</td></tr>
+<tr class="memdesc:a730777ebdb0874afe7ade36b2e150bb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates all particles.  <br /></td></tr>
 <tr class="memitem:a7eaee262ba61a7604ad7393948258ee0" id="r_a7eaee262ba61a7604ad7393948258ee0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7eaee262ba61a7604ad7393948258ee0">SpawnParticles</a> (glm::vec3 position, unsigned int amount, glm::vec3 offset=glm::vec3(0.0f))</td></tr>
+<tr class="memdesc:a7eaee262ba61a7604ad7393948258ee0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spawns new particles at a position.  <br /></td></tr>
 <tr class="memitem:a295c20302ae7d821f03c4fe005ae82fb" id="r_a295c20302ae7d821f03c4fe005ae82fb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a295c20302ae7d821f03c4fe005ae82fb">Draw</a> ()</td></tr>
+<tr class="memdesc:a295c20302ae7d821f03c4fe005ae82fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws all active particles.  <br /></td></tr>
 <tr class="memitem:a6bc725349a763b9d6817950cde16a93f" id="r_a6bc725349a763b9d6817950cde16a93f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6bc725349a763b9d6817950cde16a93f">~ParticleSystem</a> ()</td></tr>
+<tr class="memdesc:a6bc725349a763b9d6817950cde16a93f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <br /></td></tr>
 </table>
-<a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>GPU‑based particle system using instanced quads. </p>
+<p>Handles updating, spawning, and drawing particles. </p>
+</div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a1c95721f7135cabb1a264cdd54b8104b" name="a1c95721f7135cabb1a264cdd54b8104b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1c95721f7135cabb1a264cdd54b8104b">&#9670;&#160;</a></span>ParticleSystem()</h2>
 
@@ -132,6 +143,22 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Creates a particle system. </p>
+<p>Creates a particle system with a shader, texture, and settings.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">shader</td><td><a class="el" href="class_shader.html" title="Handles loading, compiling, linking, and using GLSL shader programs.">Shader</a> used to render particles. </td></tr>
+    <tr><td class="paramname">texture</td><td><a class="el" href="class_texture.html" title="Loads and manages 2D textures, normal maps, and height maps.">Texture</a> applied to particles. </td></tr>
+    <tr><td class="paramname">amount</td><td>Number of particles in the pool. </td></tr>
+    <tr><td class="paramname">props</td><td>Default particle properties.</td></tr>
+    <tr><td class="paramname">shader</td><td><a class="el" href="class_shader.html" title="Handles loading, compiling, linking, and using GLSL shader programs.">Shader</a> used to render particles. </td></tr>
+    <tr><td class="paramname">texture</td><td><a class="el" href="class_texture.html" title="Loads and manages 2D textures, normal maps, and height maps.">Texture</a> applied to each particle. </td></tr>
+    <tr><td class="paramname">amount</td><td>Number of particles in the pool. </td></tr>
+    <tr><td class="paramname">props</td><td>Default particle properties. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a6bc725349a763b9d6817950cde16a93f" name="a6bc725349a763b9d6817950cde16a93f"></a>
@@ -148,6 +175,8 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Destructor. </p>
 
 </div>
 </div>
@@ -167,6 +196,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Draws all active particles. </p>
+
 </div>
 </div>
 <a id="a7eaee262ba61a7604ad7393948258ee0" name="a7eaee262ba61a7604ad7393948258ee0"></a>
@@ -183,7 +214,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>amount</em></span>, </td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>newParticles</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -192,6 +223,19 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Spawns new particles at a position. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">position</td><td>Spawn position. </td></tr>
+    <tr><td class="paramname">amount</td><td>Number of particles to spawn. </td></tr>
+    <tr><td class="paramname">offset</td><td>Optional offset.</td></tr>
+    <tr><td class="paramname">position</td><td>Spawn position. </td></tr>
+    <tr><td class="paramname">newParticles</td><td>Number of particles to spawn. </td></tr>
+    <tr><td class="paramname">offset</td><td>Additional offset. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -209,6 +253,15 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Updates all particles. </p>
+<p>Decreases life, moves particles, and interpolates color/size.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dt</td><td>Delta time. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

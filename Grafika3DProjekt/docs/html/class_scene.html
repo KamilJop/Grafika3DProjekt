@@ -135,7 +135,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Manages all world entities, lights, rendering passes, and player interactions. </p>
 <p>The <a class="el" href="class_scene.html" title="Manages all world entities, lights, rendering passes, and player interactions.">Scene</a> class handles:</p><ul>
-<li><a class="el" href="class_entity.html">Entity</a> storage and updates</li>
+<li><a class="el" href="class_entity.html" title="Base class for all world objects in the game.">Entity</a> storage and updates</li>
 <li>Lighting (directional, point, flashlight)</li>
 <li>Rendering (normal, outlined, shadow maps, held items)</li>
 <li>Tooltip rendering</li>
@@ -387,7 +387,7 @@ Public Member Functions</h2></td></tr>
 <p>Renders the flashlight entity in first‑person view. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">shader</td><td><a class="el" href="class_shader.html">Shader</a> used for rendering. </td></tr>
+    <tr><td class="paramname">shader</td><td><a class="el" href="class_shader.html" title="Handles loading, compiling, linking, and using GLSL shader programs.">Shader</a> used for rendering. </td></tr>
     <tr><td class="paramname">projection</td><td>Projection matrix. </td></tr>
   </table>
   </dd>
@@ -417,7 +417,7 @@ Public Member Functions</h2></td></tr>
 <p>Renders the held entity (weapon/item) in first‑person view. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">shader</td><td><a class="el" href="class_shader.html">Shader</a> used for rendering. </td></tr>
+    <tr><td class="paramname">shader</td><td><a class="el" href="class_shader.html" title="Handles loading, compiling, linking, and using GLSL shader programs.">Shader</a> used for rendering. </td></tr>
     <tr><td class="paramname">projection</td><td>Projection matrix. </td></tr>
   </table>
   </dd>
@@ -443,7 +443,7 @@ Public Member Functions</h2></td></tr>
 <p>Renders all shadow‑casting entities into the shadow map. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">shadowShader</td><td><a class="el" href="class_shader.html">Shader</a> used for shadow rendering. </td></tr>
+    <tr><td class="paramname">shadowShader</td><td><a class="el" href="class_shader.html" title="Handles loading, compiling, linking, and using GLSL shader programs.">Shader</a> used for shadow rendering. </td></tr>
   </table>
   </dd>
 </dl>
@@ -477,19 +477,19 @@ Public Member Functions</h2></td></tr>
 <p>Renders tooltip text above an outlined entity. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">selectedEntity</td><td><a class="el" href="class_entity.html">Entity</a> being hovered. </td></tr>
+    <tr><td class="paramname">selectedEntity</td><td><a class="el" href="class_entity.html" title="Base class for all world objects in the game.">Entity</a> being hovered. </td></tr>
     <tr><td class="paramname">w</td><td>Screen width. </td></tr>
     <tr><td class="paramname">h</td><td>Screen height.</td></tr>
   </table>
   </dd>
 </dl>
 <p>Displays:</p><ul>
-<li><a class="el" href="class_entity.html">Entity</a> title</li>
+<li><a class="el" href="class_entity.html" title="Base class for all world objects in the game.">Entity</a> title</li>
 <li>Interaction hint (e.g., "[ E ]")</li>
 </ul>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">selectedEntity</td><td><a class="el" href="class_entity.html">Entity</a> being hovered. </td></tr>
+    <tr><td class="paramname">selectedEntity</td><td><a class="el" href="class_entity.html" title="Base class for all world objects in the game.">Entity</a> being hovered. </td></tr>
     <tr><td class="paramname">w</td><td>Screen width. </td></tr>
     <tr><td class="paramname">h</td><td>Screen height. </td></tr>
   </table>
@@ -531,7 +531,7 @@ Public Member Functions</h2></td></tr>
 <p>Renders outlined entities and displays tooltips above them.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">shader</td><td><a class="el" href="class_shader.html">Shader</a> used for rendering. </td></tr>
+    <tr><td class="paramname">shader</td><td><a class="el" href="class_shader.html" title="Handles loading, compiling, linking, and using GLSL shader programs.">Shader</a> used for rendering. </td></tr>
     <tr><td class="paramname">projection</td><td>Projection matrix. </td></tr>
     <tr><td class="paramname">w</td><td>Screen width. </td></tr>
     <tr><td class="paramname">h</td><td>Screen height. </td></tr>
@@ -563,7 +563,7 @@ Public Member Functions</h2></td></tr>
 <p>Renders all non‑outlined entities. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">shader</td><td><a class="el" href="class_shader.html">Shader</a> used for rendering. </td></tr>
+    <tr><td class="paramname">shader</td><td><a class="el" href="class_shader.html" title="Handles loading, compiling, linking, and using GLSL shader programs.">Shader</a> used for rendering. </td></tr>
     <tr><td class="paramname">projection</td><td>Projection matrix.</td></tr>
   </table>
   </dd>
@@ -571,7 +571,7 @@ Public Member Functions</h2></td></tr>
 <p>Applies shader logic, skips invisible or flashlight entities, and handles selected entity highlighting.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">shader</td><td><a class="el" href="class_shader.html">Shader</a> used for rendering. </td></tr>
+    <tr><td class="paramname">shader</td><td><a class="el" href="class_shader.html" title="Handles loading, compiling, linking, and using GLSL shader programs.">Shader</a> used for rendering. </td></tr>
     <tr><td class="paramname">projection</td><td>Projection matrix. </td></tr>
   </table>
   </dd>
@@ -663,8 +663,8 @@ Public Member Functions</h2></td></tr>
 <p>Updates the scene each frame. </p>
 <p>Handles:</p><ul>
 <li><a class="el" href="class_player.html" title="Handles player movement, physics, interaction, inventory, and held items.">Player</a> physics</li>
-<li><a class="el" href="class_flashlight.html">Flashlight</a> updates</li>
-<li><a class="el" href="class_entity.html">Entity</a> updates and destruction</li>
+<li><a class="el" href="class_flashlight.html" title="A spotlight-style light used as a player flashlight.">Flashlight</a> updates</li>
+<li><a class="el" href="class_entity.html" title="Base class for all world objects in the game.">Entity</a> updates and destruction</li>
 <li>Targeted entity detection</li>
 </ul>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -675,9 +675,9 @@ Public Member Functions</h2></td></tr>
 </dl>
 <p>Handles:</p><ul>
 <li><a class="el" href="class_player.html" title="Handles player movement, physics, interaction, inventory, and held items.">Player</a> physics</li>
-<li><a class="el" href="class_flashlight.html">Flashlight</a> bobbing and light updates</li>
+<li><a class="el" href="class_flashlight.html" title="A spotlight-style light used as a player flashlight.">Flashlight</a> bobbing and light updates</li>
 <li>Held entity positioning</li>
-<li><a class="el" href="class_entity.html">Entity</a> updates and destruction</li>
+<li><a class="el" href="class_entity.html" title="Base class for all world objects in the game.">Entity</a> updates and destruction</li>
 <li>Targeted entity detection</li>
 </ul>
 <dl class="params"><dt>Parameters</dt><dd>

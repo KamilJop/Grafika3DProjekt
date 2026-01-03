@@ -91,8 +91,53 @@ $(function(){initNavTree('_radio_8h.html','',''); });
   <div class="headertitle"><div class="title">Radio.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-
+<div class="textblock"><code>#include &quot;<a class="el" href="_entity_8h_source.html">Entity.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_audio_manager_8h_source.html">../Systems/AudioManager.h</a>&quot;</code><br />
+<code>#include &lt;string&gt;</code><br />
+<code>#include &quot;<a class="el" href="_texture_8h_source.html">../Rendering/Texture.h</a>&quot;</code><br />
+</div>
 <p><a href="_radio_8h_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:Radio" id="r_Radio"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio.html">Radio</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents an interactable radio that changes behavior based on inserted batteries.  <a href="class_radio.html#details">More...</a><br /></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-enum-members" class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a8bf7bc59f2fe9597bd2552e2cf783996" id="r_a8bf7bc59f2fe9597bd2552e2cf783996"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8bf7bc59f2fe9597bd2552e2cf783996">RadioState</a> { <a class="el" href="#a8bf7bc59f2fe9597bd2552e2cf783996aeb30bf699a39ea2cb5819381461ee54d">BROKEN</a>
+, <a class="el" href="#a8bf7bc59f2fe9597bd2552e2cf783996aeacce95652aa3f10fc5302aa9de5017a">ONE_BATTERY</a>
+, <a class="el" href="#a8bf7bc59f2fe9597bd2552e2cf783996aeec647e1b2530912b349b96c8e74bb64">WORKING</a>
+ }</td></tr>
+<tr class="memdesc:a8bf7bc59f2fe9597bd2552e2cf783996"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the different operational states of the radio.  <a href="#a8bf7bc59f2fe9597bd2552e2cf783996">More...</a><br /></td></tr>
+</table>
+<a name="doc-enum-members" id="doc-enum-members"></a><h2 id="header-doc-enum-members" class="groupheader">Enumeration Type Documentation</h2>
+<a id="a8bf7bc59f2fe9597bd2552e2cf783996" name="a8bf7bc59f2fe9597bd2552e2cf783996"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8bf7bc59f2fe9597bd2552e2cf783996">&#9670;&#160;</a></span>RadioState</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="#a8bf7bc59f2fe9597bd2552e2cf783996">RadioState</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Represents the different operational states of the radio. </p>
+<ul>
+<li>BROKEN: No batteries inserted, radio cannot function.</li>
+<li>ONE_BATTERY: One battery inserted, still insufficient to power the radio.</li>
+<li>WORKING: Fully powered and capable of playing Morse code. </li>
+</ul>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a8bf7bc59f2fe9597bd2552e2cf783996aeb30bf699a39ea2cb5819381461ee54d" name="a8bf7bc59f2fe9597bd2552e2cf783996aeb30bf699a39ea2cb5819381461ee54d"></a>BROKEN&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a8bf7bc59f2fe9597bd2552e2cf783996aeacce95652aa3f10fc5302aa9de5017a" name="a8bf7bc59f2fe9597bd2552e2cf783996aeacce95652aa3f10fc5302aa9de5017a"></a>ONE_BATTERY&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a8bf7bc59f2fe9597bd2552e2cf783996aeec647e1b2530912b349b96c8e74bb64" name="a8bf7bc59f2fe9597bd2552e2cf783996aeec647e1b2530912b349b96c8e74bb64"></a>WORKING&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <div id="page-nav" class="page-nav-panel">

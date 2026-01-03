@@ -94,29 +94,34 @@ $(function(){initNavTree('_pedestal_puzzle_8h_source.html','',''); });
 <a href="_pedestal_puzzle_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &quot;<a class="code" href="_pedestal_8h.html">../Entities/Pedestal.h</a>&quot;</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;<a class="code" href="_door_8h.html">../Entities/Door.h</a>&quot;</span></div>
-<div class="foldopen" id="foldopen00004" data-start="{" data-end="};">
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno"><a class="line" href="class_pedestal_puzzle.html">    4</a></span><span class="keyword">class </span><a class="code hl_function" href="class_pedestal_puzzle.html#a6e9eec939225de185d96c0a1ba23ec6f">PedestalPuzzle</a></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span>{</div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>    <a class="code hl_function" href="class_pedestal_puzzle.html#a6e9eec939225de185d96c0a1ba23ec6f">PedestalPuzzle</a>(std::vector&lt;Pedestal*&gt; pedestal, <a class="code hl_class" href="class_door.html">Door</a>* door1, <a class="code hl_class" href="class_door.html">Door</a>* door2);</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="class_pedestal_puzzle.html#a01c7a6d0ebde5ebd158983eb5e7f16d4">    8</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="class_pedestal_puzzle.html#a01c7a6d0ebde5ebd158983eb5e7f16d4">getSolved</a>() { <span class="keywordflow">return</span> puzzleSolved; }</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="class_pedestal_puzzle.html#ac63411104f19916ec2893a8727851590">Update</a>();</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    std::vector&lt;Pedestal*&gt; pedestals;</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <a class="code hl_class" href="class_door.html">Door</a>* doorToUnlock1;</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <a class="code hl_class" href="class_door.html">Door</a>* doorToUnlock2;</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    <span class="keywordtype">bool</span> puzzleSolved = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <span class="keywordtype">bool</span> puzzleSolvedPlayed = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    std::string puzzleSolvedSoundPath = <span class="stringliteral">&quot;Audio/demon_death.mp3&quot;</span>;</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>};</div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span></div>
+<div class="foldopen" id="foldopen00009" data-start="{" data-end="};">
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="class_pedestal_puzzle.html">    9</a></span><span class="keyword">class </span><a class="code hl_function" href="class_pedestal_puzzle.html#a6e9eec939225de185d96c0a1ba23ec6f">PedestalPuzzle</a></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>{</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <a class="code hl_function" href="class_pedestal_puzzle.html#a6e9eec939225de185d96c0a1ba23ec6f">PedestalPuzzle</a>(std::vector&lt;Pedestal*&gt; pedestal, <a class="code hl_class" href="class_door.html">Door</a>* door1, <a class="code hl_class" href="class_door.html">Door</a>* door2);</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="class_pedestal_puzzle.html#a01c7a6d0ebde5ebd158983eb5e7f16d4">   22</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="class_pedestal_puzzle.html#a01c7a6d0ebde5ebd158983eb5e7f16d4">getSolved</a>() { <span class="keywordflow">return</span> puzzleSolved; }</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="class_pedestal_puzzle.html#ac63411104f19916ec2893a8727851590">Update</a>();</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    std::vector&lt;Pedestal*&gt; pedestals; </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <a class="code hl_class" href="class_door.html">Door</a>* doorToUnlock1;              </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <a class="code hl_class" href="class_door.html">Door</a>* doorToUnlock2;              </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keywordtype">bool</span> puzzleSolved = <span class="keyword">false</span>;        </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keywordtype">bool</span> puzzleSolvedPlayed = <span class="keyword">false</span>;  </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    std::string puzzleSolvedSoundPath = <span class="stringliteral">&quot;Audio/demon_death.mp3&quot;</span>; </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>};</div>
 </div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
 <div class="ttc" id="a_door_8h_html"><div class="ttname"><a href="_door_8h.html">Door.h</a></div></div>
 <div class="ttc" id="a_pedestal_8h_html"><div class="ttname"><a href="_pedestal_8h.html">Pedestal.h</a></div></div>
-<div class="ttc" id="aclass_door_html"><div class="ttname"><a href="class_door.html">Door</a></div><div class="ttdef"><b>Definition</b> Door.h:8</div></div>
-<div class="ttc" id="aclass_pedestal_puzzle_html_a01c7a6d0ebde5ebd158983eb5e7f16d4"><div class="ttname"><a href="class_pedestal_puzzle.html#a01c7a6d0ebde5ebd158983eb5e7f16d4">PedestalPuzzle::getSolved</a></div><div class="ttdeci">bool getSolved()</div><div class="ttdef"><b>Definition</b> PedestalPuzzle.h:8</div></div>
-<div class="ttc" id="aclass_pedestal_puzzle_html_a6e9eec939225de185d96c0a1ba23ec6f"><div class="ttname"><a href="class_pedestal_puzzle.html#a6e9eec939225de185d96c0a1ba23ec6f">PedestalPuzzle::PedestalPuzzle</a></div><div class="ttdeci">PedestalPuzzle(std::vector&lt; Pedestal * &gt; pedestal, Door *door1, Door *door2)</div><div class="ttdef"><b>Definition</b> PedestalPuzzle.cpp:3</div></div>
-<div class="ttc" id="aclass_pedestal_puzzle_html_ac63411104f19916ec2893a8727851590"><div class="ttname"><a href="class_pedestal_puzzle.html#ac63411104f19916ec2893a8727851590">PedestalPuzzle::Update</a></div><div class="ttdeci">void Update()</div><div class="ttdef"><b>Definition</b> PedestalPuzzle.cpp:8</div></div>
+<div class="ttc" id="aclass_door_html"><div class="ttname"><a href="class_door.html">Door</a></div><div class="ttdoc">Represents an interactable door that can be locked, unlocked, opened, and closed.</div><div class="ttdef"><b>Definition</b> Door.h:20</div></div>
+<div class="ttc" id="aclass_pedestal_puzzle_html_a01c7a6d0ebde5ebd158983eb5e7f16d4"><div class="ttname"><a href="class_pedestal_puzzle.html#a01c7a6d0ebde5ebd158983eb5e7f16d4">PedestalPuzzle::getSolved</a></div><div class="ttdeci">bool getSolved()</div><div class="ttdoc">Returns true if the puzzle has been solved.</div><div class="ttdef"><b>Definition</b> PedestalPuzzle.h:22</div></div>
+<div class="ttc" id="aclass_pedestal_puzzle_html_a6e9eec939225de185d96c0a1ba23ec6f"><div class="ttname"><a href="class_pedestal_puzzle.html#a6e9eec939225de185d96c0a1ba23ec6f">PedestalPuzzle::PedestalPuzzle</a></div><div class="ttdeci">PedestalPuzzle(std::vector&lt; Pedestal * &gt; pedestal, Door *door1, Door *door2)</div><div class="ttdoc">Creates the pedestal puzzle.</div><div class="ttdef"><b>Definition</b> PedestalPuzzle.cpp:12</div></div>
+<div class="ttc" id="aclass_pedestal_puzzle_html_ac63411104f19916ec2893a8727851590"><div class="ttname"><a href="class_pedestal_puzzle.html#ac63411104f19916ec2893a8727851590">PedestalPuzzle::Update</a></div><div class="ttdeci">void Update()</div><div class="ttdoc">Updates the puzzle state each frame.</div><div class="ttdef"><b>Definition</b> PedestalPuzzle.cpp:30</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 </div><!-- container -->

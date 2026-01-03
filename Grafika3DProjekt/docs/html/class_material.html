@@ -92,15 +92,28 @@ $(function(){initNavTree('class_material.html','','class_material-members'); });
 </div><!--header-->
 <div class="contents">
 
+<p>Stores specular properties used in lighting calculations.  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_material_8h_source.html">Material.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ab987f00c6b8d607dceb701ae741abf6d" id="r_ab987f00c6b8d607dceb701ae741abf6d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab987f00c6b8d607dceb701ae741abf6d">Material</a> (GLfloat intensity, GLfloat shine)</td></tr>
+<tr class="memdesc:ab987f00c6b8d607dceb701ae741abf6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a material with specular intensity and shininess.  <br /></td></tr>
 <tr class="memitem:a2c19452d71f54075df8f5405b03129f4" id="r_a2c19452d71f54075df8f5405b03129f4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2c19452d71f54075df8f5405b03129f4">~Material</a> ()</td></tr>
+<tr class="memdesc:a2c19452d71f54075df8f5405b03129f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <br /></td></tr>
 <tr class="memitem:a70763db45822ee26fcf0bd8cf971f1a7" id="r_a70763db45822ee26fcf0bd8cf971f1a7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a70763db45822ee26fcf0bd8cf971f1a7">useMaterial</a> (<a class="el" href="class_shader.html">Shader</a> *shader)</td></tr>
+<tr class="memdesc:a70763db45822ee26fcf0bd8cf971f1a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends material properties to the shader.  <br /></td></tr>
 </table>
-<a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Stores specular properties used in lighting calculations. </p>
+<p>Provides:</p><ul>
+<li>Specular intensity (strength of highlight)</li>
+<li>Shininess (size of highlight)</li>
+</ul>
+<p>Used to configure material-related uniforms in shaders. </p>
+</div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ab987f00c6b8d607dceb701ae741abf6d" name="ab987f00c6b8d607dceb701ae741abf6d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab987f00c6b8d607dceb701ae741abf6d">&#9670;&#160;</a></span>Material()</h2>
 
@@ -120,6 +133,15 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Creates a material with specular intensity and shininess. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">intensity</td><td>Strength of the specular highlight. </td></tr>
+    <tr><td class="paramname">shine</td><td>Shininess factor controlling highlight size. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a2c19452d71f54075df8f5405b03129f4" name="a2c19452d71f54075df8f5405b03129f4"></a>
@@ -136,6 +158,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Destructor. </p>
+<p>Destructor resets material values. </p>
 
 </div>
 </div>
@@ -154,6 +179,18 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Sends material properties to the shader. </p>
+<p>Sets:</p><ul>
+<li>material.specularIntensity</li>
+<li>material.shininess</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">shader</td><td><a class="el" href="class_shader.html" title="Handles loading, compiling, linking, and using GLSL shader programs.">Shader</a> receiving the material uniforms. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

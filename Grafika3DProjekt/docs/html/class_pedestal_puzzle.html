@@ -92,15 +92,23 @@ $(function(){initNavTree('class_pedestal_puzzle.html','','class_pedestal_puzzle-
 </div><!--header-->
 <div class="contents">
 
+<p>Checks whether all pedestals have the correct item and unlocks doors when solved.  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_pedestal_puzzle_8h_source.html">PedestalPuzzle.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a6e9eec939225de185d96c0a1ba23ec6f" id="r_a6e9eec939225de185d96c0a1ba23ec6f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6e9eec939225de185d96c0a1ba23ec6f">PedestalPuzzle</a> (std::vector&lt; <a class="el" href="class_pedestal.html">Pedestal</a> * &gt; pedestal, <a class="el" href="class_door.html">Door</a> *door1, <a class="el" href="class_door.html">Door</a> *door2)</td></tr>
+<tr class="memdesc:a6e9eec939225de185d96c0a1ba23ec6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates the pedestal puzzle.  <br /></td></tr>
 <tr class="memitem:a01c7a6d0ebde5ebd158983eb5e7f16d4" id="r_a01c7a6d0ebde5ebd158983eb5e7f16d4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a01c7a6d0ebde5ebd158983eb5e7f16d4">getSolved</a> ()</td></tr>
+<tr class="memdesc:a01c7a6d0ebde5ebd158983eb5e7f16d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the puzzle has been solved.  <br /></td></tr>
 <tr class="memitem:ac63411104f19916ec2893a8727851590" id="r_ac63411104f19916ec2893a8727851590"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac63411104f19916ec2893a8727851590">Update</a> ()</td></tr>
+<tr class="memdesc:ac63411104f19916ec2893a8727851590"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the puzzle state each frame.  <br /></td></tr>
 </table>
-<a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Checks whether all pedestals have the correct item and unlocks doors when solved. </p>
+</div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a6e9eec939225de185d96c0a1ba23ec6f" name="a6e9eec939225de185d96c0a1ba23ec6f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6e9eec939225de185d96c0a1ba23ec6f">&#9670;&#160;</a></span>PedestalPuzzle()</h2>
 
@@ -124,6 +132,25 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Creates the pedestal puzzle. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pedestal</td><td>List of pedestals involved in the puzzle. </td></tr>
+    <tr><td class="paramname">door1</td><td>First door to unlock when solved. </td></tr>
+    <tr><td class="paramname">door2</td><td>Second door to unlock when solved.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Loads the sound that plays when the puzzle is solved.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pedestal</td><td>List of pedestals involved in the puzzle. </td></tr>
+    <tr><td class="paramname">door1</td><td>First door to unlock when solved. </td></tr>
+    <tr><td class="paramname">door2</td><td>Second door to unlock when solved. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -151,6 +178,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Returns true if the puzzle has been solved. </p>
+
 </div>
 </div>
 <a id="ac63411104f19916ec2893a8727851590" name="ac63411104f19916ec2893a8727851590"></a>
@@ -167,6 +196,14 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Updates the puzzle state each frame. </p>
+<p>Updates the puzzle state.</p>
+<p>Checks whether all pedestals have the correct item. If solved:</p><ul>
+<li>Unlocks both doors</li>
+<li>Opens both doors</li>
+<li>Plays the puzzle‑solved sound once </li>
+</ul>
 
 </div>
 </div>

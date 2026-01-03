@@ -92,6 +92,9 @@ $(function(){initNavTree('class_shadow_map.html','','class_shadow_map-members');
 </div><!--header-->
 <div class="contents">
 
+<p>Base class for shadow map framebuffers.  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_shadow_map_8h_source.html">ShadowMap.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for ShadowMap:</div>
@@ -99,28 +102,47 @@ Inheritance diagram for ShadowMap:</div>
  <div class="center">
   <img src="class_shadow_map.png" usemap="#ShadowMap_map" alt=""/>
   <map id="ShadowMap_map" name="ShadowMap_map">
-<area href="class_omni_shadow_map.html" alt="OmniShadowMap" shape="rect" coords="0,56,111,80"/>
+<area href="class_omni_shadow_map.html" title="Cube‑map shadow map used for point lights." alt="OmniShadowMap" shape="rect" coords="0,56,111,80"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ab6fd44eb98770e85a2fafc27437169b1" id="r_ab6fd44eb98770e85a2fafc27437169b1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab6fd44eb98770e85a2fafc27437169b1">ShadowMap</a> ()</td></tr>
+<tr class="memdesc:ab6fd44eb98770e85a2fafc27437169b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an empty shadow map object.  <br /></td></tr>
 <tr class="memitem:aade01d2dc3620a7015016ecd3aa3cab3" id="r_aade01d2dc3620a7015016ecd3aa3cab3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aade01d2dc3620a7015016ecd3aa3cab3">~ShadowMap</a> ()</td></tr>
+<tr class="memdesc:aade01d2dc3620a7015016ecd3aa3cab3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor cleans up OpenGL resources.  <br /></td></tr>
 <tr class="memitem:ae84c0e38f609044982514d2e1d7c395a" id="r_ae84c0e38f609044982514d2e1d7c395a"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae84c0e38f609044982514d2e1d7c395a">Init</a> (GLuint width, GLuint height)</td></tr>
+<tr class="memdesc:ae84c0e38f609044982514d2e1d7c395a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a 2D depth texture and framebuffer.  <br /></td></tr>
 <tr class="memitem:abfaac01d19680e016042dacee5a5910e" id="r_abfaac01d19680e016042dacee5a5910e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abfaac01d19680e016042dacee5a5910e">Write</a> ()</td></tr>
+<tr class="memdesc:abfaac01d19680e016042dacee5a5910e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binds the framebuffer for writing depth values.  <br /></td></tr>
 <tr class="memitem:afd0651baf39fd92750216e12d87aab70" id="r_afd0651baf39fd92750216e12d87aab70"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afd0651baf39fd92750216e12d87aab70">Read</a> (GLenum textureUnit)</td></tr>
+<tr class="memdesc:afd0651baf39fd92750216e12d87aab70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binds the shadow map texture for reading in shaders.  <br /></td></tr>
 <tr class="memitem:abe0c68cdf948e600b18abe6e0e334148" id="r_abe0c68cdf948e600b18abe6e0e334148"><td class="memItemLeft" align="right" valign="top">GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abe0c68cdf948e600b18abe6e0e334148">getShadowWidth</a> ()</td></tr>
+<tr class="memdesc:abe0c68cdf948e600b18abe6e0e334148"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the shadow map width.  <br /></td></tr>
 <tr class="memitem:aaf2cbce7a3721a6087921d0a1167708d" id="r_aaf2cbce7a3721a6087921d0a1167708d"><td class="memItemLeft" align="right" valign="top">GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaf2cbce7a3721a6087921d0a1167708d">getShadowHeight</a> ()</td></tr>
+<tr class="memdesc:aaf2cbce7a3721a6087921d0a1167708d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the shadow map height.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pro-attribs" class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:a476d2286842a8e95e6e8304fad82d8c4" id="r_a476d2286842a8e95e6e8304fad82d8c4"><td class="memItemLeft" align="right" valign="top">GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a476d2286842a8e95e6e8304fad82d8c4">FBO</a></td></tr>
+<tr class="memdesc:a476d2286842a8e95e6e8304fad82d8c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Framebuffer object.  <br /></td></tr>
 <tr class="memitem:a098239dca2ba2ef9f89b87ba05fab1b1" id="r_a098239dca2ba2ef9f89b87ba05fab1b1"><td class="memItemLeft" align="right" valign="top">GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a098239dca2ba2ef9f89b87ba05fab1b1">shadowMap</a></td></tr>
+<tr class="memdesc:a098239dca2ba2ef9f89b87ba05fab1b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Depth texture.  <br /></td></tr>
 <tr class="memitem:a1284fcf99c4df3faef45bdb3837b72e1" id="r_a1284fcf99c4df3faef45bdb3837b72e1"><td class="memItemLeft" align="right" valign="top">GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1284fcf99c4df3faef45bdb3837b72e1">shadowWidth</a></td></tr>
+<tr class="memdesc:a1284fcf99c4df3faef45bdb3837b72e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shadow map width.  <br /></td></tr>
 <tr class="memitem:a99f570530e3894158c03df4b347c7695" id="r_a99f570530e3894158c03df4b347c7695"><td class="memItemLeft" align="right" valign="top">GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a99f570530e3894158c03df4b347c7695">shadowHeight</a></td></tr>
+<tr class="memdesc:a99f570530e3894158c03df4b347c7695"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shadow map height.  <br /></td></tr>
 </table>
-<a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Base class for shadow map framebuffers. </p>
+<p>Provides:</p><ul>
+<li>A depth texture</li>
+<li>A framebuffer object</li>
+<li>Basic read/write binding functions</li>
+</ul>
+<p>Used by both 2D shadow maps and cube‑map (omni) shadow maps. </p>
+</div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ab6fd44eb98770e85a2fafc27437169b1" name="ab6fd44eb98770e85a2fafc27437169b1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab6fd44eb98770e85a2fafc27437169b1">&#9670;&#160;</a></span>ShadowMap()</h2>
 
@@ -135,6 +157,9 @@ Protected Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Creates an empty shadow map object. </p>
+<p>Initializes all OpenGL handles and dimensions to zero. </p>
 
 </div>
 </div>
@@ -152,6 +177,9 @@ Protected Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Destructor cleans up OpenGL resources. </p>
+<p>Destructor cleans up framebuffer and texture resources. </p>
 
 </div>
 </div>
@@ -179,6 +207,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Returns the shadow map height. </p>
+
 </div>
 </div>
 <a id="abe0c68cdf948e600b18abe6e0e334148" name="abe0c68cdf948e600b18abe6e0e334148"></a>
@@ -203,6 +233,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Returns the shadow map width. </p>
 
 </div>
 </div>
@@ -233,6 +265,29 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Initializes a 2D depth texture and framebuffer. </p>
+<p>Initializes a 2D depth texture and framebuffer for shadow mapping.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">width</td><td>Shadow map width. </td></tr>
+    <tr><td class="paramname">height</td><td>Shadow map height. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if initialization succeeded.</dd></dl>
+<p>Creates:</p><ul>
+<li>A framebuffer object</li>
+<li>A depth-only texture</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">width</td><td>Shadow map width. </td></tr>
+    <tr><td class="paramname">height</td><td>Shadow map height. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if initialization succeeded. </dd></dl>
+
 <p>Reimplemented in <a class="el" href="class_omni_shadow_map.html#ab9b998050e839a22f0a187fe522fe72f">OmniShadowMap</a>.</p>
 
 </div>
@@ -259,6 +314,14 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Binds the shadow map texture for reading in shaders. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">textureUnit</td><td><a class="el" href="class_texture.html" title="Loads and manages 2D textures, normal maps, and height maps.">Texture</a> unit to bind to. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Reimplemented in <a class="el" href="class_omni_shadow_map.html#a96c89659b7ff92fcd376fbbd22e52be1">OmniShadowMap</a>.</p>
 
@@ -287,6 +350,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Binds the framebuffer for writing depth values. </p>
+
 <p>Reimplemented in <a class="el" href="class_omni_shadow_map.html#aafd4e0d6b4cf265b59c67585c35622de">OmniShadowMap</a>.</p>
 
 </div>
@@ -312,6 +377,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Framebuffer object. </p>
+
 </div>
 </div>
 <a id="a99f570530e3894158c03df4b347c7695" name="a99f570530e3894158c03df4b347c7695"></a>
@@ -333,6 +400,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Shadow map height. </p>
 
 </div>
 </div>
@@ -356,6 +425,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Depth texture. </p>
+
 </div>
 </div>
 <a id="a1284fcf99c4df3faef45bdb3837b72e1" name="a1284fcf99c4df3faef45bdb3837b72e1"></a>
@@ -377,6 +448,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Shadow map width. </p>
 
 </div>
 </div>

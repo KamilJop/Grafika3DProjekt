@@ -92,17 +92,27 @@ $(function(){initNavTree('class_text_renderer.html','','class_text_renderer-memb
 </div><!--header-->
 <div class="contents">
 
+<p>Renders 2D text using FreeType and OpenGL.  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_text_renderer_8h_source.html">TextRenderer.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ac87978b0da75711662f6627190d5332a" id="r_ac87978b0da75711662f6627190d5332a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac87978b0da75711662f6627190d5332a">TextRenderer</a> (unsigned int width, unsigned int height)</td></tr>
+<tr class="memdesc:ac87978b0da75711662f6627190d5332a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a text renderer with an orthographic projection.  <br /></td></tr>
 <tr class="memitem:a7087505bdc31e41416408c27fe029f20" id="r_a7087505bdc31e41416408c27fe029f20"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7087505bdc31e41416408c27fe029f20">~TextRenderer</a> ()</td></tr>
+<tr class="memdesc:a7087505bdc31e41416408c27fe029f20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees buffers and shader.  <br /></td></tr>
 <tr class="memitem:addf75e2c1eede12f9fcc465e83cec2d9" id="r_addf75e2c1eede12f9fcc465e83cec2d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#addf75e2c1eede12f9fcc465e83cec2d9">Load</a> (std::string font, unsigned int fontSize)</td></tr>
+<tr class="memdesc:addf75e2c1eede12f9fcc465e83cec2d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a font and generates glyph textures.  <br /></td></tr>
 <tr class="memitem:a275a37cc77485c0e46d9e65ed5f6ec3c" id="r_a275a37cc77485c0e46d9e65ed5f6ec3c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a275a37cc77485c0e46d9e65ed5f6ec3c">RenderText</a> (std::string text, float x, float y, float scale, glm::vec4 color)</td></tr>
+<tr class="memdesc:a275a37cc77485c0e46d9e65ed5f6ec3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders text at a given position.  <br /></td></tr>
 <tr class="memitem:ae6d978dcce2b2ad4c251e1ad7d5b01a2" id="r_ae6d978dcce2b2ad4c251e1ad7d5b01a2"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae6d978dcce2b2ad4c251e1ad7d5b01a2">GetTextWidth</a> (std::string text)</td></tr>
+<tr class="memdesc:ae6d978dcce2b2ad4c251e1ad7d5b01a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the width of a text string in pixels.  <br /></td></tr>
 </table>
-<a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Renders 2D text using FreeType and OpenGL. </p>
+</div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ac87978b0da75711662f6627190d5332a" name="ac87978b0da75711662f6627190d5332a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac87978b0da75711662f6627190d5332a">&#9670;&#160;</a></span>TextRenderer()</h2>
 
@@ -122,6 +132,20 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Creates a text renderer with an orthographic projection. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">width</td><td>Screen width. </td></tr>
+    <tr><td class="paramname">height</td><td>Screen height.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Initializes:</p><ul>
+<li>Text shader</li>
+<li>Projection matrix</li>
+<li>VAO/VBO for rendering glyph quads </li>
+</ul>
+
 </div>
 </div>
 <a id="a7087505bdc31e41416408c27fe029f20" name="a7087505bdc31e41416408c27fe029f20"></a>
@@ -138,6 +162,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Frees buffers and shader. </p>
+<p>Frees VAO/VBO and shader. </p>
 
 </div>
 </div>
@@ -156,6 +183,8 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Returns the width of a text string in pixels. </p>
 
 </div>
 </div>
@@ -177,6 +206,29 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Loads a font and generates glyph textures. </p>
+<p>Loads a font using FreeType and generates glyph textures.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">font</td><td>Path to font file. </td></tr>
+    <tr><td class="paramname">fontSize</td><td>Pixel height of characters.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Stores:</p><ul>
+<li><a class="el" href="class_texture.html" title="Loads and manages 2D textures, normal maps, and height maps.">Texture</a> ID</li>
+<li>Size</li>
+<li>Bearing</li>
+<li>Advance</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">font</td><td>Path to font file. </td></tr>
+    <tr><td class="paramname">fontSize</td><td>Pixel height of glyphs. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -213,6 +265,24 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Renders text at a given position. </p>
+<p>Renders a string of text at a given position.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">text</td><td>String to draw. </td></tr>
+    <tr><td class="paramname">x</td><td>X position. </td></tr>
+    <tr><td class="paramname">y</td><td>Y position. </td></tr>
+    <tr><td class="paramname">scale</td><td>Text scale. </td></tr>
+    <tr><td class="paramname">color</td><td>RGBA color.</td></tr>
+    <tr><td class="paramname">text</td><td>The text to render. </td></tr>
+    <tr><td class="paramname">x</td><td>X position. </td></tr>
+    <tr><td class="paramname">y</td><td>Y position. </td></tr>
+    <tr><td class="paramname">scale</td><td>Text scale. </td></tr>
+    <tr><td class="paramname">color</td><td>RGBA color. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

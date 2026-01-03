@@ -114,6 +114,10 @@ var NAVTREEINDEX0 =
 "_point_light_8h_source.html":[1,0,0,3,9],
 "_radio_8cpp.html":[1,0,0,1,34],
 "_radio_8h.html":[1,0,0,1,35],
+"_radio_8h.html#a8bf7bc59f2fe9597bd2552e2cf783996":[1,0,0,1,35,1],
+"_radio_8h.html#a8bf7bc59f2fe9597bd2552e2cf783996aeacce95652aa3f10fc5302aa9de5017a":[1,0,0,1,35,1,1],
+"_radio_8h.html#a8bf7bc59f2fe9597bd2552e2cf783996aeb30bf699a39ea2cb5819381461ee54d":[1,0,0,1,35,1,0],
+"_radio_8h.html#a8bf7bc59f2fe9597bd2552e2cf783996aeec647e1b2530912b349b96c8e74bb64":[1,0,0,1,35,1,2],
 "_radio_8h_source.html":[1,0,0,1,35],
 "_readable_8cpp.html":[1,0,0,1,36],
 "_readable_8h.html":[1,0,0,1,37],
@@ -245,9 +249,5 @@ var NAVTREEINDEX0 =
 "class_desk.html#a605b6b2b6a412279ea9d6845d77cdd6c":[0,0,12,2],
 "class_desk.html#a74ff24abd60e55bcbdbb3d5fcfc1d5b6":[0,0,12,0],
 "class_desk.html#a976758beabca45805cf03df98af87e2b":[0,0,12,3],
-"class_directional_light.html":[0,0,13],
-"class_directional_light.html#a1940cb55740d586de51f3b8d00eb11e5":[0,0,13,8],
-"class_directional_light.html#a3b6a2c0ddba88868e6a469feb3362960":[0,0,13,3],
-"class_directional_light.html#a7122036c8b2b58e0ebaf4afe4bcc151e":[0,0,13,4],
-"class_directional_light.html#a7eab5808969879cf85acb18abcdaf782":[0,0,13,7]
+"class_directional_light.html":[0,0,13]
 };

@@ -92,15 +92,23 @@ $(function(){initNavTree('class_sprite_renderer.html','','class_sprite_renderer-
 </div><!--header-->
 <div class="contents">
 
+<p>Renders 2D textured quads (sprites) using a given shader.  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_sprite_renderer_8h_source.html">SpriteRenderer.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ab343c543b6e70b521bbc07efaee9f544" id="r_ab343c543b6e70b521bbc07efaee9f544"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab343c543b6e70b521bbc07efaee9f544">SpriteRenderer</a> (<a class="el" href="class_shader.html">Shader</a> &amp;shader)</td></tr>
+<tr class="memdesc:ab343c543b6e70b521bbc07efaee9f544"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a sprite renderer using the provided shader.  <br /></td></tr>
 <tr class="memitem:ae53730ef86000bf59905c2cf67e4d3a4" id="r_ae53730ef86000bf59905c2cf67e4d3a4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae53730ef86000bf59905c2cf67e4d3a4">~SpriteRenderer</a> ()</td></tr>
+<tr class="memdesc:ae53730ef86000bf59905c2cf67e4d3a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor that frees the quad VAO.  <br /></td></tr>
 <tr class="memitem:a08ed01af761ad318f187f02980835ae5" id="r_a08ed01af761ad318f187f02980835ae5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a08ed01af761ad318f187f02980835ae5">DrawSprite</a> (<a class="el" href="class_texture.html">Texture</a> *texture, glm::vec2 position, glm::vec2 size=glm::vec2(10, 10), float rotate=0.0f, glm::vec3 color=glm::vec3(1.0f))</td></tr>
+<tr class="memdesc:a08ed01af761ad318f187f02980835ae5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws a textured sprite.  <br /></td></tr>
 </table>
-<a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Renders 2D textured quads (sprites) using a given shader. </p>
+</div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ab343c543b6e70b521bbc07efaee9f544" name="ab343c543b6e70b521bbc07efaee9f544"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab343c543b6e70b521bbc07efaee9f544">&#9670;&#160;</a></span>SpriteRenderer()</h2>
 
@@ -115,6 +123,16 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Creates a sprite renderer using the provided shader. </p>
+<p>Creates a sprite renderer using the given shader.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">shader</td><td><a class="el" href="class_shader.html" title="Handles loading, compiling, linking, and using GLSL shader programs.">Shader</a> used to draw all sprites.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Initializes the quad used to draw all sprites. </p>
 
 </div>
 </div>
@@ -132,6 +150,8 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Destructor that frees the quad VAO. </p>
 
 </div>
 </div>
@@ -169,6 +189,30 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Draws a textured sprite. </p>
+<p>Draws a textured 2D sprite.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">texture</td><td><a class="el" href="class_texture.html" title="Loads and manages 2D textures, normal maps, and height maps.">Texture</a> to draw. </td></tr>
+    <tr><td class="paramname">position</td><td>Position of the sprite. </td></tr>
+    <tr><td class="paramname">size</td><td>Size of the sprite (default 10×10). </td></tr>
+    <tr><td class="paramname">rotate</td><td>Rotation in degrees. </td></tr>
+    <tr><td class="paramname">color</td><td>Tint color.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Applies translation, rotation, and scaling to the quad, then renders it using the provided texture.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">texture</td><td><a class="el" href="class_texture.html" title="Loads and manages 2D textures, normal maps, and height maps.">Texture</a> to draw. </td></tr>
+    <tr><td class="paramname">position</td><td>Screen/world position. </td></tr>
+    <tr><td class="paramname">size</td><td>Sprite size. </td></tr>
+    <tr><td class="paramname">rotate</td><td>Rotation in degrees. </td></tr>
+    <tr><td class="paramname">color</td><td>Tint color. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

@@ -92,6 +92,9 @@ $(function(){initNavTree('class_entity.html','','class_entity-members'); });
 </div><!--header-->
 <div class="contents">
 
+<p>Base class for all world objects in the game.  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_entity_8h_source.html">Entity.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for Entity:</div>
@@ -99,95 +102,165 @@ Inheritance diagram for Entity:</div>
  <div class="center">
   <img src="class_entity.png" usemap="#Entity_map" alt=""/>
   <map id="Entity_map" name="Entity_map">
-<area href="class_battery.html" alt="Battery" shape="rect" coords="119,56,228,80"/>
-<area href="class_book.html" alt="Book" shape="rect" coords="119,112,228,136"/>
-<area href="class_bookshelf_puzzle.html" alt="BookshelfPuzzle" shape="rect" coords="119,168,228,192"/>
-<area href="class_candle.html" alt="Candle" shape="rect" coords="119,224,228,248"/>
-<area href="class_chest.html" alt="Chest" shape="rect" coords="119,280,228,304"/>
-<area href="class_clock_moving_part.html" alt="ClockMovingPart" shape="rect" coords="119,336,228,360"/>
-<area href="class_desk.html" alt="Desk" shape="rect" coords="119,392,228,416"/>
-<area href="class_door.html" alt="Door" shape="rect" coords="119,448,228,472"/>
-<area href="class_drawer.html" alt="Drawer" shape="rect" coords="119,504,228,528"/>
-<area href="class_haunted_entity.html" alt="HauntedEntity" shape="rect" coords="119,560,228,584"/>
-<area href="class_key.html" alt="Key" shape="rect" coords="119,616,228,640"/>
-<area href="class_lamp.html" alt="Lamp" shape="rect" coords="119,672,228,696"/>
-<area href="class_lighter.html" alt="Lighter" shape="rect" coords="119,728,228,752"/>
-<area href="class_lock.html" alt="Lock" shape="rect" coords="119,784,228,808"/>
-<area href="class_pedestal.html" alt="Pedestal" shape="rect" coords="119,840,228,864"/>
-<area href="class_pickable.html" alt="Pickable" shape="rect" coords="119,896,228,920"/>
-<area href="class_readable.html" alt="Readable" shape="rect" coords="119,952,228,976"/>
+<area href="class_battery.html" title="Represents a pickable battery item in the world." alt="Battery" shape="rect" coords="119,56,228,80"/>
+<area href="class_book.html" title="Represents a movable book used in a bookshelf puzzle." alt="Book" shape="rect" coords="119,112,228,136"/>
+<area href="class_bookshelf_puzzle.html" title="Represents the movable bookshelf that reacts to the book puzzle solution." alt="BookshelfPuzzle" shape="rect" coords="119,168,228,192"/>
+<area href="class_candle.html" title="Represents an interactable candle that can be lit or extinguished." alt="Candle" shape="rect" coords="119,224,228,248"/>
+<area href="class_chest.html" title="Represents an interactable chest composed of a lower body and a movable lid." alt="Chest" shape="rect" coords="119,280,228,304"/>
+<area href="class_clock_moving_part.html" title="Represents an oscillating moving part of a clock (e.g., pendulum or hand)." alt="ClockMovingPart" shape="rect" coords="119,336,228,360"/>
+<area href="class_desk.html" title="Represents a desk composed of multiple drawers and a desk door." alt="Desk" shape="rect" coords="119,392,228,416"/>
+<area href="class_door.html" title="Represents an interactable door that can be locked, unlocked, opened, and closed." alt="Door" shape="rect" coords="119,448,228,472"/>
+<area href="class_drawer.html" title="Represents an interactable drawer that can be locked, unlocked, opened, and closed." alt="Drawer" shape="rect" coords="119,504,228,528"/>
+<area href="class_haunted_entity.html" title="Represents an entity that visually transforms after a puzzle is solved." alt="HauntedEntity" shape="rect" coords="119,560,228,584"/>
+<area href="class_key.html" title="Represents a pickable key item used to unlock doors, drawers, or other locked entities." alt="Key" shape="rect" coords="119,616,228,640"/>
+<area href="class_lamp.html" title="Represents an interactable lamp that toggles a PointLight on and off." alt="Lamp" shape="rect" coords="119,672,228,696"/>
+<area href="class_lighter.html" title="Represents a simple pickable lighter item." alt="Lighter" shape="rect" coords="119,728,228,752"/>
+<area href="class_lock.html" title="Represents a rotating‑wheel combination lock puzzle." alt="Lock" shape="rect" coords="119,784,228,808"/>
+<area href="class_pedestal.html" title="Represents a pedestal that can accept and display specific items." alt="Pedestal" shape="rect" coords="119,840,228,864"/>
+<area href="class_pickable.html" title="Represents a generic pickable item in the world." alt="Pickable" shape="rect" coords="119,896,228,920"/>
+<area href="class_radio.html" title="Represents an interactable radio that changes behavior based on inserted batteries." alt="Radio" shape="rect" coords="119,952,228,976"/>
+<area href="class_readable.html" title="Represents an interactable object that the player can read." alt="Readable" shape="rect" coords="119,1008,228,1032"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a5ba784c86bfeb152d3013be78c29db39" id="r_a5ba784c86bfeb152d3013be78c29db39"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5ba784c86bfeb152d3013be78c29db39">Entity</a> (<a class="el" href="class_model.html">Model</a> *model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, bool interaction=false)</td></tr>
+<tr class="memdesc:a5ba784c86bfeb152d3013be78c29db39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a new <a class="el" href="class_entity.html" title="Base class for all world objects in the game.">Entity</a>.  <br /></td></tr>
 <tr class="memitem:adf6d3f7cb1b2ba029b6b048a395cc8ae" id="r_adf6d3f7cb1b2ba029b6b048a395cc8ae"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adf6d3f7cb1b2ba029b6b048a395cc8ae">~Entity</a> ()</td></tr>
+<tr class="memdesc:adf6d3f7cb1b2ba029b6b048a395cc8ae"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_entity.html" title="Base class for all world objects in the game.">Entity</a> destructor.  <br /></td></tr>
 <tr class="memitem:a8169fa27992633427c35e2163cd97392" id="r_a8169fa27992633427c35e2163cd97392"><td class="memItemLeft" align="right" valign="top">glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8169fa27992633427c35e2163cd97392">GetModelMatrix</a> ()</td></tr>
+<tr class="memdesc:a8169fa27992633427c35e2163cd97392"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the current model matrix.  <br /></td></tr>
 <tr class="memitem:a6420593817096532a1e770b243864706" id="r_a6420593817096532a1e770b243864706"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6420593817096532a1e770b243864706">setPosition</a> (glm::vec3 newPosition)</td></tr>
+<tr class="memdesc:a6420593817096532a1e770b243864706"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the entity's world position.  <br /></td></tr>
 <tr class="memitem:a8901d790d3278f02864fed5ce3ae1c8a" id="r_a8901d790d3278f02864fed5ce3ae1c8a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8901d790d3278f02864fed5ce3ae1c8a">setRotation</a> (glm::vec3 newRotation)</td></tr>
+<tr class="memdesc:a8901d790d3278f02864fed5ce3ae1c8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the entity's rotation.  <br /></td></tr>
 <tr class="memitem:ad4eec4d4acfc9369511d2eed577613c8" id="r_ad4eec4d4acfc9369511d2eed577613c8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad4eec4d4acfc9369511d2eed577613c8">setScale</a> (glm::vec3 newScale)</td></tr>
+<tr class="memdesc:ad4eec4d4acfc9369511d2eed577613c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the entity's scale.  <br /></td></tr>
 <tr class="memitem:af6a863b5b44f3cb9af72070396f389df" id="r_af6a863b5b44f3cb9af72070396f389df"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af6a863b5b44f3cb9af72070396f389df">setCastsShadow</a> (bool state)</td></tr>
+<tr class="memdesc:af6a863b5b44f3cb9af72070396f389df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables or disables shadow casting.  <br /></td></tr>
 <tr class="memitem:a622bd2c98a4fd18aff2afe308c19d81e" id="r_a622bd2c98a4fd18aff2afe308c19d81e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a622bd2c98a4fd18aff2afe308c19d81e">setTitle</a> (std::string newTitle)</td></tr>
+<tr class="memdesc:a622bd2c98a4fd18aff2afe308c19d81e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the display title of the entity.  <br /></td></tr>
 <tr class="memitem:a957cf2b20f018a16015847eb56ea539a" id="r_a957cf2b20f018a16015847eb56ea539a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a957cf2b20f018a16015847eb56ea539a">setColissions</a> (bool state)</td></tr>
+<tr class="memdesc:a957cf2b20f018a16015847eb56ea539a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables or disables collision detection.  <br /></td></tr>
 <tr class="memitem:afe9d5bb72e6044d926674ae609245cde" id="r_afe9d5bb72e6044d926674ae609245cde"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afe9d5bb72e6044d926674ae609245cde">setModel</a> (<a class="el" href="class_model.html">Model</a> *model)</td></tr>
+<tr class="memdesc:afe9d5bb72e6044d926674ae609245cde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a new model and updates collision box.  <br /></td></tr>
 <tr class="memitem:a6e28718d4362330f3670adafaaa5c452" id="r_a6e28718d4362330f3670adafaaa5c452"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6e28718d4362330f3670adafaaa5c452">setShouldGetDestroyed</a> (bool state)</td></tr>
+<tr class="memdesc:a6e28718d4362330f3670adafaaa5c452"><td class="mdescLeft">&#160;</td><td class="mdescRight">Marks the entity for destruction.  <br /></td></tr>
 <tr class="memitem:a51c96e9e1cdcad8e2ae93734e66d1e41" id="r_a51c96e9e1cdcad8e2ae93734e66d1e41"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a51c96e9e1cdcad8e2ae93734e66d1e41">setInteractable</a> (bool state)</td></tr>
+<tr class="memdesc:a51c96e9e1cdcad8e2ae93734e66d1e41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables or disables interaction.  <br /></td></tr>
 <tr class="memitem:a49b7dfb51189e75ab186512e7c187dbe" id="r_a49b7dfb51189e75ab186512e7c187dbe"><td class="memItemLeft" align="right" valign="top">glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a49b7dfb51189e75ab186512e7c187dbe">getPosition</a> ()</td></tr>
+<tr class="memdesc:a49b7dfb51189e75ab186512e7c187dbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the entity's world position.  <br /></td></tr>
 <tr class="memitem:a4bcff3e0fd008df9cdebbffd92a47b51" id="r_a4bcff3e0fd008df9cdebbffd92a47b51"><td class="memItemLeft" align="right" valign="top">glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4bcff3e0fd008df9cdebbffd92a47b51">getRotation</a> ()</td></tr>
+<tr class="memdesc:a4bcff3e0fd008df9cdebbffd92a47b51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the entity's rotation.  <br /></td></tr>
 <tr class="memitem:aff5db7c94e327f161c264c096bc6c5ca" id="r_aff5db7c94e327f161c264c096bc6c5ca"><td class="memItemLeft" align="right" valign="top">glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aff5db7c94e327f161c264c096bc6c5ca">getScale</a> ()</td></tr>
+<tr class="memdesc:aff5db7c94e327f161c264c096bc6c5ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the entity's scale.  <br /></td></tr>
 <tr class="memitem:a47486148f8dd8938e8d04bd828dbb8af" id="r_a47486148f8dd8938e8d04bd828dbb8af"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a47486148f8dd8938e8d04bd828dbb8af">getInteractable</a> ()</td></tr>
+<tr class="memdesc:a47486148f8dd8938e8d04bd828dbb8af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether the entity is interactable.  <br /></td></tr>
 <tr class="memitem:a486a12fcf64aaf72d722ba7674eaba00" id="r_a486a12fcf64aaf72d722ba7674eaba00"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a486a12fcf64aaf72d722ba7674eaba00">getCastsShadow</a> ()</td></tr>
+<tr class="memdesc:a486a12fcf64aaf72d722ba7674eaba00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether the entity casts shadows.  <br /></td></tr>
 <tr class="memitem:a021c9bc90e78466164735c481bcec3ea" id="r_a021c9bc90e78466164735c481bcec3ea"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a021c9bc90e78466164735c481bcec3ea">getColissions</a> ()</td></tr>
+<tr class="memdesc:a021c9bc90e78466164735c481bcec3ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether the entity has collisions enabled.  <br /></td></tr>
 <tr class="memitem:a666b052da885c7c9ff7dc7e3095e7714" id="r_a666b052da885c7c9ff7dc7e3095e7714"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a666b052da885c7c9ff7dc7e3095e7714">getPickable</a> ()</td></tr>
+<tr class="memdesc:a666b052da885c7c9ff7dc7e3095e7714"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether the entity can be picked up.  <br /></td></tr>
 <tr class="memitem:a4cce4ec6d51d112b7aff79379fc2010f" id="r_a4cce4ec6d51d112b7aff79379fc2010f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4cce4ec6d51d112b7aff79379fc2010f">getShouldGetDestroyed</a> ()</td></tr>
+<tr class="memdesc:a4cce4ec6d51d112b7aff79379fc2010f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether the entity should be destroyed.  <br /></td></tr>
 <tr class="memitem:a9202e587e97c713fbfb256d428ce073d" id="r_a9202e587e97c713fbfb256d428ce073d"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_texture.html">Texture</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9202e587e97c713fbfb256d428ce073d">getTexture</a> ()</td></tr>
+<tr class="memdesc:a9202e587e97c713fbfb256d428ce073d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the entity's texture (default: nullptr).  <br /></td></tr>
 <tr class="memitem:a8dba2f5c5964cf267774eec7b5d4b31f" id="r_a8dba2f5c5964cf267774eec7b5d4b31f"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8dba2f5c5964cf267774eec7b5d4b31f">getTag</a> ()</td></tr>
+<tr class="memdesc:a8dba2f5c5964cf267774eec7b5d4b31f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the entity's tag (used for keys, items, etc.).  <br /></td></tr>
 <tr class="memitem:a019476e8c6859debd5503f592f24afd8" id="r_a019476e8c6859debd5503f592f24afd8"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a019476e8c6859debd5503f592f24afd8">getTitle</a> ()</td></tr>
+<tr class="memdesc:a019476e8c6859debd5503f592f24afd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the display title of the entity.  <br /></td></tr>
 <tr class="memitem:a4859244a84535cf7f9811471e2e6592f" id="r_a4859244a84535cf7f9811471e2e6592f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_model.html">Model</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4859244a84535cf7f9811471e2e6592f">getModel</a> ()</td></tr>
+<tr class="memdesc:a4859244a84535cf7f9811471e2e6592f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the model used by this entity.  <br /></td></tr>
 <tr class="memitem:a1dfec0c4628b93822b427bc5ceffc576" id="r_a1dfec0c4628b93822b427bc5ceffc576"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1dfec0c4628b93822b427bc5ceffc576">isOutlined</a> ()</td></tr>
+<tr class="memdesc:a1dfec0c4628b93822b427bc5ceffc576"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether the entity is outlined.  <br /></td></tr>
 <tr class="memitem:a11d2db28d922bc2fa48131a523406c43" id="r_a11d2db28d922bc2fa48131a523406c43"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a11d2db28d922bc2fa48131a523406c43">setSelected</a> (bool state)</td></tr>
+<tr class="memdesc:a11d2db28d922bc2fa48131a523406c43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets whether the entity is selected.  <br /></td></tr>
 <tr class="memitem:a13495d5f2e9a24fc66a86eeb586110c7" id="r_a13495d5f2e9a24fc66a86eeb586110c7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a13495d5f2e9a24fc66a86eeb586110c7">isSelected</a> ()</td></tr>
+<tr class="memdesc:a13495d5f2e9a24fc66a86eeb586110c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether the entity is selected.  <br /></td></tr>
 <tr class="memitem:a223a40b27e9b3416db30a16a494c73f3" id="r_a223a40b27e9b3416db30a16a494c73f3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a223a40b27e9b3416db30a16a494c73f3">setOutlined</a> (bool state)</td></tr>
+<tr class="memdesc:a223a40b27e9b3416db30a16a494c73f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets whether the entity is outlined.  <br /></td></tr>
 <tr class="memitem:acf027f1488065ba69150d0a64101f7ae" id="r_acf027f1488065ba69150d0a64101f7ae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acf027f1488065ba69150d0a64101f7ae">setVisibility</a> (bool state)</td></tr>
+<tr class="memdesc:acf027f1488065ba69150d0a64101f7ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets whether the entity is visible.  <br /></td></tr>
 <tr class="memitem:af4fda49a7bc97e557aabe73db6c33024" id="r_af4fda49a7bc97e557aabe73db6c33024"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af4fda49a7bc97e557aabe73db6c33024">getVisible</a> ()</td></tr>
+<tr class="memdesc:af4fda49a7bc97e557aabe73db6c33024"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether the entity is visible.  <br /></td></tr>
 <tr class="memitem:a4c8403882893d8d24e7e160a1187a632" id="r_a4c8403882893d8d24e7e160a1187a632"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_collision_box.html">CollisionBox</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4c8403882893d8d24e7e160a1187a632">GetCollisions</a> ()</td></tr>
+<tr class="memdesc:a4c8403882893d8d24e7e160a1187a632"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the world‑space collision box.  <br /></td></tr>
 <tr class="memitem:aa022da0af64ff840484ea2cccbca1edb" id="r_aa022da0af64ff840484ea2cccbca1edb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa022da0af64ff840484ea2cccbca1edb">DrawEntity</a> (<a class="el" href="class_shader.html">Shader</a> *shader)</td></tr>
+<tr class="memdesc:aa022da0af64ff840484ea2cccbca1edb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws the entity using the provided shader.  <br /></td></tr>
 <tr class="memitem:a306157156671d0b8b9ddd247e2ea987c" id="r_a306157156671d0b8b9ddd247e2ea987c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a306157156671d0b8b9ddd247e2ea987c">UpdateCollisionBox</a> ()</td></tr>
+<tr class="memdesc:a306157156671d0b8b9ddd247e2ea987c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the world‑space collision box.  <br /></td></tr>
 <tr class="memitem:add25e97612f1c4fb12aeddc5d6ccd304" id="r_add25e97612f1c4fb12aeddc5d6ccd304"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#add25e97612f1c4fb12aeddc5d6ccd304">setActionText</a> (std::string text)</td></tr>
+<tr class="memdesc:add25e97612f1c4fb12aeddc5d6ccd304"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the action text displayed when interacting.  <br /></td></tr>
 <tr class="memitem:a55b46ac00b64aa53cf2ef799b09e7324" id="r_a55b46ac00b64aa53cf2ef799b09e7324"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a55b46ac00b64aa53cf2ef799b09e7324">setExamineText</a> (std::string text)</td></tr>
+<tr class="memdesc:a55b46ac00b64aa53cf2ef799b09e7324"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the examine text displayed when inspecting the entity.  <br /></td></tr>
 <tr class="memitem:aa9a3d72930fecee72ce6bf7d0cf310fa" id="r_aa9a3d72930fecee72ce6bf7d0cf310fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa9a3d72930fecee72ce6bf7d0cf310fa">setTag</a> (std::string tag)</td></tr>
+<tr class="memdesc:aa9a3d72930fecee72ce6bf7d0cf310fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the entity's tag.  <br /></td></tr>
 <tr class="memitem:a2e1cc2d447fd31fc9bc396d2489abd17" id="r_a2e1cc2d447fd31fc9bc396d2489abd17"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2e1cc2d447fd31fc9bc396d2489abd17">Update</a> (float <a class="el" href="main_8cpp.html#a1a61318ed6aa02b4ff346e7eb8f68891">deltaTime</a>)</td></tr>
+<tr class="memdesc:a2e1cc2d447fd31fc9bc396d2489abd17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the entity each frame.  <br /></td></tr>
 <tr class="memitem:a0c030bb89fa1e71775673458a286e3bc" id="r_a0c030bb89fa1e71775673458a286e3bc"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0c030bb89fa1e71775673458a286e3bc">GetActionText</a> ()</td></tr>
+<tr class="memdesc:a0c030bb89fa1e71775673458a286e3bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the action text displayed when targeting the entity.  <br /></td></tr>
 <tr class="memitem:ab5df5212c49c989b67d5ea4de25707c8" id="r_ab5df5212c49c989b67d5ea4de25707c8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab5df5212c49c989b67d5ea4de25707c8">Interact</a> (<a class="el" href="class_inventory.html">Inventory</a> *playerInventory)</td></tr>
+<tr class="memdesc:ab5df5212c49c989b67d5ea4de25707c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handles player interaction with the entity.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pro-methods" class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:af3b503ba910b549b2dae7c4713301846" id="r_af3b503ba910b549b2dae7c4713301846"><td class="memItemLeft" align="right" valign="top">glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af3b503ba910b549b2dae7c4713301846">CalculateModelMatrix</a> ()</td></tr>
+<tr class="memdesc:af3b503ba910b549b2dae7c4713301846"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the model matrix from position, rotation, and scale.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pro-attribs" class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:a22d9f2a6379f0c6c871a874f984a7d69" id="r_a22d9f2a6379f0c6c871a874f984a7d69"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_model.html">Model</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a22d9f2a6379f0c6c871a874f984a7d69">entityModel</a></td></tr>
+<tr class="memdesc:a22d9f2a6379f0c6c871a874f984a7d69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the entity's 3D model.  <br /></td></tr>
 <tr class="memitem:ad58d6e0405061032658b801bf549ea66" id="r_ad58d6e0405061032658b801bf549ea66"><td class="memItemLeft" align="right" valign="top">glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad58d6e0405061032658b801bf549ea66">position</a></td></tr>
+<tr class="memdesc:ad58d6e0405061032658b801bf549ea66"><td class="mdescLeft">&#160;</td><td class="mdescRight">World position of the entity.  <br /></td></tr>
 <tr class="memitem:a7bdfc788425e043ab24f82498d184cda" id="r_a7bdfc788425e043ab24f82498d184cda"><td class="memItemLeft" align="right" valign="top">glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7bdfc788425e043ab24f82498d184cda">rotation</a></td></tr>
+<tr class="memdesc:a7bdfc788425e043ab24f82498d184cda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rotation vector (degrees).  <br /></td></tr>
 <tr class="memitem:a92e7b4f35bbcf68e3ce8db3c0335c059" id="r_a92e7b4f35bbcf68e3ce8db3c0335c059"><td class="memItemLeft" align="right" valign="top">glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a92e7b4f35bbcf68e3ce8db3c0335c059">scale</a></td></tr>
+<tr class="memdesc:a92e7b4f35bbcf68e3ce8db3c0335c059"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scale vector.  <br /></td></tr>
 <tr class="memitem:a8d650038e4e84e4e82e50419a56ddf09" id="r_a8d650038e4e84e4e82e50419a56ddf09"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8d650038e4e84e4e82e50419a56ddf09">hasExamined</a> = false</td></tr>
+<tr class="memdesc:a8d650038e4e84e4e82e50419a56ddf09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the entity has been examined before.  <br /></td></tr>
 <tr class="memitem:a44fe3ce2af1fb8cad733df137df15b7b" id="r_a44fe3ce2af1fb8cad733df137df15b7b"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a44fe3ce2af1fb8cad733df137df15b7b">examineText</a> = &quot;You see nothing special.&quot;</td></tr>
+<tr class="memdesc:a44fe3ce2af1fb8cad733df137df15b7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Text shown when examining the entity.  <br /></td></tr>
 <tr class="memitem:a223c5f5c9fafa7ea9a3e88ae64a9569b" id="r_a223c5f5c9fafa7ea9a3e88ae64a9569b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a223c5f5c9fafa7ea9a3e88ae64a9569b">castsShadow</a> = true</td></tr>
+<tr class="memdesc:a223c5f5c9fafa7ea9a3e88ae64a9569b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the entity casts shadows.  <br /></td></tr>
 <tr class="memitem:a2ff823982d0a8b315d43a4c2d8e64e86" id="r_a2ff823982d0a8b315d43a4c2d8e64e86"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2ff823982d0a8b315d43a4c2d8e64e86">outlined</a> = false</td></tr>
+<tr class="memdesc:a2ff823982d0a8b315d43a4c2d8e64e86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the entity is outlined (highlighted).  <br /></td></tr>
 <tr class="memitem:ac634d30b78264977849965b02878ccea" id="r_ac634d30b78264977849965b02878ccea"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac634d30b78264977849965b02878ccea">hasCollisions</a> = true</td></tr>
+<tr class="memdesc:ac634d30b78264977849965b02878ccea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the entity has collision detection enabled.  <br /></td></tr>
 <tr class="memitem:a81054e474b49795dfc4d71b34c76f544" id="r_a81054e474b49795dfc4d71b34c76f544"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a81054e474b49795dfc4d71b34c76f544">interactable</a></td></tr>
+<tr class="memdesc:a81054e474b49795dfc4d71b34c76f544"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the entity can be interacted with.  <br /></td></tr>
 <tr class="memitem:ad5689793f9f06049af72ed9221696dc0" id="r_ad5689793f9f06049af72ed9221696dc0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad5689793f9f06049af72ed9221696dc0">shouldGetDestroyed</a> = false</td></tr>
+<tr class="memdesc:ad5689793f9f06049af72ed9221696dc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the entity should be destroyed.  <br /></td></tr>
 <tr class="memitem:a80ed75b2bfb9d7349c1b3ba4ca285954" id="r_a80ed75b2bfb9d7349c1b3ba4ca285954"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a80ed75b2bfb9d7349c1b3ba4ca285954">pickable</a> = false</td></tr>
+<tr class="memdesc:a80ed75b2bfb9d7349c1b3ba4ca285954"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the entity can be picked up.  <br /></td></tr>
 <tr class="memitem:a8af20e61f5de761c97e7f596525ecb1b" id="r_a8af20e61f5de761c97e7f596525ecb1b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8af20e61f5de761c97e7f596525ecb1b">isVisible</a> = true</td></tr>
+<tr class="memdesc:a8af20e61f5de761c97e7f596525ecb1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the entity is visible.  <br /></td></tr>
 <tr class="memitem:a29dba36840a28495e5eed5bc4c76b9a9" id="r_a29dba36840a28495e5eed5bc4c76b9a9"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a29dba36840a28495e5eed5bc4c76b9a9">itemTag</a> = &quot;&quot;</td></tr>
+<tr class="memdesc:a29dba36840a28495e5eed5bc4c76b9a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tag used for identifying items (keys, puzzle objects, etc.).  <br /></td></tr>
 <tr class="memitem:acc1d3d3d9d2c5c13b0e4247e54336e12" id="r_acc1d3d3d9d2c5c13b0e4247e54336e12"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_collision_box.html">CollisionBox</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acc1d3d3d9d2c5c13b0e4247e54336e12">collisions</a></td></tr>
+<tr class="memdesc:acc1d3d3d9d2c5c13b0e4247e54336e12"><td class="mdescLeft">&#160;</td><td class="mdescRight">World‑space collision box.  <br /></td></tr>
 <tr class="memitem:a955e57d979a88fe1fb18d3b58ebb703f" id="r_a955e57d979a88fe1fb18d3b58ebb703f"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a955e57d979a88fe1fb18d3b58ebb703f">title</a> = &quot;Untitled object&quot;</td></tr>
+<tr class="memdesc:a955e57d979a88fe1fb18d3b58ebb703f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display title of the entity.  <br /></td></tr>
 <tr class="memitem:a58858410e67b146b0d830568d5eefa01" id="r_a58858410e67b146b0d830568d5eefa01"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a58858410e67b146b0d830568d5eefa01">selected</a> = false</td></tr>
+<tr class="memdesc:a58858410e67b146b0d830568d5eefa01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the entity is currently selected.  <br /></td></tr>
 <tr class="memitem:ab58b8b75b1d64e544c326faeba8542a6" id="r_ab58b8b75b1d64e544c326faeba8542a6"><td class="memItemLeft" align="right" valign="top">glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab58b8b75b1d64e544c326faeba8542a6">modelMatrix</a></td></tr>
+<tr class="memdesc:ab58b8b75b1d64e544c326faeba8542a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cached model matrix.  <br /></td></tr>
 <tr class="memitem:ac0801d6c3a3478766eb4d270e68336d3" id="r_ac0801d6c3a3478766eb4d270e68336d3"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac0801d6c3a3478766eb4d270e68336d3">actionText</a> = &quot;Examine&quot;</td></tr>
+<tr class="memdesc:ac0801d6c3a3478766eb4d270e68336d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Text displayed when interacting (default: "Examine").  <br /></td></tr>
 </table>
-<a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Base class for all world objects in the game. </p>
+<p>The <a class="el" href="class_entity.html" title="Base class for all world objects in the game.">Entity</a> class provides:</p><ul>
+<li>Transform data (position, rotation, scale)</li>
+<li>Rendering support (model, shader, model matrix)</li>
+<li>Collision box calculation</li>
+<li>Interaction system (interactable, pickable, action text)</li>
+<li>Visibility, outline, and shadow toggles</li>
+</ul>
+<p>All interactable objects (doors, drawers, items, puzzles, etc.) inherit from this class. </p>
+</div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a5ba784c86bfeb152d3013be78c29db39" name="a5ba784c86bfeb152d3013be78c29db39"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5ba784c86bfeb152d3013be78c29db39">&#9670;&#160;</a></span>Entity()</h2>
 
@@ -222,6 +295,42 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Constructs a new <a class="el" href="class_entity.html" title="Base class for all world objects in the game.">Entity</a>. </p>
+<p>Initializes:</p><ul>
+<li>Transform values</li>
+<li><a class="el" href="class_model.html" title="Loads and renders 3D models using Assimp.">Model</a> reference</li>
+<li>Collision box (from model if available)</li>
+<li>Interaction flag</li>
+<li><a class="el" href="class_model.html" title="Loads and renders 3D models using Assimp.">Model</a> matrix and world‑space collision box</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">model</td><td>Pointer to the 3D model. </td></tr>
+    <tr><td class="paramname">pos</td><td>Initial world position. </td></tr>
+    <tr><td class="paramname">rot</td><td>Initial rotation vector. </td></tr>
+    <tr><td class="paramname">scal</td><td>Initial scale vector. </td></tr>
+    <tr><td class="paramname">interaction</td><td>Whether the entity is interactable.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Initializes:</p><ul>
+<li>Position, rotation, and scale</li>
+<li><a class="el" href="class_model.html" title="Loads and renders 3D models using Assimp.">Model</a> reference and model matrix</li>
+<li>Collision box (from model if available)</li>
+<li>Interaction flag</li>
+<li>Updates world‑space collision box</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">model</td><td>Pointer to the 3D model used by this entity. </td></tr>
+    <tr><td class="paramname">pos</td><td>Initial world position. </td></tr>
+    <tr><td class="paramname">rot</td><td>Initial rotation vector. </td></tr>
+    <tr><td class="paramname">scal</td><td>Initial scale vector. </td></tr>
+    <tr><td class="paramname">interaction</td><td>Whether the entity is interactable. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="adf6d3f7cb1b2ba029b6b048a395cc8ae" name="adf6d3f7cb1b2ba029b6b048a395cc8ae"></a>
@@ -238,6 +347,9 @@ Protected Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><a class="el" href="class_entity.html" title="Base class for all world objects in the game.">Entity</a> destructor. </p>
+<p>Resets transform values and clears model reference. </p>
 
 </div>
 </div>
@@ -265,6 +377,17 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Calculates the model matrix from position, rotation, and scale. </p>
+<dl class="section return"><dt>Returns</dt><dd>The calculated model matrix.</dd></dl>
+<p>Order of transformations:</p><ol type="1">
+<li>Translation <br  />
+</li>
+<li>Rotation (Y → X → Z) <br  />
+</li>
+<li>Scaling</li>
+</ol>
+<dl class="section return"><dt>Returns</dt><dd>The calculated model matrix. </dd></dl>
+
 </div>
 </div>
 <a id="aa022da0af64ff840484ea2cccbca1edb" name="aa022da0af64ff840484ea2cccbca1edb"></a>
@@ -281,6 +404,15 @@ Protected Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Draws the entity using the provided shader. </p>
+<p>Sends the model matrix to the shader and renders the model.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">shader</td><td>Pointer to the shader used for rendering. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -307,7 +439,10 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="class_battery.html#af86c60076e5d126a1d09b1c8cbf64f11">Battery</a>, <a class="el" href="class_book.html#adcc5321b1a534fbe261a6312eacf3252">Book</a>, <a class="el" href="class_candle.html#a7148c90dacbe83e9657ea2ccc4b7e0ec">Candle</a>, <a class="el" href="class_door.html#a65a38ccd0a3a0eb927e99c9bee049d2c">Door</a>, <a class="el" href="class_drawer.html#ae590c65ae01d211b016c8763f0506cc6">Drawer</a>, <a class="el" href="class_haunted_entity.html#a35a37397c81e7c2b210b18217aa8852c">HauntedEntity</a>, <a class="el" href="class_key.html#ab92f78e247b9dab7667f03e3abb186e2">Key</a>, <a class="el" href="class_lighter.html#a23a11a918f499d9606c9f761ba4e836b">Lighter</a>, <a class="el" href="class_lock.html#a3abc51bad5bc1dfd976b805e0a358aaf">Lock</a>, <a class="el" href="class_pedestal.html#a71f415d363edd2c446028c0e9f4b09f7">Pedestal</a>, and <a class="el" href="class_pickable.html#a8d93f46836feb3be62ee2d198e967665">Pickable</a>.</p>
+<p>Gets the action text displayed when targeting the entity. </p>
+<dl class="section return"><dt>Returns</dt><dd>The current action text (default: "Examine"). </dd></dl>
+
+<p>Reimplemented in <a class="el" href="class_battery.html#af86c60076e5d126a1d09b1c8cbf64f11">Battery</a>, <a class="el" href="class_book.html#adcc5321b1a534fbe261a6312eacf3252">Book</a>, <a class="el" href="class_candle.html#a7148c90dacbe83e9657ea2ccc4b7e0ec">Candle</a>, <a class="el" href="class_door.html#a65a38ccd0a3a0eb927e99c9bee049d2c">Door</a>, <a class="el" href="class_drawer.html#ae590c65ae01d211b016c8763f0506cc6">Drawer</a>, <a class="el" href="class_haunted_entity.html#a35a37397c81e7c2b210b18217aa8852c">HauntedEntity</a>, <a class="el" href="class_key.html#ab92f78e247b9dab7667f03e3abb186e2">Key</a>, <a class="el" href="class_lighter.html#a23a11a918f499d9606c9f761ba4e836b">Lighter</a>, <a class="el" href="class_lock.html#a3abc51bad5bc1dfd976b805e0a358aaf">Lock</a>, <a class="el" href="class_pedestal.html#a71f415d363edd2c446028c0e9f4b09f7">Pedestal</a>, <a class="el" href="class_pickable.html#a8d93f46836feb3be62ee2d198e967665">Pickable</a>, and <a class="el" href="class_radio.html#a049e8ee545dd605aba2228cd08e0dedc">Radio</a>.</p>
 
 </div>
 </div>
@@ -334,6 +469,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Returns whether the entity casts shadows. </p>
+
 </div>
 </div>
 <a id="a021c9bc90e78466164735c481bcec3ea" name="a021c9bc90e78466164735c481bcec3ea"></a>
@@ -358,6 +495,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Returns whether the entity has collisions enabled. </p>
 
 </div>
 </div>
@@ -384,6 +523,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Gets the world‑space collision box. </p>
+
 </div>
 </div>
 <a id="a47486148f8dd8938e8d04bd828dbb8af" name="a47486148f8dd8938e8d04bd828dbb8af"></a>
@@ -408,6 +549,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Returns whether the entity is interactable. </p>
 
 </div>
 </div>
@@ -434,6 +577,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Gets the model used by this entity. </p>
+
 </div>
 </div>
 <a id="a8169fa27992633427c35e2163cd97392" name="a8169fa27992633427c35e2163cd97392"></a>
@@ -450,6 +595,12 @@ Protected Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Gets the current model matrix. </p>
+<p>Recalculates the matrix each call to ensure it reflects the latest transform values.</p>
+<dl class="section return"><dt>Returns</dt><dd>The updated model matrix.</dd></dl>
+<p>Recalculates the matrix each call to ensure it reflects the latest position, rotation, and scale.</p>
+<dl class="section return"><dt>Returns</dt><dd>The updated model matrix. </dd></dl>
 
 </div>
 </div>
@@ -476,6 +627,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Returns whether the entity can be picked up. </p>
+
 </div>
 </div>
 <a id="a49b7dfb51189e75ab186512e7c187dbe" name="a49b7dfb51189e75ab186512e7c187dbe"></a>
@@ -492,6 +645,9 @@ Protected Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Gets the entity's world position. </p>
+<dl class="section return"><dt>Returns</dt><dd>Position vector. </dd></dl>
 
 </div>
 </div>
@@ -510,6 +666,9 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Gets the entity's rotation. </p>
+<dl class="section return"><dt>Returns</dt><dd>Rotation vector. </dd></dl>
+
 </div>
 </div>
 <a id="aff5db7c94e327f161c264c096bc6c5ca" name="aff5db7c94e327f161c264c096bc6c5ca"></a>
@@ -526,6 +685,9 @@ Protected Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Gets the entity's scale. </p>
+<dl class="section return"><dt>Returns</dt><dd>Scale vector. </dd></dl>
 
 </div>
 </div>
@@ -552,6 +714,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Returns whether the entity should be destroyed. </p>
+
 </div>
 </div>
 <a id="a8dba2f5c5964cf267774eec7b5d4b31f" name="a8dba2f5c5964cf267774eec7b5d4b31f"></a>
@@ -577,6 +741,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Gets the entity's tag (used for keys, items, etc.). </p>
+
 </div>
 </div>
 <a id="a9202e587e97c713fbfb256d428ce073d" name="a9202e587e97c713fbfb256d428ce073d"></a>
@@ -601,6 +767,9 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Gets the entity's texture (default: nullptr). </p>
+<p>Derived classes may override this. </p>
 
 <p>Reimplemented in <a class="el" href="class_battery.html#a2689539a1efa93c3efd0c3f27aab35ae">Battery</a>, <a class="el" href="class_key.html#a8311299be08360e2e2218285466c1865">Key</a>, <a class="el" href="class_lighter.html#a678909eda49ccbae997fd0efae95277f">Lighter</a>, and <a class="el" href="class_pickable.html#a66a1d778f9f4f1e2cf7a49a736a87b04">Pickable</a>.</p>
 
@@ -629,6 +798,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Gets the display title of the entity. </p>
+
 </div>
 </div>
 <a id="af4fda49a7bc97e557aabe73db6c33024" name="af4fda49a7bc97e557aabe73db6c33024"></a>
@@ -653,6 +824,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Returns whether the entity is visible. </p>
 
 </div>
 </div>
@@ -679,7 +852,24 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="class_battery.html#a0026e27e92bf1c003965470313aeef69">Battery</a>, <a class="el" href="class_book.html#abe22bbd6e24a2ccb3f2616816840bf51">Book</a>, <a class="el" href="class_bookshelf_puzzle.html#a85dae67e741004b7da1ffa75f9a02d5b">BookshelfPuzzle</a>, <a class="el" href="class_candle.html#a1cdb4717d3f18bb3d1caa2063e005650">Candle</a>, <a class="el" href="class_chest.html#a4165537c2fcff5b9ba2a050de95df229">Chest</a>, <a class="el" href="class_desk.html#a605b6b2b6a412279ea9d6845d77cdd6c">Desk</a>, <a class="el" href="class_door.html#a98d7fca55b1959826888f4b03cbed88c">Door</a>, <a class="el" href="class_drawer.html#a5fa5524309cdc1d76b40d5524e500d2f">Drawer</a>, <a class="el" href="class_key.html#a97ad64de3eca8fd009af50d5aab11825">Key</a>, <a class="el" href="class_lamp.html#ae7521e30ed0b4c7788ea48292f80e56e">Lamp</a>, <a class="el" href="class_lighter.html#a9412ec67c3ea58fded4ddd864b9e0573">Lighter</a>, <a class="el" href="class_lock.html#ad394fb68c2370014259ca6ddbf59d272">Lock</a>, <a class="el" href="class_pedestal.html#a7180dde9c4e540630865d316cec2d604">Pedestal</a>, <a class="el" href="class_pickable.html#a4d980fceaf4159a9d12410078ee35c4a">Pickable</a>, and <a class="el" href="class_readable.html#ad504ab821e11ac758f6dfe0901f8b036">Readable</a>.</p>
+<p>Handles player interaction with the entity. </p>
+<p>Default interaction behavior.</p>
+<p>Default behavior: displays the examine text as a subtitle.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">playerInventory</td><td>Pointer to the player's inventory.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Displays the entity's examine text as a subtitle.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">playerInventory</td><td>Pointer to the player's inventory (unused). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="class_battery.html#a0026e27e92bf1c003965470313aeef69">Battery</a>, <a class="el" href="class_book.html#abe22bbd6e24a2ccb3f2616816840bf51">Book</a>, <a class="el" href="class_bookshelf_puzzle.html#a85dae67e741004b7da1ffa75f9a02d5b">BookshelfPuzzle</a>, <a class="el" href="class_candle.html#a1cdb4717d3f18bb3d1caa2063e005650">Candle</a>, <a class="el" href="class_chest.html#a4165537c2fcff5b9ba2a050de95df229">Chest</a>, <a class="el" href="class_desk.html#a605b6b2b6a412279ea9d6845d77cdd6c">Desk</a>, <a class="el" href="class_door.html#a98d7fca55b1959826888f4b03cbed88c">Door</a>, <a class="el" href="class_drawer.html#a5fa5524309cdc1d76b40d5524e500d2f">Drawer</a>, <a class="el" href="class_key.html#a97ad64de3eca8fd009af50d5aab11825">Key</a>, <a class="el" href="class_lamp.html#ae7521e30ed0b4c7788ea48292f80e56e">Lamp</a>, <a class="el" href="class_lighter.html#a9412ec67c3ea58fded4ddd864b9e0573">Lighter</a>, <a class="el" href="class_lock.html#ad394fb68c2370014259ca6ddbf59d272">Lock</a>, <a class="el" href="class_pedestal.html#a7180dde9c4e540630865d316cec2d604">Pedestal</a>, <a class="el" href="class_pickable.html#a4d980fceaf4159a9d12410078ee35c4a">Pickable</a>, <a class="el" href="class_radio.html#ab7545203eceddfbe151d3e1a7a8e3d60">Radio</a>, and <a class="el" href="class_readable.html#ad504ab821e11ac758f6dfe0901f8b036">Readable</a>.</p>
 
 </div>
 </div>
@@ -706,6 +896,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Returns whether the entity is outlined. </p>
+
 </div>
 </div>
 <a id="a13495d5f2e9a24fc66a86eeb586110c7" name="a13495d5f2e9a24fc66a86eeb586110c7"></a>
@@ -730,6 +922,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Returns whether the entity is selected. </p>
 
 </div>
 </div>
@@ -756,6 +950,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Sets the action text displayed when interacting. </p>
+
 </div>
 </div>
 <a id="af6a863b5b44f3cb9af72070396f389df" name="af6a863b5b44f3cb9af72070396f389df"></a>
@@ -780,6 +976,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Enables or disables shadow casting. </p>
 
 </div>
 </div>
@@ -806,6 +1004,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Enables or disables collision detection. </p>
+
 </div>
 </div>
 <a id="a55b46ac00b64aa53cf2ef799b09e7324" name="a55b46ac00b64aa53cf2ef799b09e7324"></a>
@@ -830,6 +1030,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Sets the examine text displayed when inspecting the entity. </p>
 
 </div>
 </div>
@@ -856,6 +1058,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Enables or disables interaction. </p>
+
 </div>
 </div>
 <a id="afe9d5bb72e6044d926674ae609245cde" name="afe9d5bb72e6044d926674ae609245cde"></a>
@@ -880,6 +1084,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Sets a new model and updates collision box. </p>
 
 </div>
 </div>
@@ -906,6 +1112,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Sets whether the entity is outlined. </p>
+
 </div>
 </div>
 <a id="a6420593817096532a1e770b243864706" name="a6420593817096532a1e770b243864706"></a>
@@ -922,6 +1130,14 @@ Protected Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Sets the entity's world position. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">newPosition</td><td>New position vector. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -940,6 +1156,14 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Sets the entity's rotation. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">newRotation</td><td>New rotation vector. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="ad4eec4d4acfc9369511d2eed577613c8" name="ad4eec4d4acfc9369511d2eed577613c8"></a>
@@ -956,6 +1180,14 @@ Protected Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Sets the entity's scale. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">newScale</td><td>New scale vector. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -982,6 +1214,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Sets whether the entity is selected. </p>
+
 </div>
 </div>
 <a id="a6e28718d4362330f3670adafaaa5c452" name="a6e28718d4362330f3670adafaaa5c452"></a>
@@ -1006,6 +1240,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Marks the entity for destruction. </p>
 
 </div>
 </div>
@@ -1032,6 +1268,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Sets the entity's tag. </p>
+
 </div>
 </div>
 <a id="a622bd2c98a4fd18aff2afe308c19d81e" name="a622bd2c98a4fd18aff2afe308c19d81e"></a>
@@ -1056,6 +1294,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Sets the display title of the entity. </p>
 
 </div>
 </div>
@@ -1082,6 +1322,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Sets whether the entity is visible. </p>
+
 </div>
 </div>
 <a id="a2e1cc2d447fd31fc9bc396d2489abd17" name="a2e1cc2d447fd31fc9bc396d2489abd17"></a>
@@ -1107,7 +1349,16 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="class_battery.html#a263ba62dfef42cea1a44834eacc43d91">Battery</a>, <a class="el" href="class_book.html#aff8171619d876bed09f02188ee63fae8">Book</a>, <a class="el" href="class_bookshelf_puzzle.html#a4477b83ce30ed82b39ef718477ffb386">BookshelfPuzzle</a>, <a class="el" href="class_candle.html#a31b053b0e5cd6be431b45a889a00e2e7">Candle</a>, <a class="el" href="class_chest.html#a2fe3246e39c5ffbfb2f8fe3119173c82">Chest</a>, <a class="el" href="class_clock_moving_part.html#aec71470463c2dc68e462f01f1e0a60a8">ClockMovingPart</a>, <a class="el" href="class_door.html#a52306719a95c3b493087ad7e2b1d9dba">Door</a>, <a class="el" href="class_drawer.html#aa1396636c82d8999fefb4203c086b740">Drawer</a>, <a class="el" href="class_haunted_entity.html#a3073ba60800a6b91384b1ff6f6981faa">HauntedEntity</a>, <a class="el" href="class_key.html#aea8afef5ffc590cfebbe829368784feb">Key</a>, <a class="el" href="class_lamp.html#af977243f9b341532026e93222ff2e825">Lamp</a>, <a class="el" href="class_lighter.html#a6ef8360ee9cd2a85b578dae73ceb2ae3">Lighter</a>, <a class="el" href="class_pedestal.html#a17a65062c99fe581b88279777e0c87a6">Pedestal</a>, <a class="el" href="class_pickable.html#a926ddef9b3c52a9d49f3413e21bb4727">Pickable</a>, and <a class="el" href="class_readable.html#aedf25efde1b7d0ad6526fb07dec0df6c">Readable</a>.</p>
+<p>Updates the entity each frame. </p>
+<p>Default implementation does nothing.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">deltaTime</td><td>Time elapsed since last frame. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="class_battery.html#a263ba62dfef42cea1a44834eacc43d91">Battery</a>, <a class="el" href="class_book.html#aff8171619d876bed09f02188ee63fae8">Book</a>, <a class="el" href="class_bookshelf_puzzle.html#a4477b83ce30ed82b39ef718477ffb386">BookshelfPuzzle</a>, <a class="el" href="class_candle.html#a31b053b0e5cd6be431b45a889a00e2e7">Candle</a>, <a class="el" href="class_chest.html#a2fe3246e39c5ffbfb2f8fe3119173c82">Chest</a>, <a class="el" href="class_clock_moving_part.html#aec71470463c2dc68e462f01f1e0a60a8">ClockMovingPart</a>, <a class="el" href="class_door.html#a52306719a95c3b493087ad7e2b1d9dba">Door</a>, <a class="el" href="class_drawer.html#aa1396636c82d8999fefb4203c086b740">Drawer</a>, <a class="el" href="class_haunted_entity.html#a3073ba60800a6b91384b1ff6f6981faa">HauntedEntity</a>, <a class="el" href="class_key.html#aea8afef5ffc590cfebbe829368784feb">Key</a>, <a class="el" href="class_lamp.html#af977243f9b341532026e93222ff2e825">Lamp</a>, <a class="el" href="class_lighter.html#a6ef8360ee9cd2a85b578dae73ceb2ae3">Lighter</a>, <a class="el" href="class_pedestal.html#a17a65062c99fe581b88279777e0c87a6">Pedestal</a>, <a class="el" href="class_pickable.html#a926ddef9b3c52a9d49f3413e21bb4727">Pickable</a>, <a class="el" href="class_radio.html#a2c99be0e78706017c9e417951ae47282">Radio</a>, and <a class="el" href="class_readable.html#aedf25efde1b7d0ad6526fb07dec0df6c">Readable</a>.</p>
 
 </div>
 </div>
@@ -1125,6 +1376,9 @@ Protected Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Updates the world‑space collision box. </p>
+<p>Transforms all 8 corners of the model's local AABB using the model matrix, then computes the new world‑space min/max bounds. </p>
 
 </div>
 </div>
@@ -1149,6 +1403,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Text displayed when interacting (default: "Examine"). </p>
+
 </div>
 </div>
 <a id="a223c5f5c9fafa7ea9a3e88ae64a9569b" name="a223c5f5c9fafa7ea9a3e88ae64a9569b"></a>
@@ -1170,6 +1426,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Whether the entity casts shadows. </p>
 
 </div>
 </div>
@@ -1193,6 +1451,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>World‑space collision box. </p>
+
 </div>
 </div>
 <a id="a22d9f2a6379f0c6c871a874f984a7d69" name="a22d9f2a6379f0c6c871a874f984a7d69"></a>
@@ -1214,6 +1474,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Pointer to the entity's 3D model. </p>
 
 </div>
 </div>
@@ -1237,6 +1499,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Text shown when examining the entity. </p>
+
 </div>
 </div>
 <a id="ac634d30b78264977849965b02878ccea" name="ac634d30b78264977849965b02878ccea"></a>
@@ -1258,6 +1522,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Whether the entity has collision detection enabled. </p>
 
 </div>
 </div>
@@ -1281,6 +1547,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Whether the entity has been examined before. </p>
+
 </div>
 </div>
 <a id="a81054e474b49795dfc4d71b34c76f544" name="a81054e474b49795dfc4d71b34c76f544"></a>
@@ -1302,6 +1570,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Whether the entity can be interacted with. </p>
 
 </div>
 </div>
@@ -1325,6 +1595,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Whether the entity is visible. </p>
+
 </div>
 </div>
 <a id="a29dba36840a28495e5eed5bc4c76b9a9" name="a29dba36840a28495e5eed5bc4c76b9a9"></a>
@@ -1346,6 +1618,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Tag used for identifying items (keys, puzzle objects, etc.). </p>
 
 </div>
 </div>
@@ -1369,6 +1643,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Cached model matrix. </p>
+
 </div>
 </div>
 <a id="a2ff823982d0a8b315d43a4c2d8e64e86" name="a2ff823982d0a8b315d43a4c2d8e64e86"></a>
@@ -1390,6 +1666,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Whether the entity is outlined (highlighted). </p>
 
 </div>
 </div>
@@ -1413,6 +1691,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Whether the entity can be picked up. </p>
+
 </div>
 </div>
 <a id="ad58d6e0405061032658b801bf549ea66" name="ad58d6e0405061032658b801bf549ea66"></a>
@@ -1434,6 +1714,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>World position of the entity. </p>
 
 </div>
 </div>
@@ -1457,6 +1739,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Rotation vector (degrees). </p>
+
 </div>
 </div>
 <a id="a92e7b4f35bbcf68e3ce8db3c0335c059" name="a92e7b4f35bbcf68e3ce8db3c0335c059"></a>
@@ -1478,6 +1762,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Scale vector. </p>
 
 </div>
 </div>
@@ -1501,6 +1787,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Whether the entity is currently selected. </p>
+
 </div>
 </div>
 <a id="ad5689793f9f06049af72ed9221696dc0" name="ad5689793f9f06049af72ed9221696dc0"></a>
@@ -1523,6 +1811,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Whether the entity should be destroyed. </p>
+
 </div>
 </div>
 <a id="a955e57d979a88fe1fb18d3b58ebb703f" name="a955e57d979a88fe1fb18d3b58ebb703f"></a>
@@ -1544,6 +1834,8 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Display title of the entity. </p>
 
 </div>
 </div>

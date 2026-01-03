@@ -92,15 +92,28 @@ $(function(){initNavTree('class_skybox.html','','class_skybox-members'); });
 </div><!--header-->
 <div class="contents">
 
+<p>Renders a cube‑map skybox around the scene.  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_skybox_8h_source.html">Skybox.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aea96e1be1451ae2dd433d1b1270bf4a2" id="r_aea96e1be1451ae2dd433d1b1270bf4a2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aea96e1be1451ae2dd433d1b1270bf4a2">Skybox</a> (std::vector&lt; std::string &gt; faces)</td></tr>
+<tr class="memdesc:aea96e1be1451ae2dd433d1b1270bf4a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a skybox from 6 texture file paths.  <br /></td></tr>
 <tr class="memitem:aced088463aafa7367558c50ec322c73e" id="r_aced088463aafa7367558c50ec322c73e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aced088463aafa7367558c50ec322c73e">DrawSkybox</a> (glm::mat4 viewMatrix, glm::mat4 projectionMatrix)</td></tr>
+<tr class="memdesc:aced088463aafa7367558c50ec322c73e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws the skybox using the given view and projection matrices.  <br /></td></tr>
 <tr class="memitem:a62ad4c6b4b1965a0a6d8536a50d4c090" id="r_a62ad4c6b4b1965a0a6d8536a50d4c090"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a62ad4c6b4b1965a0a6d8536a50d4c090">~Skybox</a> ()</td></tr>
+<tr class="memdesc:a62ad4c6b4b1965a0a6d8536a50d4c090"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor cleans up mesh, shader, and cube‑map texture.  <br /></td></tr>
 </table>
-<a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Renders a cube‑map skybox around the scene. </p>
+<p>Handles:</p><ul>
+<li>Loading 6 cube‑map textures</li>
+<li>Creating a cube mesh</li>
+<li>Rendering the skybox behind all geometry </li>
+</ul>
+</div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aea96e1be1451ae2dd433d1b1270bf4a2" name="aea96e1be1451ae2dd433d1b1270bf4a2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aea96e1be1451ae2dd433d1b1270bf4a2">&#9670;&#160;</a></span>Skybox()</h2>
 
@@ -115,6 +128,26 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Creates a skybox from 6 texture file paths. </p>
+<p>Creates a skybox from 6 texture faces.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">faces</td><td>Vector of 6 texture paths in cube‑map order.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Steps:</p><ul>
+<li>Loads skybox shader</li>
+<li>Loads 6 cube‑map textures</li>
+<li>Creates a cube mesh for rendering</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">faces</td><td>Vector of 6 file paths (order: +X, -X, +Y, -Y, +Z, -Z). </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -132,6 +165,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Destructor cleans up mesh, shader, and cube‑map texture. </p>
+<p>Destructor cleans up mesh, shader, and cube map texture. </p>
 
 </div>
 </div>
@@ -154,6 +190,17 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Draws the skybox using the given view and projection matrices. </p>
+<p>Renders the skybox behind all scene geometry.</p>
+<p>Removes translation from the view matrix so the skybox appears infinitely far.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">viewMatrix</td><td><a class="el" href="class_camera.html" title="Represents a 3D camera for use in OpenGL.">Camera</a> view matrix. </td></tr>
+    <tr><td class="paramname">projectionMatrix</td><td><a class="el" href="class_camera.html" title="Represents a 3D camera for use in OpenGL.">Camera</a> projection matrix. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

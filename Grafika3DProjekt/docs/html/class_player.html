@@ -159,7 +159,7 @@ Public Member Functions</h2></td></tr>
 <p>The <a class="el" href="class_player.html" title="Handles player movement, physics, interaction, inventory, and held items.">Player</a> class manages:</p><ul>
 <li>Physics and collision resolution</li>
 <li><a class="el" href="class_camera.html" title="Represents a 3D camera for use in OpenGL.">Camera</a> height and crouching</li>
-<li><a class="el" href="class_flashlight.html">Flashlight</a> state</li>
+<li><a class="el" href="class_flashlight.html" title="A spotlight-style light used as a player flashlight.">Flashlight</a> state</li>
 <li>Raycasting for interactable entities</li>
 <li><a class="el" href="class_inventory.html" title="Manages the player&#39;s inventory.">Inventory</a> and item pickup</li>
 <li>Held entity (e.g., weapon or item in hand) </li>
@@ -300,7 +300,7 @@ Public Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">rayOrigin</td><td>Starting point of the ray. </td></tr>
     <tr><td class="paramname">rayDirection</td><td>Normalized direction of the ray. </td></tr>
-    <tr><td class="paramname">entity</td><td><a class="el" href="class_entity.html">Entity</a> to test against. </td></tr>
+    <tr><td class="paramname">entity</td><td><a class="el" href="class_entity.html" title="Base class for all world objects in the game.">Entity</a> to test against. </td></tr>
     <tr><td class="paramname">outDistance</td><td>Output distance to intersection point. </td></tr>
   </table>
   </dd>
@@ -442,7 +442,7 @@ false Otherwise. </dd></dl>
 </div><div class="memdoc">
 
 <p>Gets the held entity (weapon/item). </p>
-<dl class="section return"><dt>Returns</dt><dd>Pointer to held <a class="el" href="class_entity.html">Entity</a>. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to held <a class="el" href="class_entity.html" title="Base class for all world objects in the game.">Entity</a>. </dd></dl>
 
 </div>
 </div>
@@ -652,14 +652,14 @@ false Otherwise. </dd></dl>
 <p>Picks up an interactable entity and adds it to the inventory.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">entity</td><td><a class="el" href="class_entity.html">Entity</a> to pick up.</td></tr>
+    <tr><td class="paramname">entity</td><td><a class="el" href="class_entity.html" title="Base class for all world objects in the game.">Entity</a> to pick up.</td></tr>
   </table>
   </dd>
 </dl>
 <p>Marks the entity for destruction after pickup.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">entity</td><td><a class="el" href="class_entity.html">Entity</a> to pick up. </td></tr>
+    <tr><td class="paramname">entity</td><td><a class="el" href="class_entity.html" title="Base class for all world objects in the game.">Entity</a> to pick up. </td></tr>
   </table>
   </dd>
 </dl>

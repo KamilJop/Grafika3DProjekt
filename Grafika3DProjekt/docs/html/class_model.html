@@ -92,18 +92,35 @@ $(function(){initNavTree('class_model.html','','class_model-members'); });
 </div><!--header-->
 <div class="contents">
 
+<p>Loads and renders 3D models using Assimp.  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_model_8h_source.html">Model.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ae3b375de5f6df4faf74a95d64748e048" id="r_ae3b375de5f6df4faf74a95d64748e048"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae3b375de5f6df4faf74a95d64748e048">Model</a> ()</td></tr>
+<tr class="memdesc:ae3b375de5f6df4faf74a95d64748e048"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an empty model.  <br /></td></tr>
 <tr class="memitem:ad6ebd2062a0b823db841a0b88baac4c0" id="r_ad6ebd2062a0b823db841a0b88baac4c0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad6ebd2062a0b823db841a0b88baac4c0">~Model</a> ()</td></tr>
+<tr class="memdesc:ad6ebd2062a0b823db841a0b88baac4c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor clears all meshes, textures, and materials.  <br /></td></tr>
 <tr class="memitem:a3035bb45f485ebbe67ede729e8945ea2" id="r_a3035bb45f485ebbe67ede729e8945ea2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3035bb45f485ebbe67ede729e8945ea2">LoadModel</a> (const std::string &amp;path)</td></tr>
+<tr class="memdesc:a3035bb45f485ebbe67ede729e8945ea2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a model from file using Assimp.  <br /></td></tr>
 <tr class="memitem:a402213a1d26c08fecf8c906aaedbb737" id="r_a402213a1d26c08fecf8c906aaedbb737"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a402213a1d26c08fecf8c906aaedbb737">RenderModel</a> (<a class="el" href="class_shader.html">Shader</a> *shader)</td></tr>
+<tr class="memdesc:a402213a1d26c08fecf8c906aaedbb737"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders all meshes with their textures and materials.  <br /></td></tr>
 <tr class="memitem:a202ef25daef2ee9825e91406fa597b0b" id="r_a202ef25daef2ee9825e91406fa597b0b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a202ef25daef2ee9825e91406fa597b0b">ClearModel</a> ()</td></tr>
+<tr class="memdesc:a202ef25daef2ee9825e91406fa597b0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees all loaded meshes, textures, and materials.  <br /></td></tr>
 <tr class="memitem:aaabfd74f960c51c8797ea34e62e60f22" id="r_aaabfd74f960c51c8797ea34e62e60f22"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_collision_box.html">CollisionBox</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaabfd74f960c51c8797ea34e62e60f22">GetCollisionBox</a> ()</td></tr>
+<tr class="memdesc:aaabfd74f960c51c8797ea34e62e60f22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the model's axis‑aligned bounding box.  <br /></td></tr>
 </table>
-<a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Loads and renders 3D models using Assimp. </p>
+<p>Handles:</p><ul>
+<li><a class="el" href="class_mesh.html" title="Represents a drawable mesh stored in GPU buffers.">Mesh</a> loading and creation</li>
+<li><a class="el" href="class_material.html" title="Stores specular properties used in lighting calculations.">Material</a> and texture loading (diffuse, normal, parallax)</li>
+<li>Collision box generation</li>
+<li>Rendering with associated materials </li>
+</ul>
+</div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ae3b375de5f6df4faf74a95d64748e048" name="ae3b375de5f6df4faf74a95d64748e048"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae3b375de5f6df4faf74a95d64748e048">&#9670;&#160;</a></span>Model()</h2>
 
@@ -118,6 +135,8 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Creates an empty model. </p>
 
 </div>
 </div>
@@ -136,6 +155,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Destructor clears all meshes, textures, and materials. </p>
+
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
@@ -153,6 +174,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Frees all loaded meshes, textures, and materials. </p>
+<p>Frees all meshes, textures, and materials. </p>
 
 </div>
 </div>
@@ -179,6 +203,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Returns the model's axis‑aligned bounding box. </p>
+
 </div>
 </div>
 <a id="a3035bb45f485ebbe67ede729e8945ea2" name="a3035bb45f485ebbe67ede729e8945ea2"></a>
@@ -196,6 +222,27 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Loads a model from file using Assimp. </p>
+<p>Loads a 3D model from file using Assimp.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">path</td><td>Path to the model file.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Steps:</p><ul>
+<li>Import scene</li>
+<li>Recursively load all meshes</li>
+<li>Load materials and textures</li>
+<li>Compute collision bounding box</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">path</td><td>File path to the model. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a402213a1d26c08fecf8c906aaedbb737" name="a402213a1d26c08fecf8c906aaedbb737"></a>
@@ -212,6 +259,15 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Renders all meshes with their textures and materials. </p>
+<p>Renders all meshes with their associated textures and materials.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">shader</td><td><a class="el" href="class_shader.html" title="Handles loading, compiling, linking, and using GLSL shader programs.">Shader</a> used for rendering. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

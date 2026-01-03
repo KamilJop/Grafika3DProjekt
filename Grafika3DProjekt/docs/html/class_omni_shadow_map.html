@@ -92,6 +92,9 @@ $(function(){initNavTree('class_omni_shadow_map.html','','class_omni_shadow_map-
 </div><!--header-->
 <div class="contents">
 
+<p>Cube‑map shadow map used for point lights.  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_omni_shadow_map_8h_source.html">OmniShadowMap.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for OmniShadowMap:</div>
@@ -99,32 +102,48 @@ Inheritance diagram for OmniShadowMap:</div>
  <div class="center">
   <img src="class_omni_shadow_map.png" usemap="#OmniShadowMap_map" alt=""/>
   <map id="OmniShadowMap_map" name="OmniShadowMap_map">
-<area href="class_shadow_map.html" alt="ShadowMap" shape="rect" coords="0,0,111,24"/>
+<area href="class_shadow_map.html" title="Base class for shadow map framebuffers." alt="ShadowMap" shape="rect" coords="0,0,111,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a546a081c019229fec62b38f165b2f995" id="r_a546a081c019229fec62b38f165b2f995"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a546a081c019229fec62b38f165b2f995">OmniShadowMap</a> ()</td></tr>
+<tr class="memdesc:a546a081c019229fec62b38f165b2f995"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an empty omni-directional shadow map.  <br /></td></tr>
 <tr class="memitem:ab5227c9c15b94a7b6abd652573876ed3" id="r_ab5227c9c15b94a7b6abd652573876ed3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab5227c9c15b94a7b6abd652573876ed3">~OmniShadowMap</a> ()</td></tr>
+<tr class="memdesc:ab5227c9c15b94a7b6abd652573876ed3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <br /></td></tr>
 <tr class="memitem:ab9b998050e839a22f0a187fe522fe72f" id="r_ab9b998050e839a22f0a187fe522fe72f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab9b998050e839a22f0a187fe522fe72f">Init</a> (GLuint width, GLuint height)</td></tr>
+<tr class="memdesc:ab9b998050e839a22f0a187fe522fe72f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the cube-map shadow framebuffer and textures.  <br /></td></tr>
 <tr class="memitem:a96c89659b7ff92fcd376fbbd22e52be1" id="r_a96c89659b7ff92fcd376fbbd22e52be1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a96c89659b7ff92fcd376fbbd22e52be1">Read</a> (GLenum textureUnit)</td></tr>
+<tr class="memdesc:a96c89659b7ff92fcd376fbbd22e52be1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binds the cube-map texture for reading in shaders.  <br /></td></tr>
 <tr class="memitem:aafd4e0d6b4cf265b59c67585c35622de" id="r_aafd4e0d6b4cf265b59c67585c35622de"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aafd4e0d6b4cf265b59c67585c35622de">Write</a> ()</td></tr>
+<tr class="memdesc:aafd4e0d6b4cf265b59c67585c35622de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binds the framebuffer for writing depth values.  <br /></td></tr>
 <tr class="inherit_header pub_methods_class_shadow_map"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_class_shadow_map')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Member Functions inherited from <a class="el" href="class_shadow_map.html">ShadowMap</a></td></tr>
 <tr class="memitem:ab6fd44eb98770e85a2fafc27437169b1 inherit pub_methods_class_shadow_map" id="r_ab6fd44eb98770e85a2fafc27437169b1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shadow_map.html#ab6fd44eb98770e85a2fafc27437169b1">ShadowMap</a> ()</td></tr>
+<tr class="memdesc:ab6fd44eb98770e85a2fafc27437169b1 inherit pub_methods_class_shadow_map"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an empty shadow map object.  <br /></td></tr>
 <tr class="memitem:aade01d2dc3620a7015016ecd3aa3cab3 inherit pub_methods_class_shadow_map" id="r_aade01d2dc3620a7015016ecd3aa3cab3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shadow_map.html#aade01d2dc3620a7015016ecd3aa3cab3">~ShadowMap</a> ()</td></tr>
+<tr class="memdesc:aade01d2dc3620a7015016ecd3aa3cab3 inherit pub_methods_class_shadow_map"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor cleans up OpenGL resources.  <br /></td></tr>
 <tr class="memitem:abe0c68cdf948e600b18abe6e0e334148 inherit pub_methods_class_shadow_map" id="r_abe0c68cdf948e600b18abe6e0e334148"><td class="memItemLeft" align="right" valign="top">GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shadow_map.html#abe0c68cdf948e600b18abe6e0e334148">getShadowWidth</a> ()</td></tr>
+<tr class="memdesc:abe0c68cdf948e600b18abe6e0e334148 inherit pub_methods_class_shadow_map"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the shadow map width.  <br /></td></tr>
 <tr class="memitem:aaf2cbce7a3721a6087921d0a1167708d inherit pub_methods_class_shadow_map" id="r_aaf2cbce7a3721a6087921d0a1167708d"><td class="memItemLeft" align="right" valign="top">GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shadow_map.html#aaf2cbce7a3721a6087921d0a1167708d">getShadowHeight</a> ()</td></tr>
+<tr class="memdesc:aaf2cbce7a3721a6087921d0a1167708d inherit pub_methods_class_shadow_map"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the shadow map height.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-inherited" class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_attribs_class_shadow_map"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_class_shadow_map')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Protected Attributes inherited from <a class="el" href="class_shadow_map.html">ShadowMap</a></td></tr>
 <tr class="memitem:a476d2286842a8e95e6e8304fad82d8c4 inherit pro_attribs_class_shadow_map" id="r_a476d2286842a8e95e6e8304fad82d8c4"><td class="memItemLeft" align="right" valign="top">GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shadow_map.html#a476d2286842a8e95e6e8304fad82d8c4">FBO</a></td></tr>
+<tr class="memdesc:a476d2286842a8e95e6e8304fad82d8c4 inherit pro_attribs_class_shadow_map"><td class="mdescLeft">&#160;</td><td class="mdescRight">Framebuffer object.  <br /></td></tr>
 <tr class="memitem:a098239dca2ba2ef9f89b87ba05fab1b1 inherit pro_attribs_class_shadow_map" id="r_a098239dca2ba2ef9f89b87ba05fab1b1"><td class="memItemLeft" align="right" valign="top">GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shadow_map.html#a098239dca2ba2ef9f89b87ba05fab1b1">shadowMap</a></td></tr>
+<tr class="memdesc:a098239dca2ba2ef9f89b87ba05fab1b1 inherit pro_attribs_class_shadow_map"><td class="mdescLeft">&#160;</td><td class="mdescRight">Depth texture.  <br /></td></tr>
 <tr class="memitem:a1284fcf99c4df3faef45bdb3837b72e1 inherit pro_attribs_class_shadow_map" id="r_a1284fcf99c4df3faef45bdb3837b72e1"><td class="memItemLeft" align="right" valign="top">GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shadow_map.html#a1284fcf99c4df3faef45bdb3837b72e1">shadowWidth</a></td></tr>
+<tr class="memdesc:a1284fcf99c4df3faef45bdb3837b72e1 inherit pro_attribs_class_shadow_map"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shadow map width.  <br /></td></tr>
 <tr class="memitem:a99f570530e3894158c03df4b347c7695 inherit pro_attribs_class_shadow_map" id="r_a99f570530e3894158c03df4b347c7695"><td class="memItemLeft" align="right" valign="top">GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shadow_map.html#a99f570530e3894158c03df4b347c7695">shadowHeight</a></td></tr>
+<tr class="memdesc:a99f570530e3894158c03df4b347c7695 inherit pro_attribs_class_shadow_map"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shadow map height.  <br /></td></tr>
 </table>
-<a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Cube‑map shadow map used for point lights. </p>
+<p>Extends <a class="el" href="class_shadow_map.html" title="Base class for shadow map framebuffers.">ShadowMap</a> to create a depth-only cube map that captures shadows in all directions. </p>
+</div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a546a081c019229fec62b38f165b2f995" name="a546a081c019229fec62b38f165b2f995"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a546a081c019229fec62b38f165b2f995">&#9670;&#160;</a></span>OmniShadowMap()</h2>
 
@@ -139,6 +158,10 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Creates an empty omni-directional shadow map. </p>
+<p>Creates an omni-directional shadow map (cube map).</p>
+<p>Inherits from <a class="el" href="class_shadow_map.html" title="Base class for shadow map framebuffers.">ShadowMap</a> and prepares a cube-map depth texture used for point light shadows. </p>
 
 </div>
 </div>
@@ -156,6 +179,9 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Destructor. </p>
+<p>Calls base <a class="el" href="class_shadow_map.html" title="Base class for shadow map framebuffers.">ShadowMap</a> destructor. </p>
 
 </div>
 </div>
@@ -187,6 +213,28 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Initializes the cube-map shadow framebuffer and textures. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">width</td><td>Shadow map width. </td></tr>
+    <tr><td class="paramname">height</td><td>Shadow map height. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if initialization succeeded.</dd></dl>
+<p>Creates:</p><ul>
+<li>A framebuffer object</li>
+<li>A depth-only cube map (6 faces)</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">width</td><td>Shadow map width. </td></tr>
+    <tr><td class="paramname">height</td><td>Shadow map height. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if initialization succeeded. </dd></dl>
+
 <p>Reimplemented from <a class="el" href="class_shadow_map.html#ae84c0e38f609044982514d2e1d7c395a">ShadowMap</a>.</p>
 
 </div>
@@ -214,6 +262,14 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Binds the cube-map texture for reading in shaders. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">textureUnit</td><td><a class="el" href="class_texture.html" title="Loads and manages 2D textures, normal maps, and height maps.">Texture</a> unit to bind to. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 <p>Reimplemented from <a class="el" href="class_shadow_map.html#afd0651baf39fd92750216e12d87aab70">ShadowMap</a>.</p>
 
 </div>
@@ -240,6 +296,8 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Binds the framebuffer for writing depth values. </p>
 
 <p>Reimplemented from <a class="el" href="class_shadow_map.html#abfaac01d19680e016042dacee5a5910e">ShadowMap</a>.</p>
 

@@ -35,7 +35,7 @@ var dir_093f3b7f7c7a61ef21fffb3d339f67e1 =
     [ "Pickable.cpp", "_pickable_8cpp.html", null ],
     [ "Pickable.h", "_pickable_8h.html", "_pickable_8h" ],
     [ "Radio.cpp", "_radio_8cpp.html", null ],
-    [ "Radio.h", "_radio_8h.html", null ],
+    [ "Radio.h", "_radio_8h.html", "_radio_8h" ],
     [ "Readable.cpp", "_readable_8cpp.html", null ],
     [ "Readable.h", "_readable_8h.html", "_readable_8h" ]
 ];

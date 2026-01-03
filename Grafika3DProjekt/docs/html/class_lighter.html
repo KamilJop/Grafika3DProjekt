@@ -92,6 +92,9 @@ $(function(){initNavTree('class_lighter.html','','class_lighter-members'); });
 </div><!--header-->
 <div class="contents">
 
+<p>Represents a simple pickable lighter item.  
+ <a href="#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_lighter_8h_source.html">Lighter.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for Lighter:</div>
@@ -99,81 +102,150 @@ Inheritance diagram for Lighter:</div>
  <div class="center">
   <img src="class_lighter.png" usemap="#Lighter_map" alt=""/>
   <map id="Lighter_map" name="Lighter_map">
-<area href="class_entity.html" alt="Entity" shape="rect" coords="0,0,51,24"/>
+<area href="class_entity.html" title="Base class for all world objects in the game." alt="Entity" shape="rect" coords="0,0,51,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:abee18e7652f1258fde41d1f4be935b23" id="r_abee18e7652f1258fde41d1f4be935b23"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abee18e7652f1258fde41d1f4be935b23">Lighter</a> (<a class="el" href="class_model.html">Model</a> *model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, <a class="el" href="class_texture.html">Texture</a> *tex, bool interaction=true)</td></tr>
+<tr class="memdesc:abee18e7652f1258fde41d1f4be935b23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a new <a class="el" href="class_lighter.html" title="Represents a simple pickable lighter item.">Lighter</a> entity.  <br /></td></tr>
 <tr class="memitem:a9412ec67c3ea58fded4ddd864b9e0573" id="r_a9412ec67c3ea58fded4ddd864b9e0573"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9412ec67c3ea58fded4ddd864b9e0573">Interact</a> (<a class="el" href="class_inventory.html">Inventory</a> *playerInventory) override</td></tr>
+<tr class="memdesc:a9412ec67c3ea58fded4ddd864b9e0573"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handles interaction with the lighter.  <br /></td></tr>
 <tr class="memitem:a6ef8360ee9cd2a85b578dae73ceb2ae3" id="r_a6ef8360ee9cd2a85b578dae73ceb2ae3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6ef8360ee9cd2a85b578dae73ceb2ae3">Update</a> (float <a class="el" href="main_8cpp.html#a1a61318ed6aa02b4ff346e7eb8f68891">deltaTime</a>) override</td></tr>
+<tr class="memdesc:a6ef8360ee9cd2a85b578dae73ceb2ae3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the lighter each frame.  <br /></td></tr>
 <tr class="memitem:a678909eda49ccbae997fd0efae95277f" id="r_a678909eda49ccbae997fd0efae95277f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_texture.html">Texture</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a678909eda49ccbae997fd0efae95277f">getTexture</a> () override</td></tr>
+<tr class="memdesc:a678909eda49ccbae997fd0efae95277f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the texture used for inventory display.  <br /></td></tr>
 <tr class="memitem:a23a11a918f499d9606c9f761ba4e836b" id="r_a23a11a918f499d9606c9f761ba4e836b"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a23a11a918f499d9606c9f761ba4e836b">GetActionText</a> () override</td></tr>
+<tr class="memdesc:a23a11a918f499d9606c9f761ba4e836b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the action text displayed when targeting the lighter.  <br /></td></tr>
 <tr class="memitem:a12a4375fc2142b78b048ce186d141aad" id="r_a12a4375fc2142b78b048ce186d141aad"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a12a4375fc2142b78b048ce186d141aad">~Lighter</a> ()</td></tr>
+<tr class="memdesc:a12a4375fc2142b78b048ce186d141aad"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_lighter.html" title="Represents a simple pickable lighter item.">Lighter</a> destructor.  <br /></td></tr>
 <tr class="inherit_header pub_methods_class_entity"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_class_entity')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Member Functions inherited from <a class="el" href="class_entity.html">Entity</a></td></tr>
 <tr class="memitem:a5ba784c86bfeb152d3013be78c29db39 inherit pub_methods_class_entity" id="r_a5ba784c86bfeb152d3013be78c29db39"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a5ba784c86bfeb152d3013be78c29db39">Entity</a> (<a class="el" href="class_model.html">Model</a> *model, glm::vec3 pos, glm::vec3 rot, glm::vec3 scal, bool interaction=false)</td></tr>
+<tr class="memdesc:a5ba784c86bfeb152d3013be78c29db39 inherit pub_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a new <a class="el" href="class_entity.html" title="Base class for all world objects in the game.">Entity</a>.  <br /></td></tr>
 <tr class="memitem:adf6d3f7cb1b2ba029b6b048a395cc8ae inherit pub_methods_class_entity" id="r_adf6d3f7cb1b2ba029b6b048a395cc8ae"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#adf6d3f7cb1b2ba029b6b048a395cc8ae">~Entity</a> ()</td></tr>
+<tr class="memdesc:adf6d3f7cb1b2ba029b6b048a395cc8ae inherit pub_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_entity.html" title="Base class for all world objects in the game.">Entity</a> destructor.  <br /></td></tr>
 <tr class="memitem:a8169fa27992633427c35e2163cd97392 inherit pub_methods_class_entity" id="r_a8169fa27992633427c35e2163cd97392"><td class="memItemLeft" align="right" valign="top">glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a8169fa27992633427c35e2163cd97392">GetModelMatrix</a> ()</td></tr>
+<tr class="memdesc:a8169fa27992633427c35e2163cd97392 inherit pub_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the current model matrix.  <br /></td></tr>
 <tr class="memitem:a6420593817096532a1e770b243864706 inherit pub_methods_class_entity" id="r_a6420593817096532a1e770b243864706"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a6420593817096532a1e770b243864706">setPosition</a> (glm::vec3 newPosition)</td></tr>
+<tr class="memdesc:a6420593817096532a1e770b243864706 inherit pub_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the entity's world position.  <br /></td></tr>
 <tr class="memitem:a8901d790d3278f02864fed5ce3ae1c8a inherit pub_methods_class_entity" id="r_a8901d790d3278f02864fed5ce3ae1c8a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a8901d790d3278f02864fed5ce3ae1c8a">setRotation</a> (glm::vec3 newRotation)</td></tr>
+<tr class="memdesc:a8901d790d3278f02864fed5ce3ae1c8a inherit pub_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the entity's rotation.  <br /></td></tr>
 <tr class="memitem:ad4eec4d4acfc9369511d2eed577613c8 inherit pub_methods_class_entity" id="r_ad4eec4d4acfc9369511d2eed577613c8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#ad4eec4d4acfc9369511d2eed577613c8">setScale</a> (glm::vec3 newScale)</td></tr>
+<tr class="memdesc:ad4eec4d4acfc9369511d2eed577613c8 inherit pub_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the entity's scale.  <br /></td></tr>
 <tr class="memitem:af6a863b5b44f3cb9af72070396f389df inherit pub_methods_class_entity" id="r_af6a863b5b44f3cb9af72070396f389df"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#af6a863b5b44f3cb9af72070396f389df">setCastsShadow</a> (bool state)</td></tr>
+<tr class="memdesc:af6a863b5b44f3cb9af72070396f389df inherit pub_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables or disables shadow casting.  <br /></td></tr>
 <tr class="memitem:a622bd2c98a4fd18aff2afe308c19d81e inherit pub_methods_class_entity" id="r_a622bd2c98a4fd18aff2afe308c19d81e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a622bd2c98a4fd18aff2afe308c19d81e">setTitle</a> (std::string newTitle)</td></tr>
+<tr class="memdesc:a622bd2c98a4fd18aff2afe308c19d81e inherit pub_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the display title of the entity.  <br /></td></tr>
 <tr class="memitem:a957cf2b20f018a16015847eb56ea539a inherit pub_methods_class_entity" id="r_a957cf2b20f018a16015847eb56ea539a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a957cf2b20f018a16015847eb56ea539a">setColissions</a> (bool state)</td></tr>
+<tr class="memdesc:a957cf2b20f018a16015847eb56ea539a inherit pub_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables or disables collision detection.  <br /></td></tr>
 <tr class="memitem:afe9d5bb72e6044d926674ae609245cde inherit pub_methods_class_entity" id="r_afe9d5bb72e6044d926674ae609245cde"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#afe9d5bb72e6044d926674ae609245cde">setModel</a> (<a class="el" href="class_model.html">Model</a> *model)</td></tr>
+<tr class="memdesc:afe9d5bb72e6044d926674ae609245cde inherit pub_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a new model and updates collision box.  <br /></td></tr>
 <tr class="memitem:a6e28718d4362330f3670adafaaa5c452 inherit pub_methods_class_entity" id="r_a6e28718d4362330f3670adafaaa5c452"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a6e28718d4362330f3670adafaaa5c452">setShouldGetDestroyed</a> (bool state)</td></tr>
+<tr class="memdesc:a6e28718d4362330f3670adafaaa5c452 inherit pub_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Marks the entity for destruction.  <br /></td></tr>
 <tr class="memitem:a51c96e9e1cdcad8e2ae93734e66d1e41 inherit pub_methods_class_entity" id="r_a51c96e9e1cdcad8e2ae93734e66d1e41"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a51c96e9e1cdcad8e2ae93734e66d1e41">setInteractable</a> (bool state)</td></tr>
+<tr class="memdesc:a51c96e9e1cdcad8e2ae93734e66d1e41 inherit pub_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables or disables interaction.  <br /></td></tr>
 <tr class="memitem:a49b7dfb51189e75ab186512e7c187dbe inherit pub_methods_class_entity" id="r_a49b7dfb51189e75ab186512e7c187dbe"><td class="memItemLeft" align="right" valign="top">glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a49b7dfb51189e75ab186512e7c187dbe">getPosition</a> ()</td></tr>
+<tr class="memdesc:a49b7dfb51189e75ab186512e7c187dbe inherit pub_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the entity's world position.  <br /></td></tr>
 <tr class="memitem:a4bcff3e0fd008df9cdebbffd92a47b51 inherit pub_methods_class_entity" id="r_a4bcff3e0fd008df9cdebbffd92a47b51"><td class="memItemLeft" align="right" valign="top">glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a4bcff3e0fd008df9cdebbffd92a47b51">getRotation</a> ()</td></tr>
+<tr class="memdesc:a4bcff3e0fd008df9cdebbffd92a47b51 inherit pub_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the entity's rotation.  <br /></td></tr>
 <tr class="memitem:aff5db7c94e327f161c264c096bc6c5ca inherit pub_methods_class_entity" id="r_aff5db7c94e327f161c264c096bc6c5ca"><td class="memItemLeft" align="right" valign="top">glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#aff5db7c94e327f161c264c096bc6c5ca">getScale</a> ()</td></tr>
+<tr class="memdesc:aff5db7c94e327f161c264c096bc6c5ca inherit pub_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the entity's scale.  <br /></td></tr>
 <tr class="memitem:a47486148f8dd8938e8d04bd828dbb8af inherit pub_methods_class_entity" id="r_a47486148f8dd8938e8d04bd828dbb8af"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a47486148f8dd8938e8d04bd828dbb8af">getInteractable</a> ()</td></tr>
+<tr class="memdesc:a47486148f8dd8938e8d04bd828dbb8af inherit pub_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether the entity is interactable.  <br /></td></tr>
 <tr class="memitem:a486a12fcf64aaf72d722ba7674eaba00 inherit pub_methods_class_entity" id="r_a486a12fcf64aaf72d722ba7674eaba00"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a486a12fcf64aaf72d722ba7674eaba00">getCastsShadow</a> ()</td></tr>
+<tr class="memdesc:a486a12fcf64aaf72d722ba7674eaba00 inherit pub_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether the entity casts shadows.  <br /></td></tr>
 <tr class="memitem:a021c9bc90e78466164735c481bcec3ea inherit pub_methods_class_entity" id="r_a021c9bc90e78466164735c481bcec3ea"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a021c9bc90e78466164735c481bcec3ea">getColissions</a> ()</td></tr>
+<tr class="memdesc:a021c9bc90e78466164735c481bcec3ea inherit pub_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether the entity has collisions enabled.  <br /></td></tr>
 <tr class="memitem:a666b052da885c7c9ff7dc7e3095e7714 inherit pub_methods_class_entity" id="r_a666b052da885c7c9ff7dc7e3095e7714"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a666b052da885c7c9ff7dc7e3095e7714">getPickable</a> ()</td></tr>
+<tr class="memdesc:a666b052da885c7c9ff7dc7e3095e7714 inherit pub_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether the entity can be picked up.  <br /></td></tr>
 <tr class="memitem:a4cce4ec6d51d112b7aff79379fc2010f inherit pub_methods_class_entity" id="r_a4cce4ec6d51d112b7aff79379fc2010f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a4cce4ec6d51d112b7aff79379fc2010f">getShouldGetDestroyed</a> ()</td></tr>
+<tr class="memdesc:a4cce4ec6d51d112b7aff79379fc2010f inherit pub_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether the entity should be destroyed.  <br /></td></tr>
 <tr class="memitem:a8dba2f5c5964cf267774eec7b5d4b31f inherit pub_methods_class_entity" id="r_a8dba2f5c5964cf267774eec7b5d4b31f"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a8dba2f5c5964cf267774eec7b5d4b31f">getTag</a> ()</td></tr>
+<tr class="memdesc:a8dba2f5c5964cf267774eec7b5d4b31f inherit pub_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the entity's tag (used for keys, items, etc.).  <br /></td></tr>
 <tr class="memitem:a019476e8c6859debd5503f592f24afd8 inherit pub_methods_class_entity" id="r_a019476e8c6859debd5503f592f24afd8"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a019476e8c6859debd5503f592f24afd8">getTitle</a> ()</td></tr>
+<tr class="memdesc:a019476e8c6859debd5503f592f24afd8 inherit pub_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the display title of the entity.  <br /></td></tr>
 <tr class="memitem:a4859244a84535cf7f9811471e2e6592f inherit pub_methods_class_entity" id="r_a4859244a84535cf7f9811471e2e6592f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_model.html">Model</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a4859244a84535cf7f9811471e2e6592f">getModel</a> ()</td></tr>
+<tr class="memdesc:a4859244a84535cf7f9811471e2e6592f inherit pub_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the model used by this entity.  <br /></td></tr>
 <tr class="memitem:a1dfec0c4628b93822b427bc5ceffc576 inherit pub_methods_class_entity" id="r_a1dfec0c4628b93822b427bc5ceffc576"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a1dfec0c4628b93822b427bc5ceffc576">isOutlined</a> ()</td></tr>
+<tr class="memdesc:a1dfec0c4628b93822b427bc5ceffc576 inherit pub_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether the entity is outlined.  <br /></td></tr>
 <tr class="memitem:a11d2db28d922bc2fa48131a523406c43 inherit pub_methods_class_entity" id="r_a11d2db28d922bc2fa48131a523406c43"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a11d2db28d922bc2fa48131a523406c43">setSelected</a> (bool state)</td></tr>
+<tr class="memdesc:a11d2db28d922bc2fa48131a523406c43 inherit pub_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets whether the entity is selected.  <br /></td></tr>
 <tr class="memitem:a13495d5f2e9a24fc66a86eeb586110c7 inherit pub_methods_class_entity" id="r_a13495d5f2e9a24fc66a86eeb586110c7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a13495d5f2e9a24fc66a86eeb586110c7">isSelected</a> ()</td></tr>
+<tr class="memdesc:a13495d5f2e9a24fc66a86eeb586110c7 inherit pub_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether the entity is selected.  <br /></td></tr>
 <tr class="memitem:a223a40b27e9b3416db30a16a494c73f3 inherit pub_methods_class_entity" id="r_a223a40b27e9b3416db30a16a494c73f3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a223a40b27e9b3416db30a16a494c73f3">setOutlined</a> (bool state)</td></tr>
+<tr class="memdesc:a223a40b27e9b3416db30a16a494c73f3 inherit pub_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets whether the entity is outlined.  <br /></td></tr>
 <tr class="memitem:acf027f1488065ba69150d0a64101f7ae inherit pub_methods_class_entity" id="r_acf027f1488065ba69150d0a64101f7ae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#acf027f1488065ba69150d0a64101f7ae">setVisibility</a> (bool state)</td></tr>
+<tr class="memdesc:acf027f1488065ba69150d0a64101f7ae inherit pub_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets whether the entity is visible.  <br /></td></tr>
 <tr class="memitem:af4fda49a7bc97e557aabe73db6c33024 inherit pub_methods_class_entity" id="r_af4fda49a7bc97e557aabe73db6c33024"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#af4fda49a7bc97e557aabe73db6c33024">getVisible</a> ()</td></tr>
+<tr class="memdesc:af4fda49a7bc97e557aabe73db6c33024 inherit pub_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether the entity is visible.  <br /></td></tr>
 <tr class="memitem:a4c8403882893d8d24e7e160a1187a632 inherit pub_methods_class_entity" id="r_a4c8403882893d8d24e7e160a1187a632"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_collision_box.html">CollisionBox</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a4c8403882893d8d24e7e160a1187a632">GetCollisions</a> ()</td></tr>
+<tr class="memdesc:a4c8403882893d8d24e7e160a1187a632 inherit pub_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the world‑space collision box.  <br /></td></tr>
 <tr class="memitem:aa022da0af64ff840484ea2cccbca1edb inherit pub_methods_class_entity" id="r_aa022da0af64ff840484ea2cccbca1edb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#aa022da0af64ff840484ea2cccbca1edb">DrawEntity</a> (<a class="el" href="class_shader.html">Shader</a> *shader)</td></tr>
+<tr class="memdesc:aa022da0af64ff840484ea2cccbca1edb inherit pub_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws the entity using the provided shader.  <br /></td></tr>
 <tr class="memitem:a306157156671d0b8b9ddd247e2ea987c inherit pub_methods_class_entity" id="r_a306157156671d0b8b9ddd247e2ea987c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a306157156671d0b8b9ddd247e2ea987c">UpdateCollisionBox</a> ()</td></tr>
+<tr class="memdesc:a306157156671d0b8b9ddd247e2ea987c inherit pub_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the world‑space collision box.  <br /></td></tr>
 <tr class="memitem:add25e97612f1c4fb12aeddc5d6ccd304 inherit pub_methods_class_entity" id="r_add25e97612f1c4fb12aeddc5d6ccd304"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#add25e97612f1c4fb12aeddc5d6ccd304">setActionText</a> (std::string text)</td></tr>
+<tr class="memdesc:add25e97612f1c4fb12aeddc5d6ccd304 inherit pub_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the action text displayed when interacting.  <br /></td></tr>
 <tr class="memitem:a55b46ac00b64aa53cf2ef799b09e7324 inherit pub_methods_class_entity" id="r_a55b46ac00b64aa53cf2ef799b09e7324"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a55b46ac00b64aa53cf2ef799b09e7324">setExamineText</a> (std::string text)</td></tr>
+<tr class="memdesc:a55b46ac00b64aa53cf2ef799b09e7324 inherit pub_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the examine text displayed when inspecting the entity.  <br /></td></tr>
 <tr class="memitem:aa9a3d72930fecee72ce6bf7d0cf310fa inherit pub_methods_class_entity" id="r_aa9a3d72930fecee72ce6bf7d0cf310fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#aa9a3d72930fecee72ce6bf7d0cf310fa">setTag</a> (std::string tag)</td></tr>
+<tr class="memdesc:aa9a3d72930fecee72ce6bf7d0cf310fa inherit pub_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the entity's tag.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-inherited" class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_methods_class_entity"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_methods_class_entity')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Protected Member Functions inherited from <a class="el" href="class_entity.html">Entity</a></td></tr>
 <tr class="memitem:af3b503ba910b549b2dae7c4713301846 inherit pro_methods_class_entity" id="r_af3b503ba910b549b2dae7c4713301846"><td class="memItemLeft" align="right" valign="top">glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#af3b503ba910b549b2dae7c4713301846">CalculateModelMatrix</a> ()</td></tr>
+<tr class="memdesc:af3b503ba910b549b2dae7c4713301846 inherit pro_methods_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the model matrix from position, rotation, and scale.  <br /></td></tr>
 <tr class="inherit_header pro_attribs_class_entity"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_class_entity')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Protected Attributes inherited from <a class="el" href="class_entity.html">Entity</a></td></tr>
 <tr class="memitem:a22d9f2a6379f0c6c871a874f984a7d69 inherit pro_attribs_class_entity" id="r_a22d9f2a6379f0c6c871a874f984a7d69"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_model.html">Model</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a22d9f2a6379f0c6c871a874f984a7d69">entityModel</a></td></tr>
+<tr class="memdesc:a22d9f2a6379f0c6c871a874f984a7d69 inherit pro_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the entity's 3D model.  <br /></td></tr>
 <tr class="memitem:ad58d6e0405061032658b801bf549ea66 inherit pro_attribs_class_entity" id="r_ad58d6e0405061032658b801bf549ea66"><td class="memItemLeft" align="right" valign="top">glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#ad58d6e0405061032658b801bf549ea66">position</a></td></tr>
+<tr class="memdesc:ad58d6e0405061032658b801bf549ea66 inherit pro_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">World position of the entity.  <br /></td></tr>
 <tr class="memitem:a7bdfc788425e043ab24f82498d184cda inherit pro_attribs_class_entity" id="r_a7bdfc788425e043ab24f82498d184cda"><td class="memItemLeft" align="right" valign="top">glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a7bdfc788425e043ab24f82498d184cda">rotation</a></td></tr>
+<tr class="memdesc:a7bdfc788425e043ab24f82498d184cda inherit pro_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rotation vector (degrees).  <br /></td></tr>
 <tr class="memitem:a92e7b4f35bbcf68e3ce8db3c0335c059 inherit pro_attribs_class_entity" id="r_a92e7b4f35bbcf68e3ce8db3c0335c059"><td class="memItemLeft" align="right" valign="top">glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a92e7b4f35bbcf68e3ce8db3c0335c059">scale</a></td></tr>
+<tr class="memdesc:a92e7b4f35bbcf68e3ce8db3c0335c059 inherit pro_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scale vector.  <br /></td></tr>
 <tr class="memitem:a8d650038e4e84e4e82e50419a56ddf09 inherit pro_attribs_class_entity" id="r_a8d650038e4e84e4e82e50419a56ddf09"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a8d650038e4e84e4e82e50419a56ddf09">hasExamined</a> = false</td></tr>
+<tr class="memdesc:a8d650038e4e84e4e82e50419a56ddf09 inherit pro_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the entity has been examined before.  <br /></td></tr>
 <tr class="memitem:a44fe3ce2af1fb8cad733df137df15b7b inherit pro_attribs_class_entity" id="r_a44fe3ce2af1fb8cad733df137df15b7b"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a44fe3ce2af1fb8cad733df137df15b7b">examineText</a> = &quot;You see nothing special.&quot;</td></tr>
+<tr class="memdesc:a44fe3ce2af1fb8cad733df137df15b7b inherit pro_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Text shown when examining the entity.  <br /></td></tr>
 <tr class="memitem:a223c5f5c9fafa7ea9a3e88ae64a9569b inherit pro_attribs_class_entity" id="r_a223c5f5c9fafa7ea9a3e88ae64a9569b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a223c5f5c9fafa7ea9a3e88ae64a9569b">castsShadow</a> = true</td></tr>
+<tr class="memdesc:a223c5f5c9fafa7ea9a3e88ae64a9569b inherit pro_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the entity casts shadows.  <br /></td></tr>
 <tr class="memitem:a2ff823982d0a8b315d43a4c2d8e64e86 inherit pro_attribs_class_entity" id="r_a2ff823982d0a8b315d43a4c2d8e64e86"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a2ff823982d0a8b315d43a4c2d8e64e86">outlined</a> = false</td></tr>
+<tr class="memdesc:a2ff823982d0a8b315d43a4c2d8e64e86 inherit pro_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the entity is outlined (highlighted).  <br /></td></tr>
 <tr class="memitem:ac634d30b78264977849965b02878ccea inherit pro_attribs_class_entity" id="r_ac634d30b78264977849965b02878ccea"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#ac634d30b78264977849965b02878ccea">hasCollisions</a> = true</td></tr>
+<tr class="memdesc:ac634d30b78264977849965b02878ccea inherit pro_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the entity has collision detection enabled.  <br /></td></tr>
 <tr class="memitem:a81054e474b49795dfc4d71b34c76f544 inherit pro_attribs_class_entity" id="r_a81054e474b49795dfc4d71b34c76f544"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a81054e474b49795dfc4d71b34c76f544">interactable</a></td></tr>
+<tr class="memdesc:a81054e474b49795dfc4d71b34c76f544 inherit pro_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the entity can be interacted with.  <br /></td></tr>
 <tr class="memitem:ad5689793f9f06049af72ed9221696dc0 inherit pro_attribs_class_entity" id="r_ad5689793f9f06049af72ed9221696dc0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#ad5689793f9f06049af72ed9221696dc0">shouldGetDestroyed</a> = false</td></tr>
+<tr class="memdesc:ad5689793f9f06049af72ed9221696dc0 inherit pro_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the entity should be destroyed.  <br /></td></tr>
 <tr class="memitem:a80ed75b2bfb9d7349c1b3ba4ca285954 inherit pro_attribs_class_entity" id="r_a80ed75b2bfb9d7349c1b3ba4ca285954"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a80ed75b2bfb9d7349c1b3ba4ca285954">pickable</a> = false</td></tr>
+<tr class="memdesc:a80ed75b2bfb9d7349c1b3ba4ca285954 inherit pro_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the entity can be picked up.  <br /></td></tr>
 <tr class="memitem:a8af20e61f5de761c97e7f596525ecb1b inherit pro_attribs_class_entity" id="r_a8af20e61f5de761c97e7f596525ecb1b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a8af20e61f5de761c97e7f596525ecb1b">isVisible</a> = true</td></tr>
+<tr class="memdesc:a8af20e61f5de761c97e7f596525ecb1b inherit pro_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the entity is visible.  <br /></td></tr>
 <tr class="memitem:a29dba36840a28495e5eed5bc4c76b9a9 inherit pro_attribs_class_entity" id="r_a29dba36840a28495e5eed5bc4c76b9a9"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a29dba36840a28495e5eed5bc4c76b9a9">itemTag</a> = &quot;&quot;</td></tr>
+<tr class="memdesc:a29dba36840a28495e5eed5bc4c76b9a9 inherit pro_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tag used for identifying items (keys, puzzle objects, etc.).  <br /></td></tr>
 <tr class="memitem:acc1d3d3d9d2c5c13b0e4247e54336e12 inherit pro_attribs_class_entity" id="r_acc1d3d3d9d2c5c13b0e4247e54336e12"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_collision_box.html">CollisionBox</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#acc1d3d3d9d2c5c13b0e4247e54336e12">collisions</a></td></tr>
+<tr class="memdesc:acc1d3d3d9d2c5c13b0e4247e54336e12 inherit pro_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">World‑space collision box.  <br /></td></tr>
 <tr class="memitem:a955e57d979a88fe1fb18d3b58ebb703f inherit pro_attribs_class_entity" id="r_a955e57d979a88fe1fb18d3b58ebb703f"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a955e57d979a88fe1fb18d3b58ebb703f">title</a> = &quot;Untitled object&quot;</td></tr>
+<tr class="memdesc:a955e57d979a88fe1fb18d3b58ebb703f inherit pro_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display title of the entity.  <br /></td></tr>
 <tr class="memitem:a58858410e67b146b0d830568d5eefa01 inherit pro_attribs_class_entity" id="r_a58858410e67b146b0d830568d5eefa01"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#a58858410e67b146b0d830568d5eefa01">selected</a> = false</td></tr>
+<tr class="memdesc:a58858410e67b146b0d830568d5eefa01 inherit pro_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the entity is currently selected.  <br /></td></tr>
 <tr class="memitem:ab58b8b75b1d64e544c326faeba8542a6 inherit pro_attribs_class_entity" id="r_ab58b8b75b1d64e544c326faeba8542a6"><td class="memItemLeft" align="right" valign="top">glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#ab58b8b75b1d64e544c326faeba8542a6">modelMatrix</a></td></tr>
+<tr class="memdesc:ab58b8b75b1d64e544c326faeba8542a6 inherit pro_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cached model matrix.  <br /></td></tr>
 <tr class="memitem:ac0801d6c3a3478766eb4d270e68336d3 inherit pro_attribs_class_entity" id="r_ac0801d6c3a3478766eb4d270e68336d3"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_entity.html#ac0801d6c3a3478766eb4d270e68336d3">actionText</a> = &quot;Examine&quot;</td></tr>
+<tr class="memdesc:ac0801d6c3a3478766eb4d270e68336d3 inherit pro_attribs_class_entity"><td class="mdescLeft">&#160;</td><td class="mdescRight">Text displayed when interacting (default: "Examine").  <br /></td></tr>
 </table>
-<a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Represents a simple pickable lighter item. </p>
+<p>The <a class="el" href="class_lighter.html" title="Represents a simple pickable lighter item.">Lighter</a>:</p><ul>
+<li>Can be picked up by the player</li>
+<li>Stores an inventory texture</li>
+<li>Uses the tag "Lighter" for puzzle interactions</li>
+<li>Destroys itself after being picked up </li>
+</ul>
+</div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="abee18e7652f1258fde41d1f4be935b23" name="abee18e7652f1258fde41d1f4be935b23"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abee18e7652f1258fde41d1f4be935b23">&#9670;&#160;</a></span>Lighter()</h2>
 
@@ -213,6 +285,41 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Constructs a new <a class="el" href="class_lighter.html" title="Represents a simple pickable lighter item.">Lighter</a> entity. </p>
+<p>Initializes:</p><ul>
+<li>Base <a class="el" href="class_entity.html" title="Base class for all world objects in the game.">Entity</a> properties</li>
+<li>Marks the lighter as pickable</li>
+<li>Stores the inventory texture</li>
+<li>Assigns the item tag "Lighter"</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">model</td><td>Pointer to the lighter's 3D model. </td></tr>
+    <tr><td class="paramname">pos</td><td>World position. </td></tr>
+    <tr><td class="paramname">rot</td><td>Rotation vector. </td></tr>
+    <tr><td class="paramname">scal</td><td>Scale vector. </td></tr>
+    <tr><td class="paramname">tex</td><td><a class="el" href="class_texture.html" title="Loads and manages 2D textures, normal maps, and height maps.">Texture</a> used for inventory display. </td></tr>
+    <tr><td class="paramname">interaction</td><td>Whether the lighter is interactable.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>A <a class="el" href="class_lighter.html" title="Represents a simple pickable lighter item.">Lighter</a> is a simple pickable item used to ignite candles or other interactable objects. This constructor:</p><ul>
+<li>Marks the lighter as pickable</li>
+<li>Stores its inventory texture</li>
+<li>Assigns the item tag "Lighter"</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">model</td><td>Pointer to the lighter's 3D model. </td></tr>
+    <tr><td class="paramname">pos</td><td>World position. </td></tr>
+    <tr><td class="paramname">rot</td><td>Rotation vector. </td></tr>
+    <tr><td class="paramname">scal</td><td>Scale vector. </td></tr>
+    <tr><td class="paramname">tex</td><td><a class="el" href="class_texture.html" title="Loads and manages 2D textures, normal maps, and height maps.">Texture</a> used for inventory display. </td></tr>
+    <tr><td class="paramname">interaction</td><td>Whether the lighter is interactable. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a12a4375fc2142b78b048ce186d141aad" name="a12a4375fc2142b78b048ce186d141aad"></a>
@@ -229,6 +336,8 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p><a class="el" href="class_lighter.html" title="Represents a simple pickable lighter item.">Lighter</a> destructor. </p>
 
 </div>
 </div>
@@ -255,6 +364,9 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Gets the action text displayed when targeting the lighter. </p>
+<dl class="section return"><dt>Returns</dt><dd>"Pick Up" </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_entity.html#a0c030bb89fa1e71775673458a286e3bc">Entity</a>.</p>
 
@@ -283,6 +395,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Gets the texture used for inventory display. </p>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to the lighter's texture. </dd></dl>
+
 <p>Reimplemented from <a class="el" href="class_entity.html#a9202e587e97c713fbfb256d428ce073d">Entity</a>.</p>
 
 </div>
@@ -310,6 +425,29 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Handles interaction with the lighter. </p>
+<p>Behavior:</p><ul>
+<li>Marks the lighter as picked up</li>
+<li>Displays a short subtitle hint</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">playerInventory</td><td>Pointer to the player's inventory.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Behavior:</p><ul>
+<li>Marks the lighter as picked up</li>
+<li>Displays a short subtitle hint</li>
+</ul>
+<p>The actual inventory insertion is handled externally.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">playerInventory</td><td>Pointer to the player's inventory. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 <p>Reimplemented from <a class="el" href="class_entity.html#ab5df5212c49c989b67d5ea4de25707c8">Entity</a>.</p>
 
 </div>
@@ -336,6 +474,15 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Updates the lighter each frame. </p>
+<p>Once picked up, the lighter is flagged for destruction so it no longer appears in the world.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">deltaTime</td><td>Time elapsed since last frame. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Reimplemented from <a class="el" href="class_entity.html#a2e1cc2d447fd31fc9bc396d2489abd17">Entity</a>.</p>
 
