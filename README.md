@@ -120,7 +120,11 @@ The following libraries are required to build from source. Ensure headers and bi
 │   ├── Systems/        # Audio, Particles, GUI implementations
 │   └── main.cpp        # Entry point and Game Loop
 ├── Shaders/            # GLSL Source Code (.vert, .frag, .geom)
-└── Assets/             # Models, Textures, Audio resources
+├── Models/             # Models (.obj, .mtl)
+├── Textures/           # Textures (.png, .jpg)     
+├── Audio/              # Audio sources         
+└── Fonts/              # Fonts
+          
 ```
 
 ## Contributors
