@@ -1086,6 +1086,7 @@ Scene* createMainScene(Camera * camera) {
 	blueBookEntity->setTitle("Blue Book");
 	blueBookEntity->setColissions(false);
 	corridorPaperEntity = new Readable(&paperModel, glm::vec3(7.0f,0.0f, -2.0f), glm::vec3(0.0f, 0.1f, 0.0f), glm::vec3(2.0f), spriteRenderer, corridorSprite, true);
+	corridorPaperEntity->setColissions(false);
 	corridorPaperEntity->setTitle("Corridor Note");
 
 
@@ -1239,13 +1240,13 @@ Scene* createMainScene(Camera * camera) {
 	candleLight4 = new PointLight(glm::vec3(10.0f, 6.0f, 1.0f), 0.0f, 1.0f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.7f, 1.8f, 3, 20.0f, 0.01f, 256.0f, 256.0f);
 	candleLight5 = new PointLight(glm::vec3(10.0f, 6.0f, 1.0f), 0.0f, 1.0f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.7f, 1.8f, 4, 20.0f, 0.01f, 256.0f, 256.0f);
 	candleLight6 = new PointLight(glm::vec3(10.0f, 6.0f, 1.0f), 0.0f, 1.0f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.7f, 1.8f, 5, 20.0f, 0.01f, 128.0f, 128.0f);
-	candleLight6->setCastShadow(true);
+	//candleLight6->setCastShadow(true);
 	candleLight7 = new PointLight(glm::vec3(10.0f, 6.0f, 1.0f), 0.0f, 1.0f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.7f, 1.8f, 6, 20.0f, 0.01f, 128.0f, 128.0f);
-	candleLight7->setCastShadow(true);
+	//candleLight7->setCastShadow(true);
 	candleLight8 = new PointLight(glm::vec3(10.0f, 6.0f, 1.0f), 0.0f, 1.0f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.7f, 1.8f, 7, 20.0f, 0.01f, 128.0f, 128.0f);
-	candleLight8->setCastShadow(true);
+	//candleLight8->setCastShadow(true);
 	candleLight9 = new PointLight(glm::vec3(10.0f, 6.0f, 1.0f), 0.0f, 1.0f, glm::vec3(2.0f, 1.0f, -3.0f), 1.0f, 0.7f, 1.8f, 8, 20.0f, 0.01f, 128.0f,128.0f);
-	candleLight9->setCastShadow(true);
+	//candleLight9->setCastShadow(true);
 	flashlight = new Flashlight(glm::vec3(2.0f, 1.9f, 1.4f), 0.7f, 2.5f, camera->getCameraPosition(), 1.0f, 0.045f, 0.0075f, camera->getCameraFront(), 16.5f, 25.0f, 1024.0f, 1024.0f);
 	lampLight = new PointLight(glm::vec3(2.4f, 2.0f, 1.4f),0.05f, 2.0f,glm::vec3(-4.0f, 1.7f, -7.0f),1.0f, 0.15f, 0.032f,9, 20.0f, 0.01f, 1024.0f, 1024.0f);
 	lampLight->setCastShadow(true);

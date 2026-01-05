@@ -54,6 +54,7 @@ Player::~Player()
  */
 void Player::UpdatePhysics(float deltaTime, std::vector<Entity*>& entities)
 {
+    glm::vec3 playerCenter = (playerCollisions.min + playerCollisions.max) * 0.5f;
     // Remember previous position for collision rollback
     float previousX = position.x;
     float previousY = position.y;
@@ -75,7 +76,14 @@ void Player::UpdatePhysics(float deltaTime, std::vector<Entity*>& entities)
         if (entity == flashlightEntity) continue;
         if (!entity->getColissions()) continue;
 
+
+
         CollisionBox otherBox = entity->GetCollisions();
+        glm::vec3 entityCenter = (otherBox.min + otherBox.max) * 0.5f;
+
+        glm::vec3 diff = entityCenter - playerCenter;
+        if (glm::dot(diff, diff) > 25.0f)
+            continue;
 
         if (playerCollisions.min.x < otherBox.max.x && playerCollisions.max.x > otherBox.min.x &&
             playerCollisions.min.y < otherBox.max.y && playerCollisions.max.y > otherBox.min.y &&
@@ -100,6 +108,11 @@ void Player::UpdatePhysics(float deltaTime, std::vector<Entity*>& entities)
         if (!entity->getColissions()) continue;
 
         CollisionBox otherBox = entity->GetCollisions();
+        glm::vec3 entityCenter = (otherBox.min + otherBox.max) * 0.5f;
+
+        glm::vec3 diff = entityCenter - playerCenter;
+        if (glm::dot(diff, diff) > 25.0f)
+            continue;
 
         if (playerCollisions.min.x < otherBox.max.x && playerCollisions.max.x > otherBox.min.x &&
             playerCollisions.min.y < otherBox.max.y && playerCollisions.max.y > otherBox.min.y &&
